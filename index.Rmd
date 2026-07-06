@@ -1,14 +1,32 @@
 ---
+# Some bs4_book() and some gitbook() functionality here, not all works! 
 title: Introduction to Spatial Analysis 
+author: Matt Tomkins
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: spatial-analysis-resources.bib
 csl: harvard-cite-them-right.csl
 link-citations: true
 output:
-  bookdown::gitbook:
+  bookdown::bs4_book: 
     css: style.css
-    toc_depth: 3
+    # toc_depth: 3
+    theme:
+      primary: "#0369a1"
+      base_font:
+        google:
+          family: Source Sans Pro
+          wght: [400, 600]
+          ital: [0, 1]
+      heading_font:
+        google:
+          family: Source Sans Pro
+          wght: 600
+      code_font:
+        google:
+          family: Fira Mono
+          wght: [400, 600]
+          local: false
     config:
       toc:
         collapse: section
@@ -23,7 +41,7 @@ output:
 
 # (PART\*) Home {-}
 
-# Introduction to Spatial Analysis {#introduction .unnumbered}
+# Introduction to Spatial Analysis {#index .unnumbered}
 
 ## Preface {#practical-aims .unnumbered}
 
@@ -45,7 +63,7 @@ check.packages <- function(pkg){
 }
 
 # Checks and installs packages
-packages <- c("bookdown", "markdown")
+packages <- c("bookdown", "markdown", "pagedown")
 check.packages(packages)
 
 # Clean the docs folder
@@ -53,10 +71,13 @@ clean_book(clean = getOption("bookdown.clean_book", TRUE))
 
 # Code to render
 # bookdown::render_book("index.Rmd", "bookdown::gitbook", output_dir = "docs")
+# bookdown::render_book("index.Rmd", "bookdown::bs4_book", output_dir = "docs")
+
+# Can use bs4_book() format, but need to remove 'toc_depth' argument, and renamed to {#index .unnumbered}
+
+# pagedown::chrome_print("docs/index.html", output = "introduction_to_spatial_analysis.pdf")
 
 ```
-
-
 
 In *Introduction to Spatial Analysis*, we will:
 
@@ -70,5 +91,4 @@ In *Introduction to Spatial Analysis*, we will:
 ## Intended Learning Outcomes {#ilo .unnumbered}
 
 The Intended Learning Outcomes for *Introduction to Spatial Analysis* are available on [Canvas]() as a [single source of truth](https://en.wikipedia.org/wiki/Single_source_of_truth). 
-
 

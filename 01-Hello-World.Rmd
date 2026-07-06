@@ -28,6 +28,14 @@ To achieve this, we'll import raster (temperature and precipitation layers) and 
 
 [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog) (Spatial Analyst), [Cell Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog) (Spatial Analyst Tools), [Select Layer By Attribute](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/select-layer-by-attribute.html?tabs=dialog) (Data Management Tools)
 
+### Guidance {.unnumbered}
+
+As you progress through the following practicals, your main objective is to develop **understanding** of how we conceptualise and model spatial patterns and relationships.
+
+You will develop this understanding by working with spatial data, running tools, and inspecting outputs, with instructions formatted as follows:
+
+> This is an instruction. 
+
 ------------------------------------------------------------------------
 
 ## Practical
@@ -36,7 +44,7 @@ During this practical...
 
 [1] Open ArcGIS Pro and become familiar with layout
 
-[2] Add vector data (countries + cities)
+[2] Add vector data for countries [`ne_10m_admin_0_countries.shp`] + cities [`World_Cities.shp`]
 
 [3] Filter cities to \>5 million population using [Select Layer By Attribute](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/select-layer-by-attribute.html?tabs=dialog) [n=54, Export]
 

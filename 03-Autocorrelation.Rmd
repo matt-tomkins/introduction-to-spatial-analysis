@@ -8,100 +8,200 @@
 
 The aims of this practical are to:
 
-1. Understand why spatial autocorrelation needs to be considered when analysing spatial data. 
-2. Understand the techniques we can use to assess for global and local spatial autocorrelation, including the underlying mathematics and assumptions.
-3. Test for spatial autocorrelation in ArcGIS and interpret outputs correctly. 
+1.  Understand why spatial autocorrelation needs to be considered when analysing spatial data.
+2.  Understand the techniques we can use to assess for global and local spatial autocorrelation, including the underlying mathematics and assumptions.
+3.  Test for spatial autocorrelation in ArcGIS and interpret outputs correctly.
 
 ### Application {.unnumbered}
 
-To that end, we'll use county-level data from the [2024 US General election](https://www.bbc.co.uk/news/election/2024/us/results) to investigate global and local spatial autocorrelation. 
+To that end, we'll use county-level data from the [2024 US General election](https://www.bbc.co.uk/news/election/2024/us/results) to investigate global and local spatial autocorrelation.
 
 ### Data {#autocorrelation_data .unnumbered}
 
 The county-level data for this practical are available in [`data/us-census`] as follows:
 
-- US county geometries for 2023, mapped at a 1:500,000 scale [[Source](https://www2.census.gov/geo/tiger/GENZ2023/shp/)]
-- US county-level Presidential results for the 2024 elevation [[Source](https://github.com/tonmcg/US_County_Level_Election_Results_08-24)], which includes:
-  - Democratic vote total [`votes_dem`] and proportion (`per_dem`)
-  - Republican vote total [`votes_gop`] and proportion (`per_gop`)
+-   US county geometries for 2023, mapped at a 1:500,000 scale [[Source](https://www2.census.gov/geo/tiger/GENZ2023/shp/)]
+-   US county-level Presidential results for the 2024 elevation [[Source](https://github.com/tonmcg/US_County_Level_Election_Results_08-24)], which includes:
+    -   Democratic vote total [`votes_dem`] and proportion (`per_dem`)
+    -   Republican vote total [`votes_gop`] and proportion (`per_gop`)
 
 *Note that other datasets are present in this directory and will be utilised later in the unit.*
 
 ### Tools {.unnumbered}
 
-[Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) (Spatial Statistics Tools), [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) (Spatial Statistics Tools), [High/Low Clustering (Getis-Ord General G)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog) (Spatial Statistics Tools), [Hot Spot Analysis (Getis-Ord Gi*)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog) (Spatial Statistics Tools)
+[Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) (Spatial Statistics Tools), [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) (Spatial Statistics Tools), [High/Low Clustering (Getis-Ord General G)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog) (Spatial Statistics Tools), [Hot Spot Analysis (Getis-Ord Gi\*)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog) (Spatial Statistics Tools), [Project](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog) (Data Management Tools)
 
 ------------------------------------------------------------------------
 
 ## Practical
 
-Context = https://www.bbc.co.uk/news/articles/cj4vn0qxy0lo 
+[1] Open ArcGIS and load county geometry data [`cb_2023_us_county_500k.shp`, n=3235]:
 
-[TO DO] Symbology issues with Anselin non-significant polygons (COType)
+*Note* some context [here](https://www.bbc.co.uk/news/articles/cj4vn0qxy0lo). The county level is for administrative purposes, but interesting for looking at patterns. The actual state vote (which gives reps to the electoral college) is % based at the state-level.
 
-*So* county is really for administrative purposes, but interesting for looking at patterns
-- The actual state vote (which gives reps to the electoral college) is simply % based
+[2] For simplicity, remove non-contiguous counties using Select By Attributes (STATE_NAME = Alaska, Hawaii, Puerto Rico, Guam, American Samoa, Commonwealth of the Northern Mariana Islands, United States Virgin Islands), and either Delete Rows, or save selected to new features (Data -\> Export Features -\> Use the selected records -\> `cb_2023_us_county_500k_contig`)
 
-[1] Load County geometry data (n=3235)
+STATE_NAME \<\> 'Alaska' And STATE_NAME \<\> 'Hawaii' And STATE_NAME \<\> 'Puerto Rico' And STATE_NAME \<\> 'Guam' And STATE_NAME \<\> 'American Samoa' And STATE_NAME \<\> 'Commonwealth of the Northern Mariana Islands' And STATE_NAME \<\> 'United States Virgin Islands'
 
-[2] Remove non-contigous counties (STATE_NAME = Alaska, Hawaii, Puerto Rico, Guam, American Samoa, Commonwealth of the Northern Mariana Islands, United States Virgin Islands), or keep them in?
+[3] Use [Project](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog) to create new feature layer a using a suitable projected CRS e.g., 102004 Lambert Conformal Conic, rather than the current geographic CRS (NAD83 - [EPSG:4269](https://epsg.io/4269)). This will cause issues if measuring geometries (e.g., areas, distances), as discussed in Understanding GIS (Week 2)
 
-STATE_NAME <> 'Alaska' And STATE_NAME <> 'Hawaii' And STATE_NAME <> 'Puerto Rico' And STATE_NAME <> 'Guam' And STATE_NAME <> 'American Samoa' And STATE_NAME <> 'Commonwealth of the Northern Mariana Islands' And STATE_NAME <> 'United States Virgin Islands'
+[4] Load in presidential results [`2024_US_County_Level_Presidential_Results.csv`] and join to geometries, using Joins and Relates -\> Add Join (`NAMELSAD`, `county_name`).
 
-[3] Load in presidential results (csv) and join (NAMELSAD, county_name)
+*Note* an alternative approach would be to use the Federal Information Processing Series ([FIPS](https://www.census.gov/library/reference/code-lists/ansi.html)) code, stored in `GEOID` and `county_fips` respectively, but different data formats (Text, Long) means we don't get any matches, and would have to do some more data processing.
 
-[4] Modify symbology:
-> Vary symbology by attribute (per GOP)
-> Colour scheme = Red-Blue (continous) 
-> Colour scheme > Properties > Reverse
-> Double click values, update 0-1, same for labels
+[5] Inspect the Attribute Table for completeness and for key stats i.e., Explore Statistics of `per_gop`. Mean = 0.66% at a county level.
 
-[5] Spatial Autocorrelation (Global Moran's I) 
-> per_GOP as input, generate html - CLUSTERED
+[Q] Why does this not match the overall vote % [i.e., population-excluded]
 
-** TO DO - understand the underlying mathematics, as interpretation is very easy with the html output **
+-   gop_total = 81,382,360 (50.4% of total)
+-   dem_total = 77,151,397 (47.8% of total)
+-   gop+dem = 158,533,757
+-   total_votes = 161,380,528
 
-** What is row standardisation? **
+This is *close* to the reported [results](https://www.bbc.co.uk/news/election/2024/us/results), possibly due to removing non-contiguous states.
 
-[6] Anselin Local Moran's I (Cluster and Outlier Analysis)
+[Data caveat](https://github.com/tonmcg/US_County_Level_Election_Results_08-24):
 
-** What is the False Discovery Rate (FDR) correction? # permutations? **
+"Although the data in this repository is extensive, it is not considered the authoritative source. Researchers are encouraged to verify specific results from primary data sources when needed"
 
-Produces pretty map, interpret clusters and outliers
--- Histogram
--- Moran Scatter plot
+[6] Modify symbology:
 
-[?] Run with a different spatial relationships? e.g., inverse distance squared (beware geographic coordinates)
+-   Vary symbology by attribute (per GOP), using 'Unclassed Colors'
+-   Colour scheme = Red-Blue (continous)
+-   Colour scheme \> Properties \> Reverse
+-   Double click values, update 0-1, same for labels
 
-[8] High/Low Clustering (Getis-Ord General G)
-> Geographic coordinates warning
-> Again, "high-clusters" highly likely - discuss how this is different to Global Moran's I?
+*Note* Symbology using 'Unclassed Colors' doesn't always update correctly i.e., sometimes fails to show the data at all. **James** can you check this?
 
-[9] Hot Spot Analysis (Getis-Ord Gi*)
-> Same inputs as Local Moran's I
-> What is **Self Potential Field**?
-> Again, what is FDR correction? 
+[7] Run [Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog):
 
-[Summary]
+-   `per_GOP` as input
+-   Generate Report
+-   Conceptualization of Spatial Relationships should be familiar following Practical 2, we'll use `Contiguity edges corners` here
+-   **TO DO**:
+    -   Discuss *row standardisation*
+    -   Communicate the *underlying mathematics*, as interpretation is very easy with the html output
 
-- Be able to run main tools for autocorrelation / hotspots
-- Really understand the importance of the SWM
+[8] Interpret initial output:
+
+First, it's important that we look at any **warnings** or error messages that might arise. For this tool, we have some:
+
+```{r, eval=FALSE, collapse=TRUE}       
+WARNING 000642: Problems reading 1 of 3109 total records
+WARNING 000848: Features with bad records (only includes first 30): us-county-contig.FID = 292.
+```
+
+If we check the Attribute Table, this is for the District of Colombia which has `<Null>` vote share. This is because of a mismatch between our geometry data (the District of Colombia as a single feature), and our presidential results table, whereas we have the vote share broken down at ward level (Ward 1 - Ward 8). We could either remove this geometry (Q: will this have a significant effect at our scale of analysis?) or we can add the vote share in manually.
+
+```{r, eval=FALSE, collapse=TRUE}         
+WARNING 000846: 4 feature(s) had no neighbors which generally invalidates the statistical properties of a test
+WARNING 000847: Features with no neighbors (only includes first 30): us-county-contig.FID = 426, 534, 2018, 2616.
+```
+
+If we check the Attribute Table, this is for four counties with no direct borders:
+
+-   Nantucket County (25019)
+-   Dukes County (25007)
+-   Richmond County (36085)
+-   San Juan (53055)
+
+*Note* these have no borders when using `Contiguity edges corners`, but likely would be valid features using a distance-based approach, so we can keep them for now.
+
+The next step is to address the source of those warnings.
+
+[9] Add results for the District of Columbia [[Source](https://tonmcg.github.io/US_County_Level_Election_Results_08-24/)]:
+
+```         
+District of Columbia,11001,District of Columbia,21076,294185,315261,-273109,0.069,0.9331,-0.8641
+```
+> Open `2024_US_County_Level_Presidential_Results.csv` in Excel, create a new row, copy the comma-delimited data above into the first column and split into the relevant columns using `Data` → `Text to Columns` &rarr; `Delimited` &rarr; `Comma` &rarr; `Finish`, then save the csv. 
+
+*Note* because we used a dynamic table join before, rather than [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog), District of Columbia should now have data!
+
+[10] Re-run [Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) and inspect outputs:
+
+- Warnings addressed in [9] no longer present
+- Moran's Index	0.288339
+- Expected Index	-0.000322
+- Variance	0.000116
+- z-score	26.814927
+- p-value	0.000000
+- Clustered: Given the z-score of 26.814927, there is a less than 1% likelihood that this clustered pattern could be the result of random chance.
+
+[11] We can also exclude those non-neighbouring polygons using Select by Attributes (!= FIPS code), and re-running [Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) using 'Use the selected records' (N=3105)
+
+uscountycontig_Project.GEOID <> '25019' And uscountycontig_Project.GEOID <> '25007' And uscountycontig_Project.GEOID <> '36085' And uscountycontig_Project.GEOID <> '53055'
+
+- No warnings at all (000846, 000847) as we've excluded those features
+- The results have changed, but not meaningfully
+- Moran's Index	0.289864
+- Expected Index	-0.000322
+- Variance	0.000116
+- z-score	26.956676
+- p-value	0.000000
+
+[12] Run [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) for the full dataset (N=3109)
+
+- **TO DO**:
+    - Discuss *False Discovery Rate (FDR) correction*
+    - Investigate *Number of Permutations*
+
+[12] Interpet Anselin Local Moran's I output
+
+- Map interpretation: vote clusters and outliers?
+- Histogram
+- **Moran's Scatter Plot**
+- Statistics in attribute table e.g., SpatialLag RS
+
+[13] Run with a different spatial relationships e.g., inverse distance squared 
+
+*Note* we can use a distance-based measured here with a reasonable degree of confidence, unlike geographic coordinates, but **distortion** still important
+
+*Note* Distance Band or Threshold Distance will use the units specified in the CRS (metres)
+
+  [Q] How have the results changed? Why? When using inverse-distance squared, we have much larger areas of HH and LL, presumably because we have a much less conservative neighbourhood rule (unlike contiguity only)
+
+[14] Run [High/Low Clustering (Getis-Ord General G)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog):
+
+- Observed General G	0.000328
+- Expected General G	0.000321
+- Variance	0.000000
+- z-score	13.624777
+- p-value	0.000000
+- Given the z-score of 13.62477738651207, there is a less than 1% likelihood that this high-clustered pattern could be the result of random chance.
+- Discuss how the conceptual and mathematical approach **differs** from Global Moran's *I*.
+
+[15] Run [Hot Spot Analysis (Getis-Ord Gi\*)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog):
+
+- Same inputs as Local Moran's *I*
+- **TO DO**:
+    - Reiterate *row standardisation* and *FDR correction*
+    - Discuss the *Self Potential Field*
+    - Communicate the *underlying mathematics*, as interpretation is very easy with the html output
+    
+
+[16] By the end of the practical, you be able to:
+
+- Understand how we might assess for autocorrelation and hotspots
+- Understand and demonstrate the importance of the spatial weights matrix
 - Understand the difference between the tools (global vs. local) and the mathematical approaches
 
 ## Extra
 
-Run for the 2008 dataset? Obama vs. McCain
+As a comparison, we can run with 2008 election results (Obama vs. McCain), stored in `2008_US_County_Level_Presidential_Results.csv`
 
-If so, there are 80 of 3109 where there is no matching name
+Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.
 
-> Should really use the 2008 geometries, available here: https://www2.census.gov/geo/tiger/
+[Q] How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?
 
-Have checked and the 2024 data is great, with only one missing county, which is the dsitrict of colombia (correct)
+[Q] What is a limitation of our current approach? *Hint*: Sort the `gop_per` column for the 2008 results. 
+
+Answer: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available [here](https://www2.census.gov/geo/tiger/).
 
 ## Resources
 
-- Moran, P.A.P. ([1948](https://www.jstor.org/stable/2983777)). The Interpretation of Statistical Maps. Journal of the Royal Statistical Society, B 10: 243–51.
-- Moran, P.A.P. ([1950](https://doi.org/10.2307/2332142)). Notes on continuous stochastic phenomena. Biometrika, 37(1/2), pp.17-23.
-- Anselin, L. ([1995](https://doi.org/10.1111/j.1538-4632.1995.tb00338.x)). Local Indicators of Spatial Association—LISA. Geographical Analysis 27, 93–115.
-- Anselin, L ([1996](https://www.taylorfrancis.com/chapters/edit/10.1201/9780203739051-8/moran-scatterplot-esda-tool-assess-local-instability-spatial-association-luc-anselin)). “The Moran Scatterplot as an ESDA Tool to Assess Local Instability in Spatial Association.” In Spatial Analytical Perspectives on GIS in Environmental and Socio-Economic Sciences, edited by Manfred Fischer, Henk Scholten, and David Unwin, 111–25. London: Taylor; Francis.
-- Getis, A. and Ord, J.K. ([1992](https://doi.org/10.1111/j.1538-4632.1992.tb00261.x)). The analysis of spatial association by use of distance statistics. Geographical analysis, 24(3), pp.189-206.
+-   Moran, P.A.P. ([1948](https://www.jstor.org/stable/2983777)). The Interpretation of Statistical Maps. Journal of the Royal Statistical Society, B 10: 243–51.
+-   Moran, P.A.P. ([1950](https://doi.org/10.2307/2332142)). Notes on continuous stochastic phenomena. Biometrika, 37(1/2), pp.17-23.
+-   Anselin, L. ([1995](https://doi.org/10.1111/j.1538-4632.1995.tb00338.x)). Local Indicators of Spatial Association—LISA. Geographical Analysis 27, 93–115.
+-   Anselin, L ([1996](https://www.taylorfrancis.com/chapters/edit/10.1201/9780203739051-8/moran-scatterplot-esda-tool-assess-local-instability-spatial-association-luc-anselin)). “The Moran Scatterplot as an ESDA Tool to Assess Local Instability in Spatial Association.” In Spatial Analytical Perspectives on GIS in Environmental and Socio-Economic Sciences, edited by Manfred Fischer, Henk Scholten, and David Unwin, 111–25. London: Taylor; Francis.
+-   Getis, A. and Ord, J.K. ([1992](https://doi.org/10.1111/j.1538-4632.1992.tb00261.x)). The analysis of spatial association by use of distance statistics. Geographical analysis, 24(3), pp.189-206.

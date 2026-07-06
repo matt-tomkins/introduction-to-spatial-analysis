@@ -23,7 +23,7 @@ Our analysis is focused on the Western Isles of Scotland, given links between so
 ### Data {.unnumbered}
 
 - Defibrillator locations listed on the National Defibrillator Network, managed by the British Heart Foundation and associates (The Circuit), available in [`data/bhf`] [[Source](https://www.bhf.org.uk/defibdata)]
-- Ordnance Survey Open Roads transport network, available in [`data/os-open-roads`] [[Source](https://www.ordnancesurvey.co.uk/products/os-open-roads)]
+- Ordnance Survey (OS) Open Roads transport network, available in [`data/os/open-roads`] [[Source](https://www.ordnancesurvey.co.uk/products/os-open-roads)]
 - UK Centre for Ecology and Hydrology (UKCEH) gridded population at 1 km resolution (2021), available in [`data/ukceh`] [[Source](https://doi.org/10.5285/7beefde9-c520-4ddf-897a-0167e8918595)]
 - ONS boundaries data, filtered to the Western Isles, available in [`data/ons/national`] [[Source](https://geoportal.statistics.gov.uk/datasets/70c6937637404976a7c4be4d57dcccf0_0/explore?location=55.340000%2C-3.316939%2C5)]
 

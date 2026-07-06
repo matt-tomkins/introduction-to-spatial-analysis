@@ -1,278 +1,112 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
-
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Spatial Weights | Introduction to Spatial Analysis</title>
-  <meta name="description" content="Chapter 2 Spatial Weights | Introduction to Spatial Analysis" />
-  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="Chapter 2 Spatial Weights | Introduction to Spatial Analysis" />
-  <meta property="og:type" content="book" />
-  
-  
-  
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Spatial Weights | Introduction to Spatial Analysis" />
-  
-  
-  
-
-
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="geo_data.html"/>
-<link rel="next" href="spatial_autocorrelation.html"/>
-<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-
-
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 2 Spatial Weights | Introduction to Spatial Analysis</title>
+<meta name="author" content="Matt Tomkins">
+<meta name="generator" content="bookdown 0.46 with bs4_book()">
+<meta property="og:title" content="Chapter 2 Spatial Weights | Introduction to Spatial Analysis">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 2 Spatial Weights | Introduction to Spatial Analysis">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira%20Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
 <style type="text/css">
-  
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-</style>
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
-
-<link rel="stylesheet" href="style.css" type="text/css" />
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="2.1 Introduction  Aims The aims of this practical are to: Understand what spatial weights represent. Understand how spatial weights are constructed (i.e., contiguity, distance). Understand how...">
+<meta property="og:description" content="2.1 Introduction  Aims The aims of this practical are to: Understand what spatial weights represent. Understand how spatial weights are constructed (i.e., contiguity, distance). Understand how...">
+<meta name="twitter:description" content="2.1 Introduction  Aims The aims of this practical are to: Understand what spatial weights represent. Understand how spatial weights are constructed (i.e., contiguity, distance). Understand how...">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<div style="text-align: center; margin: 1em 0;">
-  <img src="images/course-logo.png" width="200">
-</div>
-
-<li class="divider"></li>
-<li class="part"><span><b>Home</b></span></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction to Spatial Analysis</a>
-<ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practical-aims"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#ilo"><i class="fa fa-check"></i>Intended Learning Outcomes</a></li>
-</ul></li>
-<li class="part"><span><b>Representing the World</b></span></li>
-<li class="chapter" data-level="1" data-path="geo_data.html"><a href="geo_data.html"><i class="fa fa-check"></i><b>1</b> Working with Geographic Data</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="geo_data.html"><a href="geo_data.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#aims"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#application"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#data"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#tools"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="1.2" data-path="geo_data.html"><a href="geo_data.html#practical"><i class="fa fa-check"></i><b>1.2</b> Practical</a></li>
-<li class="chapter" data-level="1.3" data-path="geo_data.html"><a href="geo_data.html#extra"><i class="fa fa-check"></i><b>1.3</b> Extra</a></li>
-</ul></li>
-<li class="part"><span><b>Spatial Patterns</b></span></li>
-<li class="chapter" data-level="2" data-path="spatial_weights.html"><a href="spatial_weights.html"><i class="fa fa-check"></i><b>2</b> Spatial Weights</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#introduction-2"><i class="fa fa-check"></i><b>2.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#aims-1"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#application-1"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#data-1"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#tools-1"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="spatial_weights.html"><a href="spatial_weights.html#practical-1"><i class="fa fa-check"></i><b>2.2</b> Practical</a>
-<ul>
-<li class="chapter" data-level="2.2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#simpler-approach-pythonic-no-sql-no-geodatabase-faff"><i class="fa fa-check"></i><b>2.2.1</b> Simpler approach (Pythonic, no SQL, no geodatabase faff)</a></li>
-</ul></li>
-<li class="chapter" data-level="2.3" data-path="spatial_weights.html"><a href="spatial_weights.html#extra-1"><i class="fa fa-check"></i><b>2.3</b> Extra</a></li>
-<li class="chapter" data-level="2.4" data-path="spatial_weights.html"><a href="spatial_weights.html#sw_resources"><i class="fa fa-check"></i><b>2.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html"><i class="fa fa-check"></i><b>3</b> Spatial Autocorrelation</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#introduction-3"><i class="fa fa-check"></i><b>3.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#aims-2"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#application-2"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#autocorrelation_data"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#tools-2"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="3.2" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#practical-2"><i class="fa fa-check"></i><b>3.2</b> Practical</a></li>
-<li class="chapter" data-level="3.3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#extra-2"><i class="fa fa-check"></i><b>3.3</b> Extra</a></li>
-<li class="chapter" data-level="3.4" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#resources"><i class="fa fa-check"></i><b>3.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="spatial_correlation.html"><a href="spatial_correlation.html"><i class="fa fa-check"></i><b>4</b> Spatial Correlation</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="spatial_correlation.html"><a href="spatial_correlation.html#introduction-4"><i class="fa fa-check"></i><b>4.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#aims-3"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#application-3"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#data-2"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#tools-3"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="spatial_correlation.html"><a href="spatial_correlation.html#practical-3"><i class="fa fa-check"></i><b>4.2</b> Practical</a></li>
-<li class="chapter" data-level="4.3" data-path="spatial_correlation.html"><a href="spatial_correlation.html#correlation-extra"><i class="fa fa-check"></i><b>4.3</b> Extra</a></li>
-<li class="chapter" data-level="4.4" data-path="spatial_correlation.html"><a href="spatial_correlation.html#resources-1"><i class="fa fa-check"></i><b>4.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="point_patterns.html"><a href="point_patterns.html"><i class="fa fa-check"></i><b>5</b> Point Patterns</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="point_patterns.html"><a href="point_patterns.html#introduction-5"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#aims-4"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#application-4"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#data-3"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#tools-4"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="point_patterns.html"><a href="point_patterns.html#practical-4"><i class="fa fa-check"></i><b>5.2</b> Practical</a></li>
-<li class="chapter" data-level="5.3" data-path="point_patterns.html"><a href="point_patterns.html#extra-3"><i class="fa fa-check"></i><b>5.3</b> Extra</a></li>
-<li class="chapter" data-level="5.4" data-path="point_patterns.html"><a href="point_patterns.html#resources-2"><i class="fa fa-check"></i><b>5.4</b> Resources</a></li>
-</ul></li>
-<li class="part"><span><b>Spatial Modelling</b></span></li>
-<li class="chapter" data-level="6" data-path="interpolation.html"><a href="interpolation.html"><i class="fa fa-check"></i><b>6</b> Interpolation</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="interpolation.html"><a href="interpolation.html#introduction-6"><i class="fa fa-check"></i><b>6.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#aims-5"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#application-5"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#data-4"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#tools-5"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="interpolation.html"><a href="interpolation.html#practical-5"><i class="fa fa-check"></i><b>6.2</b> Practical</a></li>
-<li class="chapter" data-level="6.3" data-path="interpolation.html"><a href="interpolation.html#extra-4"><i class="fa fa-check"></i><b>6.3</b> Extra</a></li>
-<li class="chapter" data-level="6.4" data-path="interpolation.html"><a href="interpolation.html#resources-3"><i class="fa fa-check"></i><b>6.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="spatial_regression.html"><a href="spatial_regression.html"><i class="fa fa-check"></i><b>7</b> Spatial Regression</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="spatial_regression.html"><a href="spatial_regression.html#introduction-7"><i class="fa fa-check"></i><b>7.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#aims-6"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#application-6"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#sr_data"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#tools-6"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="spatial_regression.html"><a href="spatial_regression.html#practical-6"><i class="fa fa-check"></i><b>7.2</b> Practical</a></li>
-<li class="chapter" data-level="7.3" data-path="spatial_regression.html"><a href="spatial_regression.html#extra-5"><i class="fa fa-check"></i><b>7.3</b> Extra</a></li>
-<li class="chapter" data-level="7.4" data-path="spatial_regression.html"><a href="spatial_regression.html#resources-4"><i class="fa fa-check"></i><b>7.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="gwr.html"><a href="gwr.html"><i class="fa fa-check"></i><b>8</b> Geographically Weighted Regression</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="gwr.html"><a href="gwr.html#introduction-8"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#aims-7"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#application-7"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#data-5"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#tools-7"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="8.2" data-path="gwr.html"><a href="gwr.html#practical-7"><i class="fa fa-check"></i><b>8.2</b> Practical</a></li>
-<li class="chapter" data-level="8.3" data-path="gwr.html"><a href="gwr.html#extra-6"><i class="fa fa-check"></i><b>8.3</b> Extra</a></li>
-<li class="chapter" data-level="8.4" data-path="gwr.html"><a href="gwr.html#resources-5"><i class="fa fa-check"></i><b>8.4</b> Resources</a></li>
-</ul></li>
-<li class="part"><span><b>Locations and Flows</b></span></li>
-<li class="chapter" data-level="9" data-path="location_allocation.html"><a href="location_allocation.html"><i class="fa fa-check"></i><b>9</b> Location Allocation</a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="location_allocation.html"><a href="location_allocation.html#introduction-9"><i class="fa fa-check"></i><b>9.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#aims-8"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#application-8"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#data-6"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#tools-8"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="location_allocation.html"><a href="location_allocation.html#practical-8"><i class="fa fa-check"></i><b>9.2</b> Practical</a></li>
-<li class="chapter" data-level="9.3" data-path="location_allocation.html"><a href="location_allocation.html#extra-7"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
-<li class="chapter" data-level="9.4" data-path="location_allocation.html"><a href="location_allocation.html#resources-6"><i class="fa fa-check"></i><b>9.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="spatial_interaction.html"><a href="spatial_interaction.html"><i class="fa fa-check"></i><b>10</b> Spatial Interaction Modelling</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="spatial_interaction.html"><a href="spatial_interaction.html#introduction-10"><i class="fa fa-check"></i><b>10.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#aims-9"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#application-9"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#data-7"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#tools-9"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="spatial_interaction.html"><a href="spatial_interaction.html#practical-9"><i class="fa fa-check"></i><b>10.2</b> Practical</a></li>
-<li class="chapter" data-level="10.3" data-path="spatial_interaction.html"><a href="spatial_interaction.html#extra-8"><i class="fa fa-check"></i><b>10.3</b> Extra</a></li>
-<li class="chapter" data-level="10.4" data-path="spatial_interaction.html"><a href="spatial_interaction.html#resources-7"><i class="fa fa-check"></i><b>10.4</b> Resources</a></li>
-</ul></li>
-<li class="part"><span><b>Endmatter</b></span></li>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a>
-<ul>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#closing"><i class="fa fa-check"></i>Closing remarks</a></li>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="assessment.html"><a href="assessment.html"><i class="fa fa-check"></i>Assessment</a></li>
-<li class="chapter" data-level="" data-path="Hints.html"><a href="Hints.html"><i class="fa fa-check"></i>Advice</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-</ul>
-
-      </nav>
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Introduction to Spatial Analysis</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
 
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Spatial Analysis</a>
-          </h1>
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li class="book-part">Home</li>
+<li><a class="" href="index.html">Introduction to Spatial Analysis</a></li>
+<li class="book-part">Representing the World</li>
+<li><a class="" href="geo_data.html"><span class="header-section-number">1</span> Working with Geographic Data</a></li>
+<li class="book-part">Spatial Patterns</li>
+<li><a class="active" href="spatial_weights.html"><span class="header-section-number">2</span> Spatial Weights</a></li>
+<li><a class="" href="spatial_autocorrelation.html"><span class="header-section-number">3</span> Spatial Autocorrelation</a></li>
+<li><a class="" href="spatial_correlation.html"><span class="header-section-number">4</span> Spatial Correlation</a></li>
+<li><a class="" href="point_patterns.html"><span class="header-section-number">5</span> Point Patterns</a></li>
+<li class="book-part">Spatial Modelling</li>
+<li><a class="" href="interpolation.html"><span class="header-section-number">6</span> Interpolation</a></li>
+<li><a class="" href="spatial_regression.html"><span class="header-section-number">7</span> Spatial Regression</a></li>
+<li><a class="" href="gwr.html"><span class="header-section-number">8</span> Geographically Weighted Regression</a></li>
+<li class="book-part">Locations and Flows</li>
+<li><a class="" href="location_allocation.html"><span class="header-section-number">9</span> Location Allocation</a></li>
+<li><a class="" href="spatial_interaction.html"><span class="header-section-number">10</span> Spatial Interaction Modelling</a></li>
+<li class="book-part">Endmatter</li>
+<li><a class="" href="summary.html">Summary</a></li>
+<li><a class="" href="assessment.html">Assessment</a></li>
+<li><a class="" href="Hints.html">Advice</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
         </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="spatial_weights" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Spatial Weights<a href="spatial_weights.html#spatial_weights" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="introduction-2" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Introduction<a href="spatial_weights.html#introduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="images/banner-spatial-weights.png" /></p>
-<div id="aims-1" class="section level3 unnumbered hasAnchor">
-<h3>Aims<a href="spatial_weights.html#aims-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="spatial_weights" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> Spatial Weights<a class="anchor" aria-label="anchor" href="#spatial_weights"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-1" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="inline-figure"><img src="images/banner-spatial-weights.png"></div>
+<div id="aims-1" class="section level3 unnumbered">
+<h3>Aims<a class="anchor" aria-label="anchor" href="#aims-1"><i class="fas fa-link"></i></a>
+</h3>
 <p>The aims of this practical are to:</p>
 <ol style="list-style-type: decimal">
 <li>Understand what spatial weights represent.</li>
@@ -280,133 +114,186 @@ div.csl-indent {
 <li>Understand how spatial weights underpin analysis of spatial patterns.</li>
 </ol>
 </div>
-<div id="application-1" class="section level3 unnumbered hasAnchor">
-<h3>Application<a href="spatial_weights.html#application-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>To achieve this, we’ll demonstrate construction of spatial weights using country Polygons and assess neighbourhood effects on cultural similarity, using the Cultural Fixation Index (CFST) from <span class="citation">Muthukrishna <em>et al.</em> (<a href="#ref-muthukrishna2020">2020</a>)</span>.</p>
+<div id="application-1" class="section level3 unnumbered">
+<h3>Application<a class="anchor" aria-label="anchor" href="#application-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>To achieve this, we’ll demonstrate construction of spatial weights using country Polygons and assess neighbourhood effects on cultural similarity, using the Cultural Fixation Index (CFST) from <span class="citation">Muthukrishna <em>et al.</em> (<a href="references.html#ref-muthukrishna2020">2020</a>)</span>.</p>
 </div>
-<div id="data-1" class="section level3 unnumbered hasAnchor">
-<h3>Data<a href="spatial_weights.html#data-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="data-1" class="section level3 unnumbered">
+<h3>Data<a class="anchor" aria-label="anchor" href="#data-1"><i class="fas fa-link"></i></a>
+</h3>
 <ul>
 <li>Natural Earth 1:10m Cultural Vectors, available in [<code>data/natural-earth</code>] [<a href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Source</a>]</li>
-<li>Cultural Similarity matrix, produced for 80 country pairs by <span class="citation">Muthukrishna <em>et al.</em> (<a href="#ref-muthukrishna2020">2020</a>)</span>, available in [<code>data/cultural-similarity</code>] [<a href="https://world.culturalytics.com/">Source</a>]</li>
+<li>Cultural Distance matrix, produced for 80 country pairs by <span class="citation">Muthukrishna <em>et al.</em> (<a href="references.html#ref-muthukrishna2020">2020</a>)</span>, available in [<code>data/cultural-similarity</code>] [<a href="https://world.culturalytics.com/">Source</a>]</li>
+<li>Ordnance Survey (OS) 100 km grid, available in [<code>data/os/grids</code>] [<a href="https://github.com/OrdnanceSurvey/osbng-grids">Source</a>]</li>
 </ul>
-<p>[Optional] Use OS 100 km grid as demonstration… [<a href="https://github.com/OrdnanceSurvey/osbng-grids">Source</a>] but needs sorting (64-bit shapefile issue)</p>
 </div>
-<div id="tools-1" class="section level3 unnumbered hasAnchor">
-<h3>Tools<a href="spatial_weights.html#tools-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Introduction to Neighborhood Explorer</a>, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog">Add Geometry Attributes</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a> (Data Management Tools)</p>
-<hr />
+<div id="tools-1" class="section level3 unnumbered">
+<h3>Tools<a class="anchor" aria-label="anchor" href="#tools-1"><i class="fas fa-link"></i></a>
+</h3>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Introduction to Neighborhood Explorer</a>, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog">Add Geometry Attributes</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary Statistics</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> (Analysis Tools)</p>
+<hr>
 </div>
 </div>
-<div id="practical-1" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> Practical<a href="spatial_weights.html#practical-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="practical-1" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-1"><i class="fas fa-link"></i></a>
+</h2>
 <p>During this practical…</p>
+<div id="spatial-weights-using-a-grid" class="section level3" number="2.2.1">
+<h3>
+<span class="header-section-number">2.2.1</span> Spatial weights using a grid<a class="anchor" aria-label="anchor" href="#spatial-weights-using-a-grid"><i class="fas fa-link"></i></a>
+</h3>
 <p>[1] Open ArcGIS Pro</p>
-<p>[2] Load vector data (Natural Earth)</p>
-<p>[3] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> - talk through different settings, using a unique ID (NE_ID)</p>
-<p>[4] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Neighborhood Explorer</a> to visualise, we can either do this dynamically or use the .swm file created earlier — <em>the former is the best approach for the students to quickly see the differences</em></p>
-<p>[5] This allows us to visualise the connections for a single feature. To visualise all relationships, we need to use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics)</p>
-<p>———Rather than NE_ID, shall we change to ADMIN?</p>
-<p>[6] This table contains the IDs of the start countries (NE_ID) and the end countries (NID) i.e., UK = 78, Ireland = 77, but no geometry</p>
-<p>[7] So, run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog">Add Geometry Attributes</a> (Data Management Tools) to Natural Earth data (centroid x and y)</p>
-<p>[8] Then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> based on ID &gt; Input = swm &gt; Input field = NE_ID &gt; Join table = natural_earth &gt; Join field = NE_ID &gt; Use Field Mapping - Remove all but centroid_x and centroid_y &gt; Double click to rename these as source_x and source_y, validate and run</p>
-<blockquote>
-<p>Then repeat for the target locations, which is as simple as changing the input file = NID, and to target_x and target_y</p>
-</blockquote>
-<p>[9] Now we can use [XY to Line], using source_xy and target_xy, “and preserve attributes”</p>
-<p>[10] To link the lines to cultural similarity, we need to include the country names (‘ADMIN’) &gt; Join Field again, same process, with name as source_ADMIN &gt; Repeat using NID as input field, updating to target_ADMIN</p>
-<p>[10?] Critical engagement with France?</p>
-<div id="simpler-approach-pythonic-no-sql-no-geodatabase-faff" class="section level3 hasAnchor" number="2.2.1">
-<h3><span class="header-section-number">2.2.1</span> Simpler approach (Pythonic, no SQL, no geodatabase faff)<a href="spatial_weights.html#simpler-approach-pythonic-no-sql-no-geodatabase-faff" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>[A] Delete Identical [Shape] - the line dataset as input (IRE-UK, UK-IRE)</p>
-<p>[INCLUDED for studyents] But make a ‘join_key’ in the similarity table using Calculate Field: Equation: “-”.join(sorted([!Country_1!, !Country_2!]))</p>
-<p>[C] Repeat for a ‘target_key’ in the lines dataset… Equation: “-”.join(sorted([!Source_ADM!, !Target_ADM!]))</p>
-<p>[D] Join Field (keep only target key), using similarity table as input ** THIS DOESN’T WORK** csv not editable..</p>
-<p>[E] Calculate Field (similarity_table): “Non-bordering” if !target_key! is None else “Bordering”</p>
-<p>[F] Finally, use Summary Statistics with case fields = Group (border, nonbordering)</p>
-<p>—————– Results [European dataset]</p>
-<p>Border = 0.702, SD = 0.122 Non-border = 0.63, SD = 0.11</p>
-<p>Not a particularly stark difference, but biased by the fact that the cultural similarity dataset is Europe only (broadly similar, even if not bordering)</p>
-<p>—————– Results [Global]</p>
-<p>Border = 0.07, SD = 0.05 (n=85) [where countries are neighbouring AND there is similarity value i.e., UK-Ireland not in the dataset….] Non-border = 0.14, SD = 0.08 (n=3075)</p>
-<p>Border, Median = 0.0621, IQR = 0.044 Non-border, Median = 0.121, IQR = 0.0936</p>
-<p>Instead, we need to run using wider data: <a href="https://world.culturalytics.com/" class="uri">https://world.culturalytics.com/</a> [currently not working on University-managed PC]</p>
-<p>If the results aren’t interesting, use the Europe one, and add this to “a little more”</p>
+<p>[2] Load OS grid data [<code>osbng_grid_100km.shp</code>]. This is a very simple dataset, so easy to see the effects of the various neighbourhood settings, before moving on to a more complex dataset</p>
+<p>[3] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Neighbourhood Explorer</a> to visualise different spatial weights settings</p>
+</div>
+<div id="spatial-weights-using-country-polygons" class="section level3" number="2.2.2">
+<h3>
+<span class="header-section-number">2.2.2</span> Spatial weights using country Polygons<a class="anchor" aria-label="anchor" href="#spatial-weights-using-country-polygons"><i class="fas fa-link"></i></a>
+</h3>
+<p>[4] Load country data [<code>ne_10m_admin_0_countries.shp</code>] and repeat process.</p>
+<p>[5] The above process allows us to dynamically view connections for a single feature of interest (Select Focal Feature). To generate these connections for the entire dataset, we can use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> - talk through different settings, using a unique ID (NE_ID)</p>
+<p>[6] Return to the Neighbourhood Explorer, where we can now use our created <code>swm</code> file as an input.</p>
+<p>[7] To visualise all relationships, we need to use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics)</p>
+<p>[8] The resulting table contains the IDs of the start countries (<code>NE_ID</code>) and the end countries (<code>NID</code>) i.e., <span class="math inline">\(UK = 78\)</span>, <span class="math inline">\(Ireland = 77\)</span>, but no corresponding geometry</p>
+<p>[9] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog">Add Geometry Attributes</a> (Data Management Tools) to Natural Earth data (centroid x and y)</p>
+<p>[10] Then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> based on ID:</p>
+<ul>
+<li>Input = swm</li>
+<li>Input Field = NE_ID</li>
+<li>Join table = natural_earth</li>
+<li>Join field = NE_ID</li>
+<li>Use Field Mapping:
+<ul>
+<li>Remove all but centroid_x, centroid_y and ADMIN</li>
+<li>Double click to rename these as source_x, source_y, source_admin</li>
+</ul>
+</li>
+<li>Validate and run</li>
+</ul>
+<p><em>Note</em> we are including the <code>ADMIN</code> attribute here, as we will use this later to link to cultural distance index</p>
+<p>[11] Then repeat for the target locations, which is as simple as changing the input file = NID, and to target_x, target_y and target_admin</p>
+<p>[12] Now we can use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a>, using source_xy and target_xy, “and preserve attributes” (all other settings as default)</p>
+<p>[13] Engage critically with visualisation e.g., France? (centroid location is outside of the contiguous part of France, due to S. America)</p>
+</div>
+<div id="comparison-with-cultural-distance" class="section level3" number="2.2.3">
+<h3>
+<span class="header-section-number">2.2.3</span> Comparison with cultural distance<a class="anchor" aria-label="anchor" href="#comparison-with-cultural-distance"><i class="fas fa-link"></i></a>
+</h3>
+<p>[14] Open the matrix of cultural distance [<code>cultural-distance.csv</code>] which I’ve edited to leave only unique combinations (using “-”.join(sorted([!country_1!, !country_2!]))), as summarised in <code>join_key</code>. Our task is to match those to the data created above i.e., “are ‘neighbouring’ countries (as defined by the swm), more culturally similar?”</p>
+<p><em>Note</em> the smaller the cultural distance value, the more similiar the countries are e.g., Egypt and Norway are dissimiliar (0.5953), whereas Australia and the UK are highly similar (0.0319)</p>
+<p>[15] This csv is not editable so Export Table, and save in a gdb i.e., <code>practical-2.gdb</code>. Remove the original csv from ArcGIS to avoid confusion</p>
+<p>[16] Next use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a>, with the XY to Line layer created in [12], with Fields = Shape, to remove comparable geometries e.g., (IRE-UK, UK-IRE, N=344)</p>
+<p>[17] Create a <code>target_key</code> in the XY to Lines dataset via Attribute Table -&gt; Calculate Field. Equation: “-”.join(sorted([!Source_ADM!, !Target_ADM!]))</p>
+<p>[18] Using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a>, with the <strong>editable</strong> cultural distance (gdb) dataset as input:</p>
+<ul>
+<li>Input Field = <code>join_key</code> (created by MT)</li>
+<li>Join Table = cultural-distance</li>
+<li>Join Field = <code>target_key</code> (created in [17])</li>
+<li>Transfer Fields = <code>target_key</code>
+</li>
+</ul>
+<p><em>Note</em> if there is a match, the <code>target_key</code> field will have data, else <code>&lt;Null&gt;</code></p>
+<p>[19] Calculate Field (distance_table): <code>neighbours</code> (text): “false” if !target_key! is None else “true”</p>
+<p><em>Note</em> I originally had this as “Non-bordering” and “Bordering” but this could be misleading. This is only correct if a contiguity-based SWM was created, and not a distance-based rule</p>
+<p>[20] Finally, use [Summary Statistics] to outline results:</p>
+<ul>
+<li>Statistic Fields = distance [Mean, SD]</li>
+<li>Case Fields = neighbours</li>
+</ul>
+</div>
+<div id="results" class="section level3" number="2.2.4">
+<h3>
+<span class="header-section-number">2.2.4</span> Results<a class="anchor" aria-label="anchor" href="#results"><i class="fas fa-link"></i></a>
+</h3>
+<p>[21] Inspect output of Summary Statistics</p>
+<ul>
+<li>Neighbouring country distance mean = 0.07, SD = 0.05 (n=85)</li>
+</ul>
+<p><em>Note</em> This is for where countries are neighbouring (as defined by the swm) AND there is a cultural distance value i.e., UK-Ireland not in the dataset.</p>
+<ul>
+<li>Non-neighbouring country distance mean = 0.14, SD = 0.08 (n=3075)</li>
+</ul>
+<p>[22] Interpretation: non-neighbouring countries are characterised (on average) by greater cultural distance (0.14 vs. 0.07, 2x). However, we can be critical here:</p>
+<ul>
+<li>Extreme un-eveness of sample sizes</li>
+<li>Overlap with SD (t-test for significance?)</li>
+<li>Sensitive to our designation of neighbourhood-ness</li>
+<li>Sensitive to calculation of cultural similarity/distance. Can this be expressed well with a single value?</li>
+</ul>
 </div>
 </div>
-<div id="extra-1" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Extra<a href="spatial_weights.html#extra-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Apply to a network? Generate Network Spatial Weights (Spatial Statistics)</p>
+<div id="extra-1" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>We’ve been working with Polygon data, but what would we do with Points?</p>
+<p>[23] Load the Cities data from Practical 1 [<code>data/esri/World_Cities.shp</code>] and use the Neighbourhood Explorer again, where we can use fixed distances, k-nearest neighbours, Trimmed Delaunay Triangulation</p>
+<p>[24] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> to establish a neighbourhood network, and use Neighbourhood Explorer (Contiguity Edges Corners). This is an approach I’ve used in my own work, see <span class="citation">Tomkins <em>et al.</em> (<a href="references.html#ref-tomkins2021">2021</a>)</span>.</p>
 </div>
-<div id="sw_resources" class="section level2 hasAnchor" number="2.4">
-<h2><span class="header-section-number">2.4</span> Resources<a href="spatial_weights.html#sw_resources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sw_resources" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Resources<a class="anchor" aria-label="anchor" href="#sw_resources"><i class="fas fa-link"></i></a>
+</h2>
 <ul>
 <li>Tobler, W. (<a href="https://doi.org/10.2307/143141">1970</a>). A Computer Movie Simulating Urban Growth in the Detroit Region. Economic Geography 46, 234–40.</li>
 <li>Miller, H.J. (<a href="https://doi.org/10.1111/j.1467-8306.2004.09402005.x">2004</a>). Tobler’s first law and spatial analysis. Annals of the association of American geographers, 94(2), pp.284-289.</li>
 <li>Tobler, W. (<a href="https://doi.org/10.1111/j.1467-8306.2004.09402009.x">2004</a>). On the first law of geography: A reply. Annals of the association of American geographers, 94(2), pp.304-310.</li>
 <li>Anselin, L. and Li, X. (<a href="https://doi.org/10.1111/gean.12237">2020</a>). Tobler’s law in a multivariate world. Geographical Analysis, 52(4), pp.494-510.</li>
 </ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="geo_data.html"><span class="header-section-number">1</span> Working with Geographic Data</a></div>
+<div class="next"><a href="spatial_autocorrelation.html"><span class="header-section-number">3</span> Spatial Autocorrelation</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#spatial_weights"><span class="header-section-number">2</span> Spatial Weights</a></li>
+<li>
+<a class="nav-link" href="#introduction-1"><span class="header-section-number">2.1</span> Introduction</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#aims-1">Aims</a></li>
+<li><a class="nav-link" href="#application-1">Application</a></li>
+<li><a class="nav-link" href="#data-1">Data</a></li>
+<li><a class="nav-link" href="#tools-1">Tools</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#practical-1"><span class="header-section-number">2.2</span> Practical</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#spatial-weights-using-a-grid"><span class="header-section-number">2.2.1</span> Spatial weights using a grid</a></li>
+<li><a class="nav-link" href="#spatial-weights-using-country-polygons"><span class="header-section-number">2.2.2</span> Spatial weights using country Polygons</a></li>
+<li><a class="nav-link" href="#comparison-with-cultural-distance"><span class="header-section-number">2.2.3</span> Comparison with cultural distance</a></li>
+<li><a class="nav-link" href="#results"><span class="header-section-number">2.2.4</span> Results</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#extra-1"><span class="header-section-number">2.3</span> Extra</a></li>
+<li><a class="nav-link" href="#sw_resources"><span class="header-section-number">2.4</span> Resources</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
 
 </div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body">
-<div id="ref-muthukrishna2020" class="csl-entry">
-Muthukrishna, M. <em>et al.</em> (2020) <span>‘Beyond Western, Educated, Industrial, Rich, and Democratic (WEIRD) Psychology: Measuring and Mapping Scales of Cultural and Psychological Distance’</span>, <em>Psychological Science</em>, 31(6), pp. 678–701. doi:<a href="https://doi.org/10.1177/0956797620916782">10.1177/0956797620916782</a>.
-</div>
-</div>
-            </section>
+</div> <!-- .container -->
 
-          </div>
-        </div>
-      </div>
-<a href="geo_data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="spatial_autocorrelation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Introduction to Spatial Analysis</strong>" was written by Matt Tomkins. </p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-  "sharing": null,
-  "fontsettings": {
-    "theme": "white",
-    "family": "sans",
-    "size": 2
-  },
-  "edit": {
-    "link": null,
-    "text": null
-  },
-  "history": {
-    "link": null,
-    "text": null
-  },
-  "view": {
-    "link": null,
-    "text": null
-  },
-  "download": null,
-  "search": {
-    "engine": "fuse",
-    "options": null
-  },
-  "toc": {
-    "collapse": "section"
-  }
-});
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -418,7 +305,22 @@ gitbook.start({
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
-
 </html>

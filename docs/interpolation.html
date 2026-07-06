@@ -1,278 +1,112 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
-
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Interpolation | Introduction to Spatial Analysis</title>
-  <meta name="description" content="Chapter 6 Interpolation | Introduction to Spatial Analysis" />
-  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="Chapter 6 Interpolation | Introduction to Spatial Analysis" />
-  <meta property="og:type" content="book" />
-  
-  
-  
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Interpolation | Introduction to Spatial Analysis" />
-  
-  
-  
-
-
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="point_patterns.html"/>
-<link rel="next" href="spatial_regression.html"/>
-<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-
-
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 6 Interpolation | Introduction to Spatial Analysis</title>
+<meta name="author" content="Matt Tomkins">
+<meta name="generator" content="bookdown 0.46 with bs4_book()">
+<meta property="og:title" content="Chapter 6 Interpolation | Introduction to Spatial Analysis">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 6 Interpolation | Introduction to Spatial Analysis">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira%20Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
 <style type="text/css">
-  
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-</style>
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
-
-<link rel="stylesheet" href="style.css" type="text/css" />
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="6.1 Introduction  Aims The aims of this practical are to: Introduce geostatistical approaches for analysing spatial data. Understand how common spatial interpolation techniques work. Perform...">
+<meta property="og:description" content="6.1 Introduction  Aims The aims of this practical are to: Introduce geostatistical approaches for analysing spatial data. Understand how common spatial interpolation techniques work. Perform...">
+<meta name="twitter:description" content="6.1 Introduction  Aims The aims of this practical are to: Introduce geostatistical approaches for analysing spatial data. Understand how common spatial interpolation techniques work. Perform...">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<div style="text-align: center; margin: 1em 0;">
-  <img src="images/course-logo.png" width="200">
-</div>
-
-<li class="divider"></li>
-<li class="part"><span><b>Home</b></span></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction to Spatial Analysis</a>
-<ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practical-aims"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#ilo"><i class="fa fa-check"></i>Intended Learning Outcomes</a></li>
-</ul></li>
-<li class="part"><span><b>Representing the World</b></span></li>
-<li class="chapter" data-level="1" data-path="geo_data.html"><a href="geo_data.html"><i class="fa fa-check"></i><b>1</b> Working with Geographic Data</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="geo_data.html"><a href="geo_data.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#aims"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#application"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#data"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#tools"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="1.2" data-path="geo_data.html"><a href="geo_data.html#practical"><i class="fa fa-check"></i><b>1.2</b> Practical</a></li>
-<li class="chapter" data-level="1.3" data-path="geo_data.html"><a href="geo_data.html#extra"><i class="fa fa-check"></i><b>1.3</b> Extra</a></li>
-</ul></li>
-<li class="part"><span><b>Spatial Patterns</b></span></li>
-<li class="chapter" data-level="2" data-path="spatial_weights.html"><a href="spatial_weights.html"><i class="fa fa-check"></i><b>2</b> Spatial Weights</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#introduction-2"><i class="fa fa-check"></i><b>2.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#aims-1"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#application-1"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#data-1"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#tools-1"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="spatial_weights.html"><a href="spatial_weights.html#practical-1"><i class="fa fa-check"></i><b>2.2</b> Practical</a>
-<ul>
-<li class="chapter" data-level="2.2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#simpler-approach-pythonic-no-sql-no-geodatabase-faff"><i class="fa fa-check"></i><b>2.2.1</b> Simpler approach (Pythonic, no SQL, no geodatabase faff)</a></li>
-</ul></li>
-<li class="chapter" data-level="2.3" data-path="spatial_weights.html"><a href="spatial_weights.html#extra-1"><i class="fa fa-check"></i><b>2.3</b> Extra</a></li>
-<li class="chapter" data-level="2.4" data-path="spatial_weights.html"><a href="spatial_weights.html#sw_resources"><i class="fa fa-check"></i><b>2.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html"><i class="fa fa-check"></i><b>3</b> Spatial Autocorrelation</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#introduction-3"><i class="fa fa-check"></i><b>3.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#aims-2"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#application-2"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#autocorrelation_data"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#tools-2"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="3.2" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#practical-2"><i class="fa fa-check"></i><b>3.2</b> Practical</a></li>
-<li class="chapter" data-level="3.3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#extra-2"><i class="fa fa-check"></i><b>3.3</b> Extra</a></li>
-<li class="chapter" data-level="3.4" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#resources"><i class="fa fa-check"></i><b>3.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="spatial_correlation.html"><a href="spatial_correlation.html"><i class="fa fa-check"></i><b>4</b> Spatial Correlation</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="spatial_correlation.html"><a href="spatial_correlation.html#introduction-4"><i class="fa fa-check"></i><b>4.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#aims-3"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#application-3"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#data-2"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#tools-3"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="spatial_correlation.html"><a href="spatial_correlation.html#practical-3"><i class="fa fa-check"></i><b>4.2</b> Practical</a></li>
-<li class="chapter" data-level="4.3" data-path="spatial_correlation.html"><a href="spatial_correlation.html#correlation-extra"><i class="fa fa-check"></i><b>4.3</b> Extra</a></li>
-<li class="chapter" data-level="4.4" data-path="spatial_correlation.html"><a href="spatial_correlation.html#resources-1"><i class="fa fa-check"></i><b>4.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="point_patterns.html"><a href="point_patterns.html"><i class="fa fa-check"></i><b>5</b> Point Patterns</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="point_patterns.html"><a href="point_patterns.html#introduction-5"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#aims-4"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#application-4"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#data-3"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#tools-4"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="point_patterns.html"><a href="point_patterns.html#practical-4"><i class="fa fa-check"></i><b>5.2</b> Practical</a></li>
-<li class="chapter" data-level="5.3" data-path="point_patterns.html"><a href="point_patterns.html#extra-3"><i class="fa fa-check"></i><b>5.3</b> Extra</a></li>
-<li class="chapter" data-level="5.4" data-path="point_patterns.html"><a href="point_patterns.html#resources-2"><i class="fa fa-check"></i><b>5.4</b> Resources</a></li>
-</ul></li>
-<li class="part"><span><b>Spatial Modelling</b></span></li>
-<li class="chapter" data-level="6" data-path="interpolation.html"><a href="interpolation.html"><i class="fa fa-check"></i><b>6</b> Interpolation</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="interpolation.html"><a href="interpolation.html#introduction-6"><i class="fa fa-check"></i><b>6.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#aims-5"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#application-5"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#data-4"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#tools-5"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="interpolation.html"><a href="interpolation.html#practical-5"><i class="fa fa-check"></i><b>6.2</b> Practical</a></li>
-<li class="chapter" data-level="6.3" data-path="interpolation.html"><a href="interpolation.html#extra-4"><i class="fa fa-check"></i><b>6.3</b> Extra</a></li>
-<li class="chapter" data-level="6.4" data-path="interpolation.html"><a href="interpolation.html#resources-3"><i class="fa fa-check"></i><b>6.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="spatial_regression.html"><a href="spatial_regression.html"><i class="fa fa-check"></i><b>7</b> Spatial Regression</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="spatial_regression.html"><a href="spatial_regression.html#introduction-7"><i class="fa fa-check"></i><b>7.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#aims-6"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#application-6"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#sr_data"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#tools-6"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="spatial_regression.html"><a href="spatial_regression.html#practical-6"><i class="fa fa-check"></i><b>7.2</b> Practical</a></li>
-<li class="chapter" data-level="7.3" data-path="spatial_regression.html"><a href="spatial_regression.html#extra-5"><i class="fa fa-check"></i><b>7.3</b> Extra</a></li>
-<li class="chapter" data-level="7.4" data-path="spatial_regression.html"><a href="spatial_regression.html#resources-4"><i class="fa fa-check"></i><b>7.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="gwr.html"><a href="gwr.html"><i class="fa fa-check"></i><b>8</b> Geographically Weighted Regression</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="gwr.html"><a href="gwr.html#introduction-8"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#aims-7"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#application-7"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#data-5"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#tools-7"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="8.2" data-path="gwr.html"><a href="gwr.html#practical-7"><i class="fa fa-check"></i><b>8.2</b> Practical</a></li>
-<li class="chapter" data-level="8.3" data-path="gwr.html"><a href="gwr.html#extra-6"><i class="fa fa-check"></i><b>8.3</b> Extra</a></li>
-<li class="chapter" data-level="8.4" data-path="gwr.html"><a href="gwr.html#resources-5"><i class="fa fa-check"></i><b>8.4</b> Resources</a></li>
-</ul></li>
-<li class="part"><span><b>Locations and Flows</b></span></li>
-<li class="chapter" data-level="9" data-path="location_allocation.html"><a href="location_allocation.html"><i class="fa fa-check"></i><b>9</b> Location Allocation</a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="location_allocation.html"><a href="location_allocation.html#introduction-9"><i class="fa fa-check"></i><b>9.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#aims-8"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#application-8"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#data-6"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#tools-8"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="location_allocation.html"><a href="location_allocation.html#practical-8"><i class="fa fa-check"></i><b>9.2</b> Practical</a></li>
-<li class="chapter" data-level="9.3" data-path="location_allocation.html"><a href="location_allocation.html#extra-7"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
-<li class="chapter" data-level="9.4" data-path="location_allocation.html"><a href="location_allocation.html#resources-6"><i class="fa fa-check"></i><b>9.4</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="spatial_interaction.html"><a href="spatial_interaction.html"><i class="fa fa-check"></i><b>10</b> Spatial Interaction Modelling</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="spatial_interaction.html"><a href="spatial_interaction.html#introduction-10"><i class="fa fa-check"></i><b>10.1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#aims-9"><i class="fa fa-check"></i>Aims</a></li>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#application-9"><i class="fa fa-check"></i>Application</a></li>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#data-7"><i class="fa fa-check"></i>Data</a></li>
-<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#tools-9"><i class="fa fa-check"></i>Tools</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="spatial_interaction.html"><a href="spatial_interaction.html#practical-9"><i class="fa fa-check"></i><b>10.2</b> Practical</a></li>
-<li class="chapter" data-level="10.3" data-path="spatial_interaction.html"><a href="spatial_interaction.html#extra-8"><i class="fa fa-check"></i><b>10.3</b> Extra</a></li>
-<li class="chapter" data-level="10.4" data-path="spatial_interaction.html"><a href="spatial_interaction.html#resources-7"><i class="fa fa-check"></i><b>10.4</b> Resources</a></li>
-</ul></li>
-<li class="part"><span><b>Endmatter</b></span></li>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a>
-<ul>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#closing"><i class="fa fa-check"></i>Closing remarks</a></li>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="assessment.html"><a href="assessment.html"><i class="fa fa-check"></i>Assessment</a></li>
-<li class="chapter" data-level="" data-path="Hints.html"><a href="Hints.html"><i class="fa fa-check"></i>Advice</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-</ul>
-
-      </nav>
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Introduction to Spatial Analysis</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
 
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Spatial Analysis</a>
-          </h1>
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li class="book-part">Home</li>
+<li><a class="" href="index.html">Introduction to Spatial Analysis</a></li>
+<li class="book-part">Representing the World</li>
+<li><a class="" href="geo_data.html"><span class="header-section-number">1</span> Working with Geographic Data</a></li>
+<li class="book-part">Spatial Patterns</li>
+<li><a class="" href="spatial_weights.html"><span class="header-section-number">2</span> Spatial Weights</a></li>
+<li><a class="" href="spatial_autocorrelation.html"><span class="header-section-number">3</span> Spatial Autocorrelation</a></li>
+<li><a class="" href="spatial_correlation.html"><span class="header-section-number">4</span> Spatial Correlation</a></li>
+<li><a class="" href="point_patterns.html"><span class="header-section-number">5</span> Point Patterns</a></li>
+<li class="book-part">Spatial Modelling</li>
+<li><a class="active" href="interpolation.html"><span class="header-section-number">6</span> Interpolation</a></li>
+<li><a class="" href="spatial_regression.html"><span class="header-section-number">7</span> Spatial Regression</a></li>
+<li><a class="" href="gwr.html"><span class="header-section-number">8</span> Geographically Weighted Regression</a></li>
+<li class="book-part">Locations and Flows</li>
+<li><a class="" href="location_allocation.html"><span class="header-section-number">9</span> Location Allocation</a></li>
+<li><a class="" href="spatial_interaction.html"><span class="header-section-number">10</span> Spatial Interaction Modelling</a></li>
+<li class="book-part">Endmatter</li>
+<li><a class="" href="summary.html">Summary</a></li>
+<li><a class="" href="assessment.html">Assessment</a></li>
+<li><a class="" href="Hints.html">Advice</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
         </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="interpolation" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Interpolation<a href="interpolation.html#interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="introduction-6" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Introduction<a href="interpolation.html#introduction-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="images/banner-interpolation.png" /></p>
-<div id="aims-5" class="section level3 unnumbered hasAnchor">
-<h3>Aims<a href="interpolation.html#aims-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="interpolation" class="section level1" number="6">
+<h1>
+<span class="header-section-number">6</span> Interpolation<a class="anchor" aria-label="anchor" href="#interpolation"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-5" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-5"><i class="fas fa-link"></i></a>
+</h2>
+<div class="inline-figure"><img src="images/banner-interpolation.png"></div>
+<div id="aims-5" class="section level3 unnumbered">
+<h3>Aims<a class="anchor" aria-label="anchor" href="#aims-5"><i class="fas fa-link"></i></a>
+</h3>
 <p>The aims of this practical are to:</p>
 <ol style="list-style-type: decimal">
 <li>Introduce geostatistical approaches for analysing spatial data.</li>
@@ -282,22 +116,25 @@ applications e.g., for prediction, as an input for spatial
 regression.</li>
 </ol>
 </div>
-<div id="application-5" class="section level3 unnumbered hasAnchor">
-<h3>Application<a href="interpolation.html#application-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="application-5" class="section level3 unnumbered">
+<h3>Application<a class="anchor" aria-label="anchor" href="#application-5"><i class="fas fa-link"></i></a>
+</h3>
 <p>To achieve this, we’ll apply interpolation techniques to Point samples
 of global plant trait data (leaf area, plant height), modelled by
-<span class="citation">Lusk <em>et al.</em> (<a href="#ref-lusk2026">2026</a>)</span>. Our study area is Peru, which features extreme gradients in climate and topography, which are likely to be reflected in spatial gradients in plant traits.</p>
+<span class="citation">Lusk <em>et al.</em> (<a href="references.html#ref-lusk2026">2026</a>)</span>. Our study area is Peru, which features extreme gradients in climate and topography, which are likely to be reflected in spatial gradients in plant traits.</p>
 </div>
-<div id="data-4" class="section level3 unnumbered hasAnchor">
-<h3>Data<a href="interpolation.html#data-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="data-4" class="section level3 unnumbered">
+<h3>Data<a class="anchor" aria-label="anchor" href="#data-4"><i class="fas fa-link"></i></a>
+</h3>
 <p>This practical uses global plant trait data derived from crowdsourced
 biodiversity monitoring and Earth observation, available in
 [<code>data/global-plant-traits</code>]
 [<a href="https://doi.org/10.1038/s41467-026-68996-y">Paper</a>]
 [<a href="https://global-traits.projects.earthengine.app/view/global-traits">Source</a>]</p>
 </div>
-<div id="tools-5" class="section level3 unnumbered hasAnchor">
-<h3>Tools<a href="interpolation.html#tools-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="tools-5" class="section level3 unnumbered">
+<h3>Tools<a class="anchor" aria-label="anchor" href="#tools-5"><i class="fas fa-link"></i></a>
+</h3>
 <p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-values-to-points.html?tabs=dialog">Extract Values to
 Points</a>
 (Spatial Analyst Tools),
@@ -309,11 +146,13 @@ Wizard</a>,
 <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/exploratory-interpolation.html?tabs=dialog">Exploratory
 Interpolation</a>
 (Geostatistical Analyst Tools)</p>
-<hr />
+<hr>
 </div>
 </div>
-<div id="practical-5" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> Practical<a href="interpolation.html#practical-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="practical-5" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-5"><i class="fas fa-link"></i></a>
+</h2>
 <p>Interpolation techniques are used to estimate unknown values at new
 locations based on known measurements from surrounding sample points.</p>
 <p>We could use our ecological dataset from Practical 5 here, but it’s not
@@ -406,11 +245,15 @@ this scale, we really need a species distribution model [b] Tigers seem
 to be mostly in the nature reserves, and any interpolation method will
 struggle with that…</p>
 </div>
-<div id="extra-4" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Extra<a href="interpolation.html#extra-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="extra-4" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-4"><i class="fas fa-link"></i></a>
+</h2>
 </div>
-<div id="resources-3" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> Resources<a href="interpolation.html#resources-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="resources-3" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Resources<a class="anchor" aria-label="anchor" href="#resources-3"><i class="fas fa-link"></i></a>
+</h2>
 <ul>
 <li>Oliver, M.A. and Webster, R.
 (<a href="https://doi.org/10.1080/02693799008941549">1990</a>). Kriging: a
@@ -426,67 +269,51 @@ Applied Statistics, 47(3), pp.299-350.</li>
 spatial interpolators I should use? A case study applying to marine
 species. Ecological Modelling[MT3.1], 449, p.109501.</li>
 </ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="point_patterns.html"><span class="header-section-number">5</span> Point Patterns</a></div>
+<div class="next"><a href="spatial_regression.html"><span class="header-section-number">7</span> Spatial Regression</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#interpolation"><span class="header-section-number">6</span> Interpolation</a></li>
+<li>
+<a class="nav-link" href="#introduction-5"><span class="header-section-number">6.1</span> Introduction</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#aims-5">Aims</a></li>
+<li><a class="nav-link" href="#application-5">Application</a></li>
+<li><a class="nav-link" href="#data-4">Data</a></li>
+<li><a class="nav-link" href="#tools-5">Tools</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#practical-5"><span class="header-section-number">6.2</span> Practical</a></li>
+<li><a class="nav-link" href="#extra-4"><span class="header-section-number">6.3</span> Extra</a></li>
+<li><a class="nav-link" href="#resources-3"><span class="header-section-number">6.4</span> Resources</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
 
 </div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body">
-<div id="ref-lusk2026" class="csl-entry">
-Lusk, D. <em>et al.</em> (2026) <span>‘Crowdsourced biodiversity monitoring fills gaps in global plant trait mapping’</span>, <em>Nature Communications</em>, 17(1), p. 1203. doi:<a href="https://doi.org/10.1038/s41467-026-68996-y">10.1038/s41467-026-68996-y</a>.
-</div>
-</div>
-            </section>
+</div> <!-- .container -->
 
-          </div>
-        </div>
-      </div>
-<a href="point_patterns.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="spatial_regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Introduction to Spatial Analysis</strong>" was written by Matt Tomkins. </p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-  "sharing": null,
-  "fontsettings": {
-    "theme": "white",
-    "family": "sans",
-    "size": 2
-  },
-  "edit": {
-    "link": null,
-    "text": null
-  },
-  "history": {
-    "link": null,
-    "text": null
-  },
-  "view": {
-    "link": null,
-    "text": null
-  },
-  "download": null,
-  "search": {
-    "engine": "fuse",
-    "options": null
-  },
-  "toc": {
-    "collapse": "section"
-  }
-});
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -498,7 +325,22 @@ gitbook.start({
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
-
 </html>

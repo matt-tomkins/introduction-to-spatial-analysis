@@ -5,3 +5,20 @@
 #gwr h1 {
   font-size: 31.8px;  /* Adjust to fit 'Geographically Weighted Regression' on a single line */
 }
+
+/* Used for bs4_book() format  */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Set heading weight to bold */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+/* Change colour of Part headings in toc */
+.book-sidebar .part-heading {
+  color: #a8323 !important;
+  font-weight: bold;
+}

@@ -21,13 +21,12 @@ To achieve this, we'll demonstrate construction of spatial weights using country
 ### Data {.unnumbered}
 
 -   Natural Earth 1:10m Cultural Vectors, available in [`data/natural-earth`] [[Source](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)]
--   Cultural Similarity matrix, produced for 80 country pairs by @muthukrishna2020, available in [`data/cultural-similarity`] [[Source](https://world.culturalytics.com/)]
-
-[Optional] Use OS 100 km grid as demonstration... [[Source](https://github.com/OrdnanceSurvey/osbng-grids)] but needs sorting (64-bit shapefile issue)
+-   Cultural Distance matrix, produced for 80 country pairs by @muthukrishna2020, available in [`data/cultural-similarity`] [[Source](https://world.culturalytics.com/)]
+-   Ordnance Survey (OS) 100 km grid, available in [`data/os/grids`] [[Source](https://github.com/OrdnanceSurvey/osbng-grids)]
 
 ### Tools {.unnumbered}
 
-[Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) (Spatial Statistics), [Convert Spatial Weights Matrix to Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog) (Spatial Statistics), [Introduction to Neighborhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html), [Add Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog) (Data Management Tools), [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) (Data Management Tools), [XY To Line](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog) (Data Management Tools)
+[Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) (Spatial Statistics), [Convert Spatial Weights Matrix to Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog) (Spatial Statistics), [Introduction to Neighborhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html), [Add Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog) (Data Management Tools), [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) (Data Management Tools), [XY To Line](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog) (Data Management Tools), [Delete Identical](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog) (Data Management Tools), [Summary Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog) (Analysis Tools), [Create Thiessen Polygons](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog) (Analysis Tools)
 
 ------------------------------------------------------------------------
 
@@ -35,65 +34,101 @@ To achieve this, we'll demonstrate construction of spatial weights using country
 
 During this practical...
 
+### Spatial weights using a grid
+
 [1] Open ArcGIS Pro
 
-[2] Load vector data (Natural Earth)
+[2] Load OS grid data [`osbng_grid_100km.shp`]. This is a very simple dataset, so easy to see the effects of the various neighbourhood settings, before moving on to a more complex dataset
 
-[3] Run [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) - talk through different settings, using a unique ID (NE_ID)
+[3] Use [Neighbourhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise different spatial weights settings
 
-[4] Use [Neighborhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise, we can either do this dynamically or use the .swm file created earlier --- *the former is the best approach for the students to quickly see the differences*
+### Spatial weights using country Polygons
 
-[5] This allows us to visualise the connections for a single feature. To visualise all relationships, we need to use [Convert Spatial Weights Matrix to Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog) (Spatial Statistics)
+[4] Load country data [`ne_10m_admin_0_countries.shp`] and repeat process.
 
----------Rather than NE_ID, shall we change to ADMIN?
+[5] The above process allows us to dynamically view connections for a single feature of interest (Select Focal Feature). To generate these connections for the entire dataset, we can use [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) - talk through different settings, using a unique ID (NE_ID)
 
-[6] This table contains the IDs of the start countries (NE_ID) and the end countries (NID) i.e., UK = 78, Ireland = 77, but no geometry
+[6] Return to the Neighbourhood Explorer, where we can now use our created `swm` file as an input.
 
-[7] So, run [Add Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog) (Data Management Tools) to Natural Earth data (centroid x and y)
+[7] To visualise all relationships, we need to use [Convert Spatial Weights Matrix to Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog) (Spatial Statistics)
 
-[8] Then use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) based on ID \> Input = swm \> Input field = NE_ID \> Join table = natural_earth \> Join field = NE_ID \> Use Field Mapping - Remove all but centroid_x and centroid_y \> Double click to rename these as source_x and source_y, validate and run
+[8] The resulting table contains the IDs of the start countries (`NE_ID`) and the end countries (`NID`) i.e., $UK = 78$, $Ireland = 77$, but no corresponding geometry
 
-> Then repeat for the target locations, which is as simple as changing the input file = NID, and to target_x and target_y
+[9] Run [Add Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog) (Data Management Tools) to Natural Earth data (centroid x and y)
 
-[9] Now we can use [XY to Line], using source_xy and target_xy, "and preserve attributes"
+[10] Then use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) based on ID: 
 
-[10] To link the lines to cultural similarity, we need to include the country names ('ADMIN') \> Join Field again, same process, with name as source_ADMIN \> Repeat using NID as input field, updating to target_ADMIN
+- Input = swm 
+- Input Field = NE_ID
+- Join table = natural_earth 
+- Join field = NE_ID 
+- Use Field Mapping: 
+  - Remove all but centroid_x, centroid_y and ADMIN 
+  - Double click to rename these as source_x, source_y, source_admin 
+- Validate and run
 
-[10?] Critical engagement with France?
+*Note* we are including the `ADMIN` attribute here, as we will use this later to link to cultural distance index
 
-### Simpler approach (Pythonic, no SQL, no geodatabase faff)
+[11] Then repeat for the target locations, which is as simple as changing the input file = NID, and to target_x, target_y and target_admin
 
-[A] Delete Identical [Shape] - the line dataset as input (IRE-UK, UK-IRE)
+[12] Now we can use [XY To Line](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog), using source_xy and target_xy, "and preserve attributes" (all other settings as default)
 
-[INCLUDED for studyents] But make a 'join_key' in the similarity table using Calculate Field: Equation: "-".join(sorted([!Country_1!, !Country_2!]))
+[13] Engage critically with visualisation e.g., France? (centroid location is outside of the contiguous part of France, due to S. America)
 
-[C] Repeat for a 'target_key' in the lines dataset... Equation: "-".join(sorted([!Source_ADM!, !Target_ADM!]))
+### Comparison with cultural distance
 
-[D] Join Field (keep only target key), using similarity table as input \*\* THIS DOESN'T WORK\*\* csv not editable..
+[14] Open the matrix of cultural distance [`cultural-distance.csv`] which I've edited to leave only unique combinations (using "-".join(sorted([!country_1!, !country_2!]))), as summarised in `join_key`. Our task is to match those to the data created above i.e., "are 'neighbouring' countries (as defined by the swm), more culturally similar?"
 
-[E] Calculate Field (similarity_table): "Non-bordering" if !target_key! is None else "Bordering"
+*Note* the smaller the cultural distance value, the more similiar the countries are e.g., Egypt and Norway are dissimiliar (0.5953), whereas Australia and the UK are highly similar (0.0319)
 
-[F] Finally, use Summary Statistics with case fields = Group (border, nonbordering)
+[15] This csv is not editable so Export Table, and save in a gdb i.e., `practical-2.gdb`. Remove the original csv from ArcGIS to avoid confusion
 
------------------ Results [European dataset]
+[16] Next use [Delete Identical](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog), with the XY to Line layer created in [12], with Fields = Shape, to remove comparable geometries e.g., (IRE-UK, UK-IRE, N=344)
 
-Border = 0.702, SD = 0.122 Non-border = 0.63, SD = 0.11
+[17] Create a `target_key` in the XY to Lines dataset via Attribute Table -\> Calculate Field. Equation: "-".join(sorted([!Source_ADM!, !Target_ADM!]))
 
-Not a particularly stark difference, but biased by the fact that the cultural similarity dataset is Europe only (broadly similar, even if not bordering)
+[18] Using [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog), with the **editable** cultural distance (gdb) dataset as input: 
 
------------------ Results [Global]
+- Input Field = `join_key` (created by MT) 
+- Join Table = cultural-distance 
+- Join Field = `target_key` (created in [17]) 
+- Transfer Fields = `target_key`
 
-Border = 0.07, SD = 0.05 (n=85) [where countries are neighbouring AND there is similarity value i.e., UK-Ireland not in the dataset....] Non-border = 0.14, SD = 0.08 (n=3075)
+*Note* if there is a match, the `target_key` field will have data, else `<Null>`
 
-Border, Median = 0.0621, IQR = 0.044 Non-border, Median = 0.121, IQR = 0.0936
+[19] Calculate Field (distance_table): `neighbours` (text): "false" if !target_key! is None else "true"
 
-Instead, we need to run using wider data: <https://world.culturalytics.com/> [currently not working on University-managed PC]
+*Note* I originally had this as "Non-bordering" and "Bordering" but this could be misleading. This is only correct if a contiguity-based SWM was created, and not a distance-based rule
 
-If the results aren't interesting, use the Europe one, and add this to "a little more"
+[20] Finally, use [Summary Statistics] to outline results: 
+
+- Statistic Fields = distance [Mean, SD] 
+- Case Fields = neighbours
+
+### Results
+
+[21] Inspect output of Summary Statistics
+
+-   Neighbouring country distance mean = 0.07, SD = 0.05 (n=85)
+
+*Note* This is for where countries are neighbouring (as defined by the swm) AND there is a cultural distance value i.e., UK-Ireland not in the dataset.
+
+-   Non-neighbouring country distance mean = 0.14, SD = 0.08 (n=3075)
+
+[22] Interpretation: non-neighbouring countries are characterised (on average) by greater cultural distance (0.14 vs. 0.07, 2x). However, we can be critical here: 
+
+- Extreme un-eveness of sample sizes 
+- Overlap with SD (t-test for significance?)
+- Sensitive to our designation of neighbourhood-ness 
+- Sensitive to calculation of cultural similarity/distance. Can this be expressed well with a single value?
 
 ## Extra
 
-Apply to a network? Generate Network Spatial Weights (Spatial Statistics)
+We've been working with Polygon data, but what would we do with Points?
+
+[23] Load the Cities data from Practical 1 [`data/esri/World_Cities.shp`] and use the Neighbourhood Explorer again, where we can use fixed distances, k-nearest neighbours, Trimmed Delaunay Triangulation
+
+[24] Use [Create Thiessen Polygons](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog) to establish a neighbourhood network, and use Neighbourhood Explorer (Contiguity Edges Corners). This is an approach I've used in my own work, see @tomkins2021.
 
 ## Resources {#sw_resources}
 
