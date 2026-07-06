@@ -1,0 +1,62 @@
+# Geographically Weighted Regression {.small-chapter #gwr}
+
+## Introduction
+
+![](images/banner-gwr.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1.  Understand the principles and rationale for Geographically Weighted Regression (GWR).
+2.  Understand the importance of scale and the development of Multiscale Geographically Weighted Regression (MGWR).
+3.  Implement and correctly interpret the outputs of GWR-MGWR when applied in a sociological context. 
+
+### Application {.unnumbered}
+
+To achieve this, we'll use [MSOA-level](https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies) data to investigate *spatially-varying* relationships between life expectancy and key predictors in Greater Manchester, building upon the *global* methods introduced in the [previous practical](#spatial_regression).
+
+### Data {.unnumbered}
+
+The data sources and attributes used in this analysis are described [here](#sr_data).
+
+### Tools {.unnumbered}
+
+[Geographically Weighted Regression (GWR)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/geographically-weighted-regression.html?tabs=dialog) (Spatial Statistics), [Multiscale Geographically Weighted Regression (MGWR)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multiscale-geographically-weighted-regression.html?tabs=dialog) (Spatial Statistics)
+
+------------------------------------------------------------------------
+
+## Practical
+
+During this practical...
+
+[1] Load the data from Practical 7
+
+[2] Geographically Weighted Regression, key choices: -\> Model Type (Gaussian) -\> Neighbourhood Type (Distance / \# neighbours) -\> Approach (i.e., Golden Search) -\> Weighting Scheme (Bisquare or Gaussian)
+
+[3] Rigorously interpet outputs -\> Relationship between variables (standard OLS?) -\> Standardised Residuals -\> Residuals vs. Predicted (check for systematic error)
+
+See: <https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-geographicallyweightedregression-works.html>
+
+[4] Multiscale Geographically Weighted Regression
+
+[!] Failed saving to C and P [!] Worked for some reason...
+
+[5] Interpet MGWR outputs
+
+Something more?
+
+Task: Find the significant variables...?
+
+See: Week 8 of GIS & Environmental Applications (2021-22)
+
+Need to read and understand: Comber, Brundson etc
+
+## Extra
+
+## Resources
+
+- Brunsdon, C., Fotheringham, A.S. and Charlton, M.E. ([1996](https://doi.org/10.1111/j.1538-4632.1996.tb00936.x)), Geographically Weighted Regression: A Method for Exploring Spatial Nonstationarity. Geographical Analysis, 28: 281-298. 
+- Fotheringham, A. S., Yang, W., & Kang, W. ([2017](https://doi.org/10.1080/24694452.2017.135248)). Multiscale Geographically Weighted Regression (MGWR). Annals of the American Association of Geographers, 107(6), 1247–1265. 
+- Comber, A., Brunsdon, C., Charlton, M., Dong, G., Harris, R., Lu, B., Lü, Y., Murakami, D., Nakaya, T., Wang, Y. and Harris, P. ([2023](https://doi.org/10.1111/gean.12316)). A route map for successful applications of geographically weighted regression. Geographical Analysis, 55(1), pp.155-178.
+

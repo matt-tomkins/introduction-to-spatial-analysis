@@ -1,0 +1,107 @@
+# Spatial Autocorrelation {#spatial_autocorrelation}
+
+## Introduction
+
+![](images/banner-autocorrelation.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1. Understand why spatial autocorrelation needs to be considered when analysing spatial data. 
+2. Understand the techniques we can use to assess for global and local spatial autocorrelation, including the underlying mathematics and assumptions.
+3. Test for spatial autocorrelation in ArcGIS and interpret outputs correctly. 
+
+### Application {.unnumbered}
+
+To that end, we'll use county-level data from the [2024 US General election](https://www.bbc.co.uk/news/election/2024/us/results) to investigate global and local spatial autocorrelation. 
+
+### Data {#autocorrelation_data .unnumbered}
+
+The county-level data for this practical are available in [`data/us-census`] as follows:
+
+- US county geometries for 2023, mapped at a 1:500,000 scale [[Source](https://www2.census.gov/geo/tiger/GENZ2023/shp/)]
+- US county-level Presidential results for the 2024 elevation [[Source](https://github.com/tonmcg/US_County_Level_Election_Results_08-24)], which includes:
+  - Democratic vote total [`votes_dem`] and proportion (`per_dem`)
+  - Republican vote total [`votes_gop`] and proportion (`per_gop`)
+
+*Note that other datasets are present in this directory and will be utilised later in the unit.*
+
+### Tools {.unnumbered}
+
+[Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) (Spatial Statistics Tools), [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) (Spatial Statistics Tools), [High/Low Clustering (Getis-Ord General G)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog) (Spatial Statistics Tools), [Hot Spot Analysis (Getis-Ord Gi*)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog) (Spatial Statistics Tools)
+
+------------------------------------------------------------------------
+
+## Practical
+
+Context = https://www.bbc.co.uk/news/articles/cj4vn0qxy0lo 
+
+[TO DO] Symbology issues with Anselin non-significant polygons (COType)
+
+*So* county is really for administrative purposes, but interesting for looking at patterns
+- The actual state vote (which gives reps to the electoral college) is simply % based
+
+[1] Load County geometry data (n=3235)
+
+[2] Remove non-contigous counties (STATE_NAME = Alaska, Hawaii, Puerto Rico, Guam, American Samoa, Commonwealth of the Northern Mariana Islands, United States Virgin Islands), or keep them in?
+
+STATE_NAME <> 'Alaska' And STATE_NAME <> 'Hawaii' And STATE_NAME <> 'Puerto Rico' And STATE_NAME <> 'Guam' And STATE_NAME <> 'American Samoa' And STATE_NAME <> 'Commonwealth of the Northern Mariana Islands' And STATE_NAME <> 'United States Virgin Islands'
+
+[3] Load in presidential results (csv) and join (NAMELSAD, county_name)
+
+[4] Modify symbology:
+> Vary symbology by attribute (per GOP)
+> Colour scheme = Red-Blue (continous) 
+> Colour scheme > Properties > Reverse
+> Double click values, update 0-1, same for labels
+
+[5] Spatial Autocorrelation (Global Moran's I) 
+> per_GOP as input, generate html - CLUSTERED
+
+** TO DO - understand the underlying mathematics, as interpretation is very easy with the html output **
+
+** What is row standardisation? **
+
+[6] Anselin Local Moran's I (Cluster and Outlier Analysis)
+
+** What is the False Discovery Rate (FDR) correction? # permutations? **
+
+Produces pretty map, interpret clusters and outliers
+-- Histogram
+-- Moran Scatter plot
+
+[?] Run with a different spatial relationships? e.g., inverse distance squared (beware geographic coordinates)
+
+[8] High/Low Clustering (Getis-Ord General G)
+> Geographic coordinates warning
+> Again, "high-clusters" highly likely - discuss how this is different to Global Moran's I?
+
+[9] Hot Spot Analysis (Getis-Ord Gi*)
+> Same inputs as Local Moran's I
+> What is **Self Potential Field**?
+> Again, what is FDR correction? 
+
+[Summary]
+
+- Be able to run main tools for autocorrelation / hotspots
+- Really understand the importance of the SWM
+- Understand the difference between the tools (global vs. local) and the mathematical approaches
+
+## Extra
+
+Run for the 2008 dataset? Obama vs. McCain
+
+If so, there are 80 of 3109 where there is no matching name
+
+> Should really use the 2008 geometries, available here: https://www2.census.gov/geo/tiger/
+
+Have checked and the 2024 data is great, with only one missing county, which is the dsitrict of colombia (correct)
+
+## Resources
+
+- Moran, P.A.P. ([1948](https://www.jstor.org/stable/2983777)). The Interpretation of Statistical Maps. Journal of the Royal Statistical Society, B 10: 243–51.
+- Moran, P.A.P. ([1950](https://doi.org/10.2307/2332142)). Notes on continuous stochastic phenomena. Biometrika, 37(1/2), pp.17-23.
+- Anselin, L. ([1995](https://doi.org/10.1111/j.1538-4632.1995.tb00338.x)). Local Indicators of Spatial Association—LISA. Geographical Analysis 27, 93–115.
+- Anselin, L ([1996](https://www.taylorfrancis.com/chapters/edit/10.1201/9780203739051-8/moran-scatterplot-esda-tool-assess-local-instability-spatial-association-luc-anselin)). “The Moran Scatterplot as an ESDA Tool to Assess Local Instability in Spatial Association.” In Spatial Analytical Perspectives on GIS in Environmental and Socio-Economic Sciences, edited by Manfred Fischer, Henk Scholten, and David Unwin, 111–25. London: Taylor; Francis.
+- Getis, A. and Ord, J.K. ([1992](https://doi.org/10.1111/j.1538-4632.1992.tb00261.x)). The analysis of spatial association by use of distance statistics. Geographical analysis, 24(3), pp.189-206.

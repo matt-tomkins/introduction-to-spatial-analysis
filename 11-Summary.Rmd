@@ -1,0 +1,24 @@
+# (PART\*) Endmatter {-}
+
+# Summary {#summary .unnumbered}
+
+## Closing remarks {#closing .unnumbered}
+
+![*John Snow's cholera map of Soho, London*](images/banner-introduction.png)
+
+<br>
+
+In 1854, Dr. John Snow ... TALK ABOUT spatial analysis, key principles, methods change --- often the questions don't. Hope that students are equipped with the ability to **do** spatial analysis, but more importantly, really understand **how** the techniques work - the data, the assumptions, the mathematics... all of which will enable you to critically appraise your results and those of others, and ultimately to come a better understanding of spatial patterns, processes and relationships. 
+
+
+*Introduction to Spatial Analysis*, we have covered... 
+
+## Acknowledgments {.unnumbered}
+
+The development of *Introduction to Spatial Analysis* has benefited from fruitful discussions with [Jonny Huck](https://research.manchester.ac.uk/en/persons/jonathan.huck/) and [Matt Dennis](https://research.manchester.ac.uk/en/persons/matthew.dennis/), testing by [James Tomlinson](https://research.manchester.ac.uk/en/persons/james-tomlinson-2/), and wider support from the [Mapping, Computing and Geographical Information Science](https://www.humanities.manchester.ac.uk/geography/research/groups/mapping-computing-geographical-information-science/) research group. 
+
+The design of the practical materials has also been improved thanks to resources made available by the wider GIS community, including Sergio J. Rey, Dani Arribas-Bel and Levi J. Wolf ([Geographic Data Science with Python](https://geographicdata.science/book/)), Luc Anselin ([An Introduction to Spatial Data Science with GeoDa](https://lanselin.github.io/introbook_vol1/)), Edzer Pebesma and Roger Bivand ([Spatial Data Science with Applications in R](https://doi.org/10.1201/9780429459016)), and Adam Dennett ([Guide to Spatial Interaction Modelling](Guide to Spatial Interaction Modelling)). 
+
+I hope that *Introduction to Spatial Analysis* has inspired you to explore the topic further, and if so, I'd recommend delving into the resources above, alongside the wider literature included in the [reference list](#references).
+
+*Matt*

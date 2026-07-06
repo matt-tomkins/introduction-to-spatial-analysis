@@ -1,0 +1,276 @@
+# Spatial Correlation {#spatial_correlation}
+
+## Introduction
+
+![](images/banner-correlation.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1. Understand how spatial autocorrelation is also important when studying correlation between multiple variables.
+2. Understand how we might adapt traditional measures of correlation (e.g., Pearson’s $r$) when working with spatial data. 
+3. Assess the varying performance of correlation methods when spatial dependence is included/excluded.
+
+### Application {.unnumbered}
+
+To that end, we'll use county-level data from the [2024 US General election](https://www.bbc.co.uk/news/election/2024/us/results) used in the [previous practical](#spatial_autocorrelation) and demographic data from the same level, to assess the relationship between the variables, taking the topological relationship among observations into account. 
+
+### Data {.unnumbered}
+
+In addition to the county-level data used in the [previous practical](#autocorrelation_data), we will be using a range of county-level demographic datasets. These are available in [`data/us-census`] as follows:
+
+- Poverty indicators and education statistics [[Source](https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data)] [[Documentation](https://www.ers.usda.gov/data-products/county-level-data-sets/documentation)]
+- Demographics [[Source](https://www.census.gov/data/datasets/time-series/demo/popest/2020s-counties-detail.html)] [[Documentation](https://www.ers.usda.gov/data-products/county-level-data-sets/documentation)]
+
+For those of you interested in further analysis (see [Extra](#correlation-extra)), I have also compiled data on:
+
+- Mortality [[Source](https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&age_options=age_11&cod=247&cod_options=cod_15&comparison=states_to_us&comparison_options=comparison_statename_to_us&race=00&race_options=race_6&ratetype=aa&ratetype_options=ratetype_2&ruralurban=0&ruralurban_options=ruralurban_3&sex=0&sex_options=sex_3&statefips=99&statefips_options=area_states&yeargroup=5&yeargroup_options=yearmort_2)]
+- Unemployment [[Source](https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data)]
+- Internet adoption [[Source](https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html)]
+
+### Tools {.unnumbered}
+
+[Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog) (Spatial Statistics)
+
+------------------------------------------------------------------------
+
+## Practical
+
+[TO DO] Determine which datasets should be used for the main analysis, and which to save for "A little more?"
+
+Main (GOP percent)
+- Demographics [*] ------- positive example (white %)
+- Education [*] ---------- negative example (bachelor degree %)
+- Poverty [*] ------------ L ~ R example (median income)
+ 
+A little more:
+- Mortality rate --------- e.g., median income vs. mortality rate
+- Unemployment ----------- e.g., high school graduate % vs. unemployment rate
+- Internet adoption ------ e.g., internet adoption vs. bachelor degree %
+
+Remove:
+- Overdose deaths
+- Diabetes 
+
+Poverty descriptors
+  PCTPOVALL_2023 = Poverty Percent, All Ages
+  MEDHHINC_2023 = Median Household Income
+
+-----------------------------
+
+[1] Load contiguous county data from Week 3 (or produce if not saved)
+
+[2] If not joined to 2024 election data, repeat this step...
+
+[3] Load the csv files for poverty, education, demographics
+
+[4] This time, lets join based on the FIPS code (5-digit Federal Information Processing Series)...
+> Introduce data types here - Text (String) vs. Numeric
+  
+  # To achieve this, let's convert the Text GEOID to numeric 
+
+  [A] Add Field -> GEOID_int -> Long (32-bit integer) -> Field Precision (5)
+  [B] Attribute Table -> Calculate Field -> int(!GEOID!) -> Now stored as numeric (removing leading 0)
+  [C] Join based on GEOID_int to FIPS_code
+  
+[5] Symbology, visualisation ... 
+
+[6] Test for spatial autocorrelation first... 
+
+  - For gop_perc, we know from Week 3 that global autocorrelation is present, and have tested this locally
+  - Test for autocorrelation for some variables of your choice, point students towards:
+    -> White %
+    -> Bachelor degree %
+    -> Median income
+
+[7] Run Bivariate Spatial Association (Lee's L) (Spatial Statistics), using GOP percent as the constant, comparing to:
+    -> White %
+    -> Bachelor degree %
+    -> Median income
+
+[8] Interpretation and understanding:
+
+*** Key point: “How much of this relationship survives once we account for spatial structure?”
+
+*** Understanding: What are key differences between Pearson Correlation and Lee's L?
+
+*** How do we interpret the global and local results?
+  
+  -> Consistent R > L across many bivariate comparison [below]
+  
+  -> County-level socioeconomic variables tend to be globally correlated but only moderately spatially cross-correlated
+  
+  -> Indicative of smooth, large-scale monotonic trends across ~3,000 counties
+  -> County-level socioeconomic data has stronger global correlation structure than neighbor-based spatial coupling structure.
+  
+  
+From AI: 
+- Lee's L > Pearson \(r\): The spatial arrangement of your variables positively reinforces their correlation. In other words, similar values of both variables are clustered together in the same geographic neighborhoods, artificially "boosting" the apparent relationship when viewed through a spatial lens.
+- Lee's L < Pearson \(r\): Spatial autocorrelation is working against the overall linear relationship, meaning your variables are less spatially clustered than their raw correlation would suggest.
+- If L is close to Pearson’s r, the spatial arrangement adds little beyond the usual linear association, so the two variables correlate in a fairly ordinary way.
+
+Pearson: Do high X and high Y occur in the same place?
+Lee's L: Do places surrounded by high X also tend to be surrounded by high Y?
+
+If the second is stronger than the first = L > R (rare)
+
+[9] Sensitivity testing of spatial weights matrix
+
+  -> How do the correlations change as a distance or k-neighbours based approach is used? 
+
+## Extra {#correlation-extra}
+
+I've provided you with some other county-level datasets, including age-standardised mortality rate, unemployment rate, and high-speed internet availability. 
+
+> Can you find any interesting associations?
+
+> Is there any pattern to the spatial and non-spatial measures of association?
+
+> What are some weaknesses of this approach (dependence on swm, fixed swm for both variables, only dealing with bivariate associations, rather than a combination of factors, which might be addressed via regression - Practicals 7 - 8)
+  
+
+----------------- Issues with Joins
+
+!!! 000464: Cannot get exclusive schema lock. Either being edited or in use by another application or service.
+... Something to do with the Python code
+
+FIXED
+!!! Joined to education data... columns present, but blank (not <Null>)
+!!! Join Field also not working... ERROR 000499: Table is not editable.
+!!! Poverty and Unemployment Join successfully, but not Education
+---> issue with column names... different internal field definition?
+
+----------------- Data sources
+
+**Unemployment, poverty, education**
+Source: https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data
+Documentation: https://www.ers.usda.gov/data-products/county-level-data-sets/documentation
+
+**Poverty** described more fully: https://www.census.gov/data/datasets/2024/demo/saipe/2024-state-and-county.html
+
+  PCTPOVALL_2023 = Poverty Percent, All Ages
+  MEDHHINC_2023 = Median Household Income
+
+**Demographics**, county-level: https://www.census.gov/data/datasets/time-series/demo/popest/2020s-counties-detail.html
+Methodology: https://www2.census.gov/programs-surveys/popest/technical-documentation/methodology/2020-2024/methods-statement-v2024.pdf
+
+Demographic data: https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/asrh/cc-est2024-alldata.csv
+
+MT modifications
+- Calculated WA_TOTAL, WA_%
+- Created FIP_code (with difficulty!) and filtered to 2024 and all ages 
+- Removed most demographic data for simplicity...
+
+**Opiod** VSRR Provisional County-Level Drug Overdose Death Counts
+- https://data.cdc.gov/National-Center-for-Health-Statistics/VSRR-Provisional-County-Level-Drug-Overdose-Death-/gb4e-yj24/about_data
+
+**Internet adoption**
+- https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html
+
+**Citrus and Christmas trees**
+- https://quickstats.nass.usda.gov/#24E0CEE2-1271-3635-A1ED-7A50CF2BBCDA
+
+  [Observation] Using Join Field replaces <Null> with 0
+
+**Diabetes**:
+- https://usdss.cdc.gov/diabetes/surveillance.html#
+
+**Mortality** data:
+- https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&age_options=age_11&cod=247&cod_options=cod_15&comparison=states_to_us&comparison_options=comparison_statename_to_us&race=00&race_options=race_6&ratetype=aa&ratetype_options=ratetype_2&ruralurban=0&ruralurban_options=ruralurban_3&sex=0&sex_options=sex_3&statefips=99&statefips_options=area_states&yeargroup=5&yeargroup_options=yearmort_2
+
+----------------- Preliminary results
+
+  [A] Results for gop_perc vs. % not high school graduate: [some correlation ... as gop_perc increases, low education increases]
+
+  Lee's L	0.115147
+  P-value	0.002
+  Pearson Correlation	0.162153
+  
+  [B] Results for gop_perc vs. % bachelors or high: [pretty strong correlation, as education increases, gop_perc decreases]
+  
+  Lee's L	-0.243755
+  P-value	0.002
+  Pearson Correlation	-0.384821
+
+  [C] Results for gop_perc vs. white % [strong correlation ... as gop_perc increases, white % increases]
+
+  Lee's L	0.30255
+    -> positive, moderate spatial association (ranges from -1 to 1)
+    -> Areas with high A tend to be surrounded by areas with relatively high values of  B (+vice versa)
+    -> The pattern is not extremely strong or uniform 
+  P-value	0.002
+    -> p < 0.01 = statistically significant under typical thresholds.
+  Pearson Correlation	0.539114
+    -> moderate positive correlation, as X increases, so does Y
+    
+  Interpretation: variables are correlated overall, and this relationship is spatially structured 
+  
+  [D] Results for median income vs. bachelor % [again, strong correlation, but still Lee's L < Pearsons R]
+  
+  Lee's L	0.464225
+  P-value	0.002
+  Pearson Correlation	0.729447
+  
+  Interpretation: counties follow the same global trend, but neighboring counties don’t necessarily “mirror” each other in a way that reinforces a shared spatial pattern.
+  
+  -> Rich counties tend to be more educated
+  -> Do rich counties sit next to rich+educated counties in a mutually reinforcing way? (partially)
+
+  [E] Results for not high school graduate % vs. poverty
+  
+  Lee's L	0.438068
+  P-value	0.002
+  Pearson Correlation	0.628235
+  
+  -> Same pattern - relatively strong global association, but 
+  
+  [F] Results for bachelor % vs. unemployment rate:
+  
+  Lee's L	-0.149659
+  P-value	0.002
+  Pearson Correlation	-0.295399
+  
+  -> Negative global relationship (more education, lower unemployement rate)
+  -> The statistical relationship exists, but it does not strongly organize itself into spatially coherent blocks
+
+  [G] Results for diabetes % vs. internet availability
+  
+  Lee's L	-0.218034
+  P-value	0.002
+  Pearson Correlation	-0.267968
+
+  [H] Results for mortality rate vs. median income
+  
+  Lee's L	-0.444267
+  P-value	0.002
+  Pearson Correlation	-0.644164
+  
+**[I] Results for mortality vs. gop_percentage [the first where L > R, just!]
+
+  Lee's L	0.223926
+  P-value	0.002
+  Pearson Correlation	0.220589
+ 
+  -> Weak-moderate positive association (higher GOP vote share, slightly higher mortality)
+  -> positive spatial association (areas surrounded by high GOP vote tend to be surrounded by high mortality, and v.v.)
+  -> The close correspondence between r and L suggests that the relationship is not strongly driven by spatial lag effects but rather reflects shared regional patterning.
+  
+  [J] Results for gop_perc vs. poverty percentage [not interesting?]
+  
+  Lee's L	0.039829
+  P-value	0.002
+  Pearson Correlation	-0.032691
+
+  [K] Results for gop_perc vs. Median income [some correlation ... as gop_perc increases, income decreases]
+  
+  Lee's L	-0.209754
+  P-value	0.002
+  Pearson Correlation	-0.215725
+
+## Resources
+
+- Lee, S.I. ([2001](https://doi.org/10.1007/s101090100064)). Developing a bivariate spatial association measure: an integration of Pearson's r and Moran's I. Journal of geographical systems, 3(4), pp.369-385.
+- Lee, S.I. ([2017](https://doi.org/10.1007/978-3-319-17885-1_1524)). Correlation and Spatial Autocorrelation. In: Shekhar, S., Xiong, H., Zhou, X. (eds) Encyclopedia of GIS. Springer, Cham. 
+- Illanas, S., Gómez-Rubio, V., Vicente, J. and Acevedo, P. ([2025](https://doi.org/10.1016/j.ecolind.2025.113551)). Assessment of bivariate relationships between spatial patterns: Revisiting the global and local L bivariate indices for wildlife management and conservation[MT1.1]. Ecological Indicators, 175, p.113551. 
+- Wolf, L.J. ([2024](https://doi.org/10.1080/24694452.2024.2326541)). Confounded Local Inference: Extending Local Moran Statistics to Handle Confounding. Annals of the American Association of Geographers, 114(6), 1216–1231. 

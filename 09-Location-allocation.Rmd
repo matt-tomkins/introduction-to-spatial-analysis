@@ -1,0 +1,189 @@
+# (PART\*) Locations and Flows {.unnumbered}
+
+# Location Allocation {#location_allocation}
+
+## Introduction
+
+![](images/banner-location-allocation.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1.  Understand the aims and theory of location allocation models.
+2.  Understand the  methods and criteria used for location allocation.
+3.  Investigate the sensitivity of location allocations to those methods-criteria.
+
+### Application {.unnumbered}
+
+To that end, we'll use location allocation models to optimise locations for new [defibrillators](https://thecircuit.uk/Home/About?_gl=1*1ub1w4x*_up*MQ..*_ga*MTc0ODE0ODI2NS4xNzgzMDc1Mzk4*_ga_3WNW2WCQD1*czE3ODMwNzUzOTckbzEkZzAkdDE3ODMwNzUzOTckajYwJGwwJGgw#about), using population demand and the transport network as inputs.
+
+Our analysis is focused on the Western Isles of Scotland, given links between socioeconomic deprivation, urban-ruralness and defibrillator access [@burgoine_automated_2024]. For every minute that someone’s in cardiac arrest without receiving [CPR](https://www.nhs.uk/tests-and-treatments/first-aid/cpr/) and having a defibrillator used on them, their chance of survival [decreases by 10%](https://www.nwas.nhs.uk/news/were-appealing-to-the-north-west-public-learn-how-to-save-a-life-today/). Optimising defibrillator locations to minimise response times or maximise coverage could save lives. 
+
+### Data {.unnumbered}
+
+- Defibrillator locations listed on the National Defibrillator Network, managed by the British Heart Foundation and associates (The Circuit), available in [`data/bhf`] [[Source](https://www.bhf.org.uk/defibdata)]
+- Ordnance Survey Open Roads transport network, available in [`data/os-open-roads`] [[Source](https://www.ordnancesurvey.co.uk/products/os-open-roads)]
+- UK Centre for Ecology and Hydrology (UKCEH) gridded population at 1 km resolution (2021), available in [`data/ukceh`] [[Source](https://doi.org/10.5285/7beefde9-c520-4ddf-897a-0167e8918595)]
+- ONS boundaries data, filtered to the Western Isles, available in [`data/ons/national`] [[Source](https://geoportal.statistics.gov.uk/datasets/70c6937637404976a7c4be4d57dcccf0_0/explore?location=55.340000%2C-3.316939%2C5)]
+
+### Tools {.unnumbered}
+
+[Build Network](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/build-network.html?tabs=dialog) (Network Analyst Tools), [Make Location-Allocation Analysis Layer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog) (Network Analyst Tools), [Near](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog) (Analysis Tools), [Snap](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog) (Editing Tools), [Round Up](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/round-up.html?tabs=dialog) (Spatial Analyst Tools), [Int](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/int.html?tabs=dialog) (Spatial Analyst Tools), [Create Feature Dataset](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog) (Data Management Tools)
+
+------------------------------------------------------------------------
+
+## Practical
+
+
+-------------- Resources
+
+Church: <https://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch20.pdf> R package: <https://github.com/giacfalk/locationallocation> Coastline: <https://geoportal.statistics.gov.uk/datasets/ons>::countries-december-2023-boundaries-uk-bfe/explore?location=54.650000%2C-3.250000%2C5
+
+--------------- Initial Processing
+
+[1] Load road network, population grid and islands shapefile - [all BNG, subset to Western Isles]
+
+[2] Load defibrillator csv and convert to features (WGS_1984), and then project to BNG
+
+[3] Clean defibrillator dataset (keep valid, align to network) -\> Near Tool (distance defib -\> road network, modifies input) -\> Visualise Statistics -\> Select by Attributes (`NEAR_DIST` \> 100, n=15) - DELETE (coordinate errors?) -\> Snap (Editing Tools, modifies input, Type = Edge, Distance = 100) Snap nearby to the network (\< 100 m) -\> Delete others -\> Subset to defibrillators with 24 hour access?
+
+[4] Clean Demand points ... Option 1 -\> Raster to Point (`population`) -\> Near Tool (investigate via Symbology) -\> A reasonable cutoff would be 700 m via Pythagoras: sqrt(0.5\^2 + 0.5\^2) = 0.7071 km -\> Snap (Distance = 700 i.e., generalized to 1 km, so we "know" that the population is within a \~700 m radius)
+
+OR
+
+Option 2 -\> Round Up (Spatial Analyst) -\> int(), to convert from float to int via truncation (no effect, as already rounded up) -\> Raster to Points (Centroid) -\> Buffer (500 m) -\> Minimum Bounding Geometry (Envelop) = `grid_code` contains the number of people per 1 km cell [!] This is slightly complicated but is better than Raster to Polygon, which merges neighbouring cells with the same value -\> Create Random Points (\# within cell) -\> Near Tool -\> Snap to within 1000 m -\> Delete the rest
+
+[Thoughts]
+
+At best both options are an approximation of where people live, but Option 1 does produce the correct \# people within each 1 km grid square, and perhaps more realistic than using a centroid location (snapped to the network).
+
+Option 1 is a much simpler approach, and less representative of the actual locations (probably), but would minimise computation time. Given the aim of the practical (understanding techniques), Option 1 is sufficient.
+
+[5] For efficiency, we are going to focus on a single island, so use `Clip` to subset all datasets to Isle of Mull (`Name` = `Mull`) -\> Roads (network), population points (demand, n=?), defibrillator locations (required / candidate locations, n=38)
+
+[6] Create Feature Dataset (empty) -\> To run Location Allocation in ArcGIS, we can't use a simple features layer, we need to use a Feature Dataset, which has stricter rules regarding projection
+
+[7] Import features: -\> Right click in Catalog Pane -\> Import -\> Road network (Feature Class to Geodatabase)
+
+[8] Create Network Dataset (which defines the rules and sources of your network) = `road_model`
+
+[9] Build Network (processing action that enforces those rules, maps connectivity, and generates the data structure needed for routing)
+
+[\*] Initial exploratory analysis - Closest Facility -\> Make Closest Facility Analysis Layer -\> Import Incidents (`population`) -\> Import Facilities (`defib`) -\> Number of facilities to find = 1 -\> Run, Output: - Mean distance = 2739.060346368907 - Median distance = 2239.7073992125115 - Q3 = 3887.6913633425847 - Max = 10038.716195167184
+
+```         
+[!] This is quite laborious and not necessary, because the baseline P-median run provides us with these distances
+```
+
+====================================== \### P-median approach
+
+i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand *or* “How do we minimise average distance for everyone?"
+
+======================================
+
+[10] Make Location-Allocation Analysis layer (\~5 mins) -\> Network Data Source = `road_model` -\> Name = `la_pmedian_mull`
+
+[11] Location-Allocation Layer tab -\> Input Data group -\> Import Facilities (`defib`) -\> Property `FacilityType` = `Required` i.e., current sites always included in the solution
+
+[12] Location-Allocation Layer tab -\> Input Data group -\> Import Demand Points (`population`) -\> Property `Weight` = `grid_code` (the population value from the raster)
+
+[13] First run using current configuration -\> Set Facilities (\#) = number of features in `defib` (for Mull, n = 38)
+
+-\> Output: Sum of allocated weight in "Demand Points": 3050.685136. Sum of allocated weighted impedance in "Demand Points": 3685274.462097. Sum of valid unallocated weight in "Demand Points": 0.000000 Succeeded at 30 June 2026 14:08:32 (Elapsed Time: 3.30 seconds)
+
+-\> Interpretation: - Sum of allocated-unallocated weights not particularly meaningful, as we are using 'P-median' where all demand points are allocated to a facility - Sum of allocated weighted impedance is the key **analysis metric** i.e., the total population-weighted travel cost across all demand points to their assigned nearest facility). - This is our baseline for comparison
+
+\# Distances in `Lines` output match (broadly) those produced by Closest Facility analysis Mean = 2738.0597126355888 Median = 2238.7651310236133 Max = 10035.218946302226
+
+[14] Run with some new candidate locations
+
+-\> Dissolve road network (otherwise we will generate points for every feature, not the entire network) -\> Create Random Points (n=100, `random_mull_n100`, constrain to dissolved network) -\> Add to Location Allocation Layer (`FacilityType` = Candidate) -\> Solve again, \# facilities = 50 i.e., 38 existing facilities in `defib` + 12 new locations
+
+Output: Sum of allocated weight in "Demand Points": 3050.685136. Sum of allocated weighted impedance in "Demand Points": 2720895.446077. Sum of valid unallocated weight in "Demand Points": 0.000000
+
+-\> Interpretation: - Sum of allocated-unallocated weights identical [correct] - Sum of allocated weighted impedance has dropped "significantly" - Absolute change = -964,379, Percentage reduction = 26.2% - Relative change is more meaningful here (absolute change = "person-metres", when impedance is metres and weights are population)
+
+[15] Test with an idealised scenario (i.e., no existing defibrillators)
+
+-\> Create 1000 random points as above (alternatively, regular spacing) -\> Open `Facilities` Attribute Table and delete all rows -\> Add random locations, all as `Candidate` -\> Set Facilities (\#) = number of features in `defib` (n = 38) i.e., we are now evaluating the optimum locations (based on the p-median approach) for our 38 defibrillators (within the 1000 possible candidates \< all possible locations) - *Alternatively* we could use Facilities = 50, to facilitate comparison with [13]
+
+Output: Sum of allocated weight in "Demand Points": 3050.685136. Sum of allocated weighted impedance in "Demand Points": 2430836.519422. Sum of valid unallocated weight in "Demand Points": 0.000000.
+
+Interpretation: - Sum of allocated weighted impedance (\~2430836) is comparable (and better than) to [13, n=50] and significantly less than [12, n=38] - Absolute difference = 1,254,438, Percentage reduction = 34% - In turn, we can improve allocation just with location optimisation!
+
+Average distances are also lower (Explore Statistics, although should be weighted by population): - Mean = 2227.343557515982 - Maximum = 1815.0352018341623
+
+--------------- To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?
+
+====================================== \### Maximise coverage
+
+i.e., maximize the total amount of demand (or population) covered within a cutoff (e.g., distance threshold)
+
+======================================
+
+[16] Make Location-Allocation Analysis layer (\~5 mins) -\> Network Data Source = `road_model` -\> Name = `la_pmedian_mull` -\> Cutoff = 1000 (1 km) - This can be justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA)
+
+[17] Location-Allocation Layer tab -\> Input Data group -\> Import Facilities (`defib`) -\> Property `FacilityType` = `Required` i.e., current sites always included in the solution
+
+[18] Location-Allocation Layer tab -\> Input Data group -\> Import Demand Points (`population`) -\> Property `Weight` = `grid_code` (the population value from the raster)
+
+[19] First run using current configuration -\> Set Facilities (\#) = number of features in `defib` (for Mull, n = 38)
+
+Output: Sum of allocated weight in "Demand Points": 2008.805185. Sum of allocated weighted impedance in "Demand Points": 981885.557754. Sum of valid unallocated weight in "Demand Points": 1041.879952.
+
+Interpretation: - In this case we are interested in the ratio of allocated-unallocated weights - Given the selected distance threshold (1 km) and the current distribution of facilities and demands, 1041 people not served by current distribution - Coverage is \~62%
+
+[20] Test with an idealised scenario (i.e., no existing defibrillators) -\> Open `Facilities` Attribute Table and delete all rows -\> Add random locations created in [15], all as `Candidate` -\> Set Facilities (\#) = number of features in `defib` (n = 38) i.e., we are now evaluating the optimum locations (based on the **maximise coverage** approach) for our 38 defibrillators (within the 1000 possible candidates \< all possible locations)
+
+Output: Sum of allocated weight in "Demand Points": 2541.885593. Sum of allocated weighted impedance in "Demand Points": 1222049.489314. Sum of valid unallocated weight in "Demand Points": 508.799543.
+
+Interpretation: - With the same \# facilities, same method (maximise coverage) and cutoff, we have increased the coverage to \~83% - Optimisation is valuable!
+
+[21] Evaluate changing cutoff
+
+Cutoff = 5000 m Sum of allocated weight in "Demand Points": 3050.685136. Sum of allocated weighted impedance in "Demand Points": 2794852.161580. Sum of valid unallocated weight in "Demand Points": 0.000000. Coverage = 100%
+
+i.e., when the cutoff is large, all demand points can be connected
+
+Cutoff = 500 m (i.e., run for 2.5 minutes to get defib, run back) Sum of allocated weight in "Demand Points": 1957.550792. Sum of allocated weighted impedance in "Demand Points": 363134.112470. Sum of valid unallocated weight in "Demand Points": 1093.134344. Coverage = 64%
+
+i.e., reducing the cutoff reduces coverage, but this is still comparable to the baseline, even with a more restrictive cutoff (500 m vs. 1 km)
+
+--------------- To finish reiterate differences between p-median and maximise coverage. What are they modelling and how does this influence interpretation action?
+
+## Extra
+
+[\*] Using the **maximum coverage** approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?
+
+baseline = 62% N=38 = 83% N=50: Sum of allocated weight in "Demand Points": 2672.349411 = 87% ... N=100: Sum of allocated weight in "Demand Points": 2937.332799 = 96%
+
+[\*] How do our results compare to other islands? Run for Jura...
+
+[Q] What key population metric are we not including? - non-resident population i.e., tourists!
+
+[Q] What are some weaknesses of our approach? - population generalisation - using distance as a metric, rather than travel time - not a full constraints analysis i.e., which locations are suitable for AEDs?
+
+====================================================
+
+--------------- Using Maximise Coverage and Minimise Facilities
+
+Sum of allocated weight in "Demand Points": 2985.974942. Sum of allocated weighted impedance in "Demand Points": 1109527.936652. Sum of valid unallocated weight in "Demand Points": 64.710195. Number of chosen facilities in solution: 156. Coverage = 97.87%
+
+For **Maximise Coverage**, there are a fixed number of facilities and demand outside the cutoff is considered uncovered, regardless of how close it is beyond the threshold.
+
+Maximise Coverage and Minimise Facilities = "What is the smallest number of facilities needed to achieve this level of coverage?""
+
+--------------- Notes
+
+When running with the full Western Isles dataset, p-median error: [!] One or more locations in "Demand Points" could not be reached by one or more locations in "Facilities". The network may have areas that are disconnected, unbuilt, or disconnected due to turn restrictions, restriction attributes, or barriers. Incomplete network connectivity may result in a non optimal solution. ----- Data error rather than model error (road network broken at some bridges)
+
+## Resources
+
+- Hakimi, S.L. ([1965](https://doi.org/10.1287/opre.13.3.462)). Optimum distribution of switching centers in a communication network and some related graph theoretic problems. Operations research, 13(3), pp.462-475.
+- Church, R.L., and ReVelle, C. ([1974](https://people.geog.ucsb.edu/~forest/G294download/MAX_COVER_RLC_CSR.pdf)). The maximal covering location problem. In Papers of the regional science association (Vol. 32, No. 1, pp. 101-118). Berlin/Heidelberg: Springer-Verlag. 
+- Church, R.L. ([2002](https://doi.org/10.1016/S0305-0548(99)00104-5)). Geographical information systems and location science. Computers & Operations Research, 29(6), 541–562.
+- Church, R.L., & Murray, A. ([2018](https://doi.org/10.1007/978-3-319-99846-6)). Location covering models: History, applications and advancements (Advances in Spatial Science). Springer.
+- Church, R.L., & Drezner, Z. ([2022](https://doi.org/10.1016/j.cor.2021.105468)). Review of obnoxious facilities location problems. Computers & Operations Research, 138, 105468.
+
+

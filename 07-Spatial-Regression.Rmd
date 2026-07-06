@@ -1,0 +1,95 @@
+# Spatial Regression {#spatial_regression}
+
+## Introduction
+
+![](images/banner-spatial-regression.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1.  Understand how spatial regression is different from classical regression and why it matters. 
+2.  Understand the differences between common forms of spatial regression.
+3.  Use spatial regression to reveal relationships in a sociological context. 
+
+### Application {.unnumbered}
+
+To that end, we'll apply non-spatial and spatial regression to predict life expectancy at the MSOA-level ([Middle Layer Super Output Area ](https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies)) in Greater Manchester.
+
+### Data {#sr_data .unnumbered}
+
+The data for this practical are sourced from the Department of Health and Social Care (DHSC, [Fingertips](https://fingertips.phe.org.uk/)) and the Office for National Statistics (ONS), and are available in [`data/dhsc`] and [`data/ons/msoa`] respectively. Key attributes have been retained and are described below:
+
+-   ONS MSOA-level geometry [[Source](https://geoportal.statistics.gov.uk/datasets/6b282db29762450881ed5159259a6e4e_0/explore?location=52.837634%2C-2.489483%2C6)]
+    -   `fuel_poverty`: the percentage of households in the corresponding geographical area that were in fuel poverty.
+    -   `household_poverty`: the number of households (modelled) in fuel poverty.
+    -   `household_total`: the total number of households.
+-   ONS Economic Activity Status [[Source](https://www.ons.gov.uk/datasets/create/filter-outputs/20ce9188-476a-4e89-af57-0285e69f7098#get-data)]
+  - !!
+  - !!
+-   ONS Highest level of qualification [[Source](https://www.ons.gov.uk/datasets/create/filter-outputs/2a85d026-ea61-492f-9b43-117b66a3af4e#get-data)]
+  - !!
+  - !!
+-   ONS Disability [[Source](https://www.ons.gov.uk/datasets/create/filter-outputs/0248ce8b-df1d-413f-a724-2d62feed9556#get-data)]
+  - !!
+  - !!
+-   ONS Household income [[Source](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales)]
+  - !!
+  - !!
+-   DHSC Index of Multiple Deprivation [[Source](https://fingertips.phe.org.uk/profile/local-health/data#page/0)]
+  - !!
+  - !!
+-   DHSC Fuel poverty [[Source](https://fingertips.phe.org.uk/profile/local-health/data#page/0)]
+  - !!
+  - !!
+
+### Tools {.unnumbered}
+
+[Ordinary Least Squares (OLS)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/ordinary-least-squares.html?tabs=dialog) (Spatial Statistics), [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) (Spatial Statistics)
+
+------------------------------------------------------------------------
+
+## Practical
+
+During this practical...
+
+[1] Load MSOA geometries and check / set map projection (British National Grid, CRS 27700)
+
+[2] Filter to region of interest (north-west, n=932) -\> Add lookup table (csv) -\> Add permanent join (MSOA21CD) -\> Select by Attributes = MSOA_2021_lookup_table.csv.RGN22NM = 'North West' -\> Export Selection (this retains Join fields) -\> Alternatively (keeping the features selected), remove the join, and then export -\> Remove lookup table
+
+[3] Add ONS and DHSC data (csv, n=7)
+
+[4] Table Joins (MSOA21CD to msoa_code) - life expectancy
+
+[5] Assess spatial autocorrelation (definitely) and look at spatial weights?
+
+[6] Prepare for OLS (unique ID field) -\> Calculate field ('unique_id') -\> Long integer (32-bit) -\> Sequential Number
+
+[7] OLS -\> Inspect output (pdf) and residuals -\> Life Expectancy and Income: R2 = 0.621306
+
+[8] Check for spatial autocorrelation in the OLS residuals -\> Global Moran's I: Clustered (z-score of 14.142665, less than 1% likelihood that this clustered pattern could be the result of random chance) -\> LISA: HH clusters in Cumbria, LL in Manchester
+
+[9] Spatial Autoregression -\> SEM -\> SLM
+
+[10] Check for autocorrelation again? -\> Still autocorrelated... -\> Same pattern with LISA...
+
+--------------- Data Wrangling:
+
+-   Disability: pivoted, renamed columns
+-   Economic Activity Status: pivoted, renamed columns, and simplified to: -\> employment_dna -\> employed_not_ftstudent -\> employed_and_ftstudent -\> economically_inactive_not_ftstudent\
+    -\> economically_inactive_and_ftstudent
+-   Highest Level of Qualification: pivoted, renamed columns to: -\> qualification_dna\
+    -\> no_qualifications -\> level_one -\> level_two -\> level_three -\> level_four -\> apprenticeships_or_similar
+-   Household Income: converted from xls, retained total_annual_income only, filtered to north-west
+-   Life Expectancy: -\> Removed many columns and renamed -\> Pivoted, retaining male and female life expectancy, plus confidence intervals -\> Two attempts, as saved the wrong MSOA code
+-   IMD: remove and renamed columns (no pivot)
+-   Fuel Poverty: remove and renamed columns (no pivot). Retained: -\> household_poverty: The number of households in the corresponding geographical area that were in fuel poverty (modelled) -\> household_total: [presumably] the total number of households in the MSOA
+
+## Extra
+
+## Resources
+
+- Anselin, L. ([1988](https://doi.org/10.1007/978-94-015-7799-1)). Spatial econometrics: methods and models. Kluwer Academic Publishers google schola, 2, pp.283-291.
+- Anselin, L. ([2002](https://doi.org/10.1111/j.1574-0862.2002.tb00120.x)). Under the hood issues in the specification and interpretation of spatial regression models. Agricultural economics, 27(3), pp.247-267.
+- Gibbons, S. and Overman, H.G. ([2012](https://doi.org/10.1111/j.1467-9787.2012.00760.x)). Mostly pointless spatial econometrics?. Journal of regional Science, 52(2), pp.172-191.
+

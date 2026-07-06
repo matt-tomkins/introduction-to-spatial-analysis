@@ -1,0 +1,211 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# (PART\*) Spatial Modelling {.unnumbered}
+
+# Interpolation {#interpolation}
+
+## Introduction
+
+![](images/banner-interpolation.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1.  Introduce geostatistical approaches for analysing spatial data.
+2.  Understand how common spatial interpolation techniques work.
+3.  Perform interpolation in ArcGIS and become familiar with common
+    applications e.g., for prediction, as an input for spatial
+    regression.
+
+### Application {.unnumbered}
+
+To achieve this, we'll apply interpolation techniques to Point samples
+of global plant trait data (leaf area, plant height), modelled by
+@lusk2026. Our study area is Peru, which features extreme gradients in climate and topography, which are likely to be reflected in spatial gradients in plant traits. 
+
+### Data {.unnumbered}
+
+This practical uses global plant trait data derived from crowdsourced
+biodiversity monitoring and Earth observation, available in
+[`data/global-plant-traits`]
+[[Paper](https://doi.org/10.1038/s41467-026-68996-y)]
+[[Source](https://global-traits.projects.earthengine.app/view/global-traits)]
+
+### Tools {.unnumbered}
+
+[Extract Values to
+Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-values-to-points.html?tabs=dialog)
+(Spatial Analyst Tools),
+[IDW](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/idw.html?tabs=dialog)
+(Geostatistical Analyst Tools), [Empirical Bayesian
+Kriging](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/empirical-bayesian-kriging.html?tabs=dialog)
+(Geostatistical Analyst Tools), [Geostatistical
+Wizard](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3),
+[Exploratory
+Interpolation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/exploratory-interpolation.html?tabs=dialog)
+(Geostatistical Analyst Tools)
+
+------------------------------------------------------------------------
+
+## Practical
+
+Interpolation techniques are used to estimate unknown values at new
+locations based on known measurements from surrounding sample points.
+
+We could use our ecological dataset from Practical 5 here, but it's not
+an ideal example, for a few reasons:
+
+[1] Our Points don't have corresponding values that we would want to
+predict i.e., characteristics of each observation [2] Our Points
+represent individual observations, so to interpolate, we would have to
+aggregate these in some way i.e., \# observations with a certain
+distance of some representative locations (schematic?) [3]
+Fundamentally, the distribution of Tiger observations is clearly
+non-continuous, found mostly in designated reserves. Interpolation will
+probably do a poor job at capturing this spatial pattern, and instead,
+we'd probably want to use a species distribution model (Link to Spatial
+Ecology) [4] As a final reason, our data are Presence-Only data (i.e.,
+observations of Tigers), and we have no Absence-Data, see: -
+<https://doi.org/10.1111/jbi.14622> -
+<https://doi.org/10.1111/j.1472-4642.2011.00755.x>
+
+**Instead**, we are going to apply interpolation to a dataset where we
+assume the spatial pattern is continuous, and where we have a variable
+we want to predict.
+
+[1] Load leaf area dataset into ArcGIS, and Natural-Earth dataset
+
+[2] Generate random points, within bounding geometry of Peru, excluding
+marine-areas (100?)
+
+-\> Minimum Bounding Geometry (envelop) -\> Clip to NE data -\> Create
+Random Points
+
+[3] Extract raster value [Extract Values to Points]
+
+[4] Remove any rows where values are invalid (-9999) [A] Manually via
+the Attribute Table [B] Select by Attribute (RASTERVALU \<\> -9999,
+Export selection)
+
+[5] We now have a valid dataset (all points within bounding geometry, on
+land, with a SLA value). However, we are again doing geometry
+calculations today (i.e., predicting values at locations), so we need to
+working with data that is suitably projected, rather than using
+geographic data.
+
+-\> UTM 18S is probably an appropriate selection here -\> Use Project
+tool
+
+[6] First, IDW:
+
+[Options] Effects of Power + search radius
+
+----------------- General approach: Resources:
+<https://doi.org/10.1111/jen.13455>,
+<https://doi.org/10.1016/j.ecolmodel.2021.109501>
+
+----------------- Thoughts:
+
+-\> Geostatistical Wizard! Talk through the separate tools, but do all
+the calculations in the GW?
+
+-\> Semi-variogram construction (and models)
+
+-\> Focus on a subset of interpolation methods, but do them really well?
+i.e., IDW + Kriging (non- and geostatistical) + Natural Neighbour
+
+-\> Global vs. local, exact vs. approximate...
+
+----------------- Tools:
+
+[A] Inverse distance weighting
+
+[B] Various forms of Kriging [Empirical Bayesian Kriging] -\> Universal?
+[incorporating a trend function] -\> Ordinary? [assumption of
+stationarity i.e., the statistical properties of the data do not change
+across space. It assumes the underlying mean is constant but unknown]
+
+```         
+-> We should use universal, because we *would* expect non-stationarity i.e., trends in climate, elevation...
+-> but we should run both
+```
+
+[C] Trend -\> Even weirder than Spline!
+
+[D] Spline -\> Funky output!
+
+[E] Natural Neighbour -\> Output constrained to Points (convex hull)
+
+[NOT] co-kriging, uses one or more correlated secondary (auxiliary)
+variables [NOT] any regression, RF, entropy methods
+
+----------------- Finish
+
+By comparing the interpolation output (e.g., Universal Kriging) with the
+"true" values from the input data i.e., residual.
+
+Need to do so cautiously, acknowledging that the input is also a model.
+
+However, this is important for validation of interpolation outputs - how
+well does our prediction match real empirical measurements?
+
+Fundamentally, interpolation is important when we are studying something
+that will expected to vary continuously through space (even if it goes
+to 0) e.g., soil depth, elevation, species richness, but only have
+measurements of that variable at discrete locations.
+
+----------------- Alternative dataset ideas
+
+Something like this (but not this):
+<https://doi.org/10.1038/s41597-024-03098-2>
+
+AVONET - bird traits? <https://doi.org/10.1111/ele.13898>
+
+TRY plant trait database <https://doi.org/10.1111/gcb.14904>
+
+How about <https://doi.org/10.1038/s41467-026-68996-y>, random
+sampling..., pick a location with an interesting ecological gradient
+(Peru, Iberia?)
+
+ArcGIS raster issues [+32768]
+
+----------------- Original approach
+
+Need to go from Points to a variable at each location...
+
+[1] Collect Events tool... dataset uncertainty / generalisation...
+
+[1] Generate Near Table -\> Summarize -\> Join by ID
+
+[1] Find Point Clusters - DBSCAN (50 km, minimum 10 observations)
+
+[2] Case Field not working, because 'CLUSTER_ID' is double, not
+integer...
+
+[!!!] I don't think the tiger dataset is a great example because: [a] At
+this scale, we really need a species distribution model [b] Tigers seem
+to be mostly in the nature reserves, and any interpolation method will
+struggle with that...
+
+## Extra
+
+## Resources
+
+-   Oliver, M.A. and Webster, R.
+    ([1990](https://doi.org/10.1080/02693799008941549)). Kriging: a
+    method of interpolation for geographical information systems.
+    International Journal of Geographical Information System, 4(3),
+    pp.313-332.
+-   Diggle, P.J., Tawn, J.A. and Moyeed, R.A.
+    ([1998](https://doi.org/10.1111/1467-9876.00113)). Model-based
+    geostatistics. Journal of the Royal Statistical Society Series C:
+    Applied Statistics, 47(3), pp.299-350.
+-   Rufino, M.M., Albouy, C. and Brind'Amour, A.
+    ([2021](https://doi.org/10.1016/j.ecolmodel.2021.109501)). Which
+    spatial interpolators I should use? A case study applying to marine
+    species. Ecological Modelling[MT3.1], 449, p.109501.

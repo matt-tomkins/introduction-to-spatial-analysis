@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Spatial Interaction Modelling | Introduction to Spatial Analysis</title>
+  <meta name="description" content="Chapter 10 Spatial Interaction Modelling | Introduction to Spatial Analysis" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Spatial Interaction Modelling | Introduction to Spatial Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Spatial Interaction Modelling | Introduction to Spatial Analysis" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="location_allocation.html"/>
+<link rel="next" href="summary.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<div style="text-align: center; margin: 1em 0;">
+  <img src="images/course-logo.png" width="200">
+</div>
+
+<li class="divider"></li>
+<li class="part"><span><b>Home</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction to Spatial Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practical-aims"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#ilo"><i class="fa fa-check"></i>Intended Learning Outcomes</a></li>
+</ul></li>
+<li class="part"><span><b>Representing the World</b></span></li>
+<li class="chapter" data-level="1" data-path="geo_data.html"><a href="geo_data.html"><i class="fa fa-check"></i><b>1</b> Working with Geographic Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="geo_data.html"><a href="geo_data.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#aims"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#application"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#tools"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="geo_data.html"><a href="geo_data.html#practical"><i class="fa fa-check"></i><b>1.2</b> Practical</a></li>
+<li class="chapter" data-level="1.3" data-path="geo_data.html"><a href="geo_data.html#extra"><i class="fa fa-check"></i><b>1.3</b> Extra</a></li>
+</ul></li>
+<li class="part"><span><b>Spatial Patterns</b></span></li>
+<li class="chapter" data-level="2" data-path="spatial_weights.html"><a href="spatial_weights.html"><i class="fa fa-check"></i><b>2</b> Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#introduction-2"><i class="fa fa-check"></i><b>2.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#aims-1"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#application-1"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#data-1"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#tools-1"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="spatial_weights.html"><a href="spatial_weights.html#practical-1"><i class="fa fa-check"></i><b>2.2</b> Practical</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#simpler-approach-pythonic-no-sql-no-geodatabase-faff"><i class="fa fa-check"></i><b>2.2.1</b> Simpler approach (Pythonic, no SQL, no geodatabase faff)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="spatial_weights.html"><a href="spatial_weights.html#extra-1"><i class="fa fa-check"></i><b>2.3</b> Extra</a></li>
+<li class="chapter" data-level="2.4" data-path="spatial_weights.html"><a href="spatial_weights.html#sw_resources"><i class="fa fa-check"></i><b>2.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html"><i class="fa fa-check"></i><b>3</b> Spatial Autocorrelation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#introduction-3"><i class="fa fa-check"></i><b>3.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#aims-2"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#application-2"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#autocorrelation_data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#tools-2"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#practical-2"><i class="fa fa-check"></i><b>3.2</b> Practical</a></li>
+<li class="chapter" data-level="3.3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#extra-2"><i class="fa fa-check"></i><b>3.3</b> Extra</a></li>
+<li class="chapter" data-level="3.4" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#resources"><i class="fa fa-check"></i><b>3.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="spatial_correlation.html"><a href="spatial_correlation.html"><i class="fa fa-check"></i><b>4</b> Spatial Correlation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="spatial_correlation.html"><a href="spatial_correlation.html#introduction-4"><i class="fa fa-check"></i><b>4.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#aims-3"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#application-3"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#data-2"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#tools-3"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="spatial_correlation.html"><a href="spatial_correlation.html#practical-3"><i class="fa fa-check"></i><b>4.2</b> Practical</a></li>
+<li class="chapter" data-level="4.3" data-path="spatial_correlation.html"><a href="spatial_correlation.html#correlation-extra"><i class="fa fa-check"></i><b>4.3</b> Extra</a></li>
+<li class="chapter" data-level="4.4" data-path="spatial_correlation.html"><a href="spatial_correlation.html#resources-1"><i class="fa fa-check"></i><b>4.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="point_patterns.html"><a href="point_patterns.html"><i class="fa fa-check"></i><b>5</b> Point Patterns</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="point_patterns.html"><a href="point_patterns.html#introduction-5"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#aims-4"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#application-4"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#data-3"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#tools-4"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="point_patterns.html"><a href="point_patterns.html#practical-4"><i class="fa fa-check"></i><b>5.2</b> Practical</a></li>
+<li class="chapter" data-level="5.3" data-path="point_patterns.html"><a href="point_patterns.html#extra-3"><i class="fa fa-check"></i><b>5.3</b> Extra</a></li>
+<li class="chapter" data-level="5.4" data-path="point_patterns.html"><a href="point_patterns.html#resources-2"><i class="fa fa-check"></i><b>5.4</b> Resources</a></li>
+</ul></li>
+<li class="part"><span><b>Spatial Modelling</b></span></li>
+<li class="chapter" data-level="6" data-path="interpolation.html"><a href="interpolation.html"><i class="fa fa-check"></i><b>6</b> Interpolation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="interpolation.html"><a href="interpolation.html#introduction-6"><i class="fa fa-check"></i><b>6.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#aims-5"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#application-5"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#data-4"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#tools-5"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="interpolation.html"><a href="interpolation.html#practical-5"><i class="fa fa-check"></i><b>6.2</b> Practical</a></li>
+<li class="chapter" data-level="6.3" data-path="interpolation.html"><a href="interpolation.html#extra-4"><i class="fa fa-check"></i><b>6.3</b> Extra</a></li>
+<li class="chapter" data-level="6.4" data-path="interpolation.html"><a href="interpolation.html#resources-3"><i class="fa fa-check"></i><b>6.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="spatial_regression.html"><a href="spatial_regression.html"><i class="fa fa-check"></i><b>7</b> Spatial Regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="spatial_regression.html"><a href="spatial_regression.html#introduction-7"><i class="fa fa-check"></i><b>7.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#aims-6"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#application-6"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#sr_data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#tools-6"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="spatial_regression.html"><a href="spatial_regression.html#practical-6"><i class="fa fa-check"></i><b>7.2</b> Practical</a></li>
+<li class="chapter" data-level="7.3" data-path="spatial_regression.html"><a href="spatial_regression.html#extra-5"><i class="fa fa-check"></i><b>7.3</b> Extra</a></li>
+<li class="chapter" data-level="7.4" data-path="spatial_regression.html"><a href="spatial_regression.html#resources-4"><i class="fa fa-check"></i><b>7.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="gwr.html"><a href="gwr.html"><i class="fa fa-check"></i><b>8</b> Geographically Weighted Regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="gwr.html"><a href="gwr.html#introduction-8"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#aims-7"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#application-7"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#data-5"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#tools-7"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="gwr.html"><a href="gwr.html#practical-7"><i class="fa fa-check"></i><b>8.2</b> Practical</a></li>
+<li class="chapter" data-level="8.3" data-path="gwr.html"><a href="gwr.html#extra-6"><i class="fa fa-check"></i><b>8.3</b> Extra</a></li>
+<li class="chapter" data-level="8.4" data-path="gwr.html"><a href="gwr.html#resources-5"><i class="fa fa-check"></i><b>8.4</b> Resources</a></li>
+</ul></li>
+<li class="part"><span><b>Locations and Flows</b></span></li>
+<li class="chapter" data-level="9" data-path="location_allocation.html"><a href="location_allocation.html"><i class="fa fa-check"></i><b>9</b> Location Allocation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="location_allocation.html"><a href="location_allocation.html#introduction-9"><i class="fa fa-check"></i><b>9.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#aims-8"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#application-8"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#data-6"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#tools-8"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="location_allocation.html"><a href="location_allocation.html#practical-8"><i class="fa fa-check"></i><b>9.2</b> Practical</a></li>
+<li class="chapter" data-level="9.3" data-path="location_allocation.html"><a href="location_allocation.html#extra-7"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
+<li class="chapter" data-level="9.4" data-path="location_allocation.html"><a href="location_allocation.html#resources-6"><i class="fa fa-check"></i><b>9.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="spatial_interaction.html"><a href="spatial_interaction.html"><i class="fa fa-check"></i><b>10</b> Spatial Interaction Modelling</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="spatial_interaction.html"><a href="spatial_interaction.html#introduction-10"><i class="fa fa-check"></i><b>10.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#aims-9"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#application-9"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#data-7"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#tools-9"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="spatial_interaction.html"><a href="spatial_interaction.html#practical-9"><i class="fa fa-check"></i><b>10.2</b> Practical</a></li>
+<li class="chapter" data-level="10.3" data-path="spatial_interaction.html"><a href="spatial_interaction.html#extra-8"><i class="fa fa-check"></i><b>10.3</b> Extra</a></li>
+<li class="chapter" data-level="10.4" data-path="spatial_interaction.html"><a href="spatial_interaction.html#resources-7"><i class="fa fa-check"></i><b>10.4</b> Resources</a></li>
+</ul></li>
+<li class="part"><span><b>Endmatter</b></span></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#closing"><i class="fa fa-check"></i>Closing remarks</a></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="assessment.html"><a href="assessment.html"><i class="fa fa-check"></i>Assessment</a></li>
+<li class="chapter" data-level="" data-path="Hints.html"><a href="Hints.html"><i class="fa fa-check"></i>Advice</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Spatial Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spatial_interaction" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Spatial Interaction Modelling<a href="spatial_interaction.html#spatial_interaction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-10" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Introduction<a href="spatial_interaction.html#introduction-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="images/banner-spatial-interaction.png" /></p>
+<div id="aims-9" class="section level3 unnumbered hasAnchor">
+<h3>Aims<a href="spatial_interaction.html#aims-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The aims of this practical are to:</p>
+<ol style="list-style-type: decimal">
+<li>Understand the aims and common applications of spatial interaction (gravity) models.</li>
+<li>Understand the design and calibration of spatial interaction models.</li>
+<li>Apply spatial interaction models to a contemporary sociological issue.</li>
+</ol>
+</div>
+<div id="application-9" class="section level3 unnumbered hasAnchor">
+<h3>Application<a href="spatial_interaction.html#application-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To that end, we’ll develop spatial interaction models to predict internal migration flows between local authorities in England and Wales.</p>
+</div>
+<div id="data-7" class="section level3 unnumbered hasAnchor">
+<h3>Data<a href="spatial_interaction.html#data-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All data for this practical have been sourced from the Office for National Statistics (ONS) at the local authority level and are found in [<code>data/ons/local-authority</code>] as follows:</p>
+<ul>
+<li>ONS internal migration flows for local authorities in England and Wales (2021) [<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales">Source</a>]</li>
+<li>ONS district geometries (2021) [<a href="(https://geoportal.statistics.gov.uk/datasets/ons%3E::local-authority-districts-december-2021-boundaries-gb-bfc/explore?location=54.734360%2C-2.584695%2C7)">Source</a>]</li>
+<li>ONS gross domestic product (GDP) per head at current market prices [<a href="https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2">Source</a>]</li>
+<li>ONS population [<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales">Source</a>]</li>
+</ul>
+</div>
+<div id="tools-9" class="section level3 unnumbered hasAnchor">
+<h3>Tools<a href="spatial_interaction.html#tools-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To Point</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/generate-near-table.html?tabs=dialog">Generate Near Table</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog">Generalized Linear Regression</a> (GeoAnalytics Desktop Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html">Notebooks in ArcGIS Pro</a></p>
+<hr />
+</div>
+</div>
+<div id="practical-9" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Practical<a href="spatial_interaction.html#practical-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>TO DO:</p>
+<ul>
+<li>Find some additional datasets for the “Something more?” section</li>
+<li>Update the Python notebook code to use a relative file path</li>
+</ul>
+<p>————— Concepts:</p>
+<p>-&gt; Newton’s Law of Universal Gravitation -&gt; Spatial flows between an
+origin and a destination are modelled as proportional to their
+gravitational force and inversely related to their spatial separation</p>
+<p>————— Sources:</p>
+<p>-&gt; [!] <a href="https://rpubs.com/adam_dennett/376877" class="uri">https://rpubs.com/adam_dennett/376877</a> -&gt; [!]
+<a href="https://discovery.ucl.ac.uk/id/eprint/10052338/7/Dennett_38-41-115-1-10-20181111.pdf" class="uri">https://discovery.ucl.ac.uk/id/eprint/10052338/7/Dennett_38-41-115-1-10-20181111.pdf</a>
+-&gt; <a href="https://openjournals.wu.ac.at/region/paper_175/175.html" class="uri">https://openjournals.wu.ac.at/region/paper_175/175.html</a> -&gt;
+<a href="https://cran.r-project.org/web/packages/simodels/vignettes/simodels.html" class="uri">https://cran.r-project.org/web/packages/simodels/vignettes/simodels.html</a>
+-&gt;
+<a href="https://robinlovelace.net/simodels/articles/sims-first-principles.html" class="uri">https://robinlovelace.net/simodels/articles/sims-first-principles.html</a>
+-&gt;
+<a href="https://repository.ncrm.ac.uk/resources/online/all/spatial_interaction_modelling" class="uri">https://repository.ncrm.ac.uk/resources/online/all/spatial_interaction_modelling</a>
+-&gt;
+<a href="https://researchbriefings.files.parliament.uk/documents/SN06077/SN06077.pdf" class="uri">https://researchbriefings.files.parliament.uk/documents/SN06077/SN06077.pdf</a>
+-&gt; <a href="https://worldmigrationreport.iom.int/msite/wmr-2024-interactive/" class="uri">https://worldmigrationreport.iom.int/msite/wmr-2024-interactive/</a>
+-&gt; <a href="https://doi.org/10.1371/journal.pone.0286244" class="uri">https://doi.org/10.1371/journal.pone.0286244</a> -&gt;
+<a href="https://rpubs.com/adam_dennett/259068" class="uri">https://rpubs.com/adam_dennett/259068</a></p>
+<p>————— Data:</p>
+<p>-&gt; Internal migration flows:
+<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales" class="uri">https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales</a></p>
+<p>-&gt; District geometries (2021):
+<a href="https://geoportal.statistics.gov.uk/datasets/ons" class="uri">https://geoportal.statistics.gov.uk/datasets/ons</a>::local-authority-districts-december-2021-boundaries-gb-bfc/explore?location=54.734360%2C-2.584695%2C7</p>
+<p>-&gt; GDP (Gross domestic product per head at current market prices):
+<a href="https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2" class="uri">https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2</a></p>
+<p>-&gt; Population:
+<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales" class="uri">https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales</a></p>
+<p>————— Summary</p>
+<ol style="list-style-type: decimal">
+<li>Produce bilateral distances and link origin-destination attributes
+for England and Wales local authority data</li>
+<li>Produce unconstrained (or total constrained) model</li>
+<li>Calibrate the model using Poisson regression</li>
+<li>Introduce production-, attraction- and doubly-constrained models</li>
+<li>Run constrained models using Python Notebook and <code>statsmodels</code> glm()</li>
+<li>Something more? Find the variables which best predict flow..</li>
+</ol>
+<p>[1] Load Local Authority districts</p>
+<p>[2] Return Centroids (Feature to Point): -&gt; Discuss: sensitivity to
+feature geometry -&gt; Calculate Geometry Attributes</p>
+<p>[3] Generate Near Table (links based on ID), using geodesic measurement,
+[!] save in Geodatabase (editable)</p>
+<p>[4] Load Gross domestic product (<code>gdp</code>) and population (<code>pop</code>) csv’s and
+use Join Field to add to Centroids data</p>
+<p>[5] Join Field, keeping the origin information (IN_FID), using ‘Use
+Field Mapping’ to select attributes of interest and updating names: -
+orig_LAD21CD (unique ID) - orig_LAD21NM (name) - orig_gdp - orig_pop -
+orig_long (or E) - orig_lat (or N)</p>
+<p>[6] Repeat for destinations (NEAR_ID): - dest_LAD21CD (unique ID) -
+dest_LAD21NM (name) - dest_gdp - dest_pop - dest_long (or E) - dest_lat
+(or N)</p>
+<p>[7] Create origin-destination field in the near table - !orig_LAD21CD! +
+“-” + !dest_LAD21C!</p>
+<p>[8] Load internal migration data (<code>flow</code>) and inspect - Histogram -
+Min-Max</p>
+<p>[9] Join Field, based on origin-destination field, transferring <code>flow</code>
+(time required)</p>
+<p>[10] Data cleaning: -&gt; Select by Attributes and remove rows: -
+orig_pop, dest_pop = 0 - orig_gdp, dest_gdp = 0 - <code>flow</code> is null -&gt;
+Result is (&lt;) ~80_000 rows</p>
+<p>[11] Visualise some flow data - Select by Attributes i.e., <code>flow</code> &gt;
+1_000 (n=~450) - XY to Line (<code>ORIG_LON</code> - Size by <code>flow</code> [REMOVE] as a
+complex dataset</p>
+<p>————— Data summary</p>
+<p>We now have all the data we need to begin modelling… similar format to
+Dennett (2018): <a href="https://rpubs.com/adam_dennett/376877" class="uri">https://rpubs.com/adam_dennett/376877</a></p>
+<p>Present data columns: -&gt; Origin (<code>orig_LAD21CD</code>) -&gt; Destination
+(<code>dest_LAD21CD</code>) -&gt; Flow (<code>flow</code>, # people) -&gt; Origin (vi) population
+(<code>orig_pop</code>) -&gt; Destination (wj) population (<code>dest_pop</code>) -&gt; Origin GDP
+(<code>orig_gdp</code>) -&gt; Destination GDP (<code>dest_gdp</code>) -&gt; Distance (<code>NEAR_DIST</code>,
+meters)</p>
+<p>[12] Exploratory plots - any correlations?</p>
+<p>————— Model description</p>
+<p>Classic multiplicative gravity model:</p>
+<p>(EQ1) <span class="math inline">\(T_{ij} = k \frac{V_i^μ W_j^α}{d_{ij}^{\beta}}\)</span></p>
+<p>Can also be written from Wilson (1971) as:</p>
+<p>(EQ2) <span class="math inline">\(T_{ij} = kV_i^μ W_j^αd_{ij}^{-\beta}\)</span></p>
+<p>The latter is mathematically identical, but removes the fraction
+(simpler).</p>
+<p>From Dennett:</p>
+<p>“The flows between an origin and destination are proportional to the
+product of the mass of the origin and destination and inversely
+proportional to the distance between them.</p>
+<p>As origin and destination masses increase, flows increase, but as
+distance increases, flows decrease, and vice versa.”</p>
+<p>Here:</p>
+<p><span class="math inline">\(T_{ij}\)</span> is the predicted flow between origins and destinations. <span class="math inline">\(V\)</span> is
+the origin “emissiveness” i.e., origin population and salaries (e.g.,
+<code>ORIG_POP</code>, <code>ORIG_GDP</code>, <code>ORIG_GDP_CAP</code>) <span class="math inline">\(W\)</span> is the destination
+“attractiveness” i.e., destination population and salaries (e.g.,
+<code>DEST_POP</code>, <code>DEST_GDP</code>, <code>DEST_GDP_CAP</code>) <span class="math inline">\(d\)</span> is the cost of flows i.e.,
+distance (<code>NEAR_DIST</code>) <span class="math inline">\(k\)</span>, <span class="math inline">\(μ\)</span>, <span class="math inline">\(α\)</span>, <span class="math inline">\(\beta\)</span> are model parameters to be
+estimated</p>
+<p>These parameters relate to the scaling effect or importance of the
+variables they are associated with.</p>
+<p>We can start with some basic parameters i.e., effects scale in a linear
+fashion. For a 1 unit increase in population, we might expect a 1 unit
+increase in flows of people from that origin.</p>
+<p>Newtons gravity uses a power law of <span class="math inline">\(\beta=-2\)</span>, so here are the starting
+values:</p>
+<p><span class="math inline">\(k=1\)</span>, <span class="math inline">\(μ=1\)</span>, <span class="math inline">\(α=1\)</span>, <span class="math inline">\(\beta=-2\)</span></p>
+<p>For <span class="math inline">\(V\)</span> (origin “emissiveness”) we will use origin population
+(<code>orig_pop</code>) For <span class="math inline">\(W\)</span> (destination “attractiveness”), we will use
+destination GDP per capita (<code>dest_gdp</code>) For <span class="math inline">\(d\)</span>, we use <span class="math inline">\(d^\beta\)</span>, where
+<span class="math inline">\(d\)</span> = <code>NEAR_DIST</code> and <span class="math inline">\(\beta=-2\)</span></p>
+<p><code>gm1</code> = <span class="math inline">\(V\)</span> * <span class="math inline">\(W\)</span> * <span class="math inline">\(d\)</span></p>
+<p>————— Modelling</p>
+<p>[13] Add Field (<code>gm1</code>), Float, following equation (distance in km)</p>
+<p>pow(!orig_pop!, 1) * pow(!dest_gdp!, 1) * pow(!NEAR_DIST!, 1000, -2)</p>
+<p>This produces an unconstrained output (unitless), as we have not used
+the k factor, which converts our model to a <em>total constrained</em> version
+by scaling to match the total number of flows i.e., sum of all observed
+flows divided by the sum of all of the other elements in the model.</p>
+<p>[14] Using Explore Statistics, return the sum of <code>flow</code>
+(102228926.73000628) and <code>gm1</code> (3912.65851170132), and then calculate a
+new field incorporating the scale factor (<code>gm1_scale</code>)</p>
+<p>Data = 3698001.8812999986 (# internal migrations) Model =
+~63224.55841802744 (sum of <code>gm1</code>)</p>
+<p>!gm1! * (3698001.8812999986 / 63224.55841802744)</p>
+<p>[!] Note: we can’t do this all via Add Field, as this is a row-wise
+calculation</p>
+<p>[15] Model evaluation</p>
+<p>First, check the total of <code>gm1_scale</code> matches the total flow (it does!),
+so our model is <em>total constrained</em></p>
+<p>[!] However, the output is pretty abysmal here (R2=0.07, Create Chart,
+Scatter Plot), because we haven’t tuned our parameters!</p>
+<p>————— Tuning parameters</p>
+<p>If we log both sides of the equation above, we get the following:</p>
+<p>(EQ3)
+<span class="math inline">\(\mathrm{ln}T_{ij}=k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij}\)</span></p>
+<p>This is basically a regression model!</p>
+<p>However, there are problems with using a log-linear approach, and
+instead we use Poisson regression, which is better for skewed
+distributions (like our flow data)</p>
+<p>[16] Visualise Statistics - Histrogram - Flow</p>
+<p>So our Poisson regression looks like the following:</p>
+<p>(EQ4)
+<span class="math inline">\(λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})\)</span></p>
+<p>[17] First, log the independent variables using Add Field -&gt;
+math.log(!orig_pop!) -&gt; math.log(!dest_gdp!) -&gt; math.log(!NEAR_DIST! /
+1000) # converting to km -&gt; * see section below on math.log()</p>
+<p>[18] Run Generalized Linear Regression (GeoAnalytics Desktop Tools) -&gt;
+Must use GDT version, as this allows for table inputs -&gt; Flow
+(dependent) -&gt; Logged variables (independent) -&gt; Count (Poisson)</p>
+<p>[19] Evaluate and interpret coefficients</p>
+<p>Variable ——– Coefficients —- Standard error —- t-Statistic —-
+Probability orig_pop_log —- 0.9985 ———- 0.0009 ———–
+1071.6299 —— 0 dest_gdp_log —- 0.2862 ———- 0.0006
+———– 446.6138 ——- 0 near_dist_log — -1.2354 ———
+0.0005 ———– -2611.7296 —– 0 Intercept ——- -5.4022
+——— 0.0132 ———– -409.3151 —— 0</p>
+<p>[20] Produce <code>gm2</code> (calibrated model) and evaluate performance using
+Create Chart, Scatter Plot</p>
+<p>Equation:
+math.exp(-5.4022+(0.9985<em>!orig_pop_log!)+(0.2862</em>!dest_gdp_log!)-(abs(-1.2354)*!near_dist_log!))</p>
+<p>Performance: R2 = 0.45</p>
+<p>[21] Introduce Origin constrained models</p>
+<p>-&gt; This is technically possible in ArcGIS but not easy, requiring us to
+use Encode Field to create dummy variables for <code>orig_LAD21CD</code>. -&gt;
+Generalised Linear Regression (tool) struggles with this number of
+variables (~300) with multicollinearity issues -&gt; Also very difficult
+to manually apply the coefficients to a regression equations</p>
+<p>-&gt; Instead, load a Python notebook and use the appendix code to perform
+GLR and predict (<code>gm3</code>s), saving output to csv</p>
+<p>[*] Important, while I don’t expect the students to write the code
+independently, I should introduce it in a peicemeal fashion, explaining
+what each line does.</p>
+<p>[22] Load predictions csv and assess performance (<code>flow_int</code> vs. <code>gm3</code>):</p>
+<p>-&gt; R2 = 0.57 -&gt; Sum of modelled flows for each origin matches measured
+flows</p>
+<p>[23] Discuss destination-constrained and doubly-constrained models</p>
+<p>[*] Ask students to run a destination-constrained model, adapting the
+Python code to produce <code>gm4</code>?</p>
+</div>
+<div id="extra-8" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Extra<a href="spatial_interaction.html#extra-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Options:</p>
+<p>-&gt; Add additional predictors e.g., median earnings rather than GDP,
+unemployment rate, housing affordability, share of working-age
+population</p>
+<pre><code>- We can do this for the unconstrained, production or attraction constrained models (i.e., more predictors for the origin or destination). but not for the doubly-constrained model, as this takes into account the distance only (?). </code></pre>
+<p>-&gt; Include contiguity: - Create numeric ID for LA geometries using
+SequentialNumber() - Create Spatial Weights Matrix (Contiguity Edges
+Corners) - Convert Spatial Weights Matrix to Table - Join SWM table to
+LA geometries: = NUMERIC_ID (origin) to numeric_ID: orig_LAD21CD = NID
+(destination) to numeric_ID: dest_LAD21CD - Create origin-destination
+field - Create binary bordering field (<code>contig</code> = 1) - Join Field:
+NEAR_TABLE to SVWM based on origin-destination, linking <code>contig</code> = This
+produces 1 (bordering) or <Null> (not bordering) - Calculate Field,
+update <code>contig</code> using: 0 if !contig! is None else !contig! - Add
+contiguity to the model</p>
+<p>————— Log issues</p>
+<p>Python: math.log() uses <code>e</code> as the default</p>
+<p>R: log() uses <code>exp(1)</code> as the default, which is identical to above:
+<a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log" class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log</a></p>
+<p>Excel: log() defaults to base10, which is different! Either plug in the
+above i.e., log(val, EXP(1)), or use LN()</p>
+<p>————— Python Notebook for GLR Poisson</p>
+<pre><code>import os
+import arcpy
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# Current ArcGIS Pro project
+aprx = arcpy.mp.ArcGISProject(&quot;CURRENT&quot;)
+# List maps
+m = aprx.listMaps()[0]
+
+# Access table
+table = m.listTables(&quot;la_near_table_v2&quot;)[0]
+table_path = table.dataSource
+workspace = arcpy.Describe(ta
+
+# List of fields
+fields = [f.name for f in arcpy.ListFields(table_path)]
+
+# Data to pd
+rows = arcpy.da.SearchCursor(table_path, fields)
+df = pd.DataFrame(list(rows), columns=fields)
+
+# Create formula and run glm 
+model_formula = &quot;flow_int ~ C(ORIG_LAD21CD) + orig_pop_log + dest_gdp_log + near_dist_log - 1&quot;
+model = smf.glm(formula=model_formula, data=df, family=sm.families.Poisson()).fit()
+
+# Summary
+# print(model.summary())
+
+# Predictions
+df[&quot;gm3&quot;] = model.predict(exog=df)
+
+# Sets path to output (workspace + file name)
+#out_table = os.path.join(workspace, &quot;la_near_table_v2_pred.csv&quot;)
+
+# Manual export to csv
+df.to_csv(r&quot;C:/Users/mzdi2mt2/Documents/GEOG73001-processing/week-10/la_near_table_v2_pred.csv&quot;, index=False)</code></pre>
+</div>
+<div id="resources-7" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Resources<a href="spatial_interaction.html#resources-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Wilson, A.G. (<a href="https://doi.org/10.1068/a030001">1971</a>). A family of spatial interaction models, and associated developments. Environment and Planning A, 3(1), pp.1-32.</li>
+<li>Haynes, K.E., &amp; Fotheringham, A.S. (<a href="https://researchrepository.wvu.edu/rri-web-book/16/">1985</a>). Gravity and Spatial Interaction Models. Reprint. Edited by Grant Ian Thrall. WVU Research Repository, 2020.</li>
+<li>Fotheringham, A.S. and M.E. O’Kelly (<a href="https://www.amazon.co.uk/Spatial-Interaction-Models-Formulations-Applications/dp/0792300211">1989</a>) Spatial Interaction Models: Formulations and Applications. London: Kluwer Academic.</li>
+<li>Dennett, A. and Wilson, A. (<a href="https://doi.org/10.1068/a45398">2013</a>). A multilevel spatial interaction modelling framework for estimating interregional migration in Europe. Environment and Planning A, 45(6), pp.1491-1507.</li>
+<li>Rowe, F., Lovelace, R. and Dennett, A. (<a href="https://doi.org/10.4337/9781802203233.00019">2024</a>). Spatial interaction modelling: a manifesto. In A research agenda for spatial analysis (pp. 177-196). Edward Elgar Publishing.</li>
+<li>Liao, M. and Oshan, T.M. (<a href="https://doi.org/10.1111/gean.70001">2025</a>). A Data‐Driven Approach to Spatial Interaction Models of Migration: Integrating and Refining the Theories of Competing Destinations and Intervening Opportunities. Geographical Analysis, 57(3), pp.540-554.</li>
+</ul>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="location_allocation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="summary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

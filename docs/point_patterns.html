@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Point Patterns | Introduction to Spatial Analysis</title>
+  <meta name="description" content="Chapter 5 Point Patterns | Introduction to Spatial Analysis" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Point Patterns | Introduction to Spatial Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Point Patterns | Introduction to Spatial Analysis" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="spatial_correlation.html"/>
+<link rel="next" href="interpolation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<div style="text-align: center; margin: 1em 0;">
+  <img src="images/course-logo.png" width="200">
+</div>
+
+<li class="divider"></li>
+<li class="part"><span><b>Home</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction to Spatial Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practical-aims"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#ilo"><i class="fa fa-check"></i>Intended Learning Outcomes</a></li>
+</ul></li>
+<li class="part"><span><b>Representing the World</b></span></li>
+<li class="chapter" data-level="1" data-path="geo_data.html"><a href="geo_data.html"><i class="fa fa-check"></i><b>1</b> Working with Geographic Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="geo_data.html"><a href="geo_data.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#aims"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#application"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="geo_data.html"><a href="geo_data.html#tools"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="geo_data.html"><a href="geo_data.html#practical"><i class="fa fa-check"></i><b>1.2</b> Practical</a></li>
+<li class="chapter" data-level="1.3" data-path="geo_data.html"><a href="geo_data.html#extra"><i class="fa fa-check"></i><b>1.3</b> Extra</a></li>
+</ul></li>
+<li class="part"><span><b>Spatial Patterns</b></span></li>
+<li class="chapter" data-level="2" data-path="spatial_weights.html"><a href="spatial_weights.html"><i class="fa fa-check"></i><b>2</b> Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#introduction-2"><i class="fa fa-check"></i><b>2.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#aims-1"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#application-1"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#data-1"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_weights.html"><a href="spatial_weights.html#tools-1"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="spatial_weights.html"><a href="spatial_weights.html#practical-1"><i class="fa fa-check"></i><b>2.2</b> Practical</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="spatial_weights.html"><a href="spatial_weights.html#simpler-approach-pythonic-no-sql-no-geodatabase-faff"><i class="fa fa-check"></i><b>2.2.1</b> Simpler approach (Pythonic, no SQL, no geodatabase faff)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="spatial_weights.html"><a href="spatial_weights.html#extra-1"><i class="fa fa-check"></i><b>2.3</b> Extra</a></li>
+<li class="chapter" data-level="2.4" data-path="spatial_weights.html"><a href="spatial_weights.html#sw_resources"><i class="fa fa-check"></i><b>2.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html"><i class="fa fa-check"></i><b>3</b> Spatial Autocorrelation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#introduction-3"><i class="fa fa-check"></i><b>3.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#aims-2"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#application-2"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#autocorrelation_data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#tools-2"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#practical-2"><i class="fa fa-check"></i><b>3.2</b> Practical</a></li>
+<li class="chapter" data-level="3.3" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#extra-2"><i class="fa fa-check"></i><b>3.3</b> Extra</a></li>
+<li class="chapter" data-level="3.4" data-path="spatial_autocorrelation.html"><a href="spatial_autocorrelation.html#resources"><i class="fa fa-check"></i><b>3.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="spatial_correlation.html"><a href="spatial_correlation.html"><i class="fa fa-check"></i><b>4</b> Spatial Correlation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="spatial_correlation.html"><a href="spatial_correlation.html#introduction-4"><i class="fa fa-check"></i><b>4.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#aims-3"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#application-3"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#data-2"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_correlation.html"><a href="spatial_correlation.html#tools-3"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="spatial_correlation.html"><a href="spatial_correlation.html#practical-3"><i class="fa fa-check"></i><b>4.2</b> Practical</a></li>
+<li class="chapter" data-level="4.3" data-path="spatial_correlation.html"><a href="spatial_correlation.html#correlation-extra"><i class="fa fa-check"></i><b>4.3</b> Extra</a></li>
+<li class="chapter" data-level="4.4" data-path="spatial_correlation.html"><a href="spatial_correlation.html#resources-1"><i class="fa fa-check"></i><b>4.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="point_patterns.html"><a href="point_patterns.html"><i class="fa fa-check"></i><b>5</b> Point Patterns</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="point_patterns.html"><a href="point_patterns.html#introduction-5"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#aims-4"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#application-4"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#data-3"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="point_patterns.html"><a href="point_patterns.html#tools-4"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="point_patterns.html"><a href="point_patterns.html#practical-4"><i class="fa fa-check"></i><b>5.2</b> Practical</a></li>
+<li class="chapter" data-level="5.3" data-path="point_patterns.html"><a href="point_patterns.html#extra-3"><i class="fa fa-check"></i><b>5.3</b> Extra</a></li>
+<li class="chapter" data-level="5.4" data-path="point_patterns.html"><a href="point_patterns.html#resources-2"><i class="fa fa-check"></i><b>5.4</b> Resources</a></li>
+</ul></li>
+<li class="part"><span><b>Spatial Modelling</b></span></li>
+<li class="chapter" data-level="6" data-path="interpolation.html"><a href="interpolation.html"><i class="fa fa-check"></i><b>6</b> Interpolation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="interpolation.html"><a href="interpolation.html#introduction-6"><i class="fa fa-check"></i><b>6.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#aims-5"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#application-5"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#data-4"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="interpolation.html"><a href="interpolation.html#tools-5"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="interpolation.html"><a href="interpolation.html#practical-5"><i class="fa fa-check"></i><b>6.2</b> Practical</a></li>
+<li class="chapter" data-level="6.3" data-path="interpolation.html"><a href="interpolation.html#extra-4"><i class="fa fa-check"></i><b>6.3</b> Extra</a></li>
+<li class="chapter" data-level="6.4" data-path="interpolation.html"><a href="interpolation.html#resources-3"><i class="fa fa-check"></i><b>6.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="spatial_regression.html"><a href="spatial_regression.html"><i class="fa fa-check"></i><b>7</b> Spatial Regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="spatial_regression.html"><a href="spatial_regression.html#introduction-7"><i class="fa fa-check"></i><b>7.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#aims-6"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#application-6"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#sr_data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_regression.html"><a href="spatial_regression.html#tools-6"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="spatial_regression.html"><a href="spatial_regression.html#practical-6"><i class="fa fa-check"></i><b>7.2</b> Practical</a></li>
+<li class="chapter" data-level="7.3" data-path="spatial_regression.html"><a href="spatial_regression.html#extra-5"><i class="fa fa-check"></i><b>7.3</b> Extra</a></li>
+<li class="chapter" data-level="7.4" data-path="spatial_regression.html"><a href="spatial_regression.html#resources-4"><i class="fa fa-check"></i><b>7.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="gwr.html"><a href="gwr.html"><i class="fa fa-check"></i><b>8</b> Geographically Weighted Regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="gwr.html"><a href="gwr.html#introduction-8"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#aims-7"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#application-7"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#data-5"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="gwr.html"><a href="gwr.html#tools-7"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="gwr.html"><a href="gwr.html#practical-7"><i class="fa fa-check"></i><b>8.2</b> Practical</a></li>
+<li class="chapter" data-level="8.3" data-path="gwr.html"><a href="gwr.html#extra-6"><i class="fa fa-check"></i><b>8.3</b> Extra</a></li>
+<li class="chapter" data-level="8.4" data-path="gwr.html"><a href="gwr.html#resources-5"><i class="fa fa-check"></i><b>8.4</b> Resources</a></li>
+</ul></li>
+<li class="part"><span><b>Locations and Flows</b></span></li>
+<li class="chapter" data-level="9" data-path="location_allocation.html"><a href="location_allocation.html"><i class="fa fa-check"></i><b>9</b> Location Allocation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="location_allocation.html"><a href="location_allocation.html#introduction-9"><i class="fa fa-check"></i><b>9.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#aims-8"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#application-8"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#data-6"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="location_allocation.html"><a href="location_allocation.html#tools-8"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="location_allocation.html"><a href="location_allocation.html#practical-8"><i class="fa fa-check"></i><b>9.2</b> Practical</a></li>
+<li class="chapter" data-level="9.3" data-path="location_allocation.html"><a href="location_allocation.html#extra-7"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
+<li class="chapter" data-level="9.4" data-path="location_allocation.html"><a href="location_allocation.html#resources-6"><i class="fa fa-check"></i><b>9.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="spatial_interaction.html"><a href="spatial_interaction.html"><i class="fa fa-check"></i><b>10</b> Spatial Interaction Modelling</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="spatial_interaction.html"><a href="spatial_interaction.html#introduction-10"><i class="fa fa-check"></i><b>10.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#aims-9"><i class="fa fa-check"></i>Aims</a></li>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#application-9"><i class="fa fa-check"></i>Application</a></li>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#data-7"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="spatial_interaction.html"><a href="spatial_interaction.html#tools-9"><i class="fa fa-check"></i>Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="spatial_interaction.html"><a href="spatial_interaction.html#practical-9"><i class="fa fa-check"></i><b>10.2</b> Practical</a></li>
+<li class="chapter" data-level="10.3" data-path="spatial_interaction.html"><a href="spatial_interaction.html#extra-8"><i class="fa fa-check"></i><b>10.3</b> Extra</a></li>
+<li class="chapter" data-level="10.4" data-path="spatial_interaction.html"><a href="spatial_interaction.html#resources-7"><i class="fa fa-check"></i><b>10.4</b> Resources</a></li>
+</ul></li>
+<li class="part"><span><b>Endmatter</b></span></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#closing"><i class="fa fa-check"></i>Closing remarks</a></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="assessment.html"><a href="assessment.html"><i class="fa fa-check"></i>Assessment</a></li>
+<li class="chapter" data-level="" data-path="Hints.html"><a href="Hints.html"><i class="fa fa-check"></i>Advice</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Spatial Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="point_patterns" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Point Patterns<a href="point_patterns.html#point_patterns" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-5" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Introduction<a href="point_patterns.html#introduction-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="images/banner-point-patterns.png" /></p>
+<div id="aims-4" class="section level3 unnumbered hasAnchor">
+<h3>Aims<a href="point_patterns.html#aims-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The aims of this practical are to:</p>
+<ol style="list-style-type: decimal">
+<li>Understand the key differences between point-pattern analysis and point-process modelling.</li>
+<li>Understand common approaches used to analyse the spatial distribution of point data.</li>
+<li>Apply these approaches to an ecological dataset.</li>
+</ol>
+</div>
+<div id="application-4" class="section level3 unnumbered hasAnchor">
+<h3>Application<a href="point_patterns.html#application-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To that end, we’ll analyse the patterns in a Point dataset, using research-grade species observations of <em>Panthera tigris</em> from <a href="https://www.inaturalist.org/observations?place_id=any&amp;view=species">iNaturalist</a>, obtained via the Global Biodiversity Information Facility (<a href="https://www.gbif.org/species/search">GBIF</a>).</p>
+</div>
+<div id="data-3" class="section level3 unnumbered hasAnchor">
+<h3>Data<a href="point_patterns.html#data-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The data for this practical are available in [<code>data/gbif</code>] as follows:</p>
+<ul>
+<li>Species observations of <em>Panthera tigris</em> (N=4449) obtained via GBIF [<a href="https://doi.org/10.15468/dl.hjrenk">Source</a>]</li>
+<li>Protected areas of India (<em>National Parks and Wildlife Sanctuaries</em>), built from <a href="www.openstreetmap.org">OpenStreetMap</a> data [<a href="https://geo.ejatlas.org/layers/geonode:Protected_Area_India_Final#">Source</a>]</li>
+</ul>
+</div>
+<div id="tools-4" class="section level3 unnumbered hasAnchor">
+<h3>Tools<a href="point_patterns.html#tools-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><em>Point Patterns</em></p>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a> (Spatial Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog">Mean Center</a> (Spatial Statistics Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog">Median Center</a> (Spatial Statistics Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog">Standard Distance</a> (Spatial Statistics Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/directional-distribution.html?tabs=dialog">Directional Distribution (Standard Deviational Ellipse)</a> (Spatial Statistics Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">Multi-Distance Spatial Cluster Analysis (Ripley’s K Function)</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog">Find Point Clusters</a> (GeoAnalytics Server Tools)</p>
+<p><em>Data Management</em></p>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/spatial-join.html?tabs=dialog">Spatial Join</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog">Generate Tessellation</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog">Minimum Bounding Geometry</a> (Data Management), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> (Data Management), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table To Point</a> (Data Management Tools)</p>
+<hr />
+</div>
+</div>
+<div id="practical-4" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Practical<a href="point_patterns.html#practical-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Structure: -&gt; Visualising Points -&gt; Centrography -&gt; Randomness and clustering -&gt; Identifying clusters</p>
+<p>Discussion points: -&gt; Ensure the practical finishes with a natural progression to point-process modelling i.e., all of this is great, and tells us about the pattern of points, but not how that pattern arises - outside the scope of this unit, but an ecological example in Spatial Ecology. -&gt; Observation Window -&gt; Uncertainty (n=125 at single location, +/- 30 km, importance at our scale of analysis?) -&gt; DON’T discuss presence-absence problems here, as this will be better suited to the interpolation practical</p>
+<hr />
+<p>[1] View data (.csv)</p>
+<p>[2] Load to ArcGIS and convert to Point - XY Table to Points not working, even with minimal and super-minimal (lat-lon only) examples -[Solution] Pasting data to a new csv works - bodge!</p>
+<p>[3] Subset to area of interest (Indian subcontinent); -&gt; Select by Attributes (ADMIN = ‘India’ OR ADMIN = ‘Nepal’ OR ADMIN = ‘Bhutan’ OR ADMIN = ‘Bangladesh’) -&gt; Either Export Selection (or keep selected) -&gt; Clip: Input = Tiger Points, Feature = Natural Earth (selected record)</p>
+<p>[Topics] Discuss Spatial Joins / Overlay / Clip here? [TO DO] Remove non-contiguous part? Multi-part to single-part</p>
+<p>[4] Dissolve our area of interest (Indian Subcontinent): -&gt; Dissolve tool - Natural Earth - Use the selected records -&gt; Dissolve Fields: leave blank = all features together -&gt; Statistics Fields: also blank (just using area to define study extent), but could do statistics here e.g., POS_EST [SUM], GDP_MD [Mean]</p>
+<p>[Topics] Discuss polygon-representation issues i.e., does the Tiger recognise political boundaries?</p>
+<p>[5] Projection</p>
+<ul>
+<li>In the previous practicals, we’ve largely been dealing with topological issues (i.e., neighbouring, bordering) and haven’t therefore had to deal with geometric issues i.e., areas, distances (link to Understanding GIS, Week 2)</li>
+<li>In this practical, we are considering those issues i.e., are points clustered or randomly dispersed?</li>
+<li>As a result, the choice of projection is an important one!</li>
+<li>How do we select:
+<ul>
+<li>Best option (for global analysis or if in doubt) = ellipsoidal / geodesic measurement</li>
+<li>Smaller areas, projected CRS, selecting a property to preserve (conformal, equal area, equidistant)</li>
+<li>For individual countries, we can often use the national grid e.g., the CRS is British National Grid (conformal), but is sufficiently accurate for area and distance calculations</li>
+</ul></li>
+<li>For area, we can select via:
+<ul>
+<li>The Projection Wizard -&gt; Copy WKT to text, save as .prj -&gt; Import Coordinate System</li>
+<li>New suggested projected coordinate system -&gt; Extent of a layer -&gt; Property (conformal, equal-area, etc)</li>
+</ul></li>
+</ul>
+<p>[6A] Generate tesselation (2000 km2) [6B] Spatial join (Target = tesselate, Join = points, field name = county, one to one, completely contains [or intersects])</p>
+<p>[Topics] Symbology effects, Graduated Colours (using quantiles etc) or Unclassed Colours (min to max)</p>
+<p>[!] Important, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters [!] When tesselated, there is one-two areas that stands out (&gt;500 observations)</p>
+<p>[7] Kernel Density -&gt; Population field = NONE ? -&gt; Cell size e.g., 10_000 m -&gt; Explore changing search radius e.g., 20_000 to 200_000 m2 -&gt; Method = Geodesic (incorporting Earth shape) -&gt; [TO CHECK] Effects of barriers - does influence intensity… -&gt; [NOTE] This only produces values within the data range (x-y)</p>
+<p>-&gt; This process creates static layers, but we can also use a dynamic approach via Symbology -&gt; More flexible, but less robust i.e., Radius is in screen units (points), rather than map units (meters, feet, etc) -&gt; [CHECK] Constant vs. Dynamic</p>
+<p>[8] Mean Center and Median Center -&gt; Center of Mass, discrepancy of mean-median caused by skew -&gt; Median = 50% of points above+below point, and left+right -&gt; For the tiger dataset, the mean is skewed north by Himalayan observations</p>
+<p>[9] Standard Distance tool -&gt; Produces 559904.230305 m for Indian dataset i.e., on average, observations are ~560 km apart -&gt; Link back to projection here - uses the units of projection, so if we use a geographic projection, units in degrees</p>
+<p>[10] Directional Distribution (Standard Deviational Ellipse) -&gt; This provides information on the center, dispersion, and orientation -&gt; CenterX and CentreY is identical to outputs of <code>mean centre</code> and <code>standard distance</code> tools -&gt; Shape indicates wider disperson along N-S axis (YStdDist) vs. E-W axis (XStdDist), with rotation of ~12deg. -&gt; This probably reflects outlier points in Bangladesh, Assam etc, coupled with points in SW India</p>
+<p>[11] Average Nearest Neighbour (Clark-Evans R) -&gt; Very straightforward implementation (use projected data, with Euclidean distance) -&gt; Interpretation simple, with html output</p>
+<p>[TO DO] Communicate analytical approach, z-score</p>
+<p>[12] Multi-Distance Spatial Cluster Analysis (Ripley’s K)</p>
+<p>-&gt; Very slow with high number of permutations, and very slow even with no permutations -&gt; Highly sensitive to “study area” method, see: <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog" class="uri">https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog</a></p>
+<p>[TO HIGHLIGHT] Observation Window [TO INVESTIGATE] Boundary correction [UNDERSTAND] The Ripley family - how is the ‘K’ in ArcGIS different from G and F in “Geographic Data Science with Python”</p>
+<p>This is a reference to <span class="citation">Ripley (<a href="#ref-ripley_statistical_1988">1988</a>)</span>.</p>
+<p>Interpretation: - Observed K [actual data] &gt; Expected K [complete spatial randomness] (Clustered) - points closer together than by pure chance, at that specific distance - Else Observed K &lt; Expected K (Dispered) - points spread out compared to a random pattern</p>
+<p>Visual: - Observed K line far from Expected K line = clustering is statistically significant</p>
+<p>[13] Find Point Clusters (GeoAnalytics)</p>
+<p>-&gt; Key methods: DBSCAN (defined-distance) and HDBSCAN (self-adjusting)</p>
+<p>[KEY CHOICES] Minimum number of features (% of dataset), and search distance - This flexibility is a strength and a limitation - Search distance - we should do this based on ecological grounds! (~100 km2) - Minimum number - 45 (1%) - This gives a reasonable pattern (7 main clusters, plus outliers)</p>
+<p>-&gt; HDBSCAN gives different results, varying distance based on point density (central block broken up into smaller clusters, and v.v elsewhere) -&gt; For this data, DBSCAN makes more sense - fixed distance, based on ecological evidence (not Point clustering)</p>
+</div>
+<div id="extra-3" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Extra<a href="point_patterns.html#extra-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>[Testing Observation Window]</p>
+<p>[A] Load Protected areas feature layer [B] Filter to Corbett Tiger Reserve (first in India) [C] Reproject (to conformal projection used elsewhere) — [Test student understanding here?] … ArcGIS seems to handly this on-the-fly (works if projection is different AND datum) [D] Filter to Points within the reserve (Clip) [E] Area is critical for subsequent calculations, so calculate the reserve area using Calculate Geometry Attributes [F] Assess the spatial pattern using Nearest Neighbour Analysis -&gt; Area = Nature Reserve Area -&gt; Result = Still clustered, because there are many points at the same location [G] Filter to unique locations = Delete Identical, Shape -&gt; Result = Random [H] Compare to random distribution: -&gt; Create Random Points - Constrain to Reserve - # points to match real data -&gt; Rerun Nearest Neighbour Analysis = random -&gt; Change area… double area = significant</p>
+<p>[EMPHASISE] Edge correction, area sensitivity</p>
+<p>—————– Instructions for GBIF for students</p>
+<p>[Manual]</p>
+<p>-&gt; Register for GBIF -&gt; Get data -&gt; Search species e.g., Canis lupus Linnaeus, 1758 -&gt; Click “Occurrences” -&gt; Dataset - iNaturalist Research-grade observations -&gt; Location - Including coordinates -&gt; Select country and/or continent -&gt; Filter to year if relevant</p>
+<p>[Plugin]</p>
+<p>-&gt; Use the Download Species Occurrence Points geoprocessing tool via ArcGIS: <a href="https://www.arcgis.com/home/item.html?id=927944e867624504bfd6c489b0d2aec7" class="uri">https://www.arcgis.com/home/item.html?id=927944e867624504bfd6c489b0d2aec7</a>, described here: <a href="https://techdocs.gbif.org/en/data-use/importing-gbif-data-into-arcgis" class="uri">https://techdocs.gbif.org/en/data-use/importing-gbif-data-into-arcgis</a> -&gt; Catalog - Portal - ArcGIS Online - Search GBIF - Right click (add to project) -&gt; Unable to filter based on Natural Earth polygon (India, Use the selected records) – too complex -&gt; Instead, use minimum bounding geometry (‘envelope’ for a typical bbox), utilises the projection of the input data (not map) [FAILS] Same issue as previously (xy_table_to_points - ERROR 000308: Invalid field type)</p>
+<p>—————– Data sources:</p>
+<p>Panthera tigris (Linnaeus, 1758) in <strong>Asia</strong> (n=4449): GBIF.org (02 June 2026) GBIF Occurrence Download <a href="https://doi.org/10.15468/dl.hjrenk" class="uri">https://doi.org/10.15468/dl.hjrenk</a> -&gt; iNaturalist Research-grade observations (n=2144) -&gt; Bengal Tiger (Panthera tigris) Sighting (n=2306)</p>
+<p>Panthera tigris (Linnaeus, 1758) in <strong>India</strong> (n=2144, iNaturalist only): GBIF.org (02 June 2026) GBIF Occurrence Download <a href="https://doi.org/10.15468/dl.7q" class="uri">https://doi.org/10.15468/dl.7q</a></p>
+<p>India protected areas: <a href="https://geo.ejatlas.org/layers/geonode:Protected_Area_India_Final#" class="uri">https://geo.ejatlas.org/layers/geonode:Protected_Area_India_Final#</a></p>
+<p>—————– Quadrat Statistics - too complex (chi-squared…)</p>
+<p>-&gt; Generate N random points within the indian subcontinent boundary (Create Random Points) -&gt; Evaluate Bin Sizes for Point Aggregation (square, based on random points) -&gt; Clip to India boundary -&gt; Spatial Join new grid with Point data (update field name to ACTUAL_COUNT) -&gt; Add Field: (!Obs_Count! - !Exp_Count!)**2 / !Exp_Count! -&gt; Visualise statistics (SUM)… Chi-squared statistic = 159,552.196556926</p>
+<p>—————– Ripleys (AI overview)</p>
+<ol style="list-style-type: decimal">
+<li><p>Ripley’s K (Multi-Distance Spatial Cluster Analysis)What it does: It counts the number of neighboring features found at various distances from each feature.Use case: It helps you find if your points are clustered, dispersed, or random at different scales (e.g., are crime hotspots tight and localized, or spread out across a whole city?).ArcGIS Tool: Multi-Distance Spatial Cluster Analysis (Spatial Statistics toolbox).</p></li>
+<li><p>Ripley’s G (Nearest Neighbor Event-to-Event)What it does: It calculates the distance from each point to its nearest neighboring point and plots the cumulative distribution of these distances.Use case: It is perfect for testing if specific features (like specific plant species or retail store locations) are clustered together. If <span class="math inline">\(G(d)\)</span> shows 80% of points have a nearest neighbor within 10 meters, it indicates tight clustering.ArcGIS Tool: Average Nearest Neighbor or evaluated using Spatial Autocorrelation.</p></li>
+<li><p>Ripley’s F (Empty Space or Point-to-Event)What it does: Instead of measuring from feature to feature, it measures the distance from a set of randomly placed points (empty spaces) to the nearest feature.Use case: It measures the “gaps” between features. For example, it can help determine if a city has an even distribution of parks by measuring how far a randomly selected residential street is from the nearest green space</p></li>
+</ol>
+</div>
+<div id="resources-2" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Resources<a href="point_patterns.html#resources-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Baddeley, A., Rubak, E., &amp; Turner, R. (<a href="https://doi.org/10.1201/b19708">2015</a>). Spatial Point Patterns: Methodology and Applications with R (1st ed.). Chapman and Hall/CRC.</li>
+<li>Ripley, B.D. (<a href="https://doi.org/10.1017/CBO9780511624131">2012</a>) Statistical Inference for Spatial Processes, Cambridge University Press</li>
+</ul>
+
+</div>
+</div>
+
+
+
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-ripley_statistical_1988" class="csl-entry">
+Ripley, B.D. (1988) <em>Statistical <span>Inference</span> for <span>Spatial</span> <span>Processes</span></em>. Cambridge: Cambridge University Press. doi:<a href="https://doi.org/10.1017/CBO9780511624131">10.1017/CBO9780511624131</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="spatial_correlation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="interpolation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

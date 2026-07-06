@@ -1,0 +1,69 @@
+# (PART\*) Representing the World {.unnumbered}
+
+# Working with Geographic Data {#geo_data}
+
+## Introduction
+
+![](images/banner-geographic-data.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1.  Develop familiarity with ArcGIS interface.
+2.  Develop skills in loading and investigating vector and raster data.
+3.  Understand layer symbology and the basics of map production.
+
+### Application {.unnumbered}
+
+To achieve this, we'll import raster (temperature and precipitation layers) and vector data (country Polygons and city Points) into ArcGIS, visualise and summarise current and future climates, and produce a map.
+
+### Data {.unnumbered}
+
+-   WorldClim temperature and precipitation data, available in [`data/world-clim`] [[Source](https://www.worldclim.org/data/index.html)]
+-   Natural Earth 1:10m Cultural Vectors, available in [`data/natural-earth`] [[Source](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)]
+-   Esri World Cities, available in [`data/esri`] [[Source](https://hub.arcgis.com/datasets/esri::world-cities/explore?location=52.561735%2C1.201909%2C6)]
+
+### Tools {.unnumbered}
+
+[Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog) (Spatial Analyst), [Cell Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog) (Spatial Analyst Tools), [Select Layer By Attribute](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/select-layer-by-attribute.html?tabs=dialog) (Data Management Tools)
+
+------------------------------------------------------------------------
+
+## Practical
+
+During this practical...
+
+[1] Open ArcGIS Pro and become familiar with layout
+
+[2] Add vector data (countries + cities)
+
+[3] Filter cities to \>5 million population using [Select Layer By Attribute](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/select-layer-by-attribute.html?tabs=dialog) [n=54, Export]
+
+[4] Add example of raster data e.g., `wc2.1_10m_tavg_01.tif` - talk about generalisation and critical cartography e.g., @crampton_introduction_2005
+
+[5] Use [Cell Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog) to average all the temperature data [`data/world-clim/wc2.1_10m_tavg`]
+
+[6] Repeat for precipitation [`data/world-clim/wc2.1_10m_prec`]
+
+[7] Use [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog) (country - temperature)
+
+[8] Use [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog) (city - temperature)
+
+[9] Symbolise points based on temperature, population ...
+
+[10] Make a beautiful map
+
+## Extra
+
+In the practical we've been working with **historical** climate data (1970 - 2000) from [WorldClim 2](https://www.worldclim.org/data/worldclim21.html), described by @fick2017.
+
+WorldClim 2 also includes **future** climate projections, derived from CMIP6 (*Coupled Model Intercomparison Project Phase 6*), a project which combines outputs from a range of global climate models (GCM) for different scenarios of societal development, known as [Shared Socio-economic Pathways](https://doi.org/10.1016/j.gloenvcha.2016.05.009) (SSPs).
+
+A good overview of the SSPs is provided [here](https://www.dkrz.de/en/communication/climate-simulations/cmip6-en/the-ssp-scenarios).
+
+> Download the monthly average temperature datasets [`tx`] for 2081-2100 using the U.K. Earth System Model (`UKESM1-0-LL`, @sellar2019) at a 10-minute spatial resolution [here](https://www.worldclim.org/data/cmip6/cmip6_clim10m.html).
+
+> For SSP1-2.6 (*Sustainable*), SSP2-4.5 (*Middle of the road*), SSP3-7.0 (*Regional rivalry*) and SSP5-8.5 (*Fossil-Fueled Development*), calculate the average annual monthly temperature using [Cell Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog).
+
+Which world cities (\>5 million population) are expected to see the greatest increase in temperature by 2081 - 2100? You may want to use `Zonal Statistics` again...

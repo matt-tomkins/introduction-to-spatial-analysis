@@ -1,0 +1,103 @@
+# (PART\*) Spatial Patterns {.unnumbered}
+
+# Spatial Weights {#spatial_weights}
+
+## Introduction
+
+![](images/banner-spatial-weights.png)
+
+### Aims {.unnumbered}
+
+The aims of this practical are to:
+
+1.  Understand what spatial weights represent.
+2.  Understand how spatial weights are constructed (i.e., contiguity, distance).
+3.  Understand how spatial weights underpin analysis of spatial patterns.
+
+### Application {.unnumbered}
+
+To achieve this, we'll demonstrate construction of spatial weights using country Polygons and assess neighbourhood effects on cultural similarity, using the Cultural Fixation Index (CFST) from @muthukrishna2020.
+
+### Data {.unnumbered}
+
+-   Natural Earth 1:10m Cultural Vectors, available in [`data/natural-earth`] [[Source](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)]
+-   Cultural Similarity matrix, produced for 80 country pairs by @muthukrishna2020, available in [`data/cultural-similarity`] [[Source](https://world.culturalytics.com/)]
+
+[Optional] Use OS 100 km grid as demonstration... [[Source](https://github.com/OrdnanceSurvey/osbng-grids)] but needs sorting (64-bit shapefile issue)
+
+### Tools {.unnumbered}
+
+[Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) (Spatial Statistics), [Convert Spatial Weights Matrix to Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog) (Spatial Statistics), [Introduction to Neighborhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html), [Add Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog) (Data Management Tools), [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) (Data Management Tools), [XY To Line](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog) (Data Management Tools)
+
+------------------------------------------------------------------------
+
+## Practical
+
+During this practical...
+
+[1] Open ArcGIS Pro
+
+[2] Load vector data (Natural Earth)
+
+[3] Run [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) - talk through different settings, using a unique ID (NE_ID)
+
+[4] Use [Neighborhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise, we can either do this dynamically or use the .swm file created earlier --- *the former is the best approach for the students to quickly see the differences*
+
+[5] This allows us to visualise the connections for a single feature. To visualise all relationships, we need to use [Convert Spatial Weights Matrix to Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog) (Spatial Statistics)
+
+---------Rather than NE_ID, shall we change to ADMIN?
+
+[6] This table contains the IDs of the start countries (NE_ID) and the end countries (NID) i.e., UK = 78, Ireland = 77, but no geometry
+
+[7] So, run [Add Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog) (Data Management Tools) to Natural Earth data (centroid x and y)
+
+[8] Then use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) based on ID \> Input = swm \> Input field = NE_ID \> Join table = natural_earth \> Join field = NE_ID \> Use Field Mapping - Remove all but centroid_x and centroid_y \> Double click to rename these as source_x and source_y, validate and run
+
+> Then repeat for the target locations, which is as simple as changing the input file = NID, and to target_x and target_y
+
+[9] Now we can use [XY to Line], using source_xy and target_xy, "and preserve attributes"
+
+[10] To link the lines to cultural similarity, we need to include the country names ('ADMIN') \> Join Field again, same process, with name as source_ADMIN \> Repeat using NID as input field, updating to target_ADMIN
+
+[10?] Critical engagement with France?
+
+### Simpler approach (Pythonic, no SQL, no geodatabase faff)
+
+[A] Delete Identical [Shape] - the line dataset as input (IRE-UK, UK-IRE)
+
+[INCLUDED for studyents] But make a 'join_key' in the similarity table using Calculate Field: Equation: "-".join(sorted([!Country_1!, !Country_2!]))
+
+[C] Repeat for a 'target_key' in the lines dataset... Equation: "-".join(sorted([!Source_ADM!, !Target_ADM!]))
+
+[D] Join Field (keep only target key), using similarity table as input \*\* THIS DOESN'T WORK\*\* csv not editable..
+
+[E] Calculate Field (similarity_table): "Non-bordering" if !target_key! is None else "Bordering"
+
+[F] Finally, use Summary Statistics with case fields = Group (border, nonbordering)
+
+----------------- Results [European dataset]
+
+Border = 0.702, SD = 0.122 Non-border = 0.63, SD = 0.11
+
+Not a particularly stark difference, but biased by the fact that the cultural similarity dataset is Europe only (broadly similar, even if not bordering)
+
+----------------- Results [Global]
+
+Border = 0.07, SD = 0.05 (n=85) [where countries are neighbouring AND there is similarity value i.e., UK-Ireland not in the dataset....] Non-border = 0.14, SD = 0.08 (n=3075)
+
+Border, Median = 0.0621, IQR = 0.044 Non-border, Median = 0.121, IQR = 0.0936
+
+Instead, we need to run using wider data: <https://world.culturalytics.com/> [currently not working on University-managed PC]
+
+If the results aren't interesting, use the Europe one, and add this to "a little more"
+
+## Extra
+
+Apply to a network? Generate Network Spatial Weights (Spatial Statistics)
+
+## Resources {#sw_resources}
+
+-   Tobler, W. ([1970](https://doi.org/10.2307/143141)). A Computer Movie Simulating Urban Growth in the Detroit Region. Economic Geography 46, 234–40.
+-   Miller, H.J. ([2004](https://doi.org/10.1111/j.1467-8306.2004.09402005.x)). Tobler's first law and spatial analysis. Annals of the association of American geographers, 94(2), pp.284-289.
+-   Tobler, W. ([2004](https://doi.org/10.1111/j.1467-8306.2004.09402009.x)). On the first law of geography: A reply. Annals of the association of American geographers, 94(2), pp.304-310.
+-   Anselin, L. and Li, X. ([2020](https://doi.org/10.1111/gean.12237)). Tobler’s law in a multivariate world. Geographical Analysis, 52(4), pp.494-510.
