@@ -109,31 +109,51 @@
 </h3>
 <p>The aims of this practical are to:</p>
 <ol style="list-style-type: decimal">
-<li>Understand the aims and common applications of spatial interaction (gravity) models.</li>
+<li>Understand the aims and common applications of spatial interaction
+(gravity) models.</li>
 <li>Understand the design and calibration of spatial interaction models.</li>
-<li>Apply spatial interaction models to a contemporary sociological issue.</li>
+<li>Apply spatial interaction models to a contemporary sociological
+issue.</li>
 </ol>
 </div>
 <div id="application-9" class="section level3 unnumbered">
 <h3>Application<a class="anchor" aria-label="anchor" href="#application-9"><i class="fas fa-link"></i></a>
 </h3>
-<p>To that end, we’ll develop spatial interaction models to predict internal migration flows between local authorities in England and Wales.</p>
+<p>To that end, we’ll develop spatial interaction models to predict
+internal migration flows between local authorities in England and Wales.</p>
 </div>
 <div id="data-7" class="section level3 unnumbered">
 <h3>Data<a class="anchor" aria-label="anchor" href="#data-7"><i class="fas fa-link"></i></a>
 </h3>
-<p>All data for this practical have been sourced from the Office for National Statistics (ONS) at the local authority level and are found in [<code>data/ons/local-authority</code>] as follows:</p>
+<p>All data for this practical have been sourced from the Office for
+National Statistics (ONS) at the local authority level and are found in
+[<code>data/ons/local-authority</code>] as follows:</p>
 <ul>
-<li>ONS internal migration flows for local authorities in England and Wales (2021) [<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales">Source</a>]</li>
-<li>ONS district geometries (2021) [<a href="(https://geoportal.statistics.gov.uk/datasets/ons%3E::local-authority-districts-december-2021-boundaries-gb-bfc/explore?location=54.734360%2C-2.584695%2C7)">Source</a>]</li>
-<li>ONS gross domestic product (GDP) per head at current market prices [<a href="https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2">Source</a>]</li>
-<li>ONS population [<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales">Source</a>]</li>
+<li>ONS internal migration flows for local authorities in England and
+Wales (2021)
+[<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales">Source</a>]</li>
+<li>ONS district geometries (2021)
+[<a href="(https://geoportal.statistics.gov.uk/datasets/ons%3E::local-authority-districts-december-2021-boundaries-gb-bfc/explore?location=54.734360%2C-2.584695%2C7)">Source</a>]</li>
+<li>ONS gross domestic product (GDP) per head at current market prices
+[<a href="https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2">Source</a>]</li>
+<li>ONS population
+[<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales">Source</a>]</li>
 </ul>
 </div>
 <div id="tools-9" class="section level3 unnumbered">
 <h3>Tools<a class="anchor" aria-label="anchor" href="#tools-9"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To Point</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/generate-near-table.html?tabs=dialog">Generate Near Table</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog">Generalized Linear Regression</a> (GeoAnalytics Desktop Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html">Notebooks in ArcGIS Pro</a></p>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To
+Point</a>
+(Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/generate-near-table.html?tabs=dialog">Generate Near
+Table</a>
+(Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog">Generalized Linear
+Regression</a>
+(GeoAnalytics Desktop Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html">Notebooks in ArcGIS
+Pro</a>,
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry
+Attributes</a>
+(Data Management Tools)</p>
 <hr>
 </div>
 </div>
@@ -141,210 +161,286 @@
 <h2>
 <span class="header-section-number">10.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-8"><i class="fas fa-link"></i></a>
 </h2>
-<p>TO DO:</p>
+<div id="pre-processing-1" class="section level3" number="10.2.1">
+<h3>
+<span class="header-section-number">10.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>[1] Introduce key concepts i.e., Newton’s Law of Universal Gravitation.
+Spatial flows between an origin and a destination are modelled as
+proportional to their gravitational force and inversely related to their
+spatial separation.</p>
+<p>[2] Load Local Authority districts
+[<code>data/ons/local-authority/LAD_DEC_2021_GB_BFC.shp</code>]</p>
+<p>[3] Return Centroids using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To
+Point</a></p>
 <ul>
-<li>Find some additional datasets for the “Something more?” section</li>
-<li>Update the Python notebook code to use a relative file path</li>
+<li>Discuss sensitivity to feature geometry and calculation method,
+which can be tested via <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry
+Attributes</a>
+</li>
+<li>The Centroids produced by ArcGIS differ slightly from those included
+in the Attribute Table from OS</li>
 </ul>
-<p>————— Concepts:</p>
-<p>-&gt; Newton’s Law of Universal Gravitation -&gt; Spatial flows between an
-origin and a destination are modelled as proportional to their
-gravitational force and inversely related to their spatial separation</p>
-<p>————— Sources:</p>
-<p>-&gt; [!] <a href="https://rpubs.com/adam_dennett/376877" class="uri">https://rpubs.com/adam_dennett/376877</a> -&gt; [!]
-<a href="https://discovery.ucl.ac.uk/id/eprint/10052338/7/Dennett_38-41-115-1-10-20181111.pdf" class="uri">https://discovery.ucl.ac.uk/id/eprint/10052338/7/Dennett_38-41-115-1-10-20181111.pdf</a>
--&gt; <a href="https://openjournals.wu.ac.at/region/paper_175/175.html" class="uri">https://openjournals.wu.ac.at/region/paper_175/175.html</a> -&gt;
-<a href="https://cran.r-project.org/web/packages/simodels/vignettes/simodels.html" class="uri">https://cran.r-project.org/web/packages/simodels/vignettes/simodels.html</a>
--&gt;
-<a href="https://robinlovelace.net/simodels/articles/sims-first-principles.html" class="uri">https://robinlovelace.net/simodels/articles/sims-first-principles.html</a>
--&gt;
-<a href="https://repository.ncrm.ac.uk/resources/online/all/spatial_interaction_modelling" class="uri">https://repository.ncrm.ac.uk/resources/online/all/spatial_interaction_modelling</a>
--&gt;
-<a href="https://researchbriefings.files.parliament.uk/documents/SN06077/SN06077.pdf" class="uri">https://researchbriefings.files.parliament.uk/documents/SN06077/SN06077.pdf</a>
--&gt; <a href="https://worldmigrationreport.iom.int/msite/wmr-2024-interactive/" class="uri">https://worldmigrationreport.iom.int/msite/wmr-2024-interactive/</a>
--&gt; <a href="https://doi.org/10.1371/journal.pone.0286244" class="uri">https://doi.org/10.1371/journal.pone.0286244</a> -&gt;
-<a href="https://rpubs.com/adam_dennett/259068" class="uri">https://rpubs.com/adam_dennett/259068</a></p>
-<p>————— Data:</p>
-<p>-&gt; Internal migration flows:
-<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales" class="uri">https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/internalmigrationinenglandandwales</a></p>
-<p>-&gt; District geometries (2021):
-<a href="https://geoportal.statistics.gov.uk/datasets/ons" class="uri">https://geoportal.statistics.gov.uk/datasets/ons</a>::local-authority-districts-december-2021-boundaries-gb-bfc/explore?location=54.734360%2C-2.584695%2C7</p>
-<p>-&gt; GDP (Gross domestic product per head at current market prices):
-<a href="https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2" class="uri">https://www.ons.gov.uk/datasets/gdp-by-local-authority/editions/time-series/versions/2</a></p>
-<p>-&gt; Population:
-<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales" class="uri">https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales</a></p>
-<p>————— Summary</p>
-<ol style="list-style-type: decimal">
-<li>Produce bilateral distances and link origin-destination attributes
-for England and Wales local authority data</li>
-<li>Produce unconstrained (or total constrained) model</li>
-<li>Calibrate the model using Poisson regression</li>
-<li>Introduce production-, attraction- and doubly-constrained models</li>
-<li>Run constrained models using Python Notebook and <code>statsmodels</code> glm()</li>
-<li>Something more? Find the variables which best predict flow..</li>
-</ol>
-<p>[1] Load Local Authority districts</p>
-<p>[2] Return Centroids (Feature to Point): -&gt; Discuss: sensitivity to
-feature geometry -&gt; Calculate Geometry Attributes</p>
-<p>[3] Generate Near Table (links based on ID), using geodesic measurement,
-[!] save in Geodatabase (editable)</p>
-<p>[4] Load Gross domestic product (<code>gdp</code>) and population (<code>pop</code>) csv’s and
-use Join Field to add to Centroids data</p>
-<p>[5] Join Field, keeping the origin information (IN_FID), using ‘Use
-Field Mapping’ to select attributes of interest and updating names: -
-orig_LAD21CD (unique ID) - orig_LAD21NM (name) - orig_gdp - orig_pop -
-orig_long (or E) - orig_lat (or N)</p>
-<p>[6] Repeat for destinations (NEAR_ID): - dest_LAD21CD (unique ID) -
-dest_LAD21NM (name) - dest_gdp - dest_pop - dest_long (or E) - dest_lat
-(or N)</p>
-<p>[7] Create origin-destination field in the near table - !orig_LAD21CD! +
-“-” + !dest_LAD21C!</p>
-<p>[8] Load internal migration data (<code>flow</code>) and inspect - Histogram -
-Min-Max</p>
-<p>[9] Join Field, based on origin-destination field, transferring <code>flow</code>
-(time required)</p>
-<p>[10] Data cleaning: -&gt; Select by Attributes and remove rows: -
-orig_pop, dest_pop = 0 - orig_gdp, dest_gdp = 0 - <code>flow</code> is null -&gt;
-Result is (&lt;) ~80_000 rows</p>
-<p>[11] Visualise some flow data - Select by Attributes i.e., <code>flow</code> &gt;
-1_000 (n=~450) - XY to Line (<code>ORIG_LON</code> - Size by <code>flow</code> [REMOVE] as a
-complex dataset</p>
-<p>————— Data summary</p>
-<p>We now have all the data we need to begin modelling… similar format to
-Dennett (2018): <a href="https://rpubs.com/adam_dennett/376877" class="uri">https://rpubs.com/adam_dennett/376877</a></p>
-<p>Present data columns: -&gt; Origin (<code>orig_LAD21CD</code>) -&gt; Destination
-(<code>dest_LAD21CD</code>) -&gt; Flow (<code>flow</code>, # people) -&gt; Origin (vi) population
-(<code>orig_pop</code>) -&gt; Destination (wj) population (<code>dest_pop</code>) -&gt; Origin GDP
-(<code>orig_gdp</code>) -&gt; Destination GDP (<code>dest_gdp</code>) -&gt; Distance (<code>NEAR_DIST</code>,
-meters)</p>
-<p>[12] Exploratory plots - any correlations?</p>
-<p>————— Model description</p>
-<p>Classic multiplicative gravity model:</p>
+<p>[4] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/generate-near-table.html?tabs=dialog">Generate Near
+Table</a>:</p>
+<ul>
+<li>Centroids as Input and Near Features</li>
+<li>Uncheck “Find only closest feature”</li>
+<li>Method = Planar (using a suitable projected CRS)</li>
+<li>[!] Save to a geodatabase so the output is more easily editable</li>
+</ul>
+<p>[5] Load Gross domestic product (<code>ons-la-gdp.csv</code>) and population
+(<code>ons-authority-population</code>) csv’s and use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join
+Field</a>
+to add to Centroids data, linking <code>LAD21CD</code> and <code>la_code</code></p>
+<p>[6] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join
+Field</a>
+again, this time using the Near Table as input:</p>
+<ul>
+<li>matching origin information (<code>IN_FID</code>) to <code>FID</code>
+</li>
+<li>Use Field Mapping to select attributes of interest and update names:
+<ul>
+<li>orig_LAD21CD (unique ID)</li>
+<li>orig_LAD21NM (name)</li>
+<li>orig_gdp</li>
+<li>orig_pop</li>
+<li>orig_long (or BNG_E)</li>
+<li>orig_lat (or BNG_N)</li>
+</ul>
+</li>
+</ul>
+<p>[7] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join
+Field</a>
+again, this time for destination attributes:</p>
+<ul>
+<li>matching destination information (<code>NEAR_ID</code>) to <code>FID</code>
+</li>
+<li>Use Field Mapping to select attributes of interest with a new
+prefix:
+<ul>
+<li>dest_LAD21CD (unique ID)</li>
+<li>dest_LAD21NM (name)</li>
+<li>dest_gdp</li>
+<li>dest_pop</li>
+<li>dest_long (or BNG_E)</li>
+<li>dest_lat (or BNG_N)</li>
+</ul>
+</li>
+</ul>
+<p>[8] Use Calculate Field to a create origin-destination field in the near
+table (Text) i.e., !orig_LAD21CD! + “-” + !dest_LAD21C!</p>
+<p>[9] Load internal migration data (<code>ons-internal-migration.csv</code>) where
+<code>flow</code> represents the number of individuals (modelled). Encourage
+exploratory analysis e.g., histogram, min-max.</p>
+<p>[10] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join
+Field</a>
+for the final time, this time linking based on origin-destination field,
+transferring <code>flow</code> (time required)</p>
+<p>[11] Before we can use the data, worth doing some cleaning i.e., Select
+by Attributes and remove rows where orig_pop, dest_pop, orig_gdp,
+dest_gdp = 0 or <code>flow</code> is null. This results in (&lt;) ~80,000 rows</p>
+</div>
+<div id="data-exploration" class="section level3" number="10.2.2">
+<h3>
+<span class="header-section-number">10.2.2</span> Data exploration<a class="anchor" aria-label="anchor" href="#data-exploration"><i class="fas fa-link"></i></a>
+</h3>
+<p>[12] Visualise some flow data. We can’t do this for all bilateral
+connections without causing ArcGIS stress, so:</p>
+<ul>
+<li>Select by Attributes i.e., <code>flow</code> &gt; 1000 (n=~450)</li>
+<li>
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY to
+Line</a>,
+using <code>orig</code> and <code>dest</code> coordinates, selecting the appropriate CRS</li>
+<li>Change symbology to size by <code>flow</code>
+</li>
+<li>Finally remove the dataset, as quite complex</li>
+</ul>
+<p>[13] We now have all the data we need to begin modelling, including:</p>
+<ul>
+<li>Origin ID (<code>orig_LAD21CD</code>)</li>
+<li>Destination ID (<code>dest_LAD21CD</code>)</li>
+<li>Flow (<code>flow</code>, # people)</li>
+<li>Origin (vi) population (<code>orig_pop</code>)</li>
+<li>Destination (wj) population (<code>dest_pop</code>)</li>
+<li>Origin GDP (<code>orig_gdp</code>)</li>
+<li>Destination GDP (<code>dest_gdp</code>)</li>
+<li>Distance (<code>NEAR_DIST</code>, meters)</li>
+</ul>
+<p>[14] Exploratory plots - Create Chart - Scatter Plot</p>
+<blockquote>
+<p>Are there any correlations?</p>
+</blockquote>
+</div>
+<div id="model-description" class="section level3" number="10.2.3">
+<h3>
+<span class="header-section-number">10.2.3</span> Model description<a class="anchor" aria-label="anchor" href="#model-description"><i class="fas fa-link"></i></a>
+</h3>
+<p>We’ll be using a classic multiplicative gravity model:</p>
 <p><span class="math display">\[T_{ij} = k \frac{V_i^μ W_j^α}{d_{ij}^{\beta}}\]</span></p>
-<p>Can also be written from Wilson (1971) as:</p>
+<p>The model elements are as follows:</p>
+<ul>
+<li><p><span class="math inline">\(T_{ij}\)</span> is the predicted flow between origin <span class="math inline">\(i\)</span> and destination
+<span class="math inline">\(j\)</span>.</p></li>
+<li><p><span class="math inline">\(V_i\)</span> is a vector of origin attributes which relate to the
+<em>emissiveness</em> of all origins <span class="math inline">\(i\)</span>, i.e., this could be origin population and wealth (e.g.,
+<code>orig_pop</code>, <code>orig_gdp</code>)</p></li>
+<li><p><span class="math inline">\(W_j\)</span> is a vector of destination
+attributes which relate to the <em>attractivenss</em> of all destinations <span class="math inline">\(j\)</span> i.e., destination population and wealth (e.g., <code>dest_pop</code>, <code>dest_gdp</code>)</p></li>
+<li><p><span class="math inline">\(d_{ij}\)</span> is a matrix of costs (distance) between origins and
+destinations (<span class="math inline">\(ij\)</span>) i.e., the distance between local authority centroids.</p></li>
+<li><p><span class="math inline">\(k, μ, α, \beta\)</span> are model parameters that need
+to be estimated.</p></li>
+</ul>
+<p>As the masses of the origin (<span class="math inline">\(V_i\)</span>) and destination (<span class="math inline">\(W_j\)</span>) increase, the predicted flow (<span class="math inline">\(T_{ij}\)</span>) increases. In contrast, as distance (<span class="math inline">\(d_{ij}\)</span>) increases (although this could be economic cost, travel time, …), predicted flows decrease.</p>
+<p>This can also also be written as follows, as described by <span class="citation">Wilson (<a href="references.html#ref-wilson1971">1971</a>)</span>, which is mathematically identical but removes the fraction, so is simpler to handle:</p>
 <p><span class="math display">\[T_{ij} = kV_i^μ W_j^αd_{ij}^{-\beta}\]</span></p>
-<p>The latter is mathematically identical, but removes the fraction
-(simpler).</p>
-<p>From Dennett:</p>
-<p>“The flows between an origin and destination are proportional to the
-product of the mass of the origin and destination and inversely
-proportional to the distance between them.</p>
-<p>As origin and destination masses increase, flows increase, but as
-distance increases, flows decrease, and vice versa.”</p>
-<p>Here:</p>
-<p><span class="math inline">\(T_{ij}\)</span> is the predicted flow between origins and destinations. <span class="math inline">\(V\)</span> is
-the origin “emissiveness” i.e., origin population and salaries (e.g.,
-<code>ORIG_POP</code>, <code>ORIG_GDP</code>, <code>ORIG_GDP_CAP</code>) <span class="math inline">\(W\)</span> is the destination
-“attractiveness” i.e., destination population and salaries (e.g.,
-<code>DEST_POP</code>, <code>DEST_GDP</code>, <code>DEST_GDP_CAP</code>) <span class="math inline">\(d\)</span> is the cost of flows i.e.,
-distance (<code>NEAR_DIST</code>) <span class="math inline">\(k\)</span>, <span class="math inline">\(μ\)</span>, <span class="math inline">\(α\)</span>, <span class="math inline">\(\beta\)</span> are model parameters to be
-estimated</p>
-<p>These parameters relate to the scaling effect or importance of the
-variables they are associated with.</p>
-<p>We can start with some basic parameters i.e., effects scale in a linear
-fashion. For a 1 unit increase in population, we might expect a 1 unit
+<p>The key parameters that need to be estimated (<span class="math inline">\(k, μ, α, \beta\)</span>) control the importance of the
+variables they are associated with i.e., as <span class="math inline">\(\beta\)</span> increases, the cost associated with distance increase, and predicted flows would decrease, independent of <span class="math inline">\(V_i\)</span> and <span class="math inline">\(W_j\)</span>.</p>
+<p>At this stage we don’t know how to select those parameters, so we can start with a basic set, where effects scale linearly i.e., for a 1 unit increase in population, we might expect a 1 unit
 increase in flows of people from that origin.</p>
 <p>Newtons gravity uses a power law of <span class="math inline">\(\beta=-2\)</span>, so here are the starting
 values:</p>
 <p><span class="math display">\[k=1, μ=1, α=1, \beta=-2\]</span></p>
-<p>For <span class="math inline">\(V\)</span> (origin “emissiveness”) we will use origin population
-(<code>orig_pop</code>) For <span class="math inline">\(W\)</span> (destination “attractiveness”), we will use
-destination GDP per capita (<code>dest_gdp</code>) For <span class="math inline">\(d\)</span>, we use <span class="math inline">\(d^\beta\)</span>, where
-<span class="math inline">\(d\)</span> = <code>NEAR_DIST</code> and <span class="math inline">\(\beta=-2\)</span></p>
-<p><code>gm1</code> = <span class="math inline">\(V\)</span> * <span class="math inline">\(W\)</span> * <span class="math inline">\(d\)</span></p>
-<p>————— Modelling</p>
-<p>[13] Add Field (<code>gm1</code>), Float, following equation (distance in km)</p>
+<p>For <span class="math inline">\(V_i\)</span> (origin “emissiveness”), we will use origin population
+(<code>orig_pop</code>) and for <span class="math inline">\(W_j\)</span> (destination “attractiveness”), we will use
+destination GDP per capita (<code>dest_gdp</code>) i.e., as the population of the origin increases and the GDP per capita of the destination increases, we would expect a greater flow of people.</p>
+<p>For <span class="math inline">\(d_{ij}\)</span>, we’ll use distance in kilometers (<code>NEAR_DIST</code> / 1000) where the reverse effect is expected i.e., as distance between local authorities increases, we would expect a smaller flow of people.</p>
+</div>
+<div id="unconstrained-and-total-constrained-models" class="section level3" number="10.2.4">
+<h3>
+<span class="header-section-number">10.2.4</span> Unconstrained and Total-constrained models<a class="anchor" aria-label="anchor" href="#unconstrained-and-total-constrained-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>[15] In the table containing all the relevant attributes, Calculate Field (<code>gm1</code> i.e., gravity model one), Float, using the following equation (distance in km)</p>
 <p>pow(!orig_pop!, 1) * pow(!dest_gdp!, 1) * pow(!NEAR_DIST!, 1000, -2)</p>
 <p>This produces an unconstrained output (unitless), as we have not used
-the k factor, which converts our model to a <em>total constrained</em> version
+the <span class="math inline">\(k\)</span> factor, which converts our model to a <em>total constrained</em> version
 by scaling to match the total number of flows i.e., sum of all observed
 flows divided by the sum of all of the other elements in the model.</p>
-<p>[14] Using Explore Statistics, return the sum of <code>flow</code>
-(102228926.73000628) and <code>gm1</code> (3912.65851170132), and then calculate a
-new field incorporating the scale factor (<code>gm1_scale</code>)</p>
-<p>Data = 3698001.8812999986 (# internal migrations) Model =
-~63224.55841802744 (sum of <code>gm1</code>)</p>
+<p>[16] Using Explore Statistics, return the sum of <code>flow</code> and <code>gm1</code> , and then calculate a
+new field incorporating the scale factor (<code>gm1_scale</code>):</p>
+<ul>
+<li>Data = 3698001.8812999986 (sum of internal migrations)</li>
+<li>Model = 63224.55841802744 (sum of <code>gm1</code>)</li>
+</ul>
 <p>!gm1! * (3698001.8812999986 / 63224.55841802744)</p>
-<p>[!] Note: we can’t do this all via Add Field, as this is a row-wise
+<p><em>Note</em>: we can’t do this all via Add Field, as this is a row-wise
 calculation</p>
-<p>[15] Model evaluation</p>
+<p>[17] Model evaluation</p>
 <p>First, check the total of <code>gm1_scale</code> matches the total flow (it does!),
-so our model is <em>total constrained</em></p>
-<p>[!] However, the output is pretty abysmal here (R2=0.07, Create Chart,
+confirming our model is <em>total constrained</em>.</p>
+<p>However, the output is pretty abysmal here (R2 = 0.07, Create Chart,
 Scatter Plot), because we haven’t tuned our parameters!</p>
-<p>————— Tuning parameters</p>
+</div>
+<div id="tuning-parameters" class="section level3" number="10.2.5">
+<h3>
+<span class="header-section-number">10.2.5</span> Tuning parameters<a class="anchor" aria-label="anchor" href="#tuning-parameters"><i class="fas fa-link"></i></a>
+</h3>
 <p>If we log both sides of the equation above, we get the following:</p>
 <p><span class="math display">\[\mathrm{ln}T_{ij}=k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij}\]</span></p>
-<p>This is basically a regression model!</p>
+<p>This is basically a regression model! This format allows us to tune of parameters.</p>
+<blockquote>
+<p><strong>TO DO</strong> Explain why.</p>
+</blockquote>
 <p>However, there are problems with using a log-linear approach, and
-instead we use Poisson regression, which is better for skewed
-distributions (like our flow data)</p>
-<p>[16] Visualise Statistics - Histrogram - Flow</p>
-<p>So our Poisson regression looks like the following:</p>
-<p>(EQ4)
-<span class="math inline">\(λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})\)</span></p>
-<p>[17] First, log the independent variables using Add Field -&gt;
-math.log(!orig_pop!) -&gt; math.log(!dest_gdp!) -&gt; math.log(!NEAR_DIST! /
-1000) # converting to km -&gt; * see section below on math.log()</p>
-<p>[18] Run Generalized Linear Regression (GeoAnalytics Desktop Tools) -&gt;
-Must use GDT version, as this allows for table inputs -&gt; Flow
-(dependent) -&gt; Logged variables (independent) -&gt; Count (Poisson)</p>
-<p>[19] Evaluate and interpret coefficients</p>
-<p>Variable ——– Coefficients —- Standard error —- t-Statistic —-
-Probability orig_pop_log —- 0.9985 ———- 0.0009 ———–
-1071.6299 —— 0 dest_gdp_log —- 0.2862 ———- 0.0006
-———– 446.6138 ——- 0 near_dist_log — -1.2354 ———
-0.0005 ———– -2611.7296 —– 0 Intercept ——- -5.4022
-——— 0.0132 ———– -409.3151 —— 0</p>
-<p>[20] Produce <code>gm2</code> (calibrated model) and evaluate performance using
-Create Chart, Scatter Plot</p>
-<p>Equation:
-math.exp(-5.4022+(0.9985<em>!orig_pop_log!)+(0.2862</em>!dest_gdp_log!)-(abs(-1.2354)*!near_dist_log!))</p>
+instead it is more common to use Poisson regression, which is better for skewed
+distributions (like our flow data):</p>
+<p><span class="math display">\[λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})\]</span>
+&gt; <strong>TO DO</strong> Explain Poisson distribution and regression</p>
+<p>[18] Visualise Statistics - Histogram - Flow</p>
+<p>[19] First, log<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that Python math.log() uses &lt;code&gt;e&lt;/code&gt; as the default, which is consistent with R, where log() uses &lt;code&gt;exp(1)&lt;/code&gt; as the &lt;a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log"&gt;default&lt;/a&gt;. For those more familiar with Excel, log() defaults to base10, which is different! For consistency, this can either be updated to log(val, EXP(1)) or the LN() function can be used.&lt;/p&gt;'><sup>1</sup></a> the relevant independent variables:</p>
+<ul>
+<li>Add Field</li>
+<li>math.log(!orig_pop!)</li>
+<li>math.log(!dest_gdp!)</li>
+<li>math.log(!NEAR_DIST! / 1000) # converting to km</li>
+</ul>
+<p>[20] Poisson uses count data so our <code>flow</code> values are invalid. Instead, we need to convert these to integer (<code>flow_int</code>) using int(!flow!) in Add Field</p>
+<p>[21] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog">Generalized Linear
+Regression</a></p>
+<p><em>Note</em> we must use the GeoAnalytics Desktop Tools version, as this allows for table inputs.</p>
+<p>Inputs:</p>
+<ul>
+<li>Flow (integer, dependent)</li>
+<li>Logged variables (independent)</li>
+<li>Count (Poisson)</li>
+</ul>
+<p>[22] Evaluate and interpret coefficients</p>
+<blockquote>
+<p><strong>TO DO</strong> include screenshot or formatted table here</p>
+</blockquote>
+<p><em>Note</em> we will use the model coefficients as our parameter estimates.</p>
+<p>[23] Produce <code>gm2</code> (calibrated model) and evaluate performance using Create Chart, Scatter Plot</p>
+<p>Equation: math.exp(-5.4022+(0.9985 * !orig_pop_log!)+(0.2862 * !dest_gdp_log!)-(abs(-1.2354) * !near_dist_log!))</p>
 <p>Performance: R2 = 0.45</p>
-<p>[21] Introduce Origin constrained models</p>
-<p>-&gt; This is technically possible in ArcGIS but not easy, requiring us to
-use Encode Field to create dummy variables for <code>orig_LAD21CD</code>. -&gt;
-Generalised Linear Regression (tool) struggles with this number of
-variables (~300) with multicollinearity issues -&gt; Also very difficult
-to manually apply the coefficients to a regression equations</p>
-<p>-&gt; Instead, load a Python notebook and use the appendix code to perform
-GLR and predict (<code>gm3</code>s), saving output to csv</p>
-<p>[*] Important, while I don’t expect the students to write the code
-independently, I should introduce it in a peicemeal fashion, explaining
-what each line does.</p>
-<p>[22] Load predictions csv and assess performance (<code>flow_int</code> vs. <code>gm3</code>):</p>
-<p>-&gt; R2 = 0.57 -&gt; Sum of modelled flows for each origin matches measured
-flows</p>
-<p>[23] Discuss destination-constrained and doubly-constrained models</p>
-<p>[*] Ask students to run a destination-constrained model, adapting the
-Python code to produce <code>gm4</code>?</p>
+</div>
+<div id="origin-constrained-models" class="section level3" number="10.2.6">
+<h3>
+<span class="header-section-number">10.2.6</span> Origin-constrained models<a class="anchor" aria-label="anchor" href="#origin-constrained-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>[24] Introduce theory of origin constrained models</p>
+<p>[25] Implementation in ArcGIS</p>
+<p>This is technically possible in ArcGIS but not easy, requiring us to
+use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/encode-field.html?tabs=dialog">Encode Field</a> to create dummy variables for <code>orig_LAD21CD</code>.</p>
+<p>This works when there are a small number of categories to encode, but Generalised Linear Regression (tool) struggles with the number of LA names in our dataset (~300) with multicollinearity issues</p>
+<p>Even if this was not the case, it is very difficult to manually include the coefficients in a regression equation, as we did in [22]</p>
+<p>Instead, load a Python notebook and use the <a href="spatial_interaction.html#python_notebook">appendix code</a> to perform
+GLR and create an origin-constrained model (<code>gm3</code>), saving output to csv.</p>
+<blockquote>
+<p><em>Note</em> while I don’t expect the students to write the code independently, I will introduce it in a piecemeal fashion, explaining what each line does.</p>
+</blockquote>
+<p>[26] Load predictions csv produced in the previous step and assess performance (<code>flow_int</code> vs. <code>gm3</code>):</p>
+<ul>
+<li>R2 = 0.57</li>
+<li>Check that sum of modelled flows for each origin matches measured flows</li>
+</ul>
+</div>
+<div id="destination-contrained-models" class="section level3" number="10.2.7">
+<h3>
+<span class="header-section-number">10.2.7</span> Destination-contrained models<a class="anchor" aria-label="anchor" href="#destination-contrained-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>[27] Challenge the students to run a destination-constrained model, adapting the Python code to produce <code>gm4</code>.</p>
+</div>
+<div id="doubly-constrained-models" class="section level3" number="10.2.8">
+<h3>
+<span class="header-section-number">10.2.8</span> Doubly-constrained models<a class="anchor" aria-label="anchor" href="#doubly-constrained-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>[28] Outline the process for a doubly-constrained model</p>
+</div>
 </div>
 <div id="extra-8" class="section level2" number="10.3">
 <h2>
 <span class="header-section-number">10.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-8"><i class="fas fa-link"></i></a>
 </h2>
-<p>Options:</p>
-<p>-&gt; Add additional predictors e.g., median earnings rather than GDP,
-unemployment rate, housing affordability, share of working-age
-population</p>
-<pre><code>- We can do this for the unconstrained, production or attraction constrained models (i.e., more predictors for the origin or destination). but not for the doubly-constrained model, as this takes into account the distance only (?). </code></pre>
-<p>-&gt; Include contiguity: - Create numeric ID for LA geometries using
-SequentialNumber() - Create Spatial Weights Matrix (Contiguity Edges
-Corners) - Convert Spatial Weights Matrix to Table - Join SWM table to
-LA geometries: = NUMERIC_ID (origin) to numeric_ID: orig_LAD21CD = NID
-(destination) to numeric_ID: dest_LAD21CD - Create origin-destination
-field - Create binary bordering field (<code>contig</code> = 1) - Join Field:
-NEAR_TABLE to SVWM based on origin-destination, linking <code>contig</code> = This
-produces 1 (bordering) or <null> (not bordering) - Calculate Field,
-update <code>contig</code> using: 0 if !contig! is None else !contig! - Add
-contiguity to the model</null></p>
-<p>————— Log issues</p>
-<p>Python: math.log() uses <code>e</code> as the default</p>
-<p>R: log() uses <code>exp(1)</code> as the default, which is identical to above:
-<a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log" class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log</a></p>
-<p>Excel: log() defaults to base10, which is different! Either plug in the
-above i.e., log(val, EXP(1)), or use LN()</p>
-<p>————— Python Notebook for GLR Poisson</p>
+<p>Our models are based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population.</p>
+<p>If applying this model to international migration, we might include a completely different set of predictors e.g., cultural similarity, as covered in <a href="spatial_weights.html#spatial_weights">Practical 2</a>, whether countries share a common language, or the degree of conflict within or between countries.</p>
+<div id="contig" class="section level3 unnumbered">
+<h3>Testing contiguity<a class="anchor" aria-label="anchor" href="#contig"><i class="fas fa-link"></i></a>
+</h3>
+<p>At our scale of analysis, we could investigate whether <strong>contiguity</strong> plays a role i.e., are flows larger between neighbouring local authorities?</p>
+<p>[29] Create numeric ID for LA geometries using SequentialNumber()</p>
+<p>[30] Create Spatial Weights Matrix (Contiguity Edges Corners)</p>
+<p>[31] Convert Spatial Weights Matrix to Table</p>
+<p>[32] Join SWM table to LA geometries:</p>
+<ul>
+<li>NUMERIC_ID (origin) to numeric_ID, storing <code>orig_LAD21CD</code>
+</li>
+<li>NID (destination) to numeric_ID, storing <code>dest_LAD21CD</code>
+</li>
+</ul>
+<p>[33] Create origin-destination field, combining <code>orig_LAD21CD</code> and <code>dest_LAD21CD</code></p>
+<p>[34] Create constant bordering field in the SWM table (<code>contig</code> = 1)</p>
+<p>[35] Join Field: NEAR_TABLE to SWM based on origin-destination, linking <code>contig</code>. This produces 1 (bordering) or “<null>” (not bordering)</null></p>
+<p>[36] Calculate Field, update <code>contig</code> using: 0 if !contig! is None else !contig!</p>
+<p>[37] Add binary contiguity [<code>contig</code> = 0/1] to the model</p>
+<blockquote>
+<p>To what extent does adding local authority contiguity improve our model?</p>
+</blockquote>
+</div>
+<div id="python_notebook" class="section level3 unnumbered">
+<h3>Python Notebook for GLR Poisson<a class="anchor" aria-label="anchor" href="#python_notebook"><i class="fas fa-link"></i></a>
+</h3>
 <pre><code>import os
 import arcpy
 import numpy as np
@@ -369,8 +465,11 @@ fields = [f.name for f in arcpy.ListFields(table_path)]
 rows = arcpy.da.SearchCursor(table_path, fields)
 df = pd.DataFrame(list(rows), columns=fields)
 
+# Incorrect formula
+### model_formula = "flow_int ~ C(ORIG_LAD21CD) + orig_pop_log + dest_gdp_log + near_dist_log - 1" 
+
 # Create formula and run glm 
-model_formula = "flow_int ~ C(ORIG_LAD21CD) + orig_pop_log + dest_gdp_log + near_dist_log - 1"
+model_formula = "flow_int ~ C(ORIG_LAD21CD) + dest_gdp_log + near_dist_log - 1"
 model = smf.glm(formula=model_formula, data=df, family=sm.families.Poisson()).fit()
 
 # Summary
@@ -383,22 +482,42 @@ df["gm3"] = model.predict(exog=df)
 #out_table = os.path.join(workspace, "la_near_table_v2_pred.csv")
 
 # Manual export to csv
-df.to_csv(r"C:/Users/mzdi2mt2/Documents/GEOG73001-processing/week-10/la_near_table_v2_pred.csv", index=False)</code></pre>
+df.to_csv(r"./la_near_table_v2_pred.csv", index=False)</code></pre>
+</div>
 </div>
 <div id="resources-7" class="section level2" number="10.4">
 <h2>
 <span class="header-section-number">10.4</span> Resources<a class="anchor" aria-label="anchor" href="#resources-7"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
-<li>Wilson, A.G. (<a href="https://doi.org/10.1068/a030001">1971</a>). A family of spatial interaction models, and associated developments. Environment and Planning A, 3(1), pp.1-32.</li>
-<li>Haynes, K.E., &amp; Fotheringham, A.S. (<a href="https://researchrepository.wvu.edu/rri-web-book/16/">1985</a>). Gravity and Spatial Interaction Models. Reprint. Edited by Grant Ian Thrall. WVU Research Repository, 2020.</li>
-<li>Fotheringham, A.S. and M.E. O’Kelly (<a href="https://www.amazon.co.uk/Spatial-Interaction-Models-Formulations-Applications/dp/0792300211">1989</a>) Spatial Interaction Models: Formulations and Applications. London: Kluwer Academic.</li>
-<li>Dennett, A. and Wilson, A. (<a href="https://doi.org/10.1068/a45398">2013</a>). A multilevel spatial interaction modelling framework for estimating interregional migration in Europe. Environment and Planning A, 45(6), pp.1491-1507.</li>
-<li>Rowe, F., Lovelace, R. and Dennett, A. (<a href="https://doi.org/10.4337/9781802203233.00019">2024</a>). Spatial interaction modelling: a manifesto. In A research agenda for spatial analysis (pp. 177-196). Edward Elgar Publishing.</li>
-<li>Liao, M. and Oshan, T.M. (<a href="https://doi.org/10.1111/gean.70001">2025</a>). A Data‐Driven Approach to Spatial Interaction Models of Migration: Integrating and Refining the Theories of Competing Destinations and Intervening Opportunities. Geographical Analysis, 57(3), pp.540-554.</li>
+<li>Wilson, A.G. (<a href="https://doi.org/10.1068/a030001">1971</a>). A family of
+spatial interaction models, and associated developments. Environment
+and Planning A, 3(1), pp.1-32.</li>
+<li>Haynes, K.E., &amp; Fotheringham, A.S.
+(<a href="https://researchrepository.wvu.edu/rri-web-book/16/">1985</a>).
+Gravity and Spatial Interaction Models. Reprint. Edited by Grant Ian
+Thrall. WVU Research Repository, 2020.</li>
+<li>Fotheringham, A.S. and M.E. O’Kelly
+(<a href="https://www.amazon.co.uk/Spatial-Interaction-Models-Formulations-Applications/dp/0792300211">1989</a>)
+Spatial Interaction Models: Formulations and Applications. London:
+Kluwer Academic.</li>
+<li>Dennett, A. and Wilson, A. (<a href="https://doi.org/10.1068/a45398">2013</a>).
+A multilevel spatial interaction modelling framework for estimating
+interregional migration in Europe. Environment and Planning A,
+45(6), pp.1491-1507.</li>
+<li>Rowe, F., Lovelace, R. and Dennett, A.
+(<a href="https://doi.org/10.4337/9781802203233.00019">2024</a>). Spatial
+interaction modelling: a manifesto. In A research agenda for spatial
+analysis (pp. 177-196). Edward Elgar Publishing.</li>
+<li>Liao, M. and Oshan, T.M.
+(<a href="https://doi.org/10.1111/gean.70001">2025</a>). A Data‐Driven Approach
+to Spatial Interaction Models of Migration: Integrating and Refining
+the Theories of Competing Destinations and Intervening
+Opportunities. Geographical Analysis, 57(3), pp.540-554.</li>
 </ul>
 </div>
 </div>
+
 
 
 
@@ -417,8 +536,24 @@ df.to_csv(r"C:/Users/mzdi2mt2/Documents/GEOG73001-processing/week-10/la_near_tab
 <li><a class="nav-link" href="#tools-9">Tools</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#practical-8"><span class="header-section-number">10.2</span> Practical</a></li>
-<li><a class="nav-link" href="#extra-8"><span class="header-section-number">10.3</span> Extra</a></li>
+<li>
+<a class="nav-link" href="#practical-8"><span class="header-section-number">10.2</span> Practical</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#pre-processing-1"><span class="header-section-number">10.2.1</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#data-exploration"><span class="header-section-number">10.2.2</span> Data exploration</a></li>
+<li><a class="nav-link" href="#model-description"><span class="header-section-number">10.2.3</span> Model description</a></li>
+<li><a class="nav-link" href="#unconstrained-and-total-constrained-models"><span class="header-section-number">10.2.4</span> Unconstrained and Total-constrained models</a></li>
+<li><a class="nav-link" href="#tuning-parameters"><span class="header-section-number">10.2.5</span> Tuning parameters</a></li>
+<li><a class="nav-link" href="#origin-constrained-models"><span class="header-section-number">10.2.6</span> Origin-constrained models</a></li>
+<li><a class="nav-link" href="#destination-contrained-models"><span class="header-section-number">10.2.7</span> Destination-contrained models</a></li>
+<li><a class="nav-link" href="#doubly-constrained-models"><span class="header-section-number">10.2.8</span> Doubly-constrained models</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#extra-8"><span class="header-section-number">10.3</span> Extra</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#contig">Testing contiguity</a></li>
+<li><a class="nav-link" href="#python_notebook">Python Notebook for GLR Poisson</a></li>
+</ul>
+</li>
 <li><a class="nav-link" href="#resources-7"><span class="header-section-number">10.4</span> Resources</a></li>
 </ul>
 

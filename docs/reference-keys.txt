@@ -53,5 +53,13 @@ resources-6
 spatial_interaction
 introduction-9
 practical-8
+pre-processing-1
+data-exploration
+model-description
+unconstrained-and-total-constrained-models
+tuning-parameters
+origin-constrained-models
+destination-contrained-models
+doubly-constrained-models
 extra-8
 resources-7
