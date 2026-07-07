@@ -33,7 +33,7 @@ The county-level data for this practical are available in [`data/us-census`] as 
 
 ------------------------------------------------------------------------
 
-## Practical
+## Practical {#autocorrelation_prac}
 
 [1] Open ArcGIS and load county geometry data [`cb_2023_us_county_500k.shp`, n=3235]:
 
@@ -51,7 +51,7 @@ STATE_NAME \<\> 'Alaska' And STATE_NAME \<\> 'Hawaii' And STATE_NAME \<\> 'Puert
 
 [5] Inspect the Attribute Table for completeness and for key stats i.e., Explore Statistics of `per_gop`. Mean = 0.66% at a county level.
 
-[Q] Why does this not match the overall vote % [i.e., population-excluded]
+*Question*: Why does this not match the overall vote % [i.e., population-excluded]
 
 -   gop_total = 81,382,360 (50.4% of total)
 -   dem_total = 77,151,397 (47.8% of total)
@@ -192,9 +192,9 @@ As a comparison, we can run with 2008 election results (Obama vs. McCain), store
 
 Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.
 
-[Q] How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?
+*Question*: How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?
 
-[Q] What is a limitation of our current approach? *Hint*: Sort the `gop_per` column for the 2008 results. 
+*Question*: What is a limitation of our current approach? *Hint*: Sort the `gop_per` column for the 2008 results. 
 
 Answer: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available [here](https://www2.census.gov/geo/tiger/).
 

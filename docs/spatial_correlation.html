@@ -141,71 +141,86 @@
 <hr>
 </div>
 </div>
-<div id="practical-3" class="section level2" number="4.2">
+<div id="practical-2" class="section level2" number="4.2">
 <h2>
-<span class="header-section-number">4.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-3"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-2"><i class="fas fa-link"></i></a>
 </h2>
-<p>[TO DO] Determine which datasets should be used for the main analysis, and which to save for “A little more?”</p>
-<p>Main (GOP percent)
-- Demographics [*] ——- positive example (white %)
-- Education [*] ———- negative example (bachelor degree %)
-- Poverty [*] ———— L ~ R example (median income)</p>
-<p>A little more:
-- Mortality rate ——— e.g., median income vs. mortality rate
-- Unemployment ———– e.g., high school graduate % vs. unemployment rate
-- Internet adoption —— e.g., internet adoption vs. bachelor degree %</p>
-<p>Remove:
-- Overdose deaths
-- Diabetes</p>
-<p>Poverty descriptors
-PCTPOVALL_2023 = Poverty Percent, All Ages
-MEDHHINC_2023 = Median Household Income</p>
-<hr>
-<p>[1] Load contiguous county data from Week 3 (or produce if not saved)</p>
+<p>[1] Load contiguous county data from <a href="spatial_autocorrelation.html#autocorrelation_prac">Practical 3</a> (or produce if not saved)</p>
 <p>[2] If not joined to 2024 election data, repeat this step…</p>
-<p>[3] Load the csv files for poverty, education, demographics</p>
-<p>[4] This time, lets join based on the FIPS code (5-digit Federal Information Processing Series)…
-&gt; Introduce data types here - Text (String) vs. Numeric</p>
-<p># To achieve this, let’s convert the Text GEOID to numeric</p>
-<p>[A] Add Field -&gt; GEOID_int -&gt; Long (32-bit integer) -&gt; Field Precision (5)
-[B] Attribute Table -&gt; Calculate Field -&gt; int(!GEOID!) -&gt; Now stored as numeric (removing leading 0)
-[C] Join based on GEOID_int to FIPS_code</p>
-<p>[5] Symbology, visualisation …</p>
-<p>[6] Test for spatial autocorrelation first…</p>
+<p>[3] Load the csv files for poverty [<code>poverty_2023.csv</code>], education [<code>education_2023.csv</code>], and demographics [<code>demographics_2024.csv</code>]. While some of these datasets include county name information, not all do.</p>
+<p>[4] Instead, we’ll join using the Federal Information Processing Series (<a href="https://www.census.gov/library/reference/code-lists/ansi.html">FIPS</a>) code, which is present in all the datasets e.g., <code>FIPS_code</code> attribute.</p>
 <ul>
-<li>For gop_perc, we know from Week 3 that global autocorrelation is present, and have tested this locally</li>
-<li>Test for autocorrelation for some variables of your choice, point students towards:
--&gt; White %
--&gt; Bachelor degree %
--&gt; Median income</li>
+<li>As discussed in Practical 3, these have different data formats in the geometry layer (Text) and the other tables (Long, numeric), which means we wouldn’t get any matches at present.</li>
+<li>We can fix this with some data processing, converting the text <code>GEOID</code> attribute to numeric.</li>
+<li>In the county geometry layer:
+<ul>
+<li>Add Field -&gt; GEOID_int -&gt; Long (32-bit integer) -&gt; Field Precision (5)</li>
+<li>Attribute Table -&gt; Calculate Field -&gt; int(!GEOID!) -&gt; Now stored as numeric (removing leading 0)</li>
+<li>Join based on GEOID_int to FIPS_code. This can be either done using Joins and Relatives, or <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a>, selecting key attributes of interest e.g., [<code>WA_%</code>, <code>Less_High_School_Graduate_%</code>, <code>High_School_Graduate_%</code>, <code>College_or_associate_%</code>, <code>Bachelor_or_higher_%</code>, <code>MEDHHINC_2023</code>, <code>PCTPOVALL_2023</code>]</li>
 </ul>
-<p>[7] Run Bivariate Spatial Association (Lee’s L) (Spatial Statistics), using GOP percent as the constant, comparing to:
--&gt; White %
--&gt; Bachelor degree %
--&gt; Median income</p>
+</li>
+</ul>
+<p><strong>James</strong> I’m encountering an issue here where Join Field fails with the following: ERROR 000499: Table is not editable.</p>
+<ul>
+<li>This seems to occur when multiple types of Table Joins are used i.e., use Joins and Relatives to combine the geometry data [<code>cb_2023_us_county_500k.shp</code>] and the election results [<code>2024_US_County_Level_Presidential_Results.csv</code>], and then use Join Field to add an attribute from another table [e.g., <code>poverty_2023.csv</code>].</li>
+<li>If I remove the dynamic join, the error does not occur.</li>
+<li>Is this expected ArcGIS behaviour?</li>
+</ul>
+<p>[5] Exploratory analysis - change symbology, visualisation …</p>
+<p>[6] Test for <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">global</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">local</a> spatial autocorrelation</p>
+<ul>
+<li>For GOP vote percent [<code>gop_perc</code>], we already know from Practical 3 that global and local autocorrelation is present</li>
+<li>Instead, focus on some variables of your choice, but point students towards:
+<ul>
+<li>White % [<code>WA_%</code>]</li>
+<li>Bachelor degree % [<code>Bachelors_or_higher_%</code>]</li>
+<li>Median income [<code>MEDHHINC_2023</code>]</li>
+</ul>
+</li>
+</ul>
+<p><em>Question</em>: What is your interpretation of spatial autocorrelation for these datasets?</p>
+<p>[7] Next, we are going to run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog">Bivariate Spatial Association (Lee’s L)</a>, using GOP vote percent [<code>gop_perc</code>] as Analysis Field 1, comparing to:</p>
+<ul>
+<li>White % [<code>WA_%</code>]:
+<ul>
+<li>An example of <strong>positive</strong> association i.e., as White % increases, GOP vote percent increases.</li>
+<li>Lee’s L = -0.243755, P-value = 0.002, Pearson Correlation = -0.384821</li>
+</ul>
+</li>
+<li>Bachelor degree % [<code>Bachelors_or_higher_%</code>]:
+<ul>
+<li>An example of <strong>negative</strong> association i.e., as Bachelor degree % increases, GOP vote percent decreases.</li>
+<li>Lee’s L = 0.30255, P-value = 0.002, Pearson Correlation = 0.539114</li>
+</ul>
+</li>
+<li>In both cases, Lee’s L &lt; Pearson’s R</li>
+<li>Median income [<code>MEDHHINC_2023</code>]:
+<ul>
+<li>A <strong>negative</strong> association, but in this case Lee’s L ~ Pearson’s R</li>
+<li>Lee’s L = -0.209754, P-value = 0.002, Pearson Correlation = -0.215725</li>
+</ul>
+</li>
+</ul>
+<p>To <strong>discuss</strong>:</p>
+<ul>
+<li>The Global <em>p</em>-value</li>
+<li>The spatial smoothing scalars</li>
+<li>The Pearson Correlation (<em>r</em>), and difference between raw and neighbourhood averages</li>
+<li>Lee’s L Scatter PLot</li>
+</ul>
+<p><strong>James</strong> Can you reproduce these results? A further observation - all of the reported P-values are identical (0.002). Needs evaluating.</p>
 <p>[8] Interpretation and understanding:</p>
-<p>*** Key point: “How much of this relationship survives once we account for spatial structure?”</p>
-<p>*** Understanding: What are key differences between Pearson Correlation and Lee’s L?</p>
-<p>*** How do we interpret the global and local results?</p>
-<p>-&gt; Consistent R &gt; L across many bivariate comparison [below]</p>
-<p>-&gt; County-level socioeconomic variables tend to be globally correlated but only moderately spatially cross-correlated</p>
-<p>-&gt; Indicative of smooth, large-scale monotonic trends across ~3,000 counties
--&gt; County-level socioeconomic data has stronger global correlation structure than neighbor-based spatial coupling structure.</p>
-<p>From AI:
-- Lee’s L &gt; Pearson <span class="math inline">\(r\)</span>: The spatial arrangement of your variables positively reinforces their correlation. In other words, similar values of both variables are clustered together in the same geographic neighborhoods, artificially “boosting” the apparent relationship when viewed through a spatial lens.
-- Lee’s L &lt; Pearson <span class="math inline">\(r\)</span>: Spatial autocorrelation is working against the overall linear relationship, meaning your variables are less spatially clustered than their raw correlation would suggest.
-- If L is close to Pearson’s r, the spatial arrangement adds little beyond the usual linear association, so the two variables correlate in a fairly ordinary way.</p>
-<p>Pearson: Do high X and high Y occur in the same place?
-Lee’s L: Do places surrounded by high X also tend to be surrounded by high Y?</p>
-<p>If the second is stronger than the first = L &gt; R (rare)</p>
-<p>[9] Sensitivity testing of spatial weights matrix</p>
-<p>-&gt; How do the correlations change as a distance or k-neighbours based approach is used?</p>
+<p><em>Question</em>: “How much of this relationship survives once we account for spatial structure?”</p>
+<p><em>Question</em>: What are key differences between Pearson’s R and Lee’s L?</p>
+<p><em>Question</em>: How do we interpret the global and local results?</p>
+<p>[9] As ever, sensitivity testing of spatial weights matrix:</p>
+<p><em>Question</em>: How do the correlations change as a distance or k-neighbours based approach is used?</p>
 </div>
 <div id="correlation-extra" class="section level2" number="4.3">
 <h2>
 <span class="header-section-number">4.3</span> Extra<a class="anchor" aria-label="anchor" href="#correlation-extra"><i class="fas fa-link"></i></a>
 </h2>
-<p>I’ve provided you with some other county-level datasets, including age-standardised mortality rate, unemployment rate, and high-speed internet availability.</p>
+<p>I’ve provided you with some other county-level datasets in <code>data/us-census</code>, including age-standardised <a href="https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&amp;age_options=age_11&amp;cod=247&amp;cod_options=cod_15&amp;comparison=states_to_us&amp;comparison_options=comparison_statename_to_us&amp;race=00&amp;race_options=race_6&amp;ratetype=aa&amp;ratetype_options=ratetype_2&amp;ruralurban=0&amp;ruralurban_options=ruralurban_3&amp;sex=0&amp;sex_options=sex_3&amp;statefips=99&amp;statefips_options=area_states&amp;yeargroup=5&amp;yeargroup_options=yearmort_2">mortality</a>, <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data">unemployment</a>, and <a href="https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html">internet adoption</a>.</p>
 <blockquote>
 <p>Can you find any interesting associations?</p>
 </blockquote>
@@ -213,101 +228,44 @@ Lee’s L: Do places surrounded by high X also tend to be surrounded by high Y?<
 <p>Is there any pattern to the spatial and non-spatial measures of association?</p>
 </blockquote>
 <blockquote>
-<p>What are some weaknesses of this approach (dependence on swm, fixed swm for both variables, only dealing with bivariate associations, rather than a combination of factors, which might be addressed via regression - Practicals 7 - 8)</p>
+<p>What are some weaknesses of our approach?</p>
 </blockquote>
-<p>—————– Issues with Joins</p>
-<p>!!! 000464: Cannot get exclusive schema lock. Either being edited or in use by another application or service.
-… Something to do with the Python code</p>
-<p>FIXED
-!!! Joined to education data… columns present, but blank (not <null>)
-!!! Join Field also not working… ERROR 000499: Table is not editable.
-!!! Poverty and Unemployment Join successfully, but not Education
-—&gt; issue with column names… different internal field definition?</null></p>
-<p>—————– Data sources</p>
-<p><strong>Unemployment, poverty, education</strong>
-Source: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data" class="uri">https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data</a>
-Documentation: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/documentation" class="uri">https://www.ers.usda.gov/data-products/county-level-data-sets/documentation</a></p>
-<p><strong>Poverty</strong> described more fully: <a href="https://www.census.gov/data/datasets/2024/demo/saipe/2024-state-and-county.html" class="uri">https://www.census.gov/data/datasets/2024/demo/saipe/2024-state-and-county.html</a></p>
-<p>PCTPOVALL_2023 = Poverty Percent, All Ages
-MEDHHINC_2023 = Median Household Income</p>
-<p><strong>Demographics</strong>, county-level: <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2020s-counties-detail.html" class="uri">https://www.census.gov/data/datasets/time-series/demo/popest/2020s-counties-detail.html</a>
-Methodology: <a href="https://www2.census.gov/programs-surveys/popest/technical-documentation/methodology/2020-2024/methods-statement-v2024.pdf" class="uri">https://www2.census.gov/programs-surveys/popest/technical-documentation/methodology/2020-2024/methods-statement-v2024.pdf</a></p>
-<p>Demographic data: <a href="https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/asrh/cc-est2024-alldata.csv" class="uri">https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/asrh/cc-est2024-alldata.csv</a></p>
-<p>MT modifications
-- Calculated WA_TOTAL, WA_%
-- Created FIP_code (with difficulty!) and filtered to 2024 and all ages
-- Removed most demographic data for simplicity…</p>
-<p><strong>Opiod</strong> VSRR Provisional County-Level Drug Overdose Death Counts
-- <a href="https://data.cdc.gov/National-Center-for-Health-Statistics/VSRR-Provisional-County-Level-Drug-Overdose-Death-/gb4e-yj24/about_data" class="uri">https://data.cdc.gov/National-Center-for-Health-Statistics/VSRR-Provisional-County-Level-Drug-Overdose-Death-/gb4e-yj24/about_data</a></p>
-<p><strong>Internet adoption</strong>
-- <a href="https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html" class="uri">https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html</a></p>
-<p><strong>Citrus and Christmas trees</strong>
-- <a href="https://quickstats.nass.usda.gov/#24E0CEE2-1271-3635-A1ED-7A50CF2BBCDA" class="uri">https://quickstats.nass.usda.gov/#24E0CEE2-1271-3635-A1ED-7A50CF2BBCDA</a></p>
-<p>[Observation] Using Join Field replaces <null> with 0</null></p>
-<p><strong>Diabetes</strong>:
-- <a href="https://usdss.cdc.gov/diabetes/surveillance.html#" class="uri">https://usdss.cdc.gov/diabetes/surveillance.html#</a></p>
-<p><strong>Mortality</strong> data:
-- <a href="https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&amp;age_options=age_11&amp;cod=247&amp;cod_options=cod_15&amp;comparison=states_to_us&amp;comparison_options=comparison_statename_to_us&amp;race=00&amp;race_options=race_6&amp;ratetype=aa&amp;ratetype_options=ratetype_2&amp;ruralurban=0&amp;ruralurban_options=ruralurban_3&amp;sex=0&amp;sex_options=sex_3&amp;statefips=99&amp;statefips_options=area_states&amp;yeargroup=5&amp;yeargroup_options=yearmort_2" class="uri">https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&amp;age_options=age_11&amp;cod=247&amp;cod_options=cod_15&amp;comparison=states_to_us&amp;comparison_options=comparison_statename_to_us&amp;race=00&amp;race_options=race_6&amp;ratetype=aa&amp;ratetype_options=ratetype_2&amp;ruralurban=0&amp;ruralurban_options=ruralurban_3&amp;sex=0&amp;sex_options=sex_3&amp;statefips=99&amp;statefips_options=area_states&amp;yeargroup=5&amp;yeargroup_options=yearmort_2</a></p>
-<p>—————– Preliminary results</p>
-<p>[A] Results for gop_perc vs. % not high school graduate: [some correlation … as gop_perc increases, low education increases]</p>
-<p>Lee’s L 0.115147
-P-value 0.002
-Pearson Correlation 0.162153</p>
-<p>[B] Results for gop_perc vs. % bachelors or high: [pretty strong correlation, as education increases, gop_perc decreases]</p>
-<p>Lee’s L -0.243755
-P-value 0.002
-Pearson Correlation -0.384821</p>
-<p>[C] Results for gop_perc vs. white % [strong correlation … as gop_perc increases, white % increases]</p>
-<p>Lee’s L 0.30255
--&gt; positive, moderate spatial association (ranges from -1 to 1)
--&gt; Areas with high A tend to be surrounded by areas with relatively high values of B (+vice versa)
--&gt; The pattern is not extremely strong or uniform
-P-value 0.002
--&gt; p &lt; 0.01 = statistically significant under typical thresholds.
-Pearson Correlation 0.539114
--&gt; moderate positive correlation, as X increases, so does Y</p>
-<p>Interpretation: variables are correlated overall, and this relationship is spatially structured</p>
-<p>[D] Results for median income vs. bachelor % [again, strong correlation, but still Lee’s L &lt; Pearsons R]</p>
-<p>Lee’s L 0.464225
-P-value 0.002
-Pearson Correlation 0.729447</p>
-<p>Interpretation: counties follow the same global trend, but neighboring counties don’t necessarily “mirror” each other in a way that reinforces a shared spatial pattern.</p>
-<p>-&gt; Rich counties tend to be more educated
--&gt; Do rich counties sit next to rich+educated counties in a mutually reinforcing way? (partially)</p>
-<p>[E] Results for not high school graduate % vs. poverty</p>
-<p>Lee’s L 0.438068
-P-value 0.002
-Pearson Correlation 0.628235</p>
-<p>-&gt; Same pattern - relatively strong global association, but</p>
-<p>[F] Results for bachelor % vs. unemployment rate:</p>
-<p>Lee’s L -0.149659
-P-value 0.002
-Pearson Correlation -0.295399</p>
-<p>-&gt; Negative global relationship (more education, lower unemployement rate)
--&gt; The statistical relationship exists, but it does not strongly organize itself into spatially coherent blocks</p>
-<p>[G] Results for diabetes % vs. internet availability</p>
-<p>Lee’s L -0.218034
-P-value 0.002
-Pearson Correlation -0.267968</p>
-<p>[H] Results for mortality rate vs. median income</p>
-<p>Lee’s L -0.444267
-P-value 0.002
-Pearson Correlation -0.644164</p>
-<p>**[I] Results for mortality vs. gop_percentage [the first where L &gt; R, just!]</p>
-<p>Lee’s L 0.223926
-P-value 0.002
-Pearson Correlation 0.220589</p>
-<p>-&gt; Weak-moderate positive association (higher GOP vote share, slightly higher mortality)
--&gt; positive spatial association (areas surrounded by high GOP vote tend to be surrounded by high mortality, and v.v.)
--&gt; The close correspondence between r and L suggests that the relationship is not strongly driven by spatial lag effects but rather reflects shared regional patterning.</p>
-<p>[J] Results for gop_perc vs. poverty percentage [not interesting?]</p>
-<p>Lee’s L 0.039829
-P-value 0.002
-Pearson Correlation -0.032691</p>
-<p>[K] Results for gop_perc vs. Median income [some correlation … as gop_perc increases, income decreases]</p>
-<p>Lee’s L -0.209754
-P-value 0.002
-Pearson Correlation -0.215725</p>
+<p><em>Answers</em>:</p>
+<ul>
+<li>Results dependent on designation of spatial weights matrix.</li>
+<li>We’re using a fixed spatial weights matrix for both variables, see <span class="citation">Illanas <em>et al.</em> (<a href="references.html#ref-illanas2025">2025</a>)</span>.</li>
+<li>We’re only dealing with bivariate associations, rather than a combination of factors, which might be addressed via regression, as covered in <a href="spatial_regression.html#spatial_regression">Practical 7</a> and <a href="gwr.html#gwr">Practical 8</a>
+</li>
+</ul>
+<p>Some suggestions:</p>
+<ul>
+<li>median income vs. mortality rate:
+<ul>
+<li>Lee’s L = -0.444267, P-value = 0.002, Pearson Correlation = -0.64416</li>
+</ul>
+</li>
+<li>high school graduate % vs. unemployment rate:
+<ul>
+<li>Lee’s L = -0.149659, P-value = 0.002, Pearson Correlation = -0.295399</li>
+</ul>
+</li>
+<li>internet adoption vs. bachelor degree %:
+<ul>
+<li>Lee’s L = 0.3585, P-value = 0.002, Pearson Correlation = 0.6588,</li>
+</ul>
+</li>
+<li>median income vs. bachelor %:
+<ul>
+<li>Lee’s L = 0.464225, P-value = 0.002, Pearson Correlation = 0.729447</li>
+</ul>
+</li>
+<li>not high school graduate % vs. poverty:
+<ul>
+<li>Lee’s L = 0.438068, P-value = 0.002, Pearson Correlation = 0.628235</li>
+</ul>
+</li>
+</ul>
+<p>For those of you interested in exploring further, there are lots of other county-level datasets available, for example on <a href="https://usdss.cdc.gov/diabetes/surveillance.html">diabetes prevalence</a>, <a href="https://data.cdc.gov/National-Center-for-Health-Statistics/VSRR-Provisional-County-Level-Drug-Overdose-Death-/gb4e-yj24/about_data">drug overdoses</a>, or even <a href="https://quickstats.nass.usda.gov/#24E0CEE2-1271-3635-A1ED-7A50CF2BBCDA">crop yields</a> but some data wrangling would be required to bring these into ArcGIS.</p>
 </div>
 <div id="resources-1" class="section level2" number="4.4">
 <h2>
@@ -336,7 +294,7 @@ Pearson Correlation -0.215725</p>
 <li><a class="nav-link" href="#tools-3">Tools</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#practical-3"><span class="header-section-number">4.2</span> Practical</a></li>
+<li><a class="nav-link" href="#practical-2"><span class="header-section-number">4.2</span> Practical</a></li>
 <li><a class="nav-link" href="#correlation-extra"><span class="header-section-number">4.3</span> Extra</a></li>
 <li><a class="nav-link" href="#resources-1"><span class="header-section-number">4.4</span> Resources</a></li>
 </ul>

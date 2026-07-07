@@ -185,7 +185,7 @@ increase in flows of people from that origin.
 Newtons gravity uses a power law of $\beta=-2$, so here are the starting
 values:
 
-$$k=1$, $μ=1$, $α=1$, $\beta=-2$$
+$$k=1, μ=1, α=1, \beta=-2$$
 
 For $V$ (origin "emissiveness") we will use origin population
 (`orig_pop`) For $W$ (destination "attractiveness"), we will use

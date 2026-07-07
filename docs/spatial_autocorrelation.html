@@ -141,9 +141,9 @@
 <hr>
 </div>
 </div>
-<div id="practical-2" class="section level2" number="3.2">
+<div id="autocorrelation_prac" class="section level2" number="3.2">
 <h2>
-<span class="header-section-number">3.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.2</span> Practical<a class="anchor" aria-label="anchor" href="#autocorrelation_prac"><i class="fas fa-link"></i></a>
 </h2>
 <p>[1] Open ArcGIS and load county geometry data [<code>cb_2023_us_county_500k.shp</code>, n=3235]:</p>
 <p><em>Note</em> some context <a href="https://www.bbc.co.uk/news/articles/cj4vn0qxy0lo">here</a>. The county level is for administrative purposes, but interesting for looking at patterns. The actual state vote (which gives reps to the electoral college) is % based at the state-level.</p>
@@ -153,7 +153,7 @@
 <p>[4] Load in presidential results [<code>2024_US_County_Level_Presidential_Results.csv</code>] and join to geometries, using Joins and Relates -&gt; Add Join (<code>NAMELSAD</code>, <code>county_name</code>).</p>
 <p><em>Note</em> an alternative approach would be to use the Federal Information Processing Series (<a href="https://www.census.gov/library/reference/code-lists/ansi.html">FIPS</a>) code, stored in <code>GEOID</code> and <code>county_fips</code> respectively, but different data formats (Text, Long) means we don’t get any matches, and would have to do some more data processing.</p>
 <p>[5] Inspect the Attribute Table for completeness and for key stats i.e., Explore Statistics of <code>per_gop</code>. Mean = 0.66% at a county level.</p>
-<p>[Q] Why does this not match the overall vote % [i.e., population-excluded]</p>
+<p><em>Question</em>: Why does this not match the overall vote % [i.e., population-excluded]</p>
 <ul>
 <li>gop_total = 81,382,360 (50.4% of total)</li>
 <li>dem_total = 77,151,397 (47.8% of total)</li>
@@ -290,8 +290,8 @@
 </h2>
 <p>As a comparison, we can run with 2008 election results (Obama vs. McCain), stored in <code>2008_US_County_Level_Presidential_Results.csv</code></p>
 <p>Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.</p>
-<p>[Q] How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?</p>
-<p>[Q] What is a limitation of our current approach? <em>Hint</em>: Sort the <code>gop_per</code> column for the 2008 results.</p>
+<p><em>Question</em>: How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?</p>
+<p><em>Question</em>: What is a limitation of our current approach? <em>Hint</em>: Sort the <code>gop_per</code> column for the 2008 results.</p>
 <p>Answer: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available <a href="https://www2.census.gov/geo/tiger/">here</a>.</p>
 </div>
 <div id="resources" class="section level2" number="3.4">
@@ -322,7 +322,7 @@
 <li><a class="nav-link" href="#tools-2">Tools</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#practical-2"><span class="header-section-number">3.2</span> Practical</a></li>
+<li><a class="nav-link" href="#autocorrelation_prac"><span class="header-section-number">3.2</span> Practical</a></li>
 <li><a class="nav-link" href="#extra-2"><span class="header-section-number">3.3</span> Extra</a></li>
 <li><a class="nav-link" href="#resources"><span class="header-section-number">3.4</span> Resources</a></li>
 </ul>

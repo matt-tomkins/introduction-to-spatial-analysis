@@ -19,6 +19,6 @@ file.copy("./CNAME", "./docs")
 
 ```
 
-The following lists all the resources cited across the *Introduction to Spatial Analysis* practicals. To guide wider reading, a curated list of key resources has been provided for each practical e.g., [Spatial Weights](#sw_resources)
+The following lists all the resources cited across the *Introduction to Spatial Analysis* practicals. To guide wider reading, a curated list of key resources has been provided for each practical.
 
 

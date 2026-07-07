@@ -14,14 +14,14 @@ The aims of this practical are to:
 
 ### Application {.unnumbered}
 
-To that end, we'll analyse the patterns in a Point dataset, using research-grade species observations of *Panthera tigris* from [iNaturalist](https://www.inaturalist.org/observations?place_id=any&view=species), obtained via the Global Biodiversity Information Facility ([GBIF](https://www.gbif.org/species/search)). 
+To that end, we'll analyse the patterns in a Point dataset, using research-grade species observations of *Panthera tigris* from [iNaturalist](https://www.inaturalist.org/observations?place_id=any&view=species), obtained via the Global Biodiversity Information Facility ([GBIF](https://www.gbif.org/species/search)).
 
 ### Data {.unnumbered}
- 
+
 The data for this practical are available in [`data/gbif`] as follows:
- 
-- Species observations of *Panthera tigris* (N=4449) obtained via GBIF [[Source](https://doi.org/10.15468/dl.hjrenk)]
-- Protected areas of India (*National Parks and Wildlife Sanctuaries*), built from [OpenStreetMap](www.openstreetmap.org) data [[Source](https://geo.ejatlas.org/layers/geonode:Protected_Area_India_Final#)]
+
+-   Species observations of *Panthera tigris* (N=4449, 2 June 2026) obtained via GBIF.org [[Source](https://doi.org/10.15468/dl.hjrenk)]
+-   Protected areas of India (*National Parks and Wildlife Sanctuaries*), built from [OpenStreetMap](www.openstreetmap.org) data [[Source](https://geo.ejatlas.org/layers/geonode:Protected_Area_India_Final#)]
 
 ### Tools {.unnumbered}
 
@@ -31,122 +31,233 @@ The data for this practical are available in [`data/gbif`] as follows:
 
 *Data Management*
 
-[Spatial Join](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/spatial-join.html?tabs=dialog) (Analysis Tools), [Clip](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog) (Analysis Tools), [Generate Tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog) (Data Management Tools), [Minimum Bounding Geometry](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog) (Data Management), [Create Random Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog) (Data Management), [XY Table To Point](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog) (Data Management Tools)
+[Spatial Join](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/spatial-join.html?tabs=dialog) (Analysis Tools), [Clip](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog) (Analysis Tools), [Dissolve](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog) (Data Management Tools), [Generate Tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog) (Data Management Tools), [Minimum Bounding Geometry](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog) (Data Management), [Create Random Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog) (Data Management), [XY Table To Point](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog) (Data Management Tools), [Calculate Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog) (Data Management Tools)
 
 ------------------------------------------------------------------------
 
 ## Practical
 
-Structure: -\> Visualising Points -\> Centrography -\> Randomness and clustering -\> Identifying clusters
+### Pre-processing
 
-Discussion points: -\> Ensure the practical finishes with a natural progression to point-process modelling i.e., all of this is great, and tells us about the pattern of points, but not how that pattern arises - outside the scope of this unit, but an ecological example in Spatial Ecology. -\> Observation Window -\> Uncertainty (n=125 at single location, +/- 30 km, importance at our scale of analysis?) -\> DON'T discuss presence-absence problems here, as this will be better suited to the interpolation practical
+[1] Load occurrence data and inspect [`occurrence.csv`]
 
-------------------------------------------------------------------------
+[2] Convert to Point - [XY Table To Point](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog)
 
-[1] View data (.csv)
+[3] Load the Natural Earth data from Week 1 [`data/natural-earth/ne_10m_admin_0_countries.shp`] which we'll use to subset to our area of interest (Indian subcontinent).
 
-[2] Load to ArcGIS and convert to Point - XY Table to Points not working, even with minimal and super-minimal (lat-lon only) examples -[Solution] Pasting data to a new csv works - bodge!
+-   Select by Attributes (ADMIN = 'India' OR ADMIN = 'Nepal' OR ADMIN = 'Bhutan' OR ADMIN = 'Bangladesh')
+-   Either Export Selection (or keep selected)
+-   Clip: Input = Tiger Points, Feature = Natural Earth (selected record)
 
-[3] Subset to area of interest (Indian subcontinent); -\> Select by Attributes (ADMIN = 'India' OR ADMIN = 'Nepal' OR ADMIN = 'Bhutan' OR ADMIN = 'Bangladesh') -\> Either Export Selection (or keep selected) -\> Clip: Input = Tiger Points, Feature = Natural Earth (selected record)
+*Discuss* Spatial Joins / Overlay / Clip
 
-[Topics] Discuss Spatial Joins / Overlay / Clip here? [TO DO] Remove non-contiguous part? Multi-part to single-part
+*To do?* Remove non-contiguous part? i.e., Andaman Islands, Maldives. This could be achieved using [Multipart To Singlepart](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/multipart-to-singlepart.html?tabs=dialog) (Data Management Tools)
 
-[4] Dissolve our area of interest (Indian Subcontinent): -\> Dissolve tool - Natural Earth - Use the selected records -\> Dissolve Fields: leave blank = all features together -\> Statistics Fields: also blank (just using area to define study extent), but could do statistics here e.g., POS_EST [SUM], GDP_MD [Mean]
+[4] [Dissolve](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog) our area of interest (Indian Subcontinent):
 
-[Topics] Discuss polygon-representation issues i.e., does the Tiger recognise political boundaries?
+-   Natural Earth
+-   Use the selected records
+-   Dissolve Fields: leave blank = all features together
+-   Statistics Fields: also blank (just using area to define study extent), but could do statistics here e.g., `POS_EST` [SUM], `GDP_MD` [Mean]
 
-[5] Projection
+*Discuss* polygon-representation issues i.e., does the Tiger recognise political boundaries?
 
--   In the previous practicals, we've largely been dealing with topological issues (i.e., neighbouring, bordering) and haven't therefore had to deal with geometric issues i.e., areas, distances (link to Understanding GIS, Week 2)
--   In this practical, we are considering those issues i.e., are points clustered or randomly dispersed?
--   As a result, the choice of projection is an important one!
--   How do we select:
-    -   Best option (for global analysis or if in doubt) = ellipsoidal / geodesic measurement
-    -   Smaller areas, projected CRS, selecting a property to preserve (conformal, equal area, equidistant)
-    -   For individual countries, we can often use the national grid e.g., the CRS is British National Grid (conformal), but is sufficiently accurate for area and distance calculations
--   For area, we can select via:
-    -   The Projection Wizard -\> Copy WKT to text, save as .prj -\> Import Coordinate System
-    -   New suggested projected coordinate system -\> Extent of a layer -\> Property (conformal, equal-area, etc)
+[5] Update Projection
 
-[6A] Generate tesselation (2000 km2) [6B] Spatial join (Target = tesselate, Join = points, field name = county, one to one, completely contains [or intersects])
+In the previous practicals, we've largely been dealing with topological issues (i.e., neighbouring, bordering) and haven't deal in great depth with geometric issues i.e., areas, distances (link to Understanding GIS, Week 2)
 
-[Topics] Symbology effects, Graduated Colours (using quantiles etc) or Unclassed Colours (min to max)
+In this practical, we are certainly in the realm of geometry i.e., are points clustered or randomly dispersed? As a result, the choice of projection is an important one!
 
-[!] Important, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters [!] When tesselated, there is one-two areas that stands out (\>500 observations)
+How do we select a suitable CRS?
 
-[7] Kernel Density -\> Population field = NONE ? -\> Cell size e.g., 10_000 m -\> Explore changing search radius e.g., 20_000 to 200_000 m2 -\> Method = Geodesic (incorporting Earth shape) -\> [TO CHECK] Effects of barriers - does influence intensity... -\> [NOTE] This only produces values within the data range (x-y)
+-   Best option (for global analysis or if in doubt) = ellipsoidal / geodesic measurement
+-   Smaller areas, projected CRS, selecting a property to preserve (conformal, equal area, equidistant)
+-   For individual countries, we can often use the national grid e.g., the CRS for the UK is British National Grid (conformal), but is sufficiently accurate for area and distance calculations
 
--\> This process creates static layers, but we can also use a dynamic approach via Symbology -\> More flexible, but less robust i.e., Radius is in screen units (points), rather than map units (meters, feet, etc) -\> [CHECK] Constant vs. Dynamic
+For our study area, which doesn't fit neatly into a national grid, we can select via:
 
-[8] Mean Center and Median Center -\> Center of Mass, discrepancy of mean-median caused by skew -\> Median = 50% of points above+below point, and left+right -\> For the tiger dataset, the mean is skewed north by Himalayan observations
+-   The [Projection Wizard](https://projectionwizard.org/):
+    -   Select area of interest and distortion property
+    -   Open WKT information
+    -   Copy to a text file and save with the extension `.prj`, denoting a projection file
+    -   In ArcGIS, we can apply this to our Map using Properties -\> Coordinate Systems -\> Add, then Import Coordinate System and Apply.
+-   Alternatively, we can let ArcGIS suggest one for us:
+    -   New suggested projected coordinate system
+    -   Name and choose GCS (WGS 1984 - link to Understanding GIS here)
+    -   Extent of a layer (Natural Earth data subset to Indian subcontinent)
+    -   Select distortion Property (conformal, equal-area, etc) and Save
 
-[9] Standard Distance tool -\> Produces 559904.230305 m for Indian dataset i.e., on average, observations are \~560 km apart -\> Link back to projection here - uses the units of projection, so if we use a geographic projection, units in degrees
+> Use either method to select a suitable **conformal** projection for our area of interest.
 
-[10] Directional Distribution (Standard Deviational Ellipse) -\> This provides information on the center, dispersion, and orientation -\> CenterX and CentreY is identical to outputs of `mean centre` and `standard distance` tools -\> Shape indicates wider disperson along N-S axis (YStdDist) vs. E-W axis (XStdDist), with rotation of \~12deg. -\> This probably reflects outlier points in Bangladesh, Assam etc, coupled with points in SW India
+*Note* this applies to the map visualisation, but doesn't change the underlying data in any way, which are reprojected "on-the-fly\`.
 
-[11] Average Nearest Neighbour (Clark-Evans R) -\> Very straightforward implementation (use projected data, with Euclidean distance) -\> Interpretation simple, with html output
+> To change the feature data, use [Project](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog) on the `Point` data.
 
-[TO DO] Communicate analytical approach, z-score
+### Visualisation and Centrography
 
-[12] Multi-Distance Spatial Cluster Analysis (Ripley's K)
+[6] In our first step, we are going to create a grid across the study area, and then symbolise the cells based on the \# species observations. This is useful, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters. When *tesselated*, there are one or two areas that stand out (\>500 observations).
 
--\> Very slow with high number of permutations, and very slow even with no permutations -\> Highly sensitive to "study area" method, see: <https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog>
+We could also use this as the basis for statistical testing e.g., [$χ^2$](https://en.wikipedia.org/wiki/Chi-squared_test), where we could compare the \# observations in each cell or *quadrat* vs. an even distribution. However, this is rather tricky to do in ArcGIS!
 
-[TO HIGHLIGHT] Observation Window [TO INVESTIGATE] Boundary correction [UNDERSTAND] The Ripley family - how is the 'K' in ArcGIS different from G and F in "Geographic Data Science with Python"
+Run [Generate Tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog):
 
-This is a reference to @ripley_statistical_1988.
+-   Extent = Natural Earth data subset to Indian subcontinent
+-   Shape Type = Square
+-   Size = 2000 km\^2
+-   Proj = Match extent layer
 
-Interpretation: - Observed K [actual data] \> Expected K [complete spatial randomness] (Clustered) - points closer together than by pure chance, at that specific distance - Else Observed K \< Expected K (Dispered) - points spread out compared to a random pattern
+[7] Next, we will use a [Spatial Join](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/spatial-join.html?tabs=dialog):
 
-Visual: - Observed K line far from Expected K line = clustering is statistically significant
+-   Target = Output of [Generate Tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog),
+-   Join = occurrence points
+-   Field name = Count
+-   Join Operation = one to one
+-   Match Option = Completely contains [or intersects])
 
-[13] Find Point Clusters (GeoAnalytics)
+*Discuss* Symbology effects, Graduated Colours (using quantiles etc) or Unclassed Colours (min to max)
 
--\> Key methods: DBSCAN (defined-distance) and HDBSCAN (self-adjusting)
+[8] Run [Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog):
 
-[KEY CHOICES] Minimum number of features (% of dataset), and search distance - This flexibility is a strength and a limitation - Search distance - we should do this based on ecological grounds! (\~100 km2) - Minimum number - 45 (1%) - This gives a reasonable pattern (7 main clusters, plus outliers)
+-   Input = occurrence points
+-   Population field = NONE
+-   Cell size e.g., 10_000 m
+-   Method = Geodesic (incorporating Earth shape)
 
--\> HDBSCAN gives different results, varying distance based on point density (central block broken up into smaller clusters, and v.v elsewhere) -\> For this data, DBSCAN makes more sense - fixed distance, based on ecological evidence (not Point clustering)
+> Explore changing search radius e.g., 20,000 m\^2 to 200,000 m\^2 Explore effects of barriers (e.g., Natural Earth polygon)
+
+*Note* this tool produces values within the data range (min-max xy) and creates static layers.
+
+We can use a dynamic approach via Symbology, which is more flexible, but arguably less robust i.e., Radius is in screen units (points), rather than map units (meters, feet, etc)
+
+> Explore constant vs. dynamic approach.
+
+[9] Run [Mean Center](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog) and [Median Center](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog)
+
+-   Provides information on the center of Mass e.g., discrepancy of mean-median caused by skew. For the median, 50% of points above+below point, and left+right. For the tiger dataset, the mean is skewed north by Himalayan observations
+
+[10] Run [Standard Distance](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog) i.e., on average, how far are observations from the geometric mean center?
+
+-   For the occurrence dataset, this produces 559904.230305 m i.e., on average, observations are \~560 km from the mean center. The reported distance is in the units of the projection here. In [5] we switched to a projected CRS, with units in meters, but if we were to use a geographic projection, units would typically be in degrees.
+
+[11] Run [Directional Distribution (Standard Deviational Ellipse)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/directional-distribution.html?tabs=dialog), which provides information on the center, dispersion, and orientation.
+
+-   For the occurrence dataset, CenterX and CentreY should be identical to outputs of `mean centre` and `standard distance` tools
+-   The shape of the output indicates wider disperson along N-S axis (YStdDist) vs. E-W axis (XStdDist), with rotation of \~12deg.
+-   This probably reflects outlier points in Bangladesh, Assam etc, coupled with points in SW India
+
+### Randomness
+
+[12] Run [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog), which is Clark-Evans R [@clark1954].
+
+-   Use Euclidean distances (projected data)
+-   Generate report (`html`)
+-   **Area** is critical - the default is the minimum bounding rectangle enclosing all of the observations
+
+Default Output:
+
+-   Observed Mean Distance = 1830.375410
+-   Expected Mean Distance = 16414.771642
+-   Nearest Neighbor Ratio = 0.111508
+-   z-score = -109.656790
+-   p-value = 0.000000
+-   Given the z-score of -109.65679, there is a less than 1% likelihood that this clustered pattern could be the result of random chance.
+
+Very straightforward implementation and interpretation, but key discussion points:
+
+-   Analytical approach
+-   Distance calculations (observed and expected mean distance)
+-   Nearest neighbor ratio
+-   Z-scores
+-   Introduce the **Observation Window**
+
+> Evaluate the impact of changing the observation window (`area`), for example using the area of the Natural Earth polygons, calculated using [Calculate Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog)
+
+### Cluster analysis
+
+[13] Run [Multi-Distance Spatial Cluster Analysis (Ripley's K Function)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog), developed by @ripley_statistical_1988.
+
+-   This tool is very slow with high number of permutations, and very slow even with no permutations
+-   As above, it is highly sensitive to "study area" method, as described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog)
+-   Boundary correction is also important.
+
+*Discuss* the Ripley alphabet of functions ($G, F, K$)
+
+*Interpretation*:
+
+-   Observed K [actual data] \> Expected K [complete spatial randomness] = Clustered i.e., points closer together than by pure chance, at that specific distance
+-   Observed K \< Expected K = Dispered i.e., points spread out compared to a random pattern
+-   Visually, when Observed K line far from Expected K line, clustering is statistically significant
+
+[13] Run [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog), key methods include DBSCAN (defined-distance) and HDBSCAN (self-adjusting)
+
+Important choices include the minimum number of features (% of dataset) and search distance. This flexibility is a strength and a limitation, as the # and distribution of clusters is highly sensitive to user choice.
+
+Reasonable selection of parameters:
+
+-   Search distance based on ecological grounds e.g., an average home range of 110 km\^2 for Sundarban of India and Bangladesh [@naha2016], although they can travel much further [@hussain2022]!
+-   Minimum number - 45 (1%)
+-   This generate a reasonable pattern (7 main clusters, plus outliers)
+
+HDBSCAN gives different results, varying distance based on point density (central block broken up into smaller clusters, and v.v elsewhere). For this dataset, DBSCAN makes more sense, using a fixed distance, based on ecological evidence (rather than the degree of Point clustering)
+
+**To finish the practical**
+
+Discussion points to consider:
+
+- Ensure the practical finishes with a natural progression to **point-process modelling** i.e., all of this is great, and tells us about the pattern of points, but not how that pattern arises. This is outside the scope of this unit, but you can explorer ecological examples in Spatial Ecology in Semester 2.
+- Emphasise the importance of the **Observation Window**.
+- Touch on **uncertainty**, with many points at the same location (n=125), reported positional uncertainty of ±30 km. How important is this at our scale of analysis? 
+- DON'T discuss **presence-absence** problems here, as this will be better suited to the interpolation practical.
 
 ## Extra
 
-[Testing Observation Window]
+### Testing Observation Window {.unnumbered}
 
-[A] Load Protected areas feature layer [B] Filter to Corbett Tiger Reserve (first in India) [C] Reproject (to conformal projection used elsewhere) --- [Test student understanding here?] ... ArcGIS seems to handly this on-the-fly (works if projection is different AND datum) [D] Filter to Points within the reserve (Clip) [E] Area is critical for subsequent calculations, so calculate the reserve area using Calculate Geometry Attributes [F] Assess the spatial pattern using Nearest Neighbour Analysis -\> Area = Nature Reserve Area -\> Result = Still clustered, because there are many points at the same location [G] Filter to unique locations = Delete Identical, Shape -\> Result = Random [H] Compare to random distribution: -\> Create Random Points - Constrain to Reserve - \# points to match real data -\> Rerun Nearest Neighbour Analysis = random -\> Change area... double area = significant
+To evaluate the effects of the observation window further:
 
-[EMPHASISE] Edge correction, area sensitivity
+[14] Load Protected areas feature layer [`data/gbif/protected-area-india.shp`]
 
------------------ Instructions for GBIF for students
+[15] Filter to Corbett Tiger Reserve (`Corbett National Park`), the first in India, and named after [Jim Corbett](https://en.wikipedia.org/wiki/Jim_Corbett), an Anglo-Indian hunter, naturalist, and [author](https://en.wikipedia.org/wiki/Man-Eaters_of_Kumaon).
 
-[Manual]
+[16] [Project](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog) to conformal projection used elsewhere
 
--\> Register for GBIF -\> Get data -\> Search species e.g., Canis lupus Linnaeus, 1758 -\> Click "Occurrences" -\> Dataset - iNaturalist Research-grade observations -\> Location - Including coordinates -\> Select country and/or continent -\> Filter to year if relevant
+[17] Filter to Points within the reserve using [Clip](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog) 
 
-[Plugin]
+[18] Area is critical for subsequent calculations, so calculate the reserve area using [Calculate Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog)
 
--\> Use the Download Species Occurrence Points geoprocessing tool via ArcGIS: <https://www.arcgis.com/home/item.html?id=927944e867624504bfd6c489b0d2aec7>, described here: <https://techdocs.gbif.org/en/data-use/importing-gbif-data-into-arcgis> -\> Catalog - Portal - ArcGIS Online - Search GBIF - Right click (add to project) -\> Unable to filter based on Natural Earth polygon (India, Use the selected records) -- too complex -\> Instead, use minimum bounding geometry ('envelope' for a typical bbox), utilises the projection of the input data (not map) [FAILS] Same issue as previously (xy_table_to_points - ERROR 000308: Invalid field type)
+[19] Assess the spatial pattern using [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog) = Clustered
 
------------------ Data sources:
+- Result is because there are many points at the same location (repeat observations?)
 
-Panthera tigris (Linnaeus, 1758) in **Asia** (n=4449): GBIF.org (02 June 2026) GBIF Occurrence Download <https://doi.org/10.15468/dl.hjrenk> -\> iNaturalist Research-grade observations (n=2144) -\> Bengal Tiger (Panthera tigris) Sighting (n=2306)
+[20] Filter to unique locations using [Delete Identical](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog), using `Shape` as the input 
 
-Panthera tigris (Linnaeus, 1758) in **India** (n=2144, iNaturalist only): GBIF.org (02 June 2026) GBIF Occurrence Download <https://doi.org/10.15468/dl.7q>
+[21] Re-run [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog) = Random
 
-India protected areas: <https://geo.ejatlas.org/layers/geonode:Protected_Area_India_Final#>
+[22] We could also compare to a random distribution:
 
------------------ Quadrat Statistics - too complex (chi-squared...)
+- Use [Create Random Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog), constraining to reserve extent and using # points to match the occurrence data.
+- Re-run [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog) = Random 
+- Changing the area (e.g., x2) and re-run = Clustered
 
--\> Generate N random points within the indian subcontinent boundary (Create Random Points) -\> Evaluate Bin Sizes for Point Aggregation (square, based on random points) -\> Clip to India boundary -\> Spatial Join new grid with Point data (update field name to ACTUAL_COUNT) -\> Add Field: (!Obs_Count! - !Exp_Count!)\*\*2 / !Exp_Count! -\> Visualise statistics (SUM)... Chi-squared statistic = 159,552.196556926
+### Downloading data from GBIF {#gbif_download .unnumbered}
 
------------------ Ripleys (AI overview)
+To download species-observation data **manually** via GBIF:
 
-1.  Ripley's K (Multi-Distance Spatial Cluster Analysis)What it does: It counts the number of neighboring features found at various distances from each feature.Use case: It helps you find if your points are clustered, dispersed, or random at different scales (e.g., are crime hotspots tight and localized, or spread out across a whole city?).ArcGIS Tool: Multi-Distance Spatial Cluster Analysis (Spatial Statistics toolbox).
+-   [Register](https://www.gbif.org/user/register) for GBIF
+-   [Get data - Species](https://www.gbif.org/taxon/search)
+-   Full text search e.g., *Canis lupus* (Linnaeus, 1758, Gray Wolf)
+-   Select Occurrences
+-   Apply Filters of interest e.g.,
+    -   Country or area (United States of America)
+    -   Dataset (iNaturalist Research-grade Observations)
+    -   Location (Has coordinates = Yes")
+-   Download simple occurrence data (`csv`)
+-   If using and publishing the data, include the recommended data attribution e.g., GBIF.org (7 July 2026) GBIF Occurrence Download <https://doi.org/10.15468/dl.vdnczk>
 
-2.  Ripley's G (Nearest Neighbor Event-to-Event)What it does: It calculates the distance from each point to its nearest neighboring point and plots the cumulative distribution of these distances.Use case: It is perfect for testing if specific features (like specific plant species or retail store locations) are clustered together. If $G(d)$ shows 80% of points have a nearest neighbor within 10 meters, it indicates tight clustering.ArcGIS Tool: Average Nearest Neighbor or evaluated using Spatial Autocorrelation.
-
-3.  Ripley's F (Empty Space or Point-to-Event)What it does: Instead of measuring from feature to feature, it measures the distance from a set of randomly placed points (empty spaces) to the nearest feature.Use case: It measures the "gaps" between features. For example, it can help determine if a city has an even distribution of parks by measuring how far a randomly selected residential street is from the nearest green space
+It is also possible to download data via a **geoprocessing tool** in ArcGIS [[Source](https://www.arcgis.com/home/item.html?id=927944e867624504bfd6c489b0d2aec7)] [[Instuctions](https://techdocs.gbif.org/en/data-use/importing-gbif-data-into-arcgis)].
 
 ## Resources
 
-- Baddeley, A., Rubak, E., & Turner, R. ([2015](https://doi.org/10.1201/b19708)). Spatial Point Patterns: Methodology and Applications with R (1st ed.). Chapman and Hall/CRC. 
-- Ripley, B.D. ([2012](https://doi.org/10.1017/CBO9780511624131)) Statistical Inference for Spatial Processes, Cambridge University Press
+-   Baddeley, A., Rubak, E., & Turner, R. ([2015](https://doi.org/10.1201/b19708)). Spatial Point Patterns: Methodology and Applications with R (1st ed.). Chapman and Hall/CRC.
+-   Ripley, B.D. ([2012](https://doi.org/10.1017/CBO9780511624131)) Statistical Inference for Spatial Processes, Cambridge University Press
+-   Clark, P.J. and Evans, F.C. ([1954](https://doi.org/10.2307/1931034)). Distance to nearest neighbor as a measure of spatial relationships in populations. Ecology, 35(4), pp.445-453.
