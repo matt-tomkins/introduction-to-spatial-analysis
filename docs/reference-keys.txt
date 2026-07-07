@@ -48,12 +48,16 @@ resources-5
 location_allocation
 introduction-8
 practical-7
+pre-processing-1
+network-building
+location-allocation-p-median
+location-allocation-maximise-coverage
 extra-7
 resources-6
 spatial_interaction
 introduction-9
 practical-8
-pre-processing-1
+pre-processing-2
 data-exploration
 model-description
 unconstrained-and-total-constrained-models

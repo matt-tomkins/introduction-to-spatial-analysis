@@ -133,7 +133,7 @@
 <div id="tools-8" class="section level3 unnumbered">
 <h3>Tools<a class="anchor" aria-label="anchor" href="#tools-8"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/build-network.html?tabs=dialog">Build Network</a> (Network Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a> (Network Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a> (Editing Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/round-up.html?tabs=dialog">Round Up</a> (Spatial Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/int.html?tabs=dialog">Int</a> (Spatial Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog">Create Feature Dataset</a> (Data Management Tools)</p>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/create-network-dataset.html?tabs=dialog">Create Network Dataset</a> (Network Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/build-network.html?tabs=dialog">Build Network</a> (Network Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a> (Network Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a> (Editing Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/round-up.html?tabs=dialog">Round Up</a> (Spatial Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/int.html?tabs=dialog">Int</a> (Spatial Analyst Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog">Create Feature Dataset</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-point.html?tabs=dialog">Raster to Point</a> (Conversion Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/feature-class-to-geodatabase.html?tabs=dialog">Feature Class To Geodatabase</a> (Conversion Tools)</p>
 <hr>
 </div>
 </div>
@@ -141,80 +141,254 @@
 <h2>
 <span class="header-section-number">9.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-7"><i class="fas fa-link"></i></a>
 </h2>
-<p>————– Resources</p>
-<p>Church: <a href="https://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch20.pdf" class="uri">https://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch20.pdf</a> R package: <a href="https://github.com/giacfalk/locationallocation" class="uri">https://github.com/giacfalk/locationallocation</a> Coastline: <a href="https://geoportal.statistics.gov.uk/datasets/ons" class="uri">https://geoportal.statistics.gov.uk/datasets/ons</a>::countries-december-2023-boundaries-uk-bfe/explore?location=54.650000%2C-3.250000%2C5</p>
-<p>————— Initial Processing</p>
-<p>[1] Load road network, population grid and islands shapefile - [all BNG, subset to Western Isles]</p>
-<p>[2] Load defibrillator csv and convert to features (WGS_1984), and then project to BNG</p>
-<p>[3] Clean defibrillator dataset (keep valid, align to network) -&gt; Near Tool (distance defib -&gt; road network, modifies input) -&gt; Visualise Statistics -&gt; Select by Attributes (<code>NEAR_DIST</code> &gt; 100, n=15) - DELETE (coordinate errors?) -&gt; Snap (Editing Tools, modifies input, Type = Edge, Distance = 100) Snap nearby to the network (&lt; 100 m) -&gt; Delete others -&gt; Subset to defibrillators with 24 hour access?</p>
-<p>[4] Clean Demand points … Option 1 -&gt; Raster to Point (<code>population</code>) -&gt; Near Tool (investigate via Symbology) -&gt; A reasonable cutoff would be 700 m via Pythagoras: sqrt(0.5^2 + 0.5^2) = 0.7071 km -&gt; Snap (Distance = 700 i.e., generalized to 1 km, so we “know” that the population is within a ~700 m radius)</p>
-<p>OR</p>
-<p>Option 2 -&gt; Round Up (Spatial Analyst) -&gt; int(), to convert from float to int via truncation (no effect, as already rounded up) -&gt; Raster to Points (Centroid) -&gt; Buffer (500 m) -&gt; Minimum Bounding Geometry (Envelop) = <code>grid_code</code> contains the number of people per 1 km cell [!] This is slightly complicated but is better than Raster to Polygon, which merges neighbouring cells with the same value -&gt; Create Random Points (# within cell) -&gt; Near Tool -&gt; Snap to within 1000 m -&gt; Delete the rest</p>
-<p>[Thoughts]</p>
-<p>At best both options are an approximation of where people live, but Option 1 does produce the correct # people within each 1 km grid square, and perhaps more realistic than using a centroid location (snapped to the network).</p>
-<p>Option 1 is a much simpler approach, and less representative of the actual locations (probably), but would minimise computation time. Given the aim of the practical (understanding techniques), Option 1 is sufficient.</p>
-<p>[5] For efficiency, we are going to focus on a single island, so use <code>Clip</code> to subset all datasets to Isle of Mull (<code>Name</code> = <code>Mull</code>) -&gt; Roads (network), population points (demand, n=?), defibrillator locations (required / candidate locations, n=38)</p>
-<p>[6] Create Feature Dataset (empty) -&gt; To run Location Allocation in ArcGIS, we can’t use a simple features layer, we need to use a Feature Dataset, which has stricter rules regarding projection</p>
-<p>[7] Import features: -&gt; Right click in Catalog Pane -&gt; Import -&gt; Road network (Feature Class to Geodatabase)</p>
-<p>[8] Create Network Dataset (which defines the rules and sources of your network) = <code>road_model</code></p>
-<p>[9] Build Network (processing action that enforces those rules, maps connectivity, and generates the data structure needed for routing)</p>
-<p>[*] Initial exploratory analysis - Closest Facility -&gt; Make Closest Facility Analysis Layer -&gt; Import Incidents (<code>population</code>) -&gt; Import Facilities (<code>defib</code>) -&gt; Number of facilities to find = 1 -&gt; Run, Output: - Mean distance = 2739.060346368907 - Median distance = 2239.7073992125115 - Q3 = 3887.6913633425847 - Max = 10038.716195167184</p>
-<pre><code>[!] This is quite laborious and not necessary, because the baseline P-median run provides us with these distances</code></pre>
-<p>====================================== ### P-median approach</p>
-<p>i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand <em>or</em> “How do we minimise average distance for everyone?”</p>
-<p>======================================</p>
-<p>[10] Make Location-Allocation Analysis layer (~5 mins) -&gt; Network Data Source = <code>road_model</code> -&gt; Name = <code>la_pmedian_mull</code></p>
-<p>[11] Location-Allocation Layer tab -&gt; Input Data group -&gt; Import Facilities (<code>defib</code>) -&gt; Property <code>FacilityType</code> = <code>Required</code> i.e., current sites always included in the solution</p>
-<p>[12] Location-Allocation Layer tab -&gt; Input Data group -&gt; Import Demand Points (<code>population</code>) -&gt; Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</p>
-<p>[13] First run using current configuration -&gt; Set Facilities (#) = number of features in <code>defib</code> (for Mull, n = 38)</p>
-<p>-&gt; Output: Sum of allocated weight in “Demand Points”: 3050.685136. Sum of allocated weighted impedance in “Demand Points”: 3685274.462097. Sum of valid unallocated weight in “Demand Points”: 0.000000 Succeeded at 30 June 2026 14:08:32 (Elapsed Time: 3.30 seconds)</p>
-<p>-&gt; Interpretation: - Sum of allocated-unallocated weights not particularly meaningful, as we are using ‘P-median’ where all demand points are allocated to a facility - Sum of allocated weighted impedance is the key <strong>analysis metric</strong> i.e., the total population-weighted travel cost across all demand points to their assigned nearest facility). - This is our baseline for comparison</p>
-<p># Distances in <code>Lines</code> output match (broadly) those produced by Closest Facility analysis Mean = 2738.0597126355888 Median = 2238.7651310236133 Max = 10035.218946302226</p>
-<p>[14] Run with some new candidate locations</p>
-<p>-&gt; Dissolve road network (otherwise we will generate points for every feature, not the entire network) -&gt; Create Random Points (n=100, <code>random_mull_n100</code>, constrain to dissolved network) -&gt; Add to Location Allocation Layer (<code>FacilityType</code> = Candidate) -&gt; Solve again, # facilities = 50 i.e., 38 existing facilities in <code>defib</code> + 12 new locations</p>
-<p>Output: Sum of allocated weight in “Demand Points”: 3050.685136. Sum of allocated weighted impedance in “Demand Points”: 2720895.446077. Sum of valid unallocated weight in “Demand Points”: 0.000000</p>
-<p>-&gt; Interpretation: - Sum of allocated-unallocated weights identical [correct] - Sum of allocated weighted impedance has dropped “significantly” - Absolute change = -964,379, Percentage reduction = 26.2% - Relative change is more meaningful here (absolute change = “person-metres”, when impedance is metres and weights are population)</p>
-<p>[15] Test with an idealised scenario (i.e., no existing defibrillators)</p>
-<p>-&gt; Create 1000 random points as above (alternatively, regular spacing) -&gt; Open <code>Facilities</code> Attribute Table and delete all rows -&gt; Add random locations, all as <code>Candidate</code> -&gt; Set Facilities (#) = number of features in <code>defib</code> (n = 38) i.e., we are now evaluating the optimum locations (based on the p-median approach) for our 38 defibrillators (within the 1000 possible candidates &lt; all possible locations) - <em>Alternatively</em> we could use Facilities = 50, to facilitate comparison with [13]</p>
-<p>Output: Sum of allocated weight in “Demand Points”: 3050.685136. Sum of allocated weighted impedance in “Demand Points”: 2430836.519422. Sum of valid unallocated weight in “Demand Points”: 0.000000.</p>
-<p>Interpretation: - Sum of allocated weighted impedance (~2430836) is comparable (and better than) to [13, n=50] and significantly less than [12, n=38] - Absolute difference = 1,254,438, Percentage reduction = 34% - In turn, we can improve allocation just with location optimisation!</p>
-<p>Average distances are also lower (Explore Statistics, although should be weighted by population): - Mean = 2227.343557515982 - Maximum = 1815.0352018341623</p>
-<p>————— To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?</p>
-<p>====================================== ### Maximise coverage</p>
+<div id="pre-processing-1" class="section level3" number="9.2.1">
+<h3>
+<span class="header-section-number">9.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>[1] Load road network [<code>road_link_westcoast.shp</code>], population grid [<code>uk_population_2021_1km.tif</code>] and islands [<code>west-coast-islands.shp</code>] shapefile: all BNG, subset to Western Isles.</p>
+<p>[2] Load defibrillator location (<code>defibrillator_data.csv</code>), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table to Points</a> using lat-long (WGS_1984), and then <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a> to BNG</p>
+<p>[3] Clean defibrillator dataset, keeping valid entries and spatially aligning to network):</p>
+<ul>
+<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> to add distance from the defibrillators to the road network (modifies input)</li>
+<li>Visualise Statistics</li>
+<li>Select by Attributes (<code>NEAR_DIST</code> &gt; 100) and delete selected rows (n=15) - recording errors?</li>
+<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a> to snap points to the network (100 m tolerance, modifies input):
+<ul>
+<li>Type = Edge</li>
+<li>Distance = 100</li>
+</ul>
+</li>
+<li>Check for validity</li>
+</ul>
+<p><em>Option</em> Subset to defibrillators with 24 hour access?</p>
+<p>[4] Clean Demand points</p>
+<ul>
+<li>
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-point.html?tabs=dialog">Raster to Point</a> (<code>population</code>) to convert raster to Points at cell centroids</li>
+<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> to add distance from the centroids to the road network (modifies input)</li>
+<li>A reasonable distance cutoff would be 700 m due to Pythagoras: sqrt(0.5^2 + 0.5^2) = 0.7071 km</li>
+<li>Use Select by Attributes to remove Points where distance &gt; 700 m</li>
+<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a>, with distance = 700 i.e., raster generalized to 1 km, so we “know” that the population is within a ~700 m radius</li>
+</ul>
+<p>An <em>alternative approach</em> would be to use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/round-up.html?tabs=dialog">Round Up</a> on the raster, convert to integer via truncation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/int.html?tabs=dialog">Int</a>, use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-point.html?tabs=dialog">Raster to Point</a> to produce centroids, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/buffer.html?tabs=dialog">Buffer</a> by 500 m and then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog">Minimum Bounding Geometry</a>. This would produce a polygon grid where the cell value [<code>grid_code</code>] contains the number of people per 1 km cell.</p>
+<p>This seems unnecessarily complicated, given that <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-polygon.html?tabs=dialog">Raster to Polygon</a> (Conversion Tools) exists, but this produces an inferior output, as neighbouring cells with identical values are merged.</p>
+<p>Based on the output above, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> could be used on a polygon-by-polygon basis, which could then be adjusted to the network using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a>. This approach reproduces the correct number of people within each 1 km grid square, and perhaps a more realistic situation than relying on centroid locations only. However, it is much more complicated, and given the aims of the practical, the former is preferred.</p>
+<p>[5] For efficiency, we are going to focus on a single island, so use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a> to subset all datasets to Isle of Mull (<code>Name</code> = <code>Mull</code>). This includes:</p>
+<ul>
+<li>the road network,</li>
+<li>population points produced in [4] which represent the “demand” locations</li>
+<li>current defibrillator locations (n=38)</li>
+</ul>
+<p>[6] To run Location Allocation in ArcGIS, we can’t use a simple features layer, we need to use a <strong>Feature Dataset</strong>, which has stricter rules regarding projection - all layers <em>must</em> share a common coordinate system, unlike a <code>gdb</code> (although it can be stored within a <code>gdb</code>). This can be produced using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog">Create Feature Dataset</a> (output = empty)</p>
+<p>[7] We can then import features to the Feature Dataset:</p>
+<ul>
+<li>Right click in Catalog Pane</li>
+<li>Import to open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/feature-class-to-geodatabase.html?tabs=dialog">Feature Class to Geodatabase</a>
+</li>
+<li>Add Road network and run</li>
+</ul>
+</div>
+<div id="network-building" class="section level3" number="9.2.2">
+<h3>
+<span class="header-section-number">9.2.2</span> Network building<a class="anchor" aria-label="anchor" href="#network-building"><i class="fas fa-link"></i></a>
+</h3>
+<p>[8] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/create-network-dataset.html?tabs=dialog">Create Network Dataset</a> to defines the rules and sources of the network, using a suitable name output e.g., <code>road_model</code> and selecting the Source Feature Class imported in [7]</p>
+<p>[9] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/build-network.html?tabs=dialog">Build Network</a>, which is processing action that enforces the rules defined in [8], maps connectivity, and generates the data structure needed for routing.</p>
+<p>[10] Visual inspection of output. We can now use this network dataset for lots of tasks via New Network Analysis Layer e.g., Service Area, Route, Closest Facility, …</p>
+<p><em>Note</em> it is possible to use network datasets provided by ESRI, which allows for quicker calculation of travel time for different modes of travel. However, this does require credits to be used, and is “black-box” for us.</p>
+</div>
+<div id="location-allocation-p-median" class="section level3" number="9.2.3">
+<h3>
+<span class="header-section-number">9.2.3</span> Location Allocation: P-median<a class="anchor" aria-label="anchor" href="#location-allocation-p-median"><i class="fas fa-link"></i></a>
+</h3>
+<p>i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand <em>or</em> “How do we mini mise average distance for everyone?”</p>
+<p>[11] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a> (~5 mins)</p>
+<ul>
+<li>Network Data Source = <code>road_model</code>
+</li>
+<li>Name = <code>la_pmedian_mull</code>
+</li>
+<li>Problem Type = “Minimize impedance” (P-median)</li>
+</ul>
+<p>[12] Location-Allocation Layer tab: Load current defibrillator locations</p>
+<ul>
+<li>Input Data group</li>
+<li>Import Facilities (<code>defib</code>)</li>
+<li>Property <code>FacilityType</code> = <code>Required</code> i.e., sites always included in the solution</li>
+</ul>
+<p>[13] Location-Allocation Layer tab: Add demand points</p>
+<ul>
+<li>Input Data group</li>
+<li>Import Demand Points (<code>population</code>)</li>
+<li>Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</li>
+</ul>
+<p>[14] First run using current configuration, setting the number of facilities to match the number of features in <code>defib</code> (for Mull, n = 38)</p>
+<p><em>Output</em>:</p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 3685274.462097.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 0.000000</li>
+<li>Succeeded at 30 June 2026 14:08:32 (Elapsed Time: 3.30 seconds)</li>
+</ul>
+<p><em>Interpretation</em>:</p>
+<ul>
+<li>Sum of allocated amd unallocated weights not particularly meaningful, as we are using ‘P-median’ where all demand points are allocated to a facility</li>
+<li>Sum of allocated weighted impedance is the key <strong>analysis metric</strong> i.e., the total population-weighted travel cost across all demand points to their assigned nearest facility).</li>
+<li>This is our baseline for comparison</li>
+</ul>
+<p>[15] Second run with some new candidate locations</p>
+<ul>
+<li>
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">Dissolve</a> road network, otherwise we will generate points for every feature, not the entire network</li>
+<li>
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a>, n=100, <code>random_mull_n100</code>, constrain to dissolved network</li>
+<li>Add to Location Allocation Layer (<code>FacilityType</code> = Candidate)</li>
+<li>Solve again where number of facilities = 50 i.e., 38 existing facilities in <code>defib</code> + 12 new locations</li>
+</ul>
+<p><em>Output</em>:</p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 2720895.446077.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 0.000000</li>
+</ul>
+<p><em>Interpretation</em>:</p>
+<ul>
+<li>Sum of allocated and unallocated weights identical to previous situation [correct]</li>
+<li>Sum of allocated weighted impedance has dropped “significantly”</li>
+<li>Absolute change = -964,379, Percentage reduction = 26.2%</li>
+<li>Relative change is more meaningful here, as absolute change is measured in “person-meters” (when impedance is metres and weights are population)</li>
+</ul>
+<p>[16] Test with an idealised scenario (i.e., no existing defibrillators)</p>
+<ul>
+<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to reate 1000 random points, constrained to the network. An alternative approach would be regular spacing to ensure full coverage.</li>
+<li>Open <code>Facilities</code> Attribute Table and delete all rows</li>
+<li>Add random locations, all as <code>Candidate</code>
+</li>
+<li>Set number of facilities = number of features in <code>defib</code> (n = 38) i.e., we are now evaluating the optimum locations (based on the p-median approach) for our 38 defibrillators, of the 1000 possible candidates (not all possible locations).</li>
+</ul>
+<p><em>Alternatively</em> we could use Facilities = 50, to facilitate comparison with [15]</p>
+<p><em>Output</em>:</p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 2430836.519422.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 0.000000.</li>
+</ul>
+<p><em>Interpretation</em>:</p>
+<ul>
+<li>Sum of allocated weighted impedance (~2430836) is comparable (and better than) to [15, n=50] and significantly less than [14, n=38]</li>
+<li>Absolute difference = 1,254,438, Percentage reduction = 34%</li>
+<li>In turn, we can improve access to defibrillators with location optimisation and without increasing the total number!</li>
+</ul>
+<p>Average distances are also lower, which can be demonstrated Explore Statistics (although should be weighted by population):</p>
+<ul>
+<li>Current mean = 2227.343557515982</li>
+<li>“Optimum” mean = 1815.0352018341623</li>
+</ul>
+<blockquote>
+<p>To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?</p>
+</blockquote>
+</div>
+<div id="location-allocation-maximise-coverage" class="section level3" number="9.2.4">
+<h3>
+<span class="header-section-number">9.2.4</span> Location Allocation: Maximise coverage<a class="anchor" aria-label="anchor" href="#location-allocation-maximise-coverage"><i class="fas fa-link"></i></a>
+</h3>
 <p>i.e., maximize the total amount of demand (or population) covered within a cutoff (e.g., distance threshold)</p>
-<p>======================================</p>
-<p>[16] Make Location-Allocation Analysis layer (~5 mins) -&gt; Network Data Source = <code>road_model</code> -&gt; Name = <code>la_pmedian_mull</code> -&gt; Cutoff = 1000 (1 km) - This can be justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA)</p>
-<p>[17] Location-Allocation Layer tab -&gt; Input Data group -&gt; Import Facilities (<code>defib</code>) -&gt; Property <code>FacilityType</code> = <code>Required</code> i.e., current sites always included in the solution</p>
-<p>[18] Location-Allocation Layer tab -&gt; Input Data group -&gt; Import Demand Points (<code>population</code>) -&gt; Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</p>
-<p>[19] First run using current configuration -&gt; Set Facilities (#) = number of features in <code>defib</code> (for Mull, n = 38)</p>
-<p>Output: Sum of allocated weight in “Demand Points”: 2008.805185. Sum of allocated weighted impedance in “Demand Points”: 981885.557754. Sum of valid unallocated weight in “Demand Points”: 1041.879952.</p>
-<p>Interpretation: - In this case we are interested in the ratio of allocated-unallocated weights - Given the selected distance threshold (1 km) and the current distribution of facilities and demands, 1041 people not served by current distribution - Coverage is ~62%</p>
-<p>[20] Test with an idealised scenario (i.e., no existing defibrillators) -&gt; Open <code>Facilities</code> Attribute Table and delete all rows -&gt; Add random locations created in [15], all as <code>Candidate</code> -&gt; Set Facilities (#) = number of features in <code>defib</code> (n = 38) i.e., we are now evaluating the optimum locations (based on the <strong>maximise coverage</strong> approach) for our 38 defibrillators (within the 1000 possible candidates &lt; all possible locations)</p>
-<p>Output: Sum of allocated weight in “Demand Points”: 2541.885593. Sum of allocated weighted impedance in “Demand Points”: 1222049.489314. Sum of valid unallocated weight in “Demand Points”: 508.799543.</p>
-<p>Interpretation: - With the same # facilities, same method (maximise coverage) and cutoff, we have increased the coverage to ~83% - Optimisation is valuable!</p>
-<p>[21] Evaluate changing cutoff</p>
-<p>Cutoff = 5000 m Sum of allocated weight in “Demand Points”: 3050.685136. Sum of allocated weighted impedance in “Demand Points”: 2794852.161580. Sum of valid unallocated weight in “Demand Points”: 0.000000. Coverage = 100%</p>
+<p>[17] Make Location-Allocation Analysis layer (~5 mins)</p>
+<ul>
+<li>Network Data Source = <code>road_model</code>
+</li>
+<li>Name = <code>la_maximise_mull</code>
+</li>
+<li>Cutoff = 1000 (1 km)</li>
+<li>This can be justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA)</li>
+<li>Problem Type = “Maximise Coverage”</li>
+</ul>
+<p>[18] Location-Allocation Layer tab: Load current defibrillator locations
+- Input Data group
+- Import Facilities (<code>defib</code>)
+- Property <code>FacilityType</code> = <code>Required</code> i.e., current sites always included in the solution</p>
+<p>[19] Location-Allocation Layer tab: Add demand points</p>
+<ul>
+<li>Input Data group</li>
+<li>Import Demand Points (<code>population</code>)</li>
+<li>Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</li>
+</ul>
+<p>[20] First run using current configuration, setting the number of facilities to match the number of features in <code>defib</code> (for Mull, n = 38), this time using <strong>maximise coverage</strong></p>
+<p><em>Output</em>:</p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 2008.805185.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 981885.557754.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 1041.879952.</li>
+</ul>
+<p><em>Interpretation</em>:</p>
+<ul>
+<li>In this case we are interested in the ratio of allocated-unallocated weights</li>
+<li>Given the selected distance threshold (1 km) and the current distribution of facilities and demands, 1041 people are not served by current distribution</li>
+<li>Coverage is therefore ~62%</li>
+</ul>
+<p>[21] Test with an idealised scenario (i.e., no existing defibrillators)</p>
+<ul>
+<li>Open <code>Facilities</code> Attribute Table and delete all rows</li>
+<li>Add random locations created in [16], all as <code>Candidate</code>
+</li>
+<li>Set number of facilities to match the number of features in <code>defib</code> (n = 38) i.e., we are now evaluating the optimum locations (based on the <strong>maximise coverage</strong> approach) for our 38 defibrillators out of the 1000 possible candidates</li>
+</ul>
+<p><em>Output</em>:</p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 2541.885593.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 1222049.489314.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 508.799543.</li>
+</ul>
+<p><em>Interpretation</em>:</p>
+<ul>
+<li>With the same number of facilities, the same method (maximise coverage) and cutoff (1 km), we have increased the population coverage to ~83%</li>
+<li>Optimisation is valuable!</li>
+</ul>
+<p>[22] Evaluate changing cutoff</p>
+<p><em>Cutoff = 5000 m</em></p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 2794852.161580.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 0.000000.</li>
+<li>Coverage = 100%</li>
+</ul>
 <p>i.e., when the cutoff is large, all demand points can be connected</p>
-<p>Cutoff = 500 m (i.e., run for 2.5 minutes to get defib, run back) Sum of allocated weight in “Demand Points”: 1957.550792. Sum of allocated weighted impedance in “Demand Points”: 363134.112470. Sum of valid unallocated weight in “Demand Points”: 1093.134344. Coverage = 64%</p>
+<p><em>Cutoff = 500 m</em> i.e., run for 2.5 minutes to get defib, run back</p>
+<ul>
+<li>Sum of allocated weight in “Demand Points”: 1957.550792.</li>
+<li>Sum of allocated weighted impedance in “Demand Points”: 363134.112470.</li>
+<li>Sum of valid unallocated weight in “Demand Points”: 1093.134344.</li>
+<li>Coverage = 64%</li>
+</ul>
 <p>i.e., reducing the cutoff reduces coverage, but this is still comparable to the baseline, even with a more restrictive cutoff (500 m vs. 1 km)</p>
-<p>————— To finish reiterate differences between p-median and maximise coverage. What are they modelling and how does this influence interpretation action?</p>
+<blockquote>
+<p>To finish reiterate differences between p-median and maximise coverage approaches.</p>
+</blockquote>
+<blockquote>
+<p>What are they modelling and how does this influence interpretation and action?</p>
+</blockquote>
+</div>
 </div>
 <div id="extra-7" class="section level2" number="9.3">
 <h2>
 <span class="header-section-number">9.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-7"><i class="fas fa-link"></i></a>
 </h2>
-<p>[*] Using the <strong>maximum coverage</strong> approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?</p>
-<p>baseline = 62% N=38 = 83% N=50: Sum of allocated weight in “Demand Points”: 2672.349411 = 87% … N=100: Sum of allocated weight in “Demand Points”: 2937.332799 = 96%</p>
-<p>[*] How do our results compare to other islands? Run for Jura…</p>
-<p>[Q] What key population metric are we not including? - non-resident population i.e., tourists!</p>
-<p>[Q] What are some weaknesses of our approach? - population generalisation - using distance as a metric, rather than travel time - not a full constraints analysis i.e., which locations are suitable for AEDs?</p>
-<p>====================================================</p>
-<p>————— Using Maximise Coverage and Minimise Facilities</p>
-<p>Sum of allocated weight in “Demand Points”: 2985.974942. Sum of allocated weighted impedance in “Demand Points”: 1109527.936652. Sum of valid unallocated weight in “Demand Points”: 64.710195. Number of chosen facilities in solution: 156. Coverage = 97.87%</p>
-<p>For <strong>Maximise Coverage</strong>, there are a fixed number of facilities and demand outside the cutoff is considered uncovered, regardless of how close it is beyond the threshold.</p>
-<p>Maximise Coverage and Minimise Facilities = “What is the smallest number of facilities needed to achieve this level of coverage?””</p>
-<p>————— Notes</p>
-<p>When running with the full Western Isles dataset, p-median error: [!] One or more locations in “Demand Points” could not be reached by one or more locations in “Facilities”. The network may have areas that are disconnected, unbuilt, or disconnected due to turn restrictions, restriction attributes, or barriers. Incomplete network connectivity may result in a non optimal solution. —– Data error rather than model error (road network broken at some bridges)</p>
+<blockquote>
+<p>Using the <strong>maximum coverage</strong> approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?</p>
+</blockquote>
+<ul>
+<li>Baseline = 62%</li>
+<li>N=38 (optimised) = 83%</li>
+<li>N=50: Sum of allocated weight in “Demand Points”: 2672.349411 = 87% …</li>
+<li>N=100: Sum of allocated weight in “Demand Points”: 2937.332799 = 96%</li>
+</ul>
+<blockquote>
+<p>How do our results compare to other islands? Repeat the analysis for Jura…</p>
+</blockquote>
+<p><em>Question</em>: What key population metric are we not including?</p>
+<p>Answer: non-resident population i.e., tourists!</p>
+<p><em>Question</em>: What are some weaknesses of our approach?</p>
+<p>Answers: population generalisation. Using distance as a metric, rather than travel time. Not a full constraints analysis i.e., which locations are actually suitable for AEDs?</p>
 </div>
 <div id="resources-6" class="section level2" number="9.4">
 <h2>
@@ -244,7 +418,14 @@
 <li><a class="nav-link" href="#tools-8">Tools</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#practical-7"><span class="header-section-number">9.2</span> Practical</a></li>
+<li>
+<a class="nav-link" href="#practical-7"><span class="header-section-number">9.2</span> Practical</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#pre-processing-1"><span class="header-section-number">9.2.1</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#network-building"><span class="header-section-number">9.2.2</span> Network building</a></li>
+<li><a class="nav-link" href="#location-allocation-p-median"><span class="header-section-number">9.2.3</span> Location Allocation: P-median</a></li>
+<li><a class="nav-link" href="#location-allocation-maximise-coverage"><span class="header-section-number">9.2.4</span> Location Allocation: Maximise coverage</a></li>
+</ul>
+</li>
 <li><a class="nav-link" href="#extra-7"><span class="header-section-number">9.3</span> Extra</a></li>
 <li><a class="nav-link" href="#resources-6"><span class="header-section-number">9.4</span> Resources</a></li>
 </ul>
