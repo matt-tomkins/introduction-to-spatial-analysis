@@ -40,7 +40,7 @@ During this practical...
 
 [2] Load OS grid data [`osbng_grid_100km.shp`]. This is a very simple dataset, so easy to see the effects of the various neighbourhood settings, before moving on to a more complex dataset
 
-[3] Use [Neighbourhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise different spatial weights settings
+[3] Use [Neighbourhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise different spatial weights settings.
 
 ### Spatial weights using country Polygons
 

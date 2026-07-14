@@ -26,7 +26,9 @@ The aims of this practical are to:
 
 To achieve this, we'll apply interpolation techniques to Point samples
 of global plant trait data (leaf area, plant height), modelled by
-@lusk2026. Our study area is Peru, which features extreme gradients in climate and topography, which are likely to be reflected in spatial gradients in plant traits. 
+@lusk2026. Our study area is Peru, which features extreme gradients in
+climate and topography, which are likely to be reflected in spatial
+gradients in plant traits.
 
 ### Data {.unnumbered}
 
@@ -54,148 +56,337 @@ Interpolation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostati
 
 ## Practical
 
+[**!!!**] Problem: the semivariogram for 100 random points is flat (too sparse) - which is "correct" but is not communicating the key message ... not super clear with n = 400
+
+[A] Extract Spain and Iberia
+[B] Multipart to Singlepart
+[C] Calculate geometry attributes (Area Geodesic)
+[D] Delete < 80000 (km2)
+[E] Project (custom, conformal)
+[F] Create Random Points (using Iberia as a constaint)
+
+... Perhaps Peru too stark over a short area? (most sampling points are the same, except near the coast)
+
+No obvious improvement...
+
+The sparse random sampling may be the problem.
+
+Solution? 
+
+[A] Random Points within Iberia
+[B] Supplement with additional random points with smaller areas e.g., nature reserves, provinces, national parks? https://www.miteco.gob.es/en/biodiversidad/servicios/banco-datos-naturaleza/informacion-disponible/enp_descargas.html
+
+Spin a yarn - this sampling distribution is more representative of what we might see for other ecological datasets i.e., reasonable point coverage overall, but clusters in beautiful, popular, accessible spots...
+
+OR
+
+go back to the drawing board and find a point dataset
+
+Source: https://peru.mapbiomas.org/en/capas/
+
+------------------------------------------------------------------------
+
 Interpolation techniques are used to estimate unknown values at new
 locations based on known measurements from surrounding sample points.
 
-We could use our ecological dataset from Practical 5 here, but it's not
-an ideal example, for a few reasons:
+We could use our species observation Points (*Panthera tigris*) from
+[Practical 5](#point_patterns) here, but it's not an ideal example, for
+a few reasons:
 
-[1] Our Points don't have corresponding values that we would want to
-predict i.e., characteristics of each observation [2] Our Points
-represent individual observations, so to interpolate, we would have to
-aggregate these in some way i.e., \# observations with a certain
-distance of some representative locations (schematic?) [3]
-Fundamentally, the distribution of Tiger observations is clearly
-non-continuous, found mostly in designated reserves. Interpolation will
-probably do a poor job at capturing this spatial pattern, and instead,
-we'd probably want to use a species distribution model (Link to Spatial
-Ecology) [4] As a final reason, our data are Presence-Only data (i.e.,
-observations of Tigers), and we have no Absence-Data, see: -
-<https://doi.org/10.1111/jbi.14622> -
-<https://doi.org/10.1111/j.1472-4642.2011.00755.x>
+1.  Our Points don't have corresponding `values` that could be used for
+    spatial interpolation e.g., animal height, age, or mass for each
+    observation.
+
+2.  As our Points represent individual observations, we would typically
+    have to aggregate these data in some way to perform interpolation
+    i.e., either via
+    [tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog)
+    to a grid or by generating a new Point dataset, where the `value`
+    represents the number of observations within a specified distance.
+
+3.  As demonstrated in [Practical 5](#point_patterns), the distribution
+    of *Panthera tigris* observations is highly clustered and
+    non-continuous, with observations primarily in designated nature
+    reserves. Interpolation techniques will typically struggle to
+    capture this spatial pattern, and instead, we'd probably want to use
+    a *species distribution model* (an example of a *point-process
+    model*) in this situation. You can learn about these in [Spatial
+    Ecology](https://www.manchester.ac.uk/study/masters/courses/list/07053/msc-geographical-information-science/)
+    in Semester 2.
+
+4.  Finally, our species observations are *Presence-Only* data (i.e.,
+    recorded observations of *Panthera tigris*), and we have no access
+    to corresponding *Absence-data*, which you can read about more fully
+    in @grattarola2023 and @kent2011. As a result, we do not know
+    whether the "gaps" in our [Point-pattern](#p5_randomness) analysis
+    reflects true absence, or simply sampling bias [@hughes2021].
 
 **Instead**, we are going to apply interpolation to a dataset where we
-assume the spatial pattern is continuous, and where we have a variable
-we want to predict.
+know the spatial pattern is continuous, and where we have a variable we
+want to predict.
 
-[1] Load leaf area dataset into ArcGIS, and Natural-Earth dataset
+### Pre-processing
 
-[2] Generate random points, within bounding geometry of Peru, excluding
-marine-areas (100?)
+[1] Load leaf area raster [`3117-leaf-area-peru.tif`] and Natural-Earth
+dataset [`ne_10m_admin_0_countries.shp`]
 
--\> Minimum Bounding Geometry (envelop) -\> Clip to NE data -\> Create
-Random Points
+[2] Generate 100 random points, within bounding geometry of Peru,
+excluding marine-areas:
 
-[3] Extract raster value [Extract Values to Points]
+-   Select by Attributes: Peru
+-   [Minimum Bounding
+    Geometry](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog)
+    (envelope)
+-   [Clip](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog)
+    output to Peru geometry
+-   [Create Random
+    Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog),
+    n=100, constrain to geometry
 
-[4] Remove any rows where values are invalid (-9999) [A] Manually via
-the Attribute Table [B] Select by Attribute (RASTERVALU \<\> -9999,
-Export selection)
+> This dataset represents the sampling locations we will use for
+> interpolation.
+
+Alterantively - tesselate to create grid (3000 square kilmeters) for systematic sampling
+
+
+[3] [Extract Values to
+Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-values-to-points.html?tabs=dialog),
+using the leaf are raster as input.
+
+> Each location now has a corresponding value (SLA, specifc leaf area index)
+
+[4] Remove any rows where values are invalid (-9999) i.e., lakes or
+rivers.
+
+-   Select by Attribute (RASTERVALU \<\> -9999, Export selection)
 
 [5] We now have a valid dataset (all points within bounding geometry, on
-land, with a SLA value). However, we are again doing geometry
-calculations today (i.e., predicting values at locations), so we need to
-working with data that is suitably projected, rather than using
-geographic data.
+land, with a SLA value). However, we are again performing geometry
+calculations (i.e., predicting values at locations), so we need to
+working with data that is suitably projected, rather than using a
+geographic CRS.
 
--\> UTM 18S is probably an appropriate selection here -\> Use Project
-tool
+-   Use
+    [Project](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog)
+    and apply a suitable CRS
 
-[6] First, IDW:
+> Peru96 UTM zone 18S ([EPSG:5387](https://epsg.io/5387)) is a good
+> choice here.
 
-[Options] Effects of Power + search radius
+### Interpolation types
 
------------------ General approach: Resources:
-<https://doi.org/10.1111/jen.13455>,
-<https://doi.org/10.1016/j.ecolmodel.2021.109501>
+> Discuss **deterministic** and **geostatistical** approaches.
 
------------------ Thoughts:
+> Briefly introduce the history of **econometrics** (Practicals 2 - 5,
+> 7 - 8) and **geostatistics** (Practical 6)
 
--\> Geostatistical Wizard! Talk through the separate tools, but do all
-the calculations in the GW?
+> Discuss **global** and **local** interpolators.
 
--\> Semi-variogram construction (and models)
+> Discuss **exact** and **approximate** interpolators.
 
--\> Focus on a subset of interpolation methods, but do them really well?
-i.e., IDW + Kriging (non- and geostatistical) + Natural Neighbour
+The ArcGIS Pro
+[documentation](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/deterministic-methods-for-spatial-interpolation.html)
+is a useful overview, including for individual tools e.g.,
+[IDW](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/how-inverse-distance-weighted-interpolation-works.html)
 
--\> Global vs. local, exact vs. approximate...
+@heusler2025 and @rufino2021 are useful ecological examples.
 
------------------ Tools:
+### Deterministic interpolation
 
-[A] Inverse distance weighting
+[6] We'll begin with a simple interpolation method, inverse distance
+weighting, via
+[IDW](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog):
 
-[B] Various forms of Kriging [Empirical Bayesian Kriging] -\> Universal?
-[incorporating a trend function] -\> Ordinary? [assumption of
-stationarity i.e., the statistical properties of the data do not change
-across space. It assumes the underlying mean is constant but unknown]
+-   Input: Sample points
+-   Z value field: Leaf area
+-   Output raster: *suitable name*
+-   Output cell size: default (units of CRS, m)
+-   Leave all inputs as default, which we'll explore further later on
+    (Power, Search neighborhood, \# neighbors, sector type)
 
-```         
--> We should use universal, because we *would* expect non-stationarity i.e., trends in climate, elevation...
--> but we should run both
-```
+> TO DO: include IDW equation and explanation.
 
-[C] Trend -\> Even weirder than Spline!
+[7] Interpret outputs:
 
-[D] Spline -\> Funky output!
+-   IDW produces predictions within the bounds of the input data, hence
+    *interpolation*, rather than *extrapolation*
+-   Your output will differ from mine, given the generation of random
+    sample points in [2], but broadly it is capturing the expected
+    gradients in specific leaf area, as a function of climate.
 
-[E] Natural Neighbour -\> Output constrained to Points (convex hull)
+[8] The
+[IDW](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog)
+tool used above has produced a static layer, and we could re-run the
+tool with different settings to explore their impact on the predicted
+surface. We can achieve this much more simply, however, via the
+[Geostatistical
+Wizard](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3).
+This tool includes a range of deterministic and geostatistical
+interpolation methods and guides the user as they construct and evaluate
+the performance of an interpolation model.
 
-[NOT] co-kriging, uses one or more correlated secondary (auxiliary)
-variables [NOT] any regression, RF, entropy methods
+As a result, while all of the interpolation methods can be run in a
+standalone tool, such as
+[IDW](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog)
+or [Empirical Bayesian
+Kriging](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/empirical-bayesian-kriging.html?tabs=dialog),
+the Geostatistical Wizard can offer a more streamlined and dynamic
+experience.
 
------------------ Finish
+[9] First run with the [Geostatistical
+Wizard](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3):
 
-By comparing the interpolation output (e.g., Universal Kriging) with the
-"true" values from the input data i.e., residual.
+-   Select Deterministic Methods
+-   Inverse Distance Weighting
+-   Source Dataset and Data Field
+-   Leave `Weight Field` blank: this allows us to weight each
+    observation i.e., some Points will have more / less impact on the
+    output surface
 
-Need to do so cautiously, acknowledging that the input is also a model.
+The output should be identical to the
+[IDW](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog)
+output, but we can check this:
 
-However, this is important for validation of interpolation outputs - how
-well does our prediction match real empirical measurements?
+-   Select Finish to export the layer to the Map
+-   This is a Shapefile Feature Class, so we need to Export Layer - To
+    Rasters
+-   We can then use [Extract Multi Values to
+    Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog)
+    to sample both rasters (one created by IDW and one by Geostatistical
+    Wizard) at our original Point locations
+-   Create Chart - Scatter Plot - R2
 
-Fundamentally, interpolation is important when we are studying something
-that will expected to vary continuously through space (even if it goes
-to 0) e.g., soil depth, elevation, species richness, but only have
-measurements of that variable at discrete locations.
+> **James** can you reproduce this? The outputs of IDW and the
+> Geostatistical Wizard don't show systematic error (R2=1), but there
+> are deviations for most points, mean difference of 0.06, max = 0.398
 
------------------ Alternative dataset ideas
+[10] Open the [Geostatistical
+Wizard](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3)
+where we'll explore the key properties.
 
-Something like this (but not this):
-<https://doi.org/10.1038/s41597-024-03098-2>
+> Click on the map to identify the predicted value (for the current
+> settings)
 
-AVONET - bird traits? <https://doi.org/10.1111/ele.13898>
+> Change Point size for visibility and toggle 'Show Source Dataset' to
+> identify the Points which are contributing to the predicted value at
+> the current location, where the colour represents the weight (inverse
+> distance)
 
-TRY plant trait database <https://doi.org/10.1111/gcb.14904>
+> If we modify 'Maximum Nieghbours', we can see how this increases the
+> size of the 'Source Dataset'. Note that once the maximum reaches \~50,
+> the number of selected neighbours stops increasing, presumably because
+> ArcGIS curtails this process once they have a negligble impact on the
+> output. **TO DO** find documentation to support this.
 
-How about <https://doi.org/10.1038/s41467-026-68996-y>, random
-sampling..., pick a location with an interesting ecological gradient
-(Peru, Iberia?)
+> We can also change 'Sector Type'. Default = 1 i.e., we will look for
+> nearest N neighbours within that area. If we increase to 4 or 8
+> sectors (and modify their `Angle`), we look for N neighbours per
+> sector.
 
-ArcGIS raster issues [+32768]
+> An important setting is **power** which determines the influence of
+> the input points on the prediction, as a function of distance. The
+> default is 2 i.e., $distance^2$. As we increase this parameter, closer
+> points play an increasingly important role in the output. Compare
+> power = 1 - 10.
 
------------------ Original approach
+> Power can also be optimised, which is via *root-mean-square cross
+> validation* which we'll discuss more fully in the next section.
 
-Need to go from Points to a variable at each location...
+[11] Cross validation of IDW
 
-[1] Collect Events tool... dataset uncertainty / generalisation...
+On the next tab, we are presenting with *predicted* values, *errors*,
+and the *distribution* of the predicted values.
 
-[1] Generate Near Table -\> Summarize -\> Join by ID
+These are derived from
+[cross-validation](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/performing-cross-validation-and-validation.html), which involves
+removing a single point from the input dataset, re-running
+interpolation, and then evaluating the deviation of the predicted value
+from the input value. This is repeated for all points in the input
+dataset.
 
-[1] Find Point Clusters - DBSCAN (50 km, minimum 10 observations)
+This can be used to calculated root-mean-square error (RMSE):
 
-[2] Case Field not working, because 'CLUSTER_ID' is double, not
-integer...
+$$\sqrt{\sum_{i=1}^n(O_i-M_i)^2} $$ which is the square root of the sum
+($\sum$) of the squared differences between observed values ($O_i$,
+*input specific leaf area*) and modelled values ($M_i$, *interpolated
+specific leaf area*). This is the average distance between the model
+predictions and the observed values and is expressed in the units of the
+observed values (i.e., SLA).
 
-[!!!] I don't think the tiger dataset is a great example because: [a] At
-this scale, we really need a species distribution model [b] Tigers seem
-to be mostly in the nature reserves, and any interpolation method will
-struggle with that...
+> Interpret the RMSE value (\~2.018) and the correspondence between
+> observed and modelled
+
+> Inspect the pattern of error - is this systematic? (X = measured
+> values, Y = error)
+
+> Inspect the distribution of values
+
+### Geostatistical interpolation
+
+> To start, we'll discussing the origin of geostatistics and the key differences with deterministic methods i.e., incorporating the spatial structure of the data (*variography*, spatial autocorrelation). As summarised in the [documentation](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/kriging-in-geostatistical-analyst.html): "*Some of the spatial variation ... can be modeled by random processes with spatial autocorrelation, and require that the spatial autocorrelation be explicitly modeled*."
+
+**Kriging**, developed and popularised by @krige1951 and @matheron1963, is synonymous with the field of geostatistics, and comes in [many versions](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/what-are-the-different-kriging-models-.html), including Ordinary, Universal, Co-kriging, Indicator, and Empirical Bayesian, some of which we'll use today. Understanding how these work, and selecting the appropriate version for your data and analysis, is therefore critical. 
+
+ESRI [video](https://mediaspace.esri.com/media/t/1_tc82hmoa)
+
+Youtube [walkthrough](https://www.youtube.com/watch?v=-u4fJJfUGjw)
+
+#### Semivariograms
+
+One of the key components of all forms of Kriging is the semivariogram, which measures the difference between data points at specific distances i.e., the similarity of data points (y) with distance (x).
+
+> Include schematic [example](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/creating-empirical-semivariograms.html) here
+
+> Include variogram example here and explain key components (range, nugget, sill)
+
+#### Ordinary Kriging {.unnumbered}
+
+The assumes the data has a constant, but unknown mean (*stationarity*)
+
+[12] Ordinary Kriging via the Geostatistical Wizard, although this can also be acheived via [Kriging](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kriging.html?tabs=dialog) (Spatial Analyst Tools).
+
+- In the former, selecting Kriging / CoKriging
+- For each Kriging method, we can generate a range of [outputs](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/what-output-surface-types-can-the-interpolation-models-generate-.html):
+  - *Prediction* i.e., the interpolated values (default)
+  - *Standard Error* i.e., errors associated with those interpolated values (standard deviation)
+  - *Probability* i.e., the probability that the interpolated value will be above or below a predefined threshold (e.g., pollutant level)
+  - *Quantile* i.e., a layer for the specified quantile (e.g., 10^th^, 95^th^)
+- Determine Transformation type (None)
+- Determine Order of Trend Removal (None)
+
+This produces the semivariogram for our dataset.
+
+[Fitting to the empirical semivariogram](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/fitting-a-model-to-the-empirical-semivariogram.html)
+
+[Comparison paper](https://doi.org/10.1016/j.ecoinf.2010.12.003)
+
+#### Universal Kriging {.unnumbered}
+
+Assumes the data mean is not constant, but varies gradually across space according to a mathematical function (*non-stationarity*). We should use this approach because we *would* expect non-stationarity i.e., trends in climate, elevation...
+
+#### Empirical Bayesian Kriging {.unnumbered}
+
+Accounts for error in estimating the semivariogram. 
 
 ## Extra
 
+In the practical we've used *cross-validation* to assess interpolation quality. We can also assess the quality of the interpolation using an independent set of validation locations. This can be achieved by: 
+
+- Generating a set of validation locations via [Create Random Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog)
+- Extracting the corresponding values from the input data and the interpolated layers using [Extract Multi Values to Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog)
+- Create Chart - Scatter Plot - R2
+
+> This approach is only possible because our analysis is based on a continuous input surface [`3117-leaf-area-peru.tif`]. Typically, interpolation of Point data would be used to *create* a continuous surface - if we have it already, we wouldn't need to interpolate!
+
+> We also need to evalute performance cautiously, acknowledging that the input is also a [model](https://doi.org/10.1038/s41467-026-68996-y).
+
 ## Resources
 
+-   Krige, D.G. ([1951](https://hdl.handle.net/10520/AJA0038223X_4792))
+    A statistical approach to some basic mine valuation problems on the
+    Witwatersrand. J Chem Metal Min Soc S Afr, December, 119–139
+-   Matheron, G. ([1963b](https://doi.org/10.2113/gsecongeo.58.8.1246))
+    Principles of geostatistics. Econ Geol 58(8):1246–1266
 -   Oliver, M.A. and Webster, R.
     ([1990](https://doi.org/10.1080/02693799008941549)). Kriging: a
     method of interpolation for geographical information systems.

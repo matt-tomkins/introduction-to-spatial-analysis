@@ -161,9 +161,9 @@ Attributes</a>
 <h2>
 <span class="header-section-number">10.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-8"><i class="fas fa-link"></i></a>
 </h2>
-<div id="pre-processing-2" class="section level3" number="10.2.1">
+<div id="pre-processing-5" class="section level3" number="10.2.1">
 <h3>
-<span class="header-section-number">10.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-5"><i class="fas fa-link"></i></a>
 </h3>
 <p>[1] Introduce key concepts i.e., Newton’s Law of Universal Gravitation.
 Spatial flows between an origin and a destination are modelled as
@@ -241,9 +241,9 @@ transferring <code>flow</code> (time required)</p>
 by Attributes and remove rows where orig_pop, dest_pop, orig_gdp,
 dest_gdp = 0 or <code>flow</code> is null. This results in (&lt;) ~80,000 rows</p>
 </div>
-<div id="data-exploration" class="section level3" number="10.2.2">
+<div id="data-exploration-1" class="section level3" number="10.2.2">
 <h3>
-<span class="header-section-number">10.2.2</span> Data exploration<a class="anchor" aria-label="anchor" href="#data-exploration"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.2.2</span> Data exploration<a class="anchor" aria-label="anchor" href="#data-exploration-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>[12] Visualise some flow data. We can’t do this for all bilateral
 connections without causing ArcGIS stress, so:</p>
@@ -349,7 +349,7 @@ distributions (like our flow data):</p>
 <p><span class="math display">\[λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})\]</span>
 &gt; <strong>TO DO</strong> Explain Poisson distribution and regression</p>
 <p>[18] Visualise Statistics - Histogram - Flow</p>
-<p>[19] First, log<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that Python math.log() uses &lt;code&gt;e&lt;/code&gt; as the default, which is consistent with R, where log() uses &lt;code&gt;exp(1)&lt;/code&gt; as the &lt;a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log"&gt;default&lt;/a&gt;. For those more familiar with Excel, log() defaults to base10, which is different! For consistency, this can either be updated to log(val, EXP(1)) or the LN() function can be used.&lt;/p&gt;'><sup>1</sup></a> the relevant independent variables:</p>
+<p>[19] First, log<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that Python math.log() uses &lt;code&gt;e&lt;/code&gt; as the default, which is consistent with R, where log() uses &lt;code&gt;exp(1)&lt;/code&gt; as the &lt;a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log"&gt;default&lt;/a&gt;. For those more familiar with Excel, log() defaults to base10, which is different! For consistency, this can either be updated to log(val, EXP(1)) or the LN() function can be used.&lt;/p&gt;'><sup>5</sup></a> the relevant independent variables:</p>
 <ul>
 <li>Add Field</li>
 <li>math.log(!orig_pop!)</li>
@@ -409,9 +409,9 @@ GLR and create an origin-constrained model (<code>gm3</code>), saving output to 
 <p>[28] Outline the process for a doubly-constrained model</p>
 </div>
 </div>
-<div id="extra-8" class="section level2" number="10.3">
+<div id="extra-7" class="section level2" number="10.3">
 <h2>
-<span class="header-section-number">10.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-8"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-7"><i class="fas fa-link"></i></a>
 </h2>
 <p>Our models are based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population.</p>
 <p>If applying this model to international migration, we might include a completely different set of predictors e.g., cultural similarity, as covered in <a href="spatial_weights.html#spatial_weights">Practical 2</a>, whether countries share a common language, or the degree of conflict within or between countries.</p>
@@ -538,8 +538,8 @@ Opportunities. Geographical Analysis, 57(3), pp.540-554.</li>
 </li>
 <li>
 <a class="nav-link" href="#practical-8"><span class="header-section-number">10.2</span> Practical</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#pre-processing-2"><span class="header-section-number">10.2.1</span> Pre-processing</a></li>
-<li><a class="nav-link" href="#data-exploration"><span class="header-section-number">10.2.2</span> Data exploration</a></li>
+<li><a class="nav-link" href="#pre-processing-5"><span class="header-section-number">10.2.1</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#data-exploration-1"><span class="header-section-number">10.2.2</span> Data exploration</a></li>
 <li><a class="nav-link" href="#model-description"><span class="header-section-number">10.2.3</span> Model description</a></li>
 <li><a class="nav-link" href="#unconstrained-and-total-constrained-models"><span class="header-section-number">10.2.4</span> Unconstrained and Total-constrained models</a></li>
 <li><a class="nav-link" href="#tuning-parameters"><span class="header-section-number">10.2.5</span> Tuning parameters</a></li>
@@ -549,7 +549,7 @@ Opportunities. Geographical Analysis, 57(3), pp.540-554.</li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#extra-8"><span class="header-section-number">10.3</span> Extra</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#extra-7"><span class="header-section-number">10.3</span> Extra</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#contig">Testing contiguity</a></li>
 <li><a class="nav-link" href="#python_notebook">Python Notebook for GLR Poisson</a></li>
 </ul>

@@ -2,9 +2,10 @@
   display: none;
 }
 
+/*
 #gwr h1 {
-  font-size: 31.8px;  /* Adjust to fit 'Geographically Weighted Regression' on a single line */
-}
+  font-size: 31.8px;  Adjust to fit 'Geographically Weighted Regression' on a single line}
+*/
 
 /* Used for bs4_book() format  */
 img {
@@ -17,8 +18,41 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
-/* Change colour of Part headings in toc */
-.book-sidebar .part-heading {
-  color: #a8323 !important;
-  font-weight: bold;
+/* Custom class for questions */
+.question {
+    border-left: 8px solid #f39c12;
+    background: #fff8e1;
+    padding: 1em;
+    margin: 1em -8px;
+}
+
+/* Adapt paragraph spacing */
+.question p {
+  margin: 0;
+}
+
+/* Custom class for blockquotes */
+main blockquote {
+    border-left: 8px solid #919191;
+    background: #F0F0F0;
+    padding: 1em;
+    margin: 1em -8px;
+}
+
+/* Adapt paragraph spacing */
+main blockquote p {
+  margin: 0;
+}
+
+/* Custom class for problems, encountered during course development */
+.problem {
+    border-left: 8px solid #FF2626;
+    background: #FFBFBF;
+    padding: 1em;
+    margin: 1em -8px;
+}
+
+/* Adapt paragraph spacing */
+.problem p {
+  margin: 0;
 }

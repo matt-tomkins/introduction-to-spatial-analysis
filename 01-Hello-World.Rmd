@@ -28,14 +28,6 @@ To achieve this, we'll import raster (temperature and precipitation layers) and 
 
 [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog) (Spatial Analyst), [Cell Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog) (Spatial Analyst Tools), [Select Layer By Attribute](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/select-layer-by-attribute.html?tabs=dialog) (Data Management Tools)
 
-### Guidance {.unnumbered}
-
-As you progress through the following practicals, your main objective is to develop **understanding** of how we conceptualise and model spatial patterns and relationships.
-
-You will develop this understanding by working with spatial data, running tools, and inspecting outputs, with instructions formatted as follows:
-
-> This is an instruction. 
-
 ------------------------------------------------------------------------
 
 ## Practical
@@ -74,4 +66,8 @@ A good overview of the SSPs is provided [here](https://www.dkrz.de/en/communicat
 
 > For SSP1-2.6 (*Sustainable*), SSP2-4.5 (*Middle of the road*), SSP3-7.0 (*Regional rivalry*) and SSP5-8.5 (*Fossil-Fueled Development*), calculate the average annual monthly temperature using [Cell Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog).
 
+<div class="question"> 
 Which world cities (\>5 million population) are expected to see the greatest increase in temperature by 2081 - 2100? You may want to use `Zonal Statistics` again...
+</div>
+
+

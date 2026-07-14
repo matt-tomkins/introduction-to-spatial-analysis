@@ -92,3 +92,22 @@ In *Introduction to Spatial Analysis*, we will:
 
 The Intended Learning Outcomes for *Introduction to Spatial Analysis* are available on [Canvas]() as a [single source of truth](https://en.wikipedia.org/wiki/Single_source_of_truth). 
 
+## Guidance {.unnumbered}
+
+As you progress through the following practicals, your main objective is to develop **understanding** of how we conceptualise and model spatial patterns and relationships.
+
+You will develop this understanding by working with spatial data, running tools, and inspecting outputs, with **instructions** formatted as follows:
+
+> This is an instruction. 
+
+You will see the following formatting for **questions** or as a prompt for **reflection**:
+
+<div class="question"> 
+This is a question. 
+</div>
+
+For course development and testing, the following formatting is for **problems to be fixed**:
+
+<div class="problem"> 
+This is a problem.
+</div>

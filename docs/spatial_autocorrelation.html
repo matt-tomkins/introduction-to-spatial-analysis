@@ -180,8 +180,7 @@
 <li>
 <strong>TO DO</strong>:
 <ul>
-<li>Discuss <em>row standardisation</em>
-</li>
+<li>Discuss <em>row standardisation</em>: This divides each neighbor’s weight by the total number of neighbors, making the rows sum to 1. This prevents bias caused by some areas having many neighbors while others (like isolated regions) have very few.</li>
 <li>Communicate the <em>underlying mathematics</em>, as interpretation is very easy with the html output</li>
 </ul>
 </li>
@@ -288,7 +287,7 @@
 <h2>
 <span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-2"><i class="fas fa-link"></i></a>
 </h2>
-<p>As a comparison, we can run with 2008 election results (Obama vs. McCain), stored in <code>2008_US_County_Level_Presidential_Results.csv</code></p>
+<p>As a comparison, we can run with <a href="https://www.presidency.ucsb.edu/statistics/elections/2008">2008 election results</a> (Obama vs. McCain), stored in <code>2008_US_County_Level_Presidential_Results.csv</code></p>
 <p>Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.</p>
 <p><em>Question</em>: How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?</p>
 <p><em>Question</em>: What is a limitation of our current approach? <em>Hint</em>: Sort the <code>gop_per</code> column for the 2008 results.</p>

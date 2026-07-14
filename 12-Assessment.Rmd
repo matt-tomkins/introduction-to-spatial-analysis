@@ -10,7 +10,7 @@ While this is an independent piece of work, there is lots of support available. 
 - use the [discussion forums](). 
 - attend weekly student consultation hours (in-person or online), listed on the [Student Support Hours Google Sheet](https://docs.google.com/spreadsheets/d/13qn5XeNFJpQu0XENSjNV8yy1LPbzrZHTYnCfE58_7FY/edit?gid=1879212219#gid=1879212219).
 - contact the teaching team via [email](), although we strongly encourage students to make use of the forum, as the visible repository of question-answers is beneficial to the entire student cohort, unlike a private email exchange.   
-- make use of departmental GIS support (`GISTechnical@manchester.ac.uk`). 
+- make use of departmental GIS support (GISTechnical). 
 
 
 

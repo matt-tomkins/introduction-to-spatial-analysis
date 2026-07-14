@@ -145,7 +145,7 @@ We can use a dynamic approach via Symbology, which is more flexible, but arguabl
 -   The shape of the output indicates wider disperson along N-S axis (YStdDist) vs. E-W axis (XStdDist), with rotation of \~12deg.
 -   This probably reflects outlier points in Bangladesh, Assam etc, coupled with points in SW India
 
-### Randomness
+### Randomness {#p5_randomness}
 
 [12] Run [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog), which is Clark-Evans R [@clark1954].
 

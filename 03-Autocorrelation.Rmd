@@ -79,7 +79,7 @@ This is *close* to the reported [results](https://www.bbc.co.uk/news/election/20
 -   Generate Report
 -   Conceptualization of Spatial Relationships should be familiar following Practical 2, we'll use `Contiguity edges corners` here
 -   **TO DO**:
-    -   Discuss *row standardisation*
+    -   Discuss *row standardisation*: This divides each neighbor's weight by the total number of neighbors, making the rows sum to 1. This prevents bias caused by some areas having many neighbors while others (like isolated regions) have very few.
     -   Communicate the *underlying mathematics*, as interpretation is very easy with the html output
 
 [8] Interpret initial output:
@@ -188,7 +188,7 @@ uscountycontig_Project.GEOID <> '25019' And uscountycontig_Project.GEOID <> '250
 
 ## Extra
 
-As a comparison, we can run with 2008 election results (Obama vs. McCain), stored in `2008_US_County_Level_Presidential_Results.csv`
+As a comparison, we can run with [2008 election results](https://www.presidency.ucsb.edu/statistics/elections/2008) (Obama vs. McCain), stored in `2008_US_County_Level_Presidential_Results.csv`
 
 Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.
 
