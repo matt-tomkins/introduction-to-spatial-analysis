@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -160,7 +159,9 @@
 </li>
 <li>Check for validity</li>
 </ul>
+<div class="task">
 <p><em>Option</em> Subset to defibrillators with 24 hour access?</p>
+</div>
 <p>[4] Clean Demand points</p>
 <ul>
 <li>
@@ -180,6 +181,9 @@
 <li>current defibrillator locations (n=38)</li>
 </ul>
 <p>[6] To run Location Allocation in ArcGIS, we can’t use a simple features layer, we need to use a <strong>Feature Dataset</strong>, which has stricter rules regarding projection - all layers <em>must</em> share a common coordinate system, unlike a <code>gdb</code> (although it can be stored within a <code>gdb</code>). This can be produced using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog">Create Feature Dataset</a> (output = empty)</p>
+<div class="task">
+<p>Discuss Feature Dataset fully, compare to <code>gdb</code> and <code>shp</code></p>
+</div>
 <p>[7] We can then import features to the Feature Dataset:</p>
 <ul>
 <li>Right click in Catalog Pane</li>
@@ -201,7 +205,7 @@
 <h3>
 <span class="header-section-number">9.2.3</span> Location Allocation: P-median<a class="anchor" aria-label="anchor" href="#location-allocation-p-median"><i class="fas fa-link"></i></a>
 </h3>
-<p>i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand <em>or</em> “How do we mini mise average distance for everyone?”</p>
+<p>i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand <em>or</em> “How do we minimise average distance for everyone?”</p>
 <p>[11] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a> (~5 mins)</p>
 <ul>
 <li>Network Data Source = <code>road_model</code>
@@ -260,7 +264,7 @@
 </ul>
 <p>[16] Test with an idealised scenario (i.e., no existing defibrillators)</p>
 <ul>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to reate 1000 random points, constrained to the network. An alternative approach would be regular spacing to ensure full coverage.</li>
+<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to create 1000 random points, constrained to the network. An alternative approach would be regular spacing to ensure full coverage.</li>
 <li>Open <code>Facilities</code> Attribute Table and delete all rows</li>
 <li>Add random locations, all as <code>Candidate</code>
 </li>
@@ -284,16 +288,16 @@
 <li>Current mean = 2227.343557515982</li>
 <li>“Optimum” mean = 1815.0352018341623</li>
 </ul>
-<blockquote>
+<div class="task">
 <p>To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?</p>
-</blockquote>
+</div>
 </div>
 <div id="location-allocation-maximise-coverage" class="section level3" number="9.2.4">
 <h3>
 <span class="header-section-number">9.2.4</span> Location Allocation: Maximise coverage<a class="anchor" aria-label="anchor" href="#location-allocation-maximise-coverage"><i class="fas fa-link"></i></a>
 </h3>
 <p>i.e., maximize the total amount of demand (or population) covered within a cutoff (e.g., distance threshold)</p>
-<p>[17] Make Location-Allocation Analysis layer (~5 mins)</p>
+<p>[17] Make Location-Allocation Analysis layer (~5 mins):</p>
 <ul>
 <li>Network Data Source = <code>road_model</code>
 </li>
@@ -303,17 +307,22 @@
 <li>This can be justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA)</li>
 <li>Problem Type = “Maximise Coverage”</li>
 </ul>
-<p>[18] Location-Allocation Layer tab: Load current defibrillator locations
-- Input Data group
-- Import Facilities (<code>defib</code>)
-- Property <code>FacilityType</code> = <code>Required</code> i.e., current sites always included in the solution</p>
+<div class="problem">
+<p>In ArcGIS, there is the option to switch the problem type for an existing Location-Allocation Analysis Layer i.e., from P-Median to Maximise Coverage. From my testing, this doesn’t work, hence why we’re creating a separate layer. <strong>James</strong> can you reproduce?</p>
+</div>
+<p>[18] Location-Allocation Layer tab: Load current defibrillator locations:</p>
+<ul>
+<li>Input Data group</li>
+<li>Import Facilities (<code>defib</code>)</li>
+<li>Property <code>FacilityType</code> = <code>Required</code> i.e., current sites always included in the solution</li>
+</ul>
 <p>[19] Location-Allocation Layer tab: Add demand points</p>
 <ul>
 <li>Input Data group</li>
 <li>Import Demand Points (<code>population</code>)</li>
 <li>Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</li>
 </ul>
-<p>[20] First run using current configuration, setting the number of facilities to match the number of features in <code>defib</code> (for Mull, n = 38), this time using <strong>maximise coverage</strong></p>
+<p>[20] First run using current configuration, setting the number of facilities to match the number of features in <code>defib</code> (for Mull, n = 38), this time using <strong>maximise coverage</strong>.</p>
 <p><em>Output</em>:</p>
 <ul>
 <li>Sum of allocated weight in “Demand Points”: 2008.805185.</li>
@@ -361,34 +370,41 @@
 <li>Coverage = 64%</li>
 </ul>
 <p>i.e., reducing the cutoff reduces coverage, but this is still comparable to the baseline, even with a more restrictive cutoff (500 m vs. 1 km)</p>
-<blockquote>
+<div class="task">
 <p>To finish reiterate differences between p-median and maximise coverage approaches.</p>
-</blockquote>
-<blockquote>
-<p>What are they modelling and how does this influence interpretation and action?</p>
-</blockquote>
+</div>
+<div class="question">
+<p>What are P-Median and Maximise coverage modelling and how does this influence interpretation and action?</p>
+</div>
+<div class="task">
+<p>Introduce other problem types here.</p>
+</div>
 </div>
 </div>
 <div id="extra-6" class="section level2" number="9.3">
 <h2>
 <span class="header-section-number">9.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-6"><i class="fas fa-link"></i></a>
 </h2>
-<blockquote>
+<div class="question">
 <p>Using the <strong>maximum coverage</strong> approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?</p>
-</blockquote>
+</div>
 <ul>
 <li>Baseline = 62%</li>
 <li>N=38 (optimised) = 83%</li>
 <li>N=50: Sum of allocated weight in “Demand Points”: 2672.349411 = 87% …</li>
 <li>N=100: Sum of allocated weight in “Demand Points”: 2937.332799 = 96%</li>
 </ul>
-<blockquote>
+<div class="question">
 <p>How do our results compare to other islands? Repeat the analysis for Jura…</p>
-</blockquote>
-<p><em>Question</em>: What key population metric are we not including?</p>
-<p>Answer: non-resident population i.e., tourists!</p>
-<p><em>Question</em>: What are some weaknesses of our approach?</p>
-<p>Answers: population generalisation. Using distance as a metric, rather than travel time. Not a full constraints analysis i.e., which locations are actually suitable for AEDs?</p>
+</div>
+<div class="question">
+<p>What key population metric are we not including?</p>
+</div>
+<p><em>Answer</em>: non-resident population i.e., tourists!</p>
+<div class="question">
+<p>What are some weaknesses of our approach?</p>
+</div>
+<p><em>Answers</em>: population generalisation. Using distance as a metric, rather than travel time. Not a full constraints analysis i.e., which locations are actually suitable for AEDs?</p>
 </div>
 <div id="resources-6" class="section level2" number="9.4">
 <h2>

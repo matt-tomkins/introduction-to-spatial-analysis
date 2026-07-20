@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -170,21 +169,21 @@
 <li>Colour scheme &gt; Properties &gt; Reverse</li>
 <li>Double click values, update 0-1, same for labels</li>
 </ul>
+<div class="problem">
 <p><em>Note</em> Symbology using ‘Unclassed Colors’ doesn’t always update correctly i.e., sometimes fails to show the data at all. <strong>James</strong> can you check this?</p>
+</div>
 <p>[7] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a>:</p>
 <ul>
 <li>
 <code>per_GOP</code> as input</li>
 <li>Generate Report</li>
 <li>Conceptualization of Spatial Relationships should be familiar following Practical 2, we’ll use <code>Contiguity edges corners</code> here</li>
-<li>
-<strong>TO DO</strong>:
-<ul>
-<li>Discuss <em>row standardisation</em>: This divides each neighbor’s weight by the total number of neighbors, making the rows sum to 1. This prevents bias caused by some areas having many neighbors while others (like isolated regions) have very few.</li>
-<li>Communicate the <em>underlying mathematics</em>, as interpretation is very easy with the html output</li>
 </ul>
-</li>
-</ul>
+<div class="task">
+<p><strong>TO DO</strong>:
+- Discuss <em>row standardisation</em>: This divides each neighbor’s weight by the total number of neighbors, making the rows sum to 1. This prevents bias caused by some areas having many neighbors while others (like isolated regions) have very few.
+- Communicate the <em>underlying mathematics</em>, as interpretation is very easy with the html output</p>
+</div>
 <p>[8] Interpret initial output:</p>
 <p>First, it’s important that we look at any <strong>warnings</strong> or error messages that might arise. For this tool, we have some:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="spatial_autocorrelation.html#cb1-1" tabindex="-1"></a>WARNING <span class="dv">000642</span><span class="sc">:</span> Problems reading <span class="dv">1</span> of <span class="dv">3109</span> total records</span>
@@ -229,17 +228,15 @@
 <li>p-value 0.000000</li>
 </ul>
 <p>[12] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s I)</a> for the full dataset (N=3109)</p>
-<ul>
-<li>
-<strong>TO DO</strong>:
+<div class="task">
+<p><strong>TO DO</strong>:</p>
 <ul>
 <li>Discuss <em>False Discovery Rate (FDR) correction</em>
 </li>
 <li>Investigate <em>Number of Permutations</em>
 </li>
 </ul>
-</li>
-</ul>
+</div>
 <p>[12] Interpet Anselin Local Moran’s I output</p>
 <ul>
 <li>Map interpretation: vote clusters and outliers?</li>
@@ -250,7 +247,10 @@
 <p>[13] Run with a different spatial relationships e.g., inverse distance squared</p>
 <p><em>Note</em> we can use a distance-based measured here with a reasonable degree of confidence, unlike geographic coordinates, but <strong>distortion</strong> still important</p>
 <p><em>Note</em> Distance Band or Threshold Distance will use the units specified in the CRS (metres)</p>
-<p>[Q] How have the results changed? Why? When using inverse-distance squared, we have much larger areas of HH and LL, presumably because we have a much less conservative neighbourhood rule (unlike contiguity only)</p>
+<div class="question">
+<p>How have the results changed? Why?</p>
+</div>
+<p><em>Answer</em>: When using inverse-distance squared, we have much larger areas of HH and LL, presumably because we have a much less conservative neighbourhood rule (unlike contiguity only)</p>
 <p>[14] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog">High/Low Clustering (Getis-Ord General G)</a>:</p>
 <ul>
 <li>Observed General G 0.000328</li>
@@ -259,14 +259,17 @@
 <li>z-score 13.624777</li>
 <li>p-value 0.000000</li>
 <li>Given the z-score of 13.62477738651207, there is a less than 1% likelihood that this high-clustered pattern could be the result of random chance.</li>
-<li>Discuss how the conceptual and mathematical approach <strong>differs</strong> from Global Moran’s <em>I</em>.</li>
 </ul>
+<div class="task">
+<p>Discuss how the conceptual and mathematical approach <strong>differs</strong> from Global Moran’s <em>I</em>.</p>
+</div>
 <p>[15] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog">Hot Spot Analysis (Getis-Ord Gi*)</a>:</p>
 <ul>
 <li>Same inputs as Local Moran’s <em>I</em>
 </li>
-<li>
-<strong>TO DO</strong>:
+</ul>
+<div class="task">
+<p><strong>TO DO</strong>:</p>
 <ul>
 <li>Reiterate <em>row standardisation</em> and <em>FDR correction</em>
 </li>
@@ -274,9 +277,8 @@
 </li>
 <li>Communicate the <em>underlying mathematics</em>, as interpretation is very easy with the html output</li>
 </ul>
-</li>
-</ul>
-<p>[16] By the end of the practical, you be able to:</p>
+</div>
+<p>[16] By the end of the practical, you should be able to:</p>
 <ul>
 <li>Understand how we might assess for autocorrelation and hotspots</li>
 <li>Understand and demonstrate the importance of the spatial weights matrix</li>
@@ -287,11 +289,15 @@
 <h2>
 <span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-2"><i class="fas fa-link"></i></a>
 </h2>
-<p>As a comparison, we can run with <a href="https://www.presidency.ucsb.edu/statistics/elections/2008">2008 election results</a> (Obama vs. McCain), stored in <code>2008_US_County_Level_Presidential_Results.csv</code></p>
+<p>As a comparison, we can run with the <a href="https://www.presidency.ucsb.edu/statistics/elections/2008">2008 election results</a> (Obama vs. McCain), stored in <code>2008_US_County_Level_Presidential_Results.csv</code></p>
 <p>Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.</p>
-<p><em>Question</em>: How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?</p>
-<p><em>Question</em>: What is a limitation of our current approach? <em>Hint</em>: Sort the <code>gop_per</code> column for the 2008 results.</p>
-<p>Answer: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available <a href="https://www2.census.gov/geo/tiger/">here</a>.</p>
+<div class="question">
+<p>How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?</p>
+</div>
+<div class="question">
+<p>What is a limitation of our current approach? <em>Hint</em>: Sort the <code>gop_per</code> column for the 2008 results.</p>
+</div>
+<p><em>Answer</em>: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available <a href="https://www2.census.gov/geo/tiger/">here</a>.</p>
 </div>
 <div id="resources" class="section level2" number="3.4">
 <h2>

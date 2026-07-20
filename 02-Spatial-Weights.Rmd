@@ -32,7 +32,9 @@ To achieve this, we'll demonstrate construction of spatial weights using country
 
 ## Practical
 
-During this practical...
+::: task
+To begin, a conceptual discussion of spatial weights. 
+:::
 
 ### Spatial weights using a grid
 
@@ -42,11 +44,15 @@ During this practical...
 
 [3] Use [Neighbourhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise different spatial weights settings.
 
+::: task
+To discuss, neighbourhood types.
+:::
+
 ### Spatial weights using country Polygons
 
 [4] Load country data [`ne_10m_admin_0_countries.shp`] and repeat process.
 
-[5] The above process allows us to dynamically view connections for a single feature of interest (Select Focal Feature). To generate these connections for the entire dataset, we can use [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) - talk through different settings, using a unique ID (NE_ID)
+[5] The above allows us to dynamically view connections for a single feature of interest (Select Focal Feature). To generate these connections for the entire dataset, we can use [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog) - talk through different settings, using a unique ID (NE_ID)
 
 [6] Return to the Neighbourhood Explorer, where we can now use our created `swm` file as an input.
 
@@ -77,11 +83,19 @@ During this practical...
 
 ### Comparison with cultural distance
 
-[14] Open the matrix of cultural distance [`cultural-distance.csv`] which I've edited to leave only unique combinations (using "-".join(sorted([!country_1!, !country_2!]))), as summarised in `join_key`. Our task is to match those to the data created above i.e., "are 'neighbouring' countries (as defined by the swm), more culturally similar?"
+[14] Open the matrix of cultural distance [`cultural-distance.csv`] which I've edited to leave only unique combinations (using "-".join(sorted([!country_1!, !country_2!]))), as summarised in `join_key`. Our task is to match those to the data created above i.e.,
+
+::: question
+Are 'neighbouring' countries (as defined by the swm), more culturally similar?
+:::
 
 *Note* the smaller the cultural distance value, the more similiar the countries are e.g., Egypt and Norway are dissimiliar (0.5953), whereas Australia and the UK are highly similar (0.0319)
 
 [15] This csv is not editable so Export Table, and save in a gdb i.e., `practical-2.gdb`. Remove the original csv from ArcGIS to avoid confusion
+
+::: task
+To do, discuss geodatabases? 
+:::
 
 [16] Next use [Delete Identical](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog), with the XY to Line layer created in [12], with Fields = Shape, to remove comparable geometries e.g., (IRE-UK, UK-IRE, N=344)
 
@@ -129,6 +143,10 @@ We've been working with Polygon data, but what would we do with Points?
 [23] Load the Cities data from Practical 1 [`data/esri/World_Cities.shp`] and use the Neighbourhood Explorer again, where we can use fixed distances, k-nearest neighbours, Trimmed Delaunay Triangulation
 
 [24] Use [Create Thiessen Polygons](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog) to establish a neighbourhood network, and use Neighbourhood Explorer (Contiguity Edges Corners). This is an approach I've used in my own work, see @tomkins2021.
+
+::: task
+This will be useful for A1, as students will be working with a Point dataset. Include a subtle hint here? 
+:::
 
 ## Resources {#sw_resources}
 

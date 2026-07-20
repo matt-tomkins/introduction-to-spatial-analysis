@@ -35,9 +35,11 @@ introduction-5
 practical-4
 pre-processing-1
 interpolation-types
-deterministic-interpolation
-geostatistical-interpolation
-semivariograms
+deterministic-interpolation-proximity
+deterministic-interpolation-idw
+geostatistical-interpolation-ordinary-kriging
+variograms
+geostatistical-interpolation-universal-kriging
 extra-4
 resources-3
 spatial_regression
@@ -59,7 +61,7 @@ calibration-fixed-kernel
 calibration-adaptive-kernel
 calibration-local-weighting-scheme
 mgwr_intro
-gwr_summary
+gwr_selection
 extra-5
 resources-5
 location_allocation

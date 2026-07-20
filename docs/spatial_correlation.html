@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -160,12 +159,14 @@
 </ul>
 </li>
 </ul>
+<div class="problem">
 <p><strong>James</strong> I’m encountering an issue here where Join Field fails with the following: ERROR 000499: Table is not editable.</p>
 <ul>
 <li>This seems to occur when multiple types of Table Joins are used i.e., use Joins and Relatives to combine the geometry data [<code>cb_2023_us_county_500k.shp</code>] and the election results [<code>2024_US_County_Level_Presidential_Results.csv</code>], and then use Join Field to add an attribute from another table [e.g., <code>poverty_2023.csv</code>].</li>
 <li>If I remove the dynamic join, the error does not occur.</li>
 <li>Is this expected ArcGIS behaviour?</li>
 </ul>
+</div>
 <p>[5] Exploratory analysis - change symbology, visualisation …</p>
 <p>[6] Test for <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">global</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">local</a> spatial autocorrelation</p>
 <ul>
@@ -178,7 +179,9 @@
 </ul>
 </li>
 </ul>
-<p><em>Question</em>: What is your interpretation of spatial autocorrelation for these datasets?</p>
+<div class="question">
+<p>What is your interpretation of spatial autocorrelation for these datasets?</p>
+</div>
 <p>[7] Next, we are going to run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog">Bivariate Spatial Association (Lee’s L)</a>, using GOP vote percent [<code>gop_perc</code>] as Analysis Field 1, comparing to:</p>
 <ul>
 <li>White % [<code>WA_%</code>]:
@@ -201,6 +204,7 @@
 </ul>
 </li>
 </ul>
+<div class="task">
 <p>To <strong>discuss</strong>:</p>
 <ul>
 <li>The Global <em>p</em>-value</li>
@@ -208,28 +212,39 @@
 <li>The Pearson Correlation (<em>r</em>), and difference between raw and neighbourhood averages</li>
 <li>Lee’s L Scatter PLot</li>
 </ul>
-<p><strong>James</strong> Can you reproduce these results? A further observation - all of the reported P-values are identical (0.002). Needs evaluating.</p>
+</div>
+<div class="problem">
+<p><strong>James</strong> Can you reproduce these results? A further observation - all of the reported P-values are <strong>identical</strong> (0.002). Needs evaluating.</p>
+</div>
 <p>[8] Interpretation and understanding:</p>
-<p><em>Question</em>: “How much of this relationship survives once we account for spatial structure?”</p>
-<p><em>Question</em>: What are key differences between Pearson’s R and Lee’s L?</p>
-<p><em>Question</em>: How do we interpret the global and local results?</p>
+<div class="question">
+<p>How much of this relationship survives once we account for spatial structure?</p>
+</div>
+<div class="question">
+<p>What are key differences between Pearson’s R and Lee’s L?</p>
+</div>
+<div class="question">
+<p>How do we interpret the global and local results?</p>
+</div>
 <p>[9] As ever, sensitivity testing of spatial weights matrix:</p>
-<p><em>Question</em>: How do the correlations change as a distance or k-neighbours based approach is used?</p>
+<div class="question">
+<p>How do the correlations change as a distance or k-neighbours based approach is used?</p>
+</div>
 </div>
 <div id="correlation-extra" class="section level2" number="4.3">
 <h2>
 <span class="header-section-number">4.3</span> Extra<a class="anchor" aria-label="anchor" href="#correlation-extra"><i class="fas fa-link"></i></a>
 </h2>
 <p>I’ve provided you with some other county-level datasets in <code>data/us-census</code>, including age-standardised <a href="https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&amp;age_options=age_11&amp;cod=247&amp;cod_options=cod_15&amp;comparison=states_to_us&amp;comparison_options=comparison_statename_to_us&amp;race=00&amp;race_options=race_6&amp;ratetype=aa&amp;ratetype_options=ratetype_2&amp;ruralurban=0&amp;ruralurban_options=ruralurban_3&amp;sex=0&amp;sex_options=sex_3&amp;statefips=99&amp;statefips_options=area_states&amp;yeargroup=5&amp;yeargroup_options=yearmort_2">mortality</a>, <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data">unemployment</a>, and <a href="https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html">internet adoption</a>.</p>
-<blockquote>
+<div class="question">
 <p>Can you find any interesting associations?</p>
-</blockquote>
-<blockquote>
+</div>
+<div class="question">
 <p>Is there any pattern to the spatial and non-spatial measures of association?</p>
-</blockquote>
-<blockquote>
+</div>
+<div class="question">
 <p>What are some weaknesses of our approach?</p>
-</blockquote>
+</div>
 <p><em>Answers</em>:</p>
 <ul>
 <li>Results dependent on designation of spatial weights matrix.</li>

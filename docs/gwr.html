@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -139,13 +138,13 @@
 <h3>
 <span class="header-section-number">8.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-3"><i class="fas fa-link"></i></a>
 </h3>
-<blockquote>
+<div class="task">
 <p>Initial context, reiterating differences between <strong>global</strong> models discussed last week (OLS, spatial autoregression) and the <strong>local</strong> models introduced here, which consist of a series of local linear regressions, using data falling within a moving window around each feature to generate local and spatially varying coefficient estimates.</p>
-</blockquote>
+</div>
 <p>[1] Load the north-west MSOA geometries from <a href="spatial_regression.html#spatial_regression">Practical 7</a>, ensuring the relevant joined fields are present [<code>life_expectancy_male</code>, <code>life_expectancy_male</code>, <code>total_annual_income</code>, <code>employed_not_ftstudent</code>, <code>economically_inactive_not_ftstudent</code>, <code>economic_status_total</code>, <code>no_qualifications</code>, <code>level_four</code>, <code>qualification_total</code>, <code>disabled_perc</code>, <code>imd_decile</code>, <code>fuel_poverty_perc</code>]</p>
-<blockquote>
+<div class="task">
 <p>Reiterate key themes from <a href="spatial_regression.html#spatial_regression">Practical 7</a> i.e., we can develop global models linking life expectancy to MSOA-level predictors, either using standard OLS, or incorporating the spatial structure of the data (SEM, SLM), but what if spatial non-stationarity is present?</p>
-</blockquote>
+</div>
 <p>A key source for this week is <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span>, which outlines a route map for successful applications of GWR. While this approach should be considered for future analysis, it is worth noting that that we have deviated from <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span> across Practicals 7 and 8, but this is by design, building from global <em>aspatial</em> regression (<a href="spatial_regression.html#ols">OLS</a>) through to global <em>spatial</em> regression (<a href="spatial_regression.html#sem">SEM</a>, <a href="spatial_regression.html#slm">SLM</a>), and in this week on to local regression (<a href="gwr.html#gwr_intro">GWR</a>) and multiscale local regression (<a href="gwr.html#mgwr_intro">MGWR</a>).</p>
 </div>
 <div id="gwr_intro" class="section level3" number="8.2.2">
@@ -161,9 +160,9 @@
 <p>As discussed last week, it is typical to include a range of independent variables, so we’ll incorporate the following: [<code>total_annual_income</code>, <code>disabled_perc</code>, <code>imd_decile</code>, <code>fuel_poverty_perc</code>].</p>
 </blockquote>
 <p>The key remaining choices are whether to use a <strong>fixed</strong> kernel (distance) or <strong>adaptive</strong> kernel (# neighbours), as described <a href="https://gdsl-ul.github.io/san/09-gwr.html#fitting-a-geographically-weighted-regression">here</a>, and how to selected an appropriate <strong>bandwidth</strong> for each. In ArcGIS, these are referred to as the <code>Neighbourhood Type</code> (Distance or K-neighbours) and the <code>Selection Method</code> respectively (Golden Search i.e., cross-validation, Manual intervals, User-defined). We can also select the <strong>shape</strong> of the kernel, which is specified via the <code>Local Weighting Scheme</code> (Gaussian or Bisquare options).</p>
-<blockquote>
+<div class="task">
 <p><strong>To do</strong> Include fuller descriptions and schematics for the kernel types.</p>
-</blockquote>
+</div>
 <p>For now, we’ll use the default settings, and explore the initial GWR results, before exploring the effects of the settings on our output:</p>
 <ul>
 <li>
@@ -174,9 +173,9 @@
 <code>Local Weighting Scheme</code> = Bisquare</li>
 </ul>
 <p>We will also scale our dependent and independent variables (<code>Scale Data</code> = Checked) to have a mean of zero and standard deviation of one. This standardisation is useful approach when there are large differences in the magnitude of our independent variables e.g, total annual income ranges from £27,072 to £79,191, while the proportion variables (e.g., disabed and fuel poverty %) can only span 0% to 100%.</p>
-<blockquote>
-<p><em>To do</em> explain <strong>why</strong> scaling works.</p>
-</blockquote>
+<p>:::
+<em>To do</em> explain <strong>why</strong> scaling works.
+:::</p>
 <p>[3] Inspect initial outputs</p>
 <p>First, we should always inspect <em>warnings</em> before jumping to interpretation:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="gwr.html#cb6-1" tabindex="-1"></a>WARNING <span class="dv">000642</span><span class="sc">:</span> Problems reading <span class="dv">18</span> of <span class="dv">932</span> total records.</span>
@@ -222,6 +221,7 @@
 <p>Is there evidence of local multicollinearity? Is there any spatial pattern to the Condition Numbers? Why might this be?</p>
 </div>
 <div class="problem">
+<p><strong>Fixed</strong>, but noted here for posterity:</p>
 <p>The condition numbers for GWR using <em>unscaled</em> variables are extraordinarily high (625705.267212 - 12181949.0742) and show a spatial pattern. CNs &gt; 30 are typically used to indicate worrying levels of collinearity, see <a href="https://gdsl-ul.github.io/san/09-gwr.html#global-regression">here</a>. While multicollinearity is not a problem at a global level, it can be locally. This is usually solved by increasing the bandwidth, but that isn’t valid here, because the fixed (distance) kernel already results in a high number of neighbours. This has been addressed by <strong>scaling the inputs</strong>, which has been added to the instructions above. All CNs are now &lt; 30 (Max = ~13.9), albeit with an interesting spatial pattern, matching the features with a smaller number of neighbours (sensitivity).</p>
 </div>
 <div id="calibration-fixed-kernel" class="section level4" number="8.2.2.1">
@@ -233,9 +233,9 @@
 <blockquote>
 <p>Inspect the Golden Search Results table, which includes the tested distance bands, and the resulting AICc. As per the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-geographicallyweightedregression-works.html">documentation</a>, this method first finds maximum and minimum distances and tests the AICc at various distances incrementally between them. The maximum distance (~224 km) is the distance at which every feature has half the number of input features as neighbors, and the minimum distance (~67 km) is the distance at which every feature has at least 5 percent of the features in the dataset as neighbors.</p>
 </blockquote>
-<blockquote>
+<div class="task">
 <p><em>To do</em> explain the AICc criterion.</p>
-</blockquote>
+</div>
 <p>For our model, the <code>Golden Search</code> method has finalised with a bandwidth of 67724.0669 m (AICc = 3335.5727), although we should be aware of the following warning:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="gwr.html#cb7-1" tabindex="-1"></a>WARNING <span class="dv">110306</span><span class="sc">:</span> The final model didn<span class="st">'t have the lowest AICc encountered in the Golden Search Results.</span></span></code></pre></div>
 <p>As per the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/110001-120000/tool-errors-and-warnings-110301-110325-110306.html">documentation</a>, the Golden Search method is not guaranteed to find the lowest possible AICc, which we can see by investigating the summary table, where there is bandwidth with a lower AICc of 3335.4256. In this situation, we could re-run GWR specifying the distance manually (<code>Neighbourhood Selection Method</code> = User Defined). However, given the very small difference in AICc and the selected bandwidth (67.7 km vs. 67.2 km), this is likely to have only a small impact on the results.</p>
@@ -288,18 +288,18 @@
 f(d)=\exp\left(-\frac{1}{2}\left(\frac{d}{h}\right)^2\right)
 \]</span></p>
 <p>where <span class="math inline">\(d\)</span> is the distance between features and <span class="math inline">\(h\)</span> is a bandwidth value, which can be modified to change how quickly weights decrease with distance.</p>
-<blockquote>
+<div class="task">
 <p><em>To do</em> Include interactive plotly figure, showcasing distances vs. bandwidths.</p>
-</blockquote>
+</div>
 <p>This approach assigns a weight of 1 to the focal feature and weights for the neighboring features gradually decrease as the distance from the focal feature increases. A Gaussian weighting scheme never reaches zero, but weights for features far away from the regression feature can be quite small and have almost no impact on the regression.</p>
 <p>By comparison, <strong>bisquare weighting</strong> assigns zero to all features outside of the neighborhood specified. As a result, these do not impact the local regression for the focal feature, as per the following <a href="https://bookdown.org/lexcomber/GEOG5917/modelling-with-regression-and-gwr.html#geographically-weighted-regression">equation</a>:</p>
 <p><span class="math display">\[
 f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d&lt;h\\
 0 &amp; \text{otherwise.}\end{cases}
 \]</span></p>
-<blockquote>
+<div class="task">
 <p><em>To do</em> As above, include interactive plotly figure, showcasing distances vs. bandwidths for bisquare method.</p>
-</blockquote>
+</div>
 <p>[8] We’ve been using the bisquare approach so far, so re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/geographically-weighted-regression.html?tabs=dialog">Geographically Weighted Regression</a>, using the same settings as before (i.e., scaling inputs, adaptive kernel, <code>Golden Search</code> method), but now setting the <code>Local Weighting Scheme</code> to Gaussian, which can be found under <code>Additional Options</code>.</p>
 <div class="question">
 <p>Has model performance changed significantly?</p>
@@ -309,11 +309,11 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 </div>
 <p>When using an adaptive kernel and bisquare bandwidth, <code>Number of Neighbors</code> = 153. When a Gaussian bandwidth is used, <code>Number of Neighbors</code> = 35. In reality, the latter value is somewhat misleading, because <strong>all</strong> the observations in the dataset contribute to the regression for the focal feature<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As per the Gaussian weighting scheme: &lt;span class="math inline"&gt;\(f(d)=\exp\left(-\frac{1}{2}\left(\frac{d}{h}\right)^2\right)\)&lt;/span&gt;&lt;/p&gt;'><sup>3</sup></a>. The nearest 35 observations (in this case) define the bandwidth <span class="math inline">\(h\)</span>, which determines the weights for all observations. For bisqaure weighting, the <code>Number of Neighbors</code> can be interpreted more easily: for each focal feature, the 153 nearest neighbours contribute to the local regression for each focal feature, weighted accordingly between 0 and 1<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As per the Bisquare weighting scheme: &lt;span class="math inline"&gt;\(f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp;amp; \text{if } d&amp;lt;h\\ 0 &amp;amp; \text{otherwise.}\end{cases}\)&lt;/span&gt;&lt;/p&gt;'><sup>4</sup></a>, while all other features are assigned a weight of 0.</p>
 <p>As distant features make no contribute to the local regression using bisquare weighting, a larger number of neighbours may be required to obtain coefficient stability (assessed via AICc). By comparison, for a Gaussian kernel, the bandwidth controls how quickly weights decay, not which observations are included or excluded. For our investigation, where we expect the influence of neighboring features to diminish gradually with distance, a Gaussian approach is preferred.</p>
-<blockquote>
+<div class="task">
 <p><em>To do</em> clarify that in the ArcGIS implementation, we do not have access to the <span class="math inline">\(h\)</span> parameter. This is a scenario where our analysis is being limited by the implementation we have chosen. Ideally we would modify the bandwidth and assess its impacts on our results, but that is not possible here!</p>
-</blockquote>
-<div class="problem">
-<p>Need to confirm, is <span class="math inline">\(h\)</span> (bandwidth) the distance to the <em>n</em>th nearest neighbour, where <em>n</em> is associated with the lowest AICc?</p>
+</div>
+<div class="task">
+<p><strong>Need to confirm</strong>, is <span class="math inline">\(h\)</span> (bandwidth) the distance to the <em>n</em>th nearest neighbour, where <em>n</em> is associated with the lowest AICc?</p>
 </div>
 </div>
 </div>
@@ -323,9 +323,9 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 </h3>
 <p>So far, so good. We’ve developed Geographically Weighted Regressions, taking into account non-stationarity in the relationship between life expectancy and MSOA-level predictors.</p>
 <p>However, while this is a powerful technique, one <strong>weakness</strong> of standard GWR is that it utilises a fixed neighbourhood for all predictors. In our testing above, this was a distance of ~67 km (fixed kernel) and 153 neighbours (adaptive kernel). In reality, the processes being modelled might operate at different spatial scales i.e., the relationship between life expectancy and income vs. life expectancy and deprivation. This can be addressed using Multiscale Geographically Weighted Regression, which facilitates the use of parameter-specific bandwidths <span class="citation">(<a href="references.html#ref-changchien2020">Chang Chien <em>et al.</em>, 2020</a>)</span>.</p>
-<blockquote>
+<div class="task">
 <p><em>To do</em> Nice schematic here, in the style of the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multiscale-geographically-weighted-regression.html?tabs=dialog">documentation</a></p>
-</blockquote>
+</div>
 <p>[9] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multiscale-geographically-weighted-regression.html?tabs=dialog">Multiscale Geographically Weighted Regression</a> using the same inputs as previously:</p>
 <ul>
 <li>Dependent = <code>life_expectancy_male</code>
@@ -357,10 +357,10 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <div class="question">
 <p>Is there spatial clustering of the standardised residuals?</p>
 </div>
-<div class="problem">
+<div class="task">
 <p>We can use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Moran’s <em>I</em></a> to test for this, but how do we select for the number of neighbours? Should we match to the MGWR approach i.e., K nearest neighbors = 250, within the range of the MGWR output of 205 - 283? Is there scope for a measure which incorporates the multiple scales involved, in the style of <span class="citation">Illanas <em>et al.</em> (<a href="references.html#ref-illanas2025a">2025b</a>)</span> for Lee’s <em>L</em>?</p>
 </div>
-<p>MGWR also produces additional layers for each independent variable (<code>total_annual_income</code>, <code>disabled_perc</code>, <code>imd_decile</code>, <code>fuel_poverty_perc</code>), including the (scaled) coefficient values, representing the strength of the relationship with life expectancy, and the significance, where hatched fills denote features that are not statistically significant. <em>Note</em> that because we are using scaled coefficients, a consistent symbology scale is used for all independent variables to facilitate comparison. To investigate coefficient variability across the study area, you may want to update this, switching to Graduated or Unclassed colours, and using a variable-specific minimum and maximum.</p>
+<p>MGWR also produces additional layers for each independent variable (<code>total_annual_income</code>, <code>disabled_perc</code>, <code>imd_decile</code>, <code>fuel_poverty_perc</code>), including the (scaled) coefficient values, representing the strength of the relationship with life expectancy, and the significance, where hatched fills denote features that are not statistically significant. <em>Note</em> that because we are using scaled coefficients, a consistent symbology scale is used for all independent variables to facilitate comparison. To investigate coefficient variability within the study area, you may want to update this, switching to Graduated or Unclassed colours, and using a variable-specific minimum and maximum.</p>
 <div class="question">
 <p>How does the relationship between the independent variables and life expectancy vary across the study area?</p>
 </div>
@@ -370,13 +370,13 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <p>Has model performance changed significantly?</p>
 </div>
 </div>
-<div id="gwr_summary" class="section level3" number="8.2.4">
+<div id="gwr_selection" class="section level3" number="8.2.4">
 <h3>
-<span class="header-section-number">8.2.4</span> Summary<a class="anchor" aria-label="anchor" href="#gwr_summary"><i class="fas fa-link"></i></a>
+<span class="header-section-number">8.2.4</span> Model selection<a class="anchor" aria-label="anchor" href="#gwr_selection"><i class="fas fa-link"></i></a>
 </h3>
-<p>Over the past two weeks, we have produced a range of models linking life expectancy to MSOA-level variables i.e., <a href="spatial_regression.html#ols">OLS</a>, <a href="spatial_regression.html#sem">SEM</a>, <a href="spatial_regression.html#slm">SLM</a>, <a href="gwr.html#gwr_intro">GWR</a>, <a href="gwr.html#mgwr_intro">MGWR</a>.</p>
+<p>Over the past two weeks, we have produced a range of models linking life expectancy to MSOA-level variables i.e., <a href="spatial_regression.html#ols">OLS</a>, <a href="spatial_regression.html#sem">SEM</a>, <a href="spatial_regression.html#slm">SLM</a>, <a href="gwr.html#gwr_intro">GWR</a>, <a href="gwr.html#mgwr_intro">MGWR</a>. You may be asking yourself the following question:</p>
 <div class="question">
-<p>Which model do we choose?</p>
+<p>Which model do I choose?</p>
 </div>
 <p>Following <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span>, a good approach is to begin your analysis with a standard <a href="spatial_regression.html#ols">linear regression</a>, which can be used to evaluate whether relationships are statistically significant and whether there is any evidence of autocorrelated errors. If relationships <em>are</em> significant and autocorrelated errors are <em>absent</em>, then no further analysis is required - you have discovered powerful and stationary relationships for your phenomenon and study area!</p>
 <p>If spatial non-stationarity <em>is</em> present (autocorrelated errors), then a suitably-calibrated MGWR would be a sensible next step. The outputs can then be interrogated to inform subsequent analysis:</p>
@@ -388,7 +388,7 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <li>
 <em>if</em> bandwidths tend to be global and residuals are spatially autocorrelated, then a spatial regression approach would be suitable e.g., <a href="spatial_regression.html#sem">SEM</a>, <a href="spatial_regression.html#slm">SLM</a>.</li>
 </ul>
-<p>Finally, it should be recognised that other GWR variants are available (e.g., MX-GWR, see <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span>), and there are an array of secondary model decisions to be considered, some of which we’ve dealt with above (e.g., collinearity), and others which you can explore further in your own reading (e.g., handling outliers). Moreover, while the route map of <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span> is an excellent guide, it is not prescriptive, and there is flexibility to pursue your own workflow, guided by the data and theory.</p>
+<p>Finally, it should be recognised that other GWR variants are available (e.g., MX-GWR, see <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span>), and there are an array of secondary model decisions to be considered, some of which we’ve dealt with above (e.g., collinearity), and others which you can explore further in your own reading (e.g., handling outliers). Moreover, while the route map of <span class="citation">Comber <em>et al.</em> (<a href="references.html#ref-comber2023">2023</a>)</span> is an excellent guide, it is not prescriptive, and there is flexibility to pursue your own workflow, guided by data and theory.</p>
 </div>
 </div>
 <div id="extra-5" class="section level2" number="8.3">
@@ -398,17 +398,18 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <div id="model-generalisation" class="section level3 unnumbered">
 <h3>Model generalisation<a class="anchor" aria-label="anchor" href="#model-generalisation"><i class="fas fa-link"></i></a>
 </h3>
-<blockquote>
 <p>For those interested in exploring further, we can explore how the local models change when applied to a different region.</p>
-</blockquote>
+<div class="task">
+<p>As with Practical 7, should we switch to London here?</p>
+</div>
 <p>[A] Either (i) load the data for the <em>North East</em> and <em>Yorkshire and Humber</em> created in Practical 7 <a href="spatial_regression.html#prac_7_extra">Extra</a> or [ii] follow the instructions in <a href="spatial_regression.html#prac_7_extra">Extra</a> to generate this dataset (i.e., filter MSOAs, join fields)</p>
 <p>[B] Re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/geographically-weighted-regression.html?tabs=dialog">GWR</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multiscale-geographically-weighted-regression.html?tabs=dialog">MGWR</a>.</p>
-<blockquote>
+<div class="question">
 <p>How does model performance compare to the models developed for the North West region?</p>
-</blockquote>
-<blockquote>
+</div>
+<div class="question">
 <p>What does this suggest about the generalisability of our model?</p>
-</blockquote>
+</div>
 </div>
 <div id="gradient-search" class="section level3 unnumbered">
 <h3>Gradient search<a class="anchor" aria-label="anchor" href="#gradient-search"><i class="fas fa-link"></i></a>
@@ -419,6 +420,9 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 </div>
 <div class="problem">
 <p>MGWR fails when using gradient search: [ERROR 110222](<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/110001-120000/tool-errors-and-warnings-110201-110225-110222.html" class="uri">https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/110001-120000/tool-errors-and-warnings-110201-110225-110222.html</a>: Unable to estimate at least one local model due to multicollinearity (data redundancy).</p>
+</div>
+<div class="task">
+<p>Remove gradient search for simplicity?</p>
 </div>
 </div>
 </div>
@@ -457,7 +461,7 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <li><a class="nav-link" href="#pre-processing-3"><span class="header-section-number">8.2.1</span> Pre-processing</a></li>
 <li><a class="nav-link" href="#gwr_intro"><span class="header-section-number">8.2.2</span> Geographically Weighted Regression</a></li>
 <li><a class="nav-link" href="#mgwr_intro"><span class="header-section-number">8.2.3</span> Multiscale Geographically Weighted Regression</a></li>
-<li><a class="nav-link" href="#gwr_summary"><span class="header-section-number">8.2.4</span> Summary</a></li>
+<li><a class="nav-link" href="#gwr_selection"><span class="header-section-number">8.2.4</span> Model selection</a></li>
 </ul>
 </li>
 <li>

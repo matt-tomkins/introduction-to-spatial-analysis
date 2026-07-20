@@ -49,9 +49,13 @@ The data for this practical are available in [`data/gbif`] as follows:
 -   Either Export Selection (or keep selected)
 -   Clip: Input = Tiger Points, Feature = Natural Earth (selected record)
 
+::: task
 *Discuss* Spatial Joins / Overlay / Clip
+:::
 
+::: task
 *To do?* Remove non-contiguous part? i.e., Andaman Islands, Maldives. This could be achieved using [Multipart To Singlepart](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/multipart-to-singlepart.html?tabs=dialog) (Data Management Tools)
+:::
 
 [4] [Dissolve](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog) our area of interest (Indian Subcontinent):
 
@@ -60,7 +64,9 @@ The data for this practical are available in [`data/gbif`] as follows:
 -   Dissolve Fields: leave blank = all features together
 -   Statistics Fields: also blank (just using area to define study extent), but could do statistics here e.g., `POS_EST` [SUM], `GDP_MD` [Mean]
 
+::: task
 *Discuss* polygon-representation issues i.e., does the Tiger recognise political boundaries?
+:::
 
 [5] Update Projection
 
@@ -114,7 +120,9 @@ Run [Generate Tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-refer
 -   Join Operation = one to one
 -   Match Option = Completely contains [or intersects])
 
+::: task
 *Discuss* Symbology effects, Graduated Colours (using quantiles etc) or Unclassed Colours (min to max)
+:::
 
 [8] Run [Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog):
 
@@ -123,7 +131,7 @@ Run [Generate Tessellation](https://doc.esri.com/en/arcgis-pro/latest/tool-refer
 -   Cell size e.g., 10_000 m
 -   Method = Geodesic (incorporating Earth shape)
 
-> Explore changing search radius e.g., 20,000 m\^2 to 200,000 m\^2 Explore effects of barriers (e.g., Natural Earth polygon)
+> Explore changing search radius e.g., 20,000 m^2^ to 200,000 m^2^ Explore effects of barriers (e.g., Natural Earth polygon).
 
 *Note* this tool produces values within the data range (min-max xy) and creates static layers.
 
@@ -164,11 +172,15 @@ Default Output:
 
 Very straightforward implementation and interpretation, but key discussion points:
 
--   Analytical approach
--   Distance calculations (observed and expected mean distance)
--   Nearest neighbor ratio
--   Z-scores
--   Introduce the **Observation Window**
+::: task
+**Discuss**:
+
+- Analytical approach
+- Distance calculations (observed and expected mean distance)
+- Nearest neighbor ratio
+- Z-scores
+- Introduce the **Observation Window**
+:::
 
 > Evaluate the impact of changing the observation window (`area`), for example using the area of the Natural Earth polygons, calculated using [Calculate Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog)
 
@@ -180,7 +192,9 @@ Very straightforward implementation and interpretation, but key discussion point
 -   As above, it is highly sensitive to "study area" method, as described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog)
 -   Boundary correction is also important.
 
+::: task
 *Discuss* the Ripley alphabet of functions ($G, F, K$)
+:::
 
 *Interpretation*:
 
@@ -194,20 +208,20 @@ Important choices include the minimum number of features (% of dataset) and sear
 
 Reasonable selection of parameters:
 
--   Search distance based on ecological grounds e.g., an average home range of 110 km\^2 for Sundarban of India and Bangladesh [@naha2016], although they can travel much further [@hussain2022]!
+-   Search distance based on ecological grounds e.g., an average home range of 110 km^2^ for Sundarban of India and Bangladesh [@naha2016], although they can travel much further [@hussain2022]!
 -   Minimum number - 45 (1%)
 -   This generate a reasonable pattern (7 main clusters, plus outliers)
 
 HDBSCAN gives different results, varying distance based on point density (central block broken up into smaller clusters, and v.v elsewhere). For this dataset, DBSCAN makes more sense, using a fixed distance, based on ecological evidence (rather than the degree of Point clustering)
 
-**To finish the practical**
-
-Discussion points to consider:
+::: task
+**To finish the practical**:
 
 - Ensure the practical finishes with a natural progression to **point-process modelling** i.e., all of this is great, and tells us about the pattern of points, but not how that pattern arises. This is outside the scope of this unit, but you can explorer ecological examples in Spatial Ecology in Semester 2.
 - Emphasise the importance of the **Observation Window**.
 - Touch on **uncertainty**, with many points at the same location (n=125), reported positional uncertainty of ±30 km. How important is this at our scale of analysis? 
 - DON'T discuss **presence-absence** problems here, as this will be better suited to the interpolation practical.
+:::
 
 ## Extra
 

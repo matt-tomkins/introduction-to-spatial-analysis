@@ -13,3 +13,7 @@ figures/
 _15-file-handling-UNUSED.Rmd
 _notes.Rmd
 static/
+wow_data_extraction.R
+met_office_api.R
+api_key
+data_raw/

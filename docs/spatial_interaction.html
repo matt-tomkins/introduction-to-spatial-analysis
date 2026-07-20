@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -269,9 +268,9 @@ using <code>orig</code> and <code>dest</code> coordinates, selecting the appropr
 <li>Distance (<code>NEAR_DIST</code>, meters)</li>
 </ul>
 <p>[14] Exploratory plots - Create Chart - Scatter Plot</p>
-<blockquote>
+<div class="question">
 <p>Are there any correlations?</p>
-</blockquote>
+</div>
 </div>
 <div id="model-description" class="section level3" number="10.2.3">
 <h3>
@@ -340,14 +339,16 @@ Scatter Plot), because we haven’t tuned our parameters!</p>
 <p>If we log both sides of the equation above, we get the following:</p>
 <p><span class="math display">\[\mathrm{ln}T_{ij}=k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij}\]</span></p>
 <p>This is basically a regression model! This format allows us to tune of parameters.</p>
-<blockquote>
+<div class="task">
 <p><strong>TO DO</strong> Explain why.</p>
-</blockquote>
+</div>
 <p>However, there are problems with using a log-linear approach, and
 instead it is more common to use Poisson regression, which is better for skewed
 distributions (like our flow data):</p>
-<p><span class="math display">\[λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})\]</span>
-&gt; <strong>TO DO</strong> Explain Poisson distribution and regression</p>
+<p><span class="math display">\[λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})\]</span></p>
+<div class="task">
+<p><strong>TO DO</strong> Explain Poisson distribution and regression</p>
+</div>
 <p>[18] Visualise Statistics - Histogram - Flow</p>
 <p>[19] First, log<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that Python math.log() uses &lt;code&gt;e&lt;/code&gt; as the default, which is consistent with R, where log() uses &lt;code&gt;exp(1)&lt;/code&gt; as the &lt;a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log"&gt;default&lt;/a&gt;. For those more familiar with Excel, log() defaults to base10, which is different! For consistency, this can either be updated to log(val, EXP(1)) or the LN() function can be used.&lt;/p&gt;'><sup>5</sup></a> the relevant independent variables:</p>
 <ul>
@@ -367,13 +368,16 @@ Regression</a></p>
 <li>Count (Poisson)</li>
 </ul>
 <p>[22] Evaluate and interpret coefficients</p>
-<blockquote>
+<div class="task">
 <p><strong>TO DO</strong> include screenshot or formatted table here</p>
-</blockquote>
+</div>
 <p><em>Note</em> we will use the model coefficients as our parameter estimates.</p>
 <p>[23] Produce <code>gm2</code> (calibrated model) and evaluate performance using Create Chart, Scatter Plot</p>
 <p>Equation: math.exp(-5.4022+(0.9985 * !orig_pop_log!)+(0.2862 * !dest_gdp_log!)-(abs(-1.2354) * !near_dist_log!))</p>
 <p>Performance: R2 = 0.45</p>
+<div class="question">
+<p>What is your appraisal of our total constrained model?</p>
+</div>
 </div>
 <div id="origin-constrained-models" class="section level3" number="10.2.6">
 <h3>
@@ -383,18 +387,21 @@ Regression</a></p>
 <p>[25] Implementation in ArcGIS</p>
 <p>This is technically possible in ArcGIS but not easy, requiring us to
 use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/encode-field.html?tabs=dialog">Encode Field</a> to create dummy variables for <code>orig_LAD21CD</code>.</p>
-<p>This works when there are a small number of categories to encode, but Generalised Linear Regression (tool) struggles with the number of LA names in our dataset (~300) with multicollinearity issues</p>
-<p>Even if this was not the case, it is very difficult to manually include the coefficients in a regression equation, as we did in [22]</p>
+<p>This works when there are a small number of categories to encode, but Generalised Linear Regression (tool) struggles with the number of LA names in our dataset (~300) with multicollinearity issues.</p>
+<p>Even if this was not the case, it is very difficult to manually include the coefficients in a regression equation, as we did in [22].</p>
 <p>Instead, load a Python notebook and use the <a href="spatial_interaction.html#python_notebook">appendix code</a> to perform
 GLR and create an origin-constrained model (<code>gm3</code>), saving output to csv.</p>
-<blockquote>
+<div class="task">
 <p><em>Note</em> while I don’t expect the students to write the code independently, I will introduce it in a piecemeal fashion, explaining what each line does.</p>
-</blockquote>
+</div>
 <p>[26] Load predictions csv produced in the previous step and assess performance (<code>flow_int</code> vs. <code>gm3</code>):</p>
 <ul>
-<li>R2 = 0.57</li>
+<li>R<sup>2</sup> = 0.57</li>
 <li>Check that sum of modelled flows for each origin matches measured flows</li>
 </ul>
+<div class="task">
+<p>Check model performance, as the R<sup>2</sup> above is based on a different formula.</p>
+</div>
 </div>
 <div id="destination-contrained-models" class="section level3" number="10.2.7">
 <h3>
@@ -413,7 +420,7 @@ GLR and create an origin-constrained model (<code>gm3</code>), saving output to 
 <h2>
 <span class="header-section-number">10.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-7"><i class="fas fa-link"></i></a>
 </h2>
-<p>Our models are based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population.</p>
+<p>Our models are based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population. There are also a host of individual-level factors that drive migration e.g., family connections.</p>
 <p>If applying this model to international migration, we might include a completely different set of predictors e.g., cultural similarity, as covered in <a href="spatial_weights.html#spatial_weights">Practical 2</a>, whether countries share a common language, or the degree of conflict within or between countries.</p>
 <div id="contig" class="section level3 unnumbered">
 <h3>Testing contiguity<a class="anchor" aria-label="anchor" href="#contig"><i class="fas fa-link"></i></a>
@@ -434,9 +441,9 @@ GLR and create an origin-constrained model (<code>gm3</code>), saving output to 
 <p>[35] Join Field: NEAR_TABLE to SWM based on origin-destination, linking <code>contig</code>. This produces 1 (bordering) or “<null>” (not bordering)</null></p>
 <p>[36] Calculate Field, update <code>contig</code> using: 0 if !contig! is None else !contig!</p>
 <p>[37] Add binary contiguity [<code>contig</code> = 0/1] to the model</p>
-<blockquote>
+<div class="question">
 <p>To what extent does adding local authority contiguity improve our model?</p>
-</blockquote>
+</div>
 </div>
 <div id="python_notebook" class="section level3 unnumbered">
 <h3>Python Notebook for GLR Poisson<a class="anchor" aria-label="anchor" href="#python_notebook"><i class="fas fa-link"></i></a>
@@ -456,7 +463,7 @@ m = aprx.listMaps()[0]
 # Access table
 table = m.listTables("la_near_table_v2")[0]
 table_path = table.dataSource
-workspace = arcpy.Describe(ta
+workspace = arcpy.Describe(table_path)
 
 # List of fields
 fields = [f.name for f in arcpy.ListFields(table_path)]
@@ -481,7 +488,7 @@ df["gm3"] = model.predict(exog=df)
 # Sets path to output (workspace + file name)
 #out_table = os.path.join(workspace, "la_near_table_v2_pred.csv")
 
-# Manual export to csv
+# Export to csv
 df.to_csv(r"./la_near_table_v2_pred.csv", index=False)</code></pre>
 </div>
 </div>

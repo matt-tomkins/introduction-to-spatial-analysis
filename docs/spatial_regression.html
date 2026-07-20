@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -125,8 +124,7 @@
 <p>The data for this practical are sourced from the Department of Health and Social Care (DHSC, <a href="https://fingertips.phe.org.uk/">Fingertips</a>) and the Office for National Statistics (ONS), and are available in [<code>data/dhsc</code>] and [<code>data/ons/msoa</code>] respectively. Key attributes have been retained and are described below:</p>
 <ul>
 <li>ONS MSOA-level geometries and lookup table [<a href="https://geoportal.statistics.gov.uk/datasets/6b282db29762450881ed5159259a6e4e_0/explore?location=52.837634%2C-2.489483%2C6">Source</a>]</li>
-<li>ONS Economic Activity Status [<a href="https://www.ons.gov.uk/datasets/create/filter-outputs/20ce9188-476a-4e89-af57-0285e69f7098#get-data">Source</a>]:
-<ul>
+<li>ONS Economic Activity Status [<a href="https://www.ons.gov.uk/datasets/create/filter-outputs/20ce9188-476a-4e89-af57-0285e69f7098#get-data">Source</a>]:</li>
 <li>
 <code>employment_dna</code>: Does not apply</li>
 <li>
@@ -139,10 +137,7 @@
 <code>economically_inactive_and_ftstudent</code>: Economically inactive and a full-time student</li>
 <li>
 <code>economic_status_total</code>: The total number of individuals in the corresponding geographical area with an economic activity status. <em>Note</em> some peripheral classes have been removed to simplify the analysis, so the total is not the sum of the attributes above.</li>
-</ul>
-</li>
-<li>ONS Highest level of qualification [<a href="https://www.ons.gov.uk/datasets/create/filter-outputs/2a85d026-ea61-492f-9b43-117b66a3af4e#get-data">Source</a>]:
-<ul>
+<li>ONS Highest level of qualification [<a href="https://www.ons.gov.uk/datasets/create/filter-outputs/2a85d026-ea61-492f-9b43-117b66a3af4e#get-data">Source</a>]:</li>
 <li>
 <code>qualification_dna</code>: Does not apply</li>
 <li>
@@ -159,8 +154,6 @@
 <code>apprenticeships_or_similar</code>: Apprenticeships, vocational or work-related qualifications</li>
 <li>
 <code>qualification_total</code>: The total number of individuals in the corresponding geographical area with a qualification status</li>
-</ul>
-</li>
 <li>ONS Disability [<a href="https://www.ons.gov.uk/datasets/create/filter-outputs/0248ce8b-df1d-413f-a724-2d62feed9556#get-data">Source</a>]:</li>
 <li>
 <code>disabled</code>: Disabled under the Equality Act</li>
@@ -213,9 +206,9 @@
 <h2>
 <span class="header-section-number">7.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-5"><i class="fas fa-link"></i></a>
 </h2>
-<blockquote>
-<p>Key themes: spatial heterogeneity, dependence, nonstationarity, defined well <a href="https://gdsl-ul.github.io/san/02-spatial_data.html#key-challenges">here</a></p>
-</blockquote>
+<div class="task">
+<p>Key themes to discuss through the practical: spatial heterogeneity, dependence, nonstationarity, defined well <a href="https://gdsl-ul.github.io/san/02-spatial_data.html#key-challenges">here</a></p>
+</div>
 <div id="pre-processing-2" class="section level3" number="7.2.1">
 <h3>
 <span class="header-section-number">7.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-2"><i class="fas fa-link"></i></a>
@@ -251,12 +244,9 @@
 <li>[<code>dhsc-fuel-poverty.csv</code>] = <code>fuel_poverty_perc</code>
 </li>
 </ul>
-<blockquote>
+<div class="task">
 <p><em>Note</em> As MSOAs have a varying population (~5,000 to 15,000 residents), we should use proportional variables (e.g., <code>disabled_perc</code>, <code>fuel_poverty_perc</code>) or those that are not population-dependent (e.g., <code>imd_decile</code>, <code>total_annual_income</code>). For economic activity status and qualification, we can calculate proportional variables using the total number of individuals with an economic or qualification status (<code>economic_status_total</code>, <code>qualification_total</code>), focusing on the end-member classes i.e., unemployed <em>vs</em>. employed, no qualifications <em>vs</em>. level-four qualifications.</p>
-</blockquote>
-<blockquote>
-<p><em>Note to self</em> The dataset is in <code>processing/week-7/week-7.gdb/msoa_nw</code></p>
-</blockquote>
+</div>
 <p>As we have permanently joined these attributes to our geometry layer, all the tables can now be removed.</p>
 </div>
 <div id="data-exploration" class="section level3" number="7.2.2">
@@ -269,22 +259,22 @@
 </blockquote>
 <p>Lots of options here, but scope for interesting analysis e.g., investigating differences in <code>life_expectancy_male</code> and <code>life_expectancy_female</code> using Bivariate colours, or calculating the difference using Add Field.</p>
 <p>[8] Scatter plots e.g., <code>life_expectancy_male</code> vs. <code>total_annual_income</code>, <code>no_qualifications</code>, <code>disabled_perc</code>, <code>imd_decile</code>, <code>fuel_poverty</code>. Lots of interesting associations!</p>
-<blockquote>
-<p><strong>Note</strong> worth reiterating that these are aspatial comparisons. We know from earlier weeks of the unit, including <a href="spatial_correlation.html#spatial_correlation">spatial correlation</a>, that there are often alternative methods that are more appropriate e.g., <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog">Bivariate Spatial Association (Lee’s L)</a></p>
-</blockquote>
+<p>:::
+Worth reiterating that these are aspatial comparisons. We know from earlier weeks of the unit, including <a href="spatial_correlation.html#spatial_correlation">spatial correlation</a>, that there are often alternative methods that are more appropriate e.g., <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog">Bivariate Spatial Association (Lee’s L)</a>
+:::</p>
 <p>[9] Building on that, we also need to remember key concepts, such as the use of the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">spatial weights matrix</a> and the importance of <a href="spatial_autocorrelation.html#spatial_autocorrelation">spatial autocorrelation</a>, which we should always assess:</p>
 <ul>
 <li>Use the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Neighborhood Explorer</a> to visualise the connections that underlie our spatial weights matrix.</li>
 </ul>
-<blockquote>
+<div class="question">
 <p>Which spatial weights method is most appropriate for our data? Contiguity? Distance-based?</p>
-</blockquote>
+</div>
 <ul>
 <li>Assess for global and local spatial autocorrelation for some of the attributes (e.g., <code>life_expectancy_male</code>) using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s I)</a>, respectively.</li>
 </ul>
-<blockquote>
+<div class="question">
 <p>Is there evidence of spatial autocorrelation? What does this mean for our choice of regression method?</p>
-</blockquote>
+</div>
 </div>
 <div id="ols" class="section level3" number="7.2.3">
 <h3>
@@ -309,22 +299,22 @@
 <p>[12] OLS interpretation. As discussed previously, it is important to assess any warnings that appear, which in this case is as follows:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="spatial_regression.html#cb4-1" tabindex="-1"></a>WARNING <span class="dv">000851</span><span class="sc">:</span> Use the Spatial <span class="fu">Autocorrelation</span> (Moran<span class="st">'s I) Tool to ensure residuals are not spatially autocorrelated.</span></span></code></pre></div>
 <p>This is good advice and is described more fully <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00851-00875-000851.html">here</a>.</p>
-<p><em>For now</em> we’ll ignore this and inspect the results, which gives us an R2 of ~0.62 (matching the Scatter Chart created previously), p-values for each independent variable (n=1), and a wealth of information in the PDF.</p>
+<p><em>For now</em> we’ll ignore this and inspect the results, which gives us an R<sup>2</sup> of ~0.62 (matching the Scatter Chart created previously), p-values for each independent variable (n=1), and a wealth of information in the PDF.</p>
 <p>We can also inspect the spatial pattern of the standardised residuals (model errors) to see if there are areas where the OLS model is systematically overpredicting (+) or underpredicting (-) life expectancy.</p>
-<blockquote>
+<div class="question">
 <p>How does model performance vary across the north-west?</p>
-</blockquote>
+</div>
 <p>[13] Check for <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">global</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">local</a> spatial autocorrelation in the OLS residuals</p>
 <ul>
 <li>Global Moran’s I: Clustered (Given the z-score of 14.142665, there is a less than 1% likelihood that this clustered pattern could be the result of random chance.)</li>
 <li>LISA: HH clusters in Cumbria, LL in Manchester</li>
 </ul>
-<blockquote>
+<div class="question">
 <p>What might explain the pattern of high (HH) and low (LL) clusters, or outliers (e.g., Kendal, LH)?</p>
-</blockquote>
-<blockquote>
+</div>
+<div class="question">
 <p>How sensitive are the results to choice of spatial weights method?</p>
-</blockquote>
+</div>
 <p>[14] Assess for Multicollinearity</p>
 <p>In our model above, we have used a single independent variable (<code>total_annual_income</code>). As life expectancy is influenced by a range of factors, we might be able to explain significantly more variability by including a range of variables. If so, we need to be aware of issues of <strong>multicollinearity</strong> i.e., when independent variables are highly correlated with each other, see <span class="citation">Kim (<a href="references.html#ref-kim2019">2019</a>)</span>.</p>
 <blockquote>
@@ -347,23 +337,23 @@
 <span class="header-section-number">7.2.4</span> Spatial Regression<a class="anchor" aria-label="anchor" href="#spat_reg_details"><i class="fas fa-link"></i></a>
 </h3>
 <p>The spatial distribution of residuals indicates that spatial autocorrelation is present. We should therefore consider using a <em>spatial</em> regression method, documented well <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html">here</a>.</p>
-<blockquote>
+<div class="task">
 <p><em>To do</em>, describe the key differences between spatial error models (SEM), spatial lag models (SLM) and spatial autoregressive combined model (SAR) and include relevant equations.</p>
-</blockquote>
-<blockquote>
+</div>
+<div class="task">
 <p><em>To do</em> discuss why it is referred to as <em>auto</em>regression i.e., accounting for self-correlation. In a time-series setting, this is a method that predicts future values based on past values of the same variable. In our context, we are predicting values based on neighbouring values for the feature of interest.</p>
-</blockquote>
+</div>
 <div id="sem" class="section level4 unnumbered">
 <h4>Spatial error model<a class="anchor" aria-label="anchor" href="#sem"><i class="fas fa-link"></i></a>
 </h4>
 <p>Broadly, the spatial error model (SEM) treats residual autocorrelation as a nuisance, and handles it as if the spatial clustering was an accident, see <a href="https://bookdown.org/ejvanholm/Textbook/spatial-models.html">here</a> and summarised well by Darmofal (<a href="https://doi.org/10.1017/CBO9781139051293.007">2015</a>), cited by <a href="https://maczokni.github.io/crime_mapping_textbook/spatial-regression-models.html#what-to-do-now">Solymosi, R., and Medina, J.</a> :</p>
 <p>“<em>spatial dependence observed in our data does not reflect a truly spatial process, but merely the geographical clustering of the sources of the behaviour of interest. For example, citizens in adjoining neighbourhoods may favour the same (political) candidate not because they talk to their neighbors, but because citizens with similar incomes tend to cluster geographically, and income also predicts vote choice. Such spatial dependence can be termed attributional dependence. For example, citizens in adjoining neighbourhoods may favour the same (political) candidate not because they talk to their neighbors, but because citizens with similar incomes tend to cluster geographically, and income also predicts vote choice. Such spatial dependence can be termed attributional dependence.</em>”</p>
-<blockquote>
+<div class="task">
 <p>To do: rephrase and/or confirm Darmofal (<a href="https://doi.org/10.1017/CBO9781139051293.007">2015</a>) source</p>
-</blockquote>
-<blockquote>
-<p>To do: clarify how this is achieved.</p>
-</blockquote>
+</div>
+<div class="task">
+<p>To do: clarify how this is achieved (mathematically), including relevant equations, see <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html">here</a></p>
+</div>
 <p>[15] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a>, selecting Spatial Error Model (SEM) and using <code>Contiguity Edges Corners</code> as the spatial weights method.</p>
 <p>This runs successfully, albeit with the following warning, which is flagging rows where we have missing data (no <code>life_expectancy_male</code>)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="spatial_regression.html#cb5-1" tabindex="-1"></a>WARNING <span class="dv">000848</span><span class="sc">:</span> Features with bad <span class="fu">records</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> OBJECTID <span class="ot">=</span> <span class="dv">21</span>, <span class="dv">27</span>, <span class="dv">50</span>, <span class="dv">78</span>, <span class="dv">107</span>, <span class="dv">145</span>, <span class="dv">170</span>, <span class="dv">174</span>, <span class="dv">367</span>, <span class="dv">419</span>, <span class="dv">492</span>, <span class="dv">755</span>, <span class="dv">791</span>, <span class="dv">911</span>, <span class="dv">912</span>, <span class="dv">914</span>, <span class="dv">921</span>, <span class="fl">923.</span></span></code></pre></div>
@@ -375,23 +365,23 @@
 </li>
 <li>Model diagnostics (<code>Pseudo R2</code>)</li>
 </ul>
-<blockquote>
+<div class="task">
 <p><em>To do</em> outline these outputs fully for the students. We will discuss the <em>LM Test Results</em> more fully later as part of <a href="spatial_regression.html#spatial_model_selection">model selection</a>.</p>
-</blockquote>
+</div>
 <p>This also produces a Moran’s Scatter Plot of Residuals, described <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html">here</a>. When these are “<em>evenly distributed across the four quadrants, it indicates that there is no discernible spatial autocorrelation. This type of pattern is expected when the regression model performed well and the majority of spatial autocorrelation has been accounted for.</em>”</p>
 <p>[16] We can push this further by evaluating the standardised residuals using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">global spatial autocorrelation tool</a></p>
-<blockquote>
+<div class="question">
 <p>How has the spatial autocorrelation of the residuals changed compared to the OLS model?</p>
-</blockquote>
+</div>
 <p>For the SEM model, given the z-score of -1.684991, there is a less than 10% likelihood that this <strong>dispersed</strong> pattern could be the result of random chance.</p>
 <p>Previously, the distribution of residuals was <em>clustered</em>, but we have now switched to <em>dispersed</em> which suggests we’re overcorrecting for spatial dependence (overfitting). This may be due to misspecification of the spatial weights matrix.</p>
 <p>The use of contiguity-based approach is less suitable here, because the processes that govern health (<code>life_expectancy</code>) operate over broader geographic scales, rather than only over contiguous boundaries e.g., air pollution over kilometre-scales, access to hospitals, commuting patterns, employment opportunities.</p>
 <p>[17] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a>, using <code>K nearest neighbours</code> as the neighbourhood type (n=10).</p>
 <p>[18] Re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a>, but using the spatial weights matrix as input, and assess for global autocorrelation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Global Moran’s I</a>, making sure to use the spatial weights matrix here as well.</p>
 <p>Based on this approach, the distribution of residuals is now <strong>random</strong>, given the z-score of -0.299641, which is the aim of the spatial error model.</p>
-<blockquote>
+<div class="question">
 <p>Evaluate the sensitivity of the spatial error model to changing the neighbourhood method. What are the results using a distance-based approach?</p>
-</blockquote>
+</div>
 </div>
 <div id="slm" class="section level4 unnumbered">
 <h4>Spatial lag model<a class="anchor" aria-label="anchor" href="#slm"><i class="fas fa-link"></i></a>
@@ -400,13 +390,13 @@
 <p>According to Darmofal (<a href="https://doi.org/10.1017/CBO9781139051293.007">2015</a>), cited by <a href="https://maczokni.github.io/crime_mapping_textbook/spatial-regression-models.html#what-to-do-now">Solymosi, R., and Medina, J.</a>, spatial autocorrelation can be produced by diffusion of behaviour between neighbouring units:</p>
 <p>“<em>If so the behaviour is likely to be highly social in nature, and understanding the interactions between interdependent units is critical to understanding the behaviour in question. For example, citizens may discuss politics across adjoining neighbours such that an increase in support for a candidate in one neighbourhood directly leads to an increase in support for the candidate in adjoining neighbourhoods</em>”</p>
 <p>In this situation, a spatial lag model would be most appropriate.</p>
-<blockquote>
+<div class="task">
 <p>To do: rephrase and/or confirm Darmofal (<a href="https://doi.org/10.1017/CBO9781139051293.007">2015</a>) source</p>
-</blockquote>
+</div>
 <p>[19] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a>, but this time selecting the “Spatial Lag Model”, but using the K-nearest neighbour spatial weights matrix created in [16]</p>
-<blockquote>
+<div class="question">
 <p>Interpret outputs and investigate spatial autocorrelation.</p>
-</blockquote>
+</div>
 <p>Spatial autocorrelation is still present using the model, as evidenced in the scatter plot and when tested using the corresponding tool (“<em>Given the z-score of 15.344306, there is a less than 1% likelihood that this clustered pattern could be the result of random chance</em>.”).</p>
 </div>
 <div id="spatial_model_selection" class="section level4" number="7.2.4.1">
@@ -433,15 +423,15 @@
 <li>If only one is significant, that is the model of choice.</li>
 <li>If both are significant, then calculate more robust test statistics as described above (<span class="math inline">\(\mathrm{Robust}\ LM_{lag}\)</span>, <span class="math inline">\(\mathrm{Robust}\ LM_{error}\)</span>) and repeat the process. If only one of the robust tests is significant, that is the model of choice.</li>
 </ul>
-<blockquote>
+<div class="task">
 <p><em>To do</em> Determine the level of detail required when discussing the Lagrange Multiplier i.e., description, equations, testing? Both the documentation and other sources (e.g., <a href="https://maczokni.github.io/crime_mapping_textbook/spatial-regression-models.html#what-to-do-now">Solymosi, R., and Medina, J.</a>) are fairly “light touch”.</p>
-</blockquote>
+</div>
 <p>[20] Inspect the output from the previous spatial regression run, focusing on the <code>LM Test Results</code> section. You’ll notice that while <span class="math inline">\(LM_{lag}\)</span> and <span class="math inline">\(LM_{error}\)</span> are both significant, <span class="math inline">\(\mathrm{Robust}\ LM_{lag}\)</span> has a <em>p</em>-value above typical thresholds (<em>p</em> = 0.11). In contrast, <span class="math inline">\(\mathrm{Robust}\ LM_{error}\)</span> is statistically significant, so on this basis, we would reject SLM in favour of SEM.</p>
 <p>[21] We can confirm this by re-running <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> but using Model Type = <code>Auto-detect</code>.</p>
-<p>We Could also run a spatial autoregressive combined model (SAC), which includes spatial dependence of the error term (SEM) as well as the spatial lag of the dependent variable are modeled (SLM).</p>
-<blockquote>
-<p>Why would this <em>not</em> be a suitable choice in our situation?</p>
-</blockquote>
+<p>We could also run a spatial autoregressive combined model (SAC), which includes spatial dependence of the error term (SEM) as well as the spatial lag of the dependent variable (SLM).</p>
+<div class="question">
+<p>Why might this <em>not</em> be a suitable choice in our situation?</p>
+</div>
 </div>
 </div>
 </div>
@@ -449,13 +439,14 @@
 <h2>
 <span class="header-section-number">7.3</span> Extra<a class="anchor" aria-label="anchor" href="#prac_7_extra"><i class="fas fa-link"></i></a>
 </h2>
-<blockquote>
-<p>In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and identified relationships (i.e., coefficients) are specific to the study area and data (North West). How generalisable are our models to new locations and datasets?</p>
-</blockquote>
+<p>In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and identified relationships (i.e., coefficients) are specific to the study area and data (North West).</p>
+<div class="question">
+<p>How generalisable are our models to new locations and datasets?</p>
+</div>
 <p>To test this, we can generate new spatial regression models for the neighbouring regions of the <em>North East</em> and <em>Yorkshire and the Humber</em> and assess how model coefficients vary.</p>
-<blockquote>
+<div class="task">
 <p><em>To do</em> Shall we focus on a different region e.g., London, where we might see more interesting differences to the North West?</p>
-</blockquote>
+</div>
 <p>[A] Load England and Wales MSOA geometries [<code>MSOA_2021_EW_BGC_V3.shp</code>] and lookup table [<code>MSOA_2021_lookup_table.csv</code>]</p>
 <p>[B] Filter to <em>north-east</em> and <em>Yorkshire</em> region (n=1036):</p>
 <ul>
@@ -472,9 +463,9 @@
 <p>[E] Add the fuel poverty [<code>dhsc-fuel-poverty.csv</code>], IMD [<code>dhsc-imd.csv</code>] and household income datasets [<code>ons-household-income.csv</code>] and use Join Field to add the relevant fields.</p>
 <p><em>Note</em> if you wish to include education, economic activity or disability status, these data can be obtained from the <a href="https://www.ons.gov.uk/datasets/create">ONS</a>.</p>
 <p>[F] Re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> using settings of your choice to faciliate comparison with the models developed previously.</p>
-<blockquote>
+<div class="question">
 <p>How different is the new model? Does this change your interpretation of the links between MSOA-level attributes and life expectancy?</p>
-</blockquote>
+</div>
 </div>
 <div id="resources-4" class="section level2" number="7.4">
 <h2>

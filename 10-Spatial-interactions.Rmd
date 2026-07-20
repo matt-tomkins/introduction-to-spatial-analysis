@@ -159,7 +159,9 @@ connections without causing ArcGIS stress, so:
 
 [14] Exploratory plots - Create Chart - Scatter Plot
 
-> Are there any correlations?
+::: question
+Are there any correlations?
+:::
 
 ### Model description
 
@@ -246,14 +248,19 @@ $$\mathrm{ln}T_{ij}=k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij}$$
 
 This is basically a regression model! This format allows us to tune of parameters. 
 
-> **TO DO** Explain why.
+::: task
+**TO DO** Explain why.
+:::
 
 However, there are problems with using a log-linear approach, and
 instead it is more common to use Poisson regression, which is better for skewed
 distributions (like our flow data):
 
 $$λ_{ij}=\mathrm{exp}(k+μ\mathrm{ln}V_i+α\mathrm{ln}W_j−β\mathrm{ln}d_{ij})$$
-> **TO DO** Explain Poisson distribution and regression
+
+::: task
+**TO DO** Explain Poisson distribution and regression
+:::
 
 [18] Visualise Statistics - Histogram - Flow
 
@@ -281,7 +288,9 @@ Inputs:
 
 [22] Evaluate and interpret coefficients
 
-> **TO DO** include screenshot or formatted table here
+::: task
+**TO DO** include screenshot or formatted table here
+:::
 
 *Note* we will use the model coefficients as our parameter estimates. 
 
@@ -290,6 +299,10 @@ Inputs:
 Equation: math.exp(-5.4022+(0.9985 * !orig_pop_log!)+(0.2862 * !dest_gdp_log!)-(abs(-1.2354) * !near_dist_log!))
 
 Performance: R2 = 0.45
+
+::: question
+What is your appraisal of our total constrained model?
+:::
 
 ### Origin-constrained models
 
@@ -300,19 +313,25 @@ Performance: R2 = 0.45
 This is technically possible in ArcGIS but not easy, requiring us to
 use [Encode Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/encode-field.html?tabs=dialog) to create dummy variables for `orig_LAD21CD`. 
 
-This works when there are a small number of categories to encode, but Generalised Linear Regression (tool) struggles with the number of LA names in our dataset (\~300) with multicollinearity issues 
+This works when there are a small number of categories to encode, but Generalised Linear Regression (tool) struggles with the number of LA names in our dataset (\~300) with multicollinearity issues. 
 
-Even if this was not the case, it is very difficult to manually include the coefficients in a regression equation, as we did in [22]
+Even if this was not the case, it is very difficult to manually include the coefficients in a regression equation, as we did in [22].
 
 Instead, load a Python notebook and use the [appendix code](#python_notebook) to perform
 GLR and create an origin-constrained model (`gm3`), saving output to csv.
 
-> *Note*  while I don't expect the students to write the code independently, I will introduce it in a piecemeal fashion, explaining what each line does.
+::: task
+*Note*  while I don't expect the students to write the code independently, I will introduce it in a piecemeal fashion, explaining what each line does.
+:::
 
 [26] Load predictions csv produced in the previous step and assess performance (`flow_int` vs. `gm3`):
 
-- R2 = 0.57 
+- R^2^ = 0.57 
 - Check that sum of modelled flows for each origin matches measured flows
+
+::: task
+Check model performance, as the R^2^ above is based on a different formula.
+:::
 
 ### Destination-contrained models
 
@@ -324,7 +343,7 @@ GLR and create an origin-constrained model (`gm3`), saving output to csv.
 
 ## Extra
 
-Our models are based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population. 
+Our models are based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population. There are also a host of individual-level factors that drive migration e.g., family connections. 
 
 If applying this model to international migration, we might include a completely different set of predictors e.g., cultural similarity, as covered in [Practical 2](#spatial_weights), whether countries share a common language, or the degree of conflict within or between countries. 
 
@@ -353,7 +372,9 @@ At our scale of analysis, we could investigate whether **contiguity** plays a ro
 
 [37] Add binary contiguity [`contig` = 0/1] to the model
 
-> To what extent does adding local authority contiguity improve our model?
+::: question
+To what extent does adding local authority contiguity improve our model?
+:::
 
 ### Python Notebook for GLR Poisson {#python_notebook .unnumbered}
 
@@ -373,7 +394,7 @@ m = aprx.listMaps()[0]
 # Access table
 table = m.listTables("la_near_table_v2")[0]
 table_path = table.dataSource
-workspace = arcpy.Describe(ta
+workspace = arcpy.Describe(table_path)
 
 # List of fields
 fields = [f.name for f in arcpy.ListFields(table_path)]
@@ -398,7 +419,7 @@ df["gm3"] = model.predict(exog=df)
 # Sets path to output (workspace + file name)
 #out_table = os.path.join(workspace, "la_near_table_v2_pred.csv")
 
-# Manual export to csv
+# Export to csv
 df.to_csv(r"./la_near_table_v2_pred.csv", index=False)
 ```
 

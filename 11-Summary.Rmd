@@ -8,10 +8,14 @@
 
 <br>
 
-In 1854, Dr. John Snow ... TALK ABOUT spatial analysis, key principles, methods change --- often the questions don't. Hope that students are equipped with the ability to **do** spatial analysis, but more importantly, really understand **how** the techniques work - the data, the assumptions, the mathematics... all of which will enable you to critically appraise your results and those of others, and ultimately to come a better understanding of spatial patterns, processes and relationships. 
+::: task
+Unit summary here.
 
+Discuss spatial analysis, key principles, methods change through time --- often the questions don't. Hope that students are equipped with the ability to **do** spatial analysis, but more importantly, really understand **how** the techniques work - the data, the assumptions, the mathematics... all of which will enable you to critically appraise your results and those of others, and ultimately to come a better understanding of spatial patterns, processes and relationships. 
 
-*Introduction to Spatial Analysis*, we have covered... 
+:::
+
+In *Introduction to Spatial Analysis* we have covered... 
 
 ## Acknowledgments {.unnumbered}
 

@@ -71,16 +71,21 @@ This is *close* to the reported [results](https://www.bbc.co.uk/news/election/20
 -   Colour scheme \> Properties \> Reverse
 -   Double click values, update 0-1, same for labels
 
+::: problem
 *Note* Symbology using 'Unclassed Colors' doesn't always update correctly i.e., sometimes fails to show the data at all. **James** can you check this?
+:::
 
 [7] Run [Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog):
 
 -   `per_GOP` as input
 -   Generate Report
 -   Conceptualization of Spatial Relationships should be familiar following Practical 2, we'll use `Contiguity edges corners` here
--   **TO DO**:
+
+::: task
+**TO DO**:
     -   Discuss *row standardisation*: This divides each neighbor's weight by the total number of neighbors, making the rows sum to 1. This prevents bias caused by some areas having many neighbors while others (like isolated regions) have very few.
     -   Communicate the *underlying mathematics*, as interpretation is very easy with the html output
+:::
 
 [8] Interpret initial output:
 
@@ -142,9 +147,12 @@ uscountycontig_Project.GEOID <> '25019' And uscountycontig_Project.GEOID <> '250
 
 [12] Run [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) for the full dataset (N=3109)
 
-- **TO DO**:
-    - Discuss *False Discovery Rate (FDR) correction*
-    - Investigate *Number of Permutations*
+::: task
+**TO DO**:
+
+- Discuss *False Discovery Rate (FDR) correction*
+- Investigate *Number of Permutations*
+:::
 
 [12] Interpet Anselin Local Moran's I output
 
@@ -159,7 +167,11 @@ uscountycontig_Project.GEOID <> '25019' And uscountycontig_Project.GEOID <> '250
 
 *Note* Distance Band or Threshold Distance will use the units specified in the CRS (metres)
 
-  [Q] How have the results changed? Why? When using inverse-distance squared, we have much larger areas of HH and LL, presumably because we have a much less conservative neighbourhood rule (unlike contiguity only)
+::: question
+How have the results changed? Why? 
+:::
+
+*Answer*: When using inverse-distance squared, we have much larger areas of HH and LL, presumably because we have a much less conservative neighbourhood rule (unlike contiguity only)
 
 [14] Run [High/Low Clustering (Getis-Ord General G)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog):
 
@@ -169,18 +181,24 @@ uscountycontig_Project.GEOID <> '25019' And uscountycontig_Project.GEOID <> '250
 - z-score	13.624777
 - p-value	0.000000
 - Given the z-score of 13.62477738651207, there is a less than 1% likelihood that this high-clustered pattern could be the result of random chance.
-- Discuss how the conceptual and mathematical approach **differs** from Global Moran's *I*.
+
+::: task
+Discuss how the conceptual and mathematical approach **differs** from Global Moran's *I*.
+:::
 
 [15] Run [Hot Spot Analysis (Getis-Ord Gi\*)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog):
 
 - Same inputs as Local Moran's *I*
-- **TO DO**:
-    - Reiterate *row standardisation* and *FDR correction*
-    - Discuss the *Self Potential Field*
-    - Communicate the *underlying mathematics*, as interpretation is very easy with the html output
-    
 
-[16] By the end of the practical, you be able to:
+::: task
+**TO DO**:
+
+- Reiterate *row standardisation* and *FDR correction*
+- Discuss the *Self Potential Field*
+- Communicate the *underlying mathematics*, as interpretation is very easy with the html output
+:::
+
+[16] By the end of the practical, you should be able to:
 
 - Understand how we might assess for autocorrelation and hotspots
 - Understand and demonstrate the importance of the spatial weights matrix
@@ -188,15 +206,19 @@ uscountycontig_Project.GEOID <> '25019' And uscountycontig_Project.GEOID <> '250
 
 ## Extra
 
-As a comparison, we can run with [2008 election results](https://www.presidency.ucsb.edu/statistics/elections/2008) (Obama vs. McCain), stored in `2008_US_County_Level_Presidential_Results.csv`
+As a comparison, we can run with the [2008 election results](https://www.presidency.ucsb.edu/statistics/elections/2008) (Obama vs. McCain), stored in `2008_US_County_Level_Presidential_Results.csv`
 
 Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.
 
-*Question*: How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?
+::: question
+How have the results changed over that 16 year period? Is voter spatial autocorrelation greater, less, or about the same and what does this reveal?
+:::
 
-*Question*: What is a limitation of our current approach? *Hint*: Sort the `gop_per` column for the 2008 results. 
+::: question
+What is a limitation of our current approach? *Hint*: Sort the `gop_per` column for the 2008 results. 
+:::
 
-Answer: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available [here](https://www2.census.gov/geo/tiger/).
+*Answer*: the county geometries / names / FIPS codes might have changed in this period so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available [here](https://www2.census.gov/geo/tiger/).
 
 ## Resources
 

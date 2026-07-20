@@ -51,7 +51,9 @@ Our analysis is focused on the Western Isles of Scotland, given links between so
   - Distance = 100
 - Check for validity
 
+::: task
 *Option* Subset to defibrillators with 24 hour access?
+:::
 
 [4] Clean Demand points 
 
@@ -75,6 +77,10 @@ Based on the output above, [Create Random Points](https://doc.esri.com/en/arcgis
 
 [6] To run Location Allocation in ArcGIS, we can't use a simple features layer, we need to use a **Feature Dataset**, which has stricter rules regarding projection - all layers *must* share a common coordinate system, unlike a `gdb` (although it can be stored within a `gdb`). This can be produced using [Create Feature Dataset](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog) (output = empty) 
 
+::: task
+Discuss Feature Dataset fully, compare to `gdb` and `shp`
+:::
+
 [7] We can then import features to the Feature Dataset: 
 
 - Right click in Catalog Pane 
@@ -93,7 +99,7 @@ Based on the output above, [Create Random Points](https://doc.esri.com/en/arcgis
 
 ### Location Allocation: P-median
 
-i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand *or* “How do we mini mise average distance for everyone?"
+i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand *or* “How do we minimise average distance for everyone?"
 
 [11] [Make Location-Allocation Analysis Layer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog) (\~5 mins) 
 
@@ -150,7 +156,7 @@ i.e., minimize the total distance or time traveled by users to their nearest fac
 
 [16] Test with an idealised scenario (i.e., no existing defibrillators)
 
-- Use [Create Random Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog) to reate 1000 random points, constrained to the network. An alternative approach would be regular spacing to ensure full coverage. 
+- Use [Create Random Points](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog) to create 1000 random points, constrained to the network. An alternative approach would be regular spacing to ensure full coverage. 
 - Open `Facilities` Attribute Table and delete all rows 
 - Add random locations, all as `Candidate` 
 - Set number of facilities = number of features in `defib` (n = 38) i.e., we are now evaluating the optimum locations (based on the p-median approach) for our 38 defibrillators, of the 1000 possible candidates (not all possible locations).
@@ -174,13 +180,15 @@ Average distances are also lower, which can be demonstrated Explore Statistics (
 - Current mean = 2227.343557515982 
 - "Optimum" mean = 1815.0352018341623
 
-> To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?
+::: task
+To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?
+:::
 
 ### Location Allocation: Maximise coverage
 
 i.e., maximize the total amount of demand (or population) covered within a cutoff (e.g., distance threshold)
 
-[17] Make Location-Allocation Analysis layer (\~5 mins) 
+[17] Make Location-Allocation Analysis layer (\~5 mins):
 
 - Network Data Source = `road_model` 
 - Name = `la_maximise_mull` 
@@ -188,7 +196,12 @@ i.e., maximize the total amount of demand (or population) covered within a cutof
 - This can be justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA)
 - Problem Type = "Maximise Coverage"
 
-[18] Location-Allocation Layer tab: Load current defibrillator locations
+::: problem
+In ArcGIS, there is the option to switch the problem type for an existing Location-Allocation Analysis Layer i.e., from P-Median to Maximise Coverage. From my testing, this doesn't work, hence why we're creating a separate layer. **James** can you reproduce?
+:::
+
+[18] Location-Allocation Layer tab: Load current defibrillator locations:
+
 - Input Data group 
 - Import Facilities (`defib`) 
 - Property `FacilityType` = `Required` i.e., current sites always included in the solution
@@ -199,7 +212,7 @@ i.e., maximize the total amount of demand (or population) covered within a cutof
 - Import Demand Points (`population`) 
 - Property `Weight` = `grid_code` (the population value from the raster)
 
-[20] First run using current configuration, setting the number of facilities to match the number of features in `defib` (for Mull, n = 38), this time using **maximise coverage**
+[20] First run using current configuration, setting the number of facilities to match the number of features in `defib` (for Mull, n = 38), this time using **maximise coverage**.
 
 *Output*: 
 
@@ -250,28 +263,44 @@ i.e., when the cutoff is large, all demand points can be connected
 
 i.e., reducing the cutoff reduces coverage, but this is still comparable to the baseline, even with a more restrictive cutoff (500 m vs. 1 km)
 
-> To finish reiterate differences between p-median and maximise coverage approaches. 
+::: task
+To finish reiterate differences between p-median and maximise coverage approaches. 
+:::
 
-> What are they modelling and how does this influence interpretation and action?
+::: question
+What are P-Median and Maximise coverage modelling and how does this influence interpretation and action?
+:::
+
+::: task
+Introduce other problem types here.
+:::
 
 ## Extra
 
-> Using the **maximum coverage** approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?
+::: question
+Using the **maximum coverage** approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?
+:::
 
 - Baseline = 62% 
 - N=38 (optimised) = 83% 
 - N=50: Sum of allocated weight in "Demand Points": 2672.349411 = 87% ... 
 - N=100: Sum of allocated weight in "Demand Points": 2937.332799 = 96%
 
-> How do our results compare to other islands? Repeat the analysis for Jura...
+::: question
+How do our results compare to other islands? Repeat the analysis for Jura...
+:::
 
-*Question*: What key population metric are we not including? 
+::: question
+What key population metric are we not including? 
+:::
 
-Answer: non-resident population i.e., tourists!
+*Answer*: non-resident population i.e., tourists!
 
-*Question*: What are some weaknesses of our approach? 
+::: question
+What are some weaknesses of our approach? 
+:::
 
-Answers: population generalisation. Using distance as a metric, rather than travel time. Not a full constraints analysis i.e., which locations are actually suitable for AEDs?
+*Answers*: population generalisation. Using distance as a metric, rather than travel time. Not a full constraints analysis i.e., which locations are actually suitable for AEDs?
 
 ## Resources
 

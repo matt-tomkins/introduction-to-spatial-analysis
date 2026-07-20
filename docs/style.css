@@ -56,3 +56,16 @@ main blockquote p {
 .problem p {
   margin: 0;
 }
+
+/* Custom class for tasks, encountered during course development */
+.task {
+    border-left: 8px solid #5252FF;
+    background: #E3E3FF;
+    padding: 1em;
+    margin: 1em -8px;
+}
+
+/* Adapt paragraph spacing */
+.task p {
+  margin: 0;
+}

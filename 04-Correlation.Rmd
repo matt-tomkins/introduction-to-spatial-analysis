@@ -51,13 +51,15 @@ For those of you interested in further analysis (see [Extra](#correlation-extra)
     -   Add Field -\> GEOID_int -\> Long (32-bit integer) -\> Field Precision (5)
     -   Attribute Table -\> Calculate Field -\> int(!GEOID!) -\> Now stored as numeric (removing leading 0)
     -   Join based on GEOID_int to FIPS_code. This can be either done using Joins and Relatives, or [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog), selecting key attributes of interest e.g., [`WA_%`, `Less_High_School_Graduate_%`, `High_School_Graduate_%`, `College_or_associate_%`, `Bachelor_or_higher_%`, `MEDHHINC_2023`, `PCTPOVALL_2023`]
-    
+
+::: problem
 **James** I'm encountering an issue here where Join Field fails with the following: ERROR 000499: Table is not editable.
 
 - This seems to occur when multiple types of Table Joins are used i.e., use Joins and Relatives to combine the geometry data [`cb_2023_us_county_500k.shp`] and the election results [`2024_US_County_Level_Presidential_Results.csv`], and then use Join Field to add an attribute from another table [e.g., `poverty_2023.csv`]. 
 - If I remove the dynamic join, the error does not occur. 
 - Is this expected ArcGIS behaviour?
-    
+:::
+
 [5] Exploratory analysis - change symbology, visualisation ...
 
 [6] Test for [global](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) and [local](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) spatial autocorrelation
@@ -68,7 +70,9 @@ For those of you interested in further analysis (see [Extra](#correlation-extra)
     -   Bachelor degree % [`Bachelors_or_higher_%`]
     -   Median income [`MEDHHINC_2023`]
 
-*Question*: What is your interpretation of spatial autocorrelation for these datasets?
+::: question
+What is your interpretation of spatial autocorrelation for these datasets?
+:::
 
 [7] Next, we are going to run [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), using GOP vote percent [`gop_perc`] as Analysis Field 1, comparing to:
 
@@ -84,36 +88,54 @@ For those of you interested in further analysis (see [Extra](#correlation-extra)
   - A **negative** association, but in this case Lee's L ~ Pearson's R
   - Lee's L = -0.209754, P-value = 0.002, Pearson Correlation = -0.215725
   
+::: task
 To **discuss**:
 
   - The Global *p*-value
   - The spatial smoothing scalars
   - The Pearson Correlation (*r*), and difference between raw and neighbourhood averages
   - Lee's L Scatter PLot
-  
-**James** Can you reproduce these results? A further observation - all of the reported P-values are identical (0.002). Needs evaluating. 
+:::
+
+::: problem
+**James** Can you reproduce these results? A further observation - all of the reported P-values are **identical** (0.002). Needs evaluating. 
+:::
 
 [8] Interpretation and understanding:
 
-*Question*: “How much of this relationship survives once we account for spatial structure?”
+::: question
+How much of this relationship survives once we account for spatial structure?
+:::
 
-*Question*: What are key differences between Pearson's R and Lee's L?
+::: question
+What are key differences between Pearson's R and Lee's L?
+:::
 
-*Question*: How do we interpret the global and local results?
+::: question
+How do we interpret the global and local results?
+:::
 
 [9] As ever, sensitivity testing of spatial weights matrix:
 
-*Question*: How do the correlations change as a distance or k-neighbours based approach is used?
+::: question
+How do the correlations change as a distance or k-neighbours based approach is used?
+:::
 
 ## Extra {#correlation-extra}
 
 I've provided you with some other county-level datasets in `data/us-census`, including age-standardised [mortality](https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&age_options=age_11&cod=247&cod_options=cod_15&comparison=states_to_us&comparison_options=comparison_statename_to_us&race=00&race_options=race_6&ratetype=aa&ratetype_options=ratetype_2&ruralurban=0&ruralurban_options=ruralurban_3&sex=0&sex_options=sex_3&statefips=99&statefips_options=area_states&yeargroup=5&yeargroup_options=yearmort_2), [unemployment](https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data), and [internet adoption](https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html).
 
-> Can you find any interesting associations?
+::: question
+Can you find any interesting associations?
+:::
 
-> Is there any pattern to the spatial and non-spatial measures of association?
+::: question
+Is there any pattern to the spatial and non-spatial measures of association?
+:::
 
-> What are some weaknesses of our approach?
+::: question
+What are some weaknesses of our approach?
+:::
 
 *Answers*:
 

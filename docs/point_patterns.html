@@ -86,7 +86,6 @@
 <li class="book-part">Endmatter</li>
 <li><a class="" href="summary.html">Summary</a></li>
 <li><a class="" href="assessment.html">Assessment</a></li>
-<li><a class="" href="Hints.html">Advice</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -154,8 +153,12 @@
 <li>Either Export Selection (or keep selected)</li>
 <li>Clip: Input = Tiger Points, Feature = Natural Earth (selected record)</li>
 </ul>
+<div class="task">
 <p><em>Discuss</em> Spatial Joins / Overlay / Clip</p>
+</div>
+<div class="task">
 <p><em>To do?</em> Remove non-contiguous part? i.e., Andaman Islands, Maldives. This could be achieved using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/multipart-to-singlepart.html?tabs=dialog">Multipart To Singlepart</a> (Data Management Tools)</p>
+</div>
 <p>[4] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">Dissolve</a> our area of interest (Indian Subcontinent):</p>
 <ul>
 <li>Natural Earth</li>
@@ -163,7 +166,9 @@
 <li>Dissolve Fields: leave blank = all features together</li>
 <li>Statistics Fields: also blank (just using area to define study extent), but could do statistics here e.g., <code>POS_EST</code> [SUM], <code>GDP_MD</code> [Mean]</li>
 </ul>
+<div class="task">
 <p><em>Discuss</em> polygon-representation issues i.e., does the Tiger recognise political boundaries?</p>
+</div>
 <p>[5] Update Projection</p>
 <p>In the previous practicals, we’ve largely been dealing with topological issues (i.e., neighbouring, bordering) and haven’t deal in great depth with geometric issues i.e., areas, distances (link to Understanding GIS, Week 2)</p>
 <p>In this practical, we are certainly in the realm of geometry i.e., are points clustered or randomly dispersed? As a result, the choice of projection is an important one!</p>
@@ -221,7 +226,9 @@
 <li>Join Operation = one to one</li>
 <li>Match Option = Completely contains [or intersects])</li>
 </ul>
+<div class="task">
 <p><em>Discuss</em> Symbology effects, Graduated Colours (using quantiles etc) or Unclassed Colours (min to max)</p>
+</div>
 <p>[8] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a>:</p>
 <ul>
 <li>Input = occurrence points</li>
@@ -230,7 +237,7 @@
 <li>Method = Geodesic (incorporating Earth shape)</li>
 </ul>
 <blockquote>
-<p>Explore changing search radius e.g., 20,000 m^2 to 200,000 m^2 Explore effects of barriers (e.g., Natural Earth polygon)</p>
+<p>Explore changing search radius e.g., 20,000 m<sup>2</sup> to 200,000 m<sup>2</sup> Explore effects of barriers (e.g., Natural Earth polygon).</p>
 </blockquote>
 <p><em>Note</em> this tool produces values within the data range (min-max xy) and creates static layers.</p>
 <p>We can use a dynamic approach via Symbology, which is more flexible, but arguably less robust i.e., Radius is in screen units (points), rather than map units (meters, feet, etc)</p>
@@ -273,6 +280,8 @@
 <li>Given the z-score of -109.65679, there is a less than 1% likelihood that this clustered pattern could be the result of random chance.</li>
 </ul>
 <p>Very straightforward implementation and interpretation, but key discussion points:</p>
+<div class="task">
+<p><strong>Discuss</strong>:</p>
 <ul>
 <li>Analytical approach</li>
 <li>Distance calculations (observed and expected mean distance)</li>
@@ -281,6 +290,7 @@
 <li>Introduce the <strong>Observation Window</strong>
 </li>
 </ul>
+</div>
 <blockquote>
 <p>Evaluate the impact of changing the observation window (<code>area</code>), for example using the area of the Natural Earth polygons, calculated using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a></p>
 </blockquote>
@@ -296,7 +306,9 @@
 </li>
 <li>Boundary correction is also important.</li>
 </ul>
+<div class="task">
 <p><em>Discuss</em> the Ripley alphabet of functions (<span class="math inline">\(G, F, K\)</span>)</p>
+</div>
 <p><em>Interpretation</em>:</p>
 <ul>
 <li>Observed K [actual data] &gt; Expected K [complete spatial randomness] = Clustered i.e., points closer together than by pure chance, at that specific distance</li>
@@ -307,19 +319,20 @@
 <p>Important choices include the minimum number of features (% of dataset) and search distance. This flexibility is a strength and a limitation, as the # and distribution of clusters is highly sensitive to user choice.</p>
 <p>Reasonable selection of parameters:</p>
 <ul>
-<li>Search distance based on ecological grounds e.g., an average home range of 110 km^2 for Sundarban of India and Bangladesh <span class="citation">(<a href="references.html#ref-naha2016">Naha <em>et al.</em>, 2016</a>)</span>, although they can travel much further <span class="citation">(<a href="references.html#ref-hussain2022">Hussain <em>et al.</em>, 2022</a>)</span>!</li>
+<li>Search distance based on ecological grounds e.g., an average home range of 110 km<sup>2</sup> for Sundarban of India and Bangladesh <span class="citation">(<a href="references.html#ref-naha2016">Naha <em>et al.</em>, 2016</a>)</span>, although they can travel much further <span class="citation">(<a href="references.html#ref-hussain2022">Hussain <em>et al.</em>, 2022</a>)</span>!</li>
 <li>Minimum number - 45 (1%)</li>
 <li>This generate a reasonable pattern (7 main clusters, plus outliers)</li>
 </ul>
 <p>HDBSCAN gives different results, varying distance based on point density (central block broken up into smaller clusters, and v.v elsewhere). For this dataset, DBSCAN makes more sense, using a fixed distance, based on ecological evidence (rather than the degree of Point clustering)</p>
-<p><strong>To finish the practical</strong></p>
-<p>Discussion points to consider:</p>
+<div class="task">
+<p><strong>To finish the practical</strong>:</p>
 <ul>
 <li>Ensure the practical finishes with a natural progression to <strong>point-process modelling</strong> i.e., all of this is great, and tells us about the pattern of points, but not how that pattern arises. This is outside the scope of this unit, but you can explorer ecological examples in Spatial Ecology in Semester 2.</li>
 <li>Emphasise the importance of the <strong>Observation Window</strong>.</li>
 <li>Touch on <strong>uncertainty</strong>, with many points at the same location (n=125), reported positional uncertainty of ±30 km. How important is this at our scale of analysis?</li>
 <li>DON’T discuss <strong>presence-absence</strong> problems here, as this will be better suited to the interpolation practical.</li>
 </ul>
+</div>
 </div>
 </div>
 <div id="extra-3" class="section level2" number="5.3">
