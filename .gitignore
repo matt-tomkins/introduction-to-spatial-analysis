@@ -17,5 +17,3 @@ met_office_api.R
 api_key
 data_raw/
 GEOG73001/
-images/*.svg
-screenshots/*.svg
