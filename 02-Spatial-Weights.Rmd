@@ -33,7 +33,7 @@ To achieve this, we'll demonstrate construction of spatial weights using country
 ## Practical
 
 ::: task
-To begin, a conceptual discussion of spatial weights. 
+To begin, a conceptual discussion of spatial weights.
 :::
 
 ### Spatial weights using a grid
@@ -45,7 +45,7 @@ To begin, a conceptual discussion of spatial weights.
 [3] Use [Neighbourhood Explorer](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html) to visualise different spatial weights settings.
 
 ::: task
-To discuss, neighbourhood types.
+To discuss, neighbourhood types (distance-based, contiguity)
 :::
 
 ### Spatial weights using country Polygons
