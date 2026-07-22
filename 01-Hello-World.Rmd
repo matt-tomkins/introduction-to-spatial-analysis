@@ -46,7 +46,7 @@ The directory structure is as follows:
 - ...
 
 ::: note
-You should work on the **P drive** throughout this unit. Integration with cloud storage services (e.g., OneDrive) can cause [problems](https://support.esri.com/en-us/knowledge-base/problem-arcgis-pro-and-cloud-storage-services-000025605), while you will have limited flexibility if working locally (`C:/`). 
+You should work on the **P drive** throughout this unit. Integration with cloud storage services (e.g., OneDrive) can cause [problems](https://support.esri.com/en-us/knowledge-base/problem-arcgis-pro-and-cloud-storage-services-000025605), while you will have limited flexibility if working locally (`C:`). 
 :::
 
 ### Projects

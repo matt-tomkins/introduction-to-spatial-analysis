@@ -7,7 +7,6 @@ legacy/
 data/
 practical-notes/
 git-update.txt
-images/
 edits/
 figures/
 _15-file-handling-UNUSED.Rmd
@@ -18,4 +17,4 @@ met_office_api.R
 api_key
 data_raw/
 GEOG73001/
-screenshots/
+*.svg
