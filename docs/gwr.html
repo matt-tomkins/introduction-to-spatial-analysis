@@ -118,8 +118,8 @@
 </h3>
 <p>To achieve this, we’ll use <a href="https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies">MSOA-level</a> data to investigate <strong>spatially-varying</strong> relationships between life expectancy and key predictors in Greater Manchester, building upon the <strong>global</strong> models introduced in the <a href="spatial_regression.html#spatial_regression">previous practical</a>.</p>
 </div>
-<div id="data-5" class="section level3 unnumbered">
-<h3>Data<a class="anchor" aria-label="anchor" href="#data-5"><i class="fas fa-link"></i></a>
+<div id="data-6" class="section level3 unnumbered">
+<h3>Data<a class="anchor" aria-label="anchor" href="#data-6"><i class="fas fa-link"></i></a>
 </h3>
 <p>The data sources and attributes used in this analysis are described <a href="spatial_regression.html#sr_data">here</a>.</p>
 </div>
@@ -189,7 +189,7 @@
 </div>
 <p>Note that although GWR is constructing a series of local regressions, each with their own R<sup>2</sup> value (<code>Local R-Squared</code> attribute), a global R<sup>2</sup> can be calculated using the observed and predicted life expectancy values using a standard approach, described <a href="https://community.esri.com/t5/spatial-statistics-questions/how-is-the-overall-r2-reported-in-gwr-being/td-p/18268">here</a> and defined as follows:</p>
 <p><span class="math display">\[R^2=1 - \frac{RSS}{TSS}\]</span></p>
-<p>where <span class="math inline">\(RSS\)</span> is the residual sum of squares <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The sum of the squares of the residuals i.e., deviation of predicted life expectancy from actual life expectancy.&lt;/p&gt;"><sup>1</sup></a> and <span class="math inline">\(TSS\)</span> is the total sum of squares <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The dispersion of the data points from the average value i.e., the difference between life expectancy in each MSOA and the mean of the MSOA life expectancy values.&lt;/p&gt;"><sup>2</sup></a>.</p>
+<p>where <span class="math inline">\(RSS\)</span> is the residual sum of squares <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The sum of the squares of the residuals i.e., deviation of predicted life expectancy from actual life expectancy.&lt;/p&gt;"><sup>5</sup></a> and <span class="math inline">\(TSS\)</span> is the total sum of squares <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The dispersion of the data points from the average value i.e., the difference between life expectancy in each MSOA and the mean of the MSOA life expectancy values.&lt;/p&gt;"><sup>6</sup></a>.</p>
 <blockquote>
 <p>Inspect the <code>Relationship between Variables</code> Plot.</p>
 </blockquote>
@@ -307,7 +307,7 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <div class="question">
 <p>How has the number of neighbours changed?</p>
 </div>
-<p>When using an adaptive kernel and bisquare bandwidth, <code>Number of Neighbors</code> = 153. When a Gaussian bandwidth is used, <code>Number of Neighbors</code> = 35. In reality, the latter value is somewhat misleading, because <strong>all</strong> the observations in the dataset contribute to the regression for the focal feature<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As per the Gaussian weighting scheme: &lt;span class="math inline"&gt;\(f(d)=\exp\left(-\frac{1}{2}\left(\frac{d}{h}\right)^2\right)\)&lt;/span&gt;&lt;/p&gt;'><sup>3</sup></a>. The nearest 35 observations (in this case) define the bandwidth <span class="math inline">\(h\)</span>, which determines the weights for all observations. For bisqaure weighting, the <code>Number of Neighbors</code> can be interpreted more easily: for each focal feature, the 153 nearest neighbours contribute to the local regression for each focal feature, weighted accordingly between 0 and 1<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As per the Bisquare weighting scheme: &lt;span class="math inline"&gt;\(f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp;amp; \text{if } d&amp;lt;h\\ 0 &amp;amp; \text{otherwise.}\end{cases}\)&lt;/span&gt;&lt;/p&gt;'><sup>4</sup></a>, while all other features are assigned a weight of 0.</p>
+<p>When using an adaptive kernel and bisquare bandwidth, <code>Number of Neighbors</code> = 153. When a Gaussian bandwidth is used, <code>Number of Neighbors</code> = 35. In reality, the latter value is somewhat misleading, because <strong>all</strong> the observations in the dataset contribute to the regression for the focal feature<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As per the Gaussian weighting scheme: &lt;span class="math inline"&gt;\(f(d)=\exp\left(-\frac{1}{2}\left(\frac{d}{h}\right)^2\right)\)&lt;/span&gt;&lt;/p&gt;'><sup>7</sup></a>. The nearest 35 observations (in this case) define the bandwidth <span class="math inline">\(h\)</span>, which determines the weights for all observations. For bisqaure weighting, the <code>Number of Neighbors</code> can be interpreted more easily: for each focal feature, the 153 nearest neighbours contribute to the local regression for each focal feature, weighted accordingly between 0 and 1<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As per the Bisquare weighting scheme: &lt;span class="math inline"&gt;\(f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp;amp; \text{if } d&amp;lt;h\\ 0 &amp;amp; \text{otherwise.}\end{cases}\)&lt;/span&gt;&lt;/p&gt;'><sup>8</sup></a>, while all other features are assigned a weight of 0.</p>
 <p>As distant features make no contribute to the local regression using bisquare weighting, a larger number of neighbours may be required to obtain coefficient stability (assessed via AICc). By comparison, for a Gaussian kernel, the bandwidth controls how quickly weights decay, not which observations are included or excluded. For our investigation, where we expect the influence of neighboring features to diminish gradually with distance, a Gaussian approach is preferred.</p>
 <div class="task">
 <p><em>To do</em> clarify that in the ArcGIS implementation, we do not have access to the <span class="math inline">\(h\)</span> parameter. This is a scenario where our analysis is being limited by the implementation we have chosen. Ideally we would modify the bandwidth and assess its impacts on our results, but that is not possible here!</p>
@@ -452,7 +452,7 @@ f(d)=\begin{cases}\left(1-\left(\frac{d}{h}\right)^2\right)^2 &amp; \text{if } d
 <a class="nav-link" href="#introduction-7"><span class="header-section-number">8.1</span> Introduction</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#aims-7">Aims</a></li>
 <li><a class="nav-link" href="#application-7">Application</a></li>
-<li><a class="nav-link" href="#data-5">Data</a></li>
+<li><a class="nav-link" href="#data-6">Data</a></li>
 <li><a class="nav-link" href="#tools-7">Tools</a></li>
 </ul>
 </li>

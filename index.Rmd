@@ -118,3 +118,8 @@ The following formatting is used for **tasks for Matt to complete**:
 This is a task.
 </div>
 
+The following formatting is used for **advice** or **key notes**:
+
+<div class="note"> 
+This is a note. 
+</div>
