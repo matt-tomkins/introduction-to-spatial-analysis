@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![](images/banner-point-patterns.png)
+![](images/banners/banner-point-patterns.png)
 
 ### Aims {.unnumbered}
 

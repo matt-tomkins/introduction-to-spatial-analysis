@@ -10,7 +10,7 @@ editor_options:
 
 ## Introduction
 
-![](images/banner-interpolation.png)
+![](images/banners/banner-interpolation.png)
 
 ### Aims {.unnumbered}
 

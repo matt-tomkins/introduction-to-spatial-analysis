@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![](images/banner-spatial-regression.png)
+![](images/banners/banner-spatial-regression.png)
 
 ### Aims {.unnumbered}
 

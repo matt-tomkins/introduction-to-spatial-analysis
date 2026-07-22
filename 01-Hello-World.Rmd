@@ -4,7 +4,7 @@
 
 ## Introduction
 
-![](images/banner-geographic-data.png)
+![](images/banners/banner-geographic-data.png)
 
 ### Aims {.unnumbered}
 

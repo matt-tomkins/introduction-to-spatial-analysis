@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![](images/banner-correlation.png)
+![](images/banners/banner-correlation.png)
 
 ### Aims {.unnumbered}
 

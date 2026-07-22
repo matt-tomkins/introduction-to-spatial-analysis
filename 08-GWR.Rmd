@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![](images/banner-gwr.png)
+![](images/banners/banner-gwr.png)
 
 ### Aims {.unnumbered}
 

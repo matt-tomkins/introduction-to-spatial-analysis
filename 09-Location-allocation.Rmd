@@ -4,7 +4,7 @@
 
 ## Introduction
 
-![](images/banner-location-allocation.png)
+![](images/banners/banner-location-allocation.png)
 
 ### Aims {.unnumbered}
 

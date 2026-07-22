@@ -4,7 +4,7 @@
 
 ## Introduction
 
-![](images/banner-spatial-weights.png)
+![](images/banners/banner-spatial-weights.png)
 
 ### Aims {.unnumbered}
 

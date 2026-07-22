@@ -4,7 +4,7 @@
 
 ## Closing remarks {#closing .unnumbered}
 
-![*John Snow's cholera map of Soho, London*](images/banner-introduction.png)
+![*John Snow's cholera map of Soho, London*](images/banners/banner-introduction.png)
 
 <br>
 
