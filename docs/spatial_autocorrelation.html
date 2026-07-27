@@ -186,11 +186,11 @@
 </div>
 <p>[8] Interpret initial output:</p>
 <p>First, it’s important that we look at any <strong>warnings</strong> or error messages that might arise. For this tool, we have some:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="spatial_autocorrelation.html#cb1-1" tabindex="-1"></a>WARNING <span class="dv">000642</span><span class="sc">:</span> Problems reading <span class="dv">1</span> of <span class="dv">3109</span> total records</span>
-<span id="cb1-2"><a href="spatial_autocorrelation.html#cb1-2" tabindex="-1"></a>WARNING <span class="dv">000848</span><span class="sc">:</span> Features with bad <span class="fu">records</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> us<span class="sc">-</span>county<span class="sc">-</span>contig.FID <span class="ot">=</span> <span class="fl">292.</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="spatial_autocorrelation.html#cb2-1" tabindex="-1"></a>WARNING <span class="dv">000642</span><span class="sc">:</span> Problems reading <span class="dv">1</span> of <span class="dv">3109</span> total records</span>
+<span id="cb2-2"><a href="spatial_autocorrelation.html#cb2-2" tabindex="-1"></a>WARNING <span class="dv">000848</span><span class="sc">:</span> Features with bad <span class="fu">records</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> us<span class="sc">-</span>county<span class="sc">-</span>contig.FID <span class="ot">=</span> <span class="fl">292.</span></span></code></pre></div>
 <p>If we check the Attribute Table, this is for the District of Colombia which has <code>&lt;Null&gt;</code> vote share. This is because of a mismatch between our geometry data (the District of Colombia as a single feature), and our presidential results table, whereas we have the vote share broken down at ward level (Ward 1 - Ward 8). We could either remove this geometry (Q: will this have a significant effect at our scale of analysis?) or we can add the vote share in manually.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="spatial_autocorrelation.html#cb2-1" tabindex="-1"></a>WARNING <span class="dv">000846</span><span class="sc">:</span> <span class="dv">4</span> <span class="fu">feature</span>(s) had no neighbors which generally invalidates the statistical properties of a test</span>
-<span id="cb2-2"><a href="spatial_autocorrelation.html#cb2-2" tabindex="-1"></a>WARNING <span class="dv">000847</span><span class="sc">:</span> Features with no <span class="fu">neighbors</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> us<span class="sc">-</span>county<span class="sc">-</span>contig.FID <span class="ot">=</span> <span class="dv">426</span>, <span class="dv">534</span>, <span class="dv">2018</span>, <span class="fl">2616.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="spatial_autocorrelation.html#cb3-1" tabindex="-1"></a>WARNING <span class="dv">000846</span><span class="sc">:</span> <span class="dv">4</span> <span class="fu">feature</span>(s) had no neighbors which generally invalidates the statistical properties of a test</span>
+<span id="cb3-2"><a href="spatial_autocorrelation.html#cb3-2" tabindex="-1"></a>WARNING <span class="dv">000847</span><span class="sc">:</span> Features with no <span class="fu">neighbors</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> us<span class="sc">-</span>county<span class="sc">-</span>contig.FID <span class="ot">=</span> <span class="dv">426</span>, <span class="dv">534</span>, <span class="dv">2018</span>, <span class="fl">2616.</span></span></code></pre></div>
 <p>If we check the Attribute Table, this is for four counties with no direct borders:</p>
 <ul>
 <li>Nantucket County (25019)</li>
@@ -285,9 +285,9 @@
 <li>Understand the difference between the tools (global vs. local) and the mathematical approaches</li>
 </ul>
 </div>
-<div id="extra-2" class="section level2" number="3.3">
+<div id="extra-1" class="section level2" number="3.3">
 <h2>
-<span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>As a comparison, we can run with the <a href="https://www.presidency.ucsb.edu/statistics/elections/2008">2008 election results</a> (Obama vs. McCain), stored in <code>2008_US_County_Level_Presidential_Results.csv</code></p>
 <p>Link the results to the county geometry data (Add Join) and re-test for global and local spatial autocorrelation.</p>
@@ -328,7 +328,7 @@
 </ul>
 </li>
 <li><a class="nav-link" href="#autocorrelation_prac"><span class="header-section-number">3.2</span> Practical</a></li>
-<li><a class="nav-link" href="#extra-2"><span class="header-section-number">3.3</span> Extra</a></li>
+<li><a class="nav-link" href="#extra-1"><span class="header-section-number">3.3</span> Extra</a></li>
 <li><a class="nav-link" href="#resources"><span class="header-section-number">3.4</span> Resources</a></li>
 </ul>
 

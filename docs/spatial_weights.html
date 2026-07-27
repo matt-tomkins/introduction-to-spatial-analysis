@@ -130,7 +130,7 @@
 <div id="tools-1" class="section level3 unnumbered">
 <h3>Tools<a class="anchor" aria-label="anchor" href="#tools-1"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Introduction to Neighborhood Explorer</a>, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog">Add Geometry Attributes</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary Statistics</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> (Analysis Tools)</p>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Introduction to Neighborhood Explorer</a>, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a> (Data Management Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary Statistics</a> (Analysis Tools), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> (Analysis Tools)</p>
 <hr>
 </div>
 </div>
@@ -138,111 +138,468 @@
 <h2>
 <span class="header-section-number">2.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-1"><i class="fas fa-link"></i></a>
 </h2>
-<div class="task">
-<p>To begin, a conceptual discussion of spatial weights.</p>
-</div>
-<div id="spatial-weights-using-a-grid" class="section level3" number="2.2.1">
+<div id="conceptual-approach" class="section level3" number="2.2.1">
 <h3>
-<span class="header-section-number">2.2.1</span> Spatial weights using a grid<a class="anchor" aria-label="anchor" href="#spatial-weights-using-a-grid"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.2.1</span> Conceptual approach<a class="anchor" aria-label="anchor" href="#conceptual-approach"><i class="fas fa-link"></i></a>
 </h3>
-<p>[1] Open ArcGIS Pro</p>
-<p>[2] Load OS grid data [<code>osbng_grid_100km.shp</code>]. This is a very simple dataset, so easy to see the effects of the various neighbourhood settings, before moving on to a more complex dataset</p>
-<p>[3] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Neighbourhood Explorer</a> to visualise different spatial weights settings.</p>
-<div class="task">
-<p>To discuss, neighbourhood types (distance-based, contiguity)</p>
-</div>
-</div>
-<div id="spatial-weights-using-country-polygons" class="section level3" number="2.2.2">
-<h3>
-<span class="header-section-number">2.2.2</span> Spatial weights using country Polygons<a class="anchor" aria-label="anchor" href="#spatial-weights-using-country-polygons"><i class="fas fa-link"></i></a>
-</h3>
-<p>[4] Load country data [<code>ne_10m_admin_0_countries.shp</code>] and repeat process.</p>
-<p>[5] The above allows us to dynamically view connections for a single feature of interest (Select Focal Feature). To generate these connections for the entire dataset, we can use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> - talk through different settings, using a unique ID (NE_ID)</p>
-<p>[6] Return to the Neighbourhood Explorer, where we can now use our created <code>swm</code> file as an input.</p>
-<p>[7] To visualise all relationships, we need to use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a> (Spatial Statistics)</p>
-<p>[8] The resulting table contains the IDs of the start countries (<code>NE_ID</code>) and the end countries (<code>NID</code>) i.e., <span class="math inline">\(UK = 78\)</span>, <span class="math inline">\(Ireland = 77\)</span>, but no corresponding geometry</p>
-<p>[9] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-geometry-attributes.html?tabs=dialog">Add Geometry Attributes</a> (Data Management Tools) to Natural Earth data (centroid x and y)</p>
-<p>[10] Then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> based on ID:</p>
-<ul>
-<li>Input = swm</li>
-<li>Input Field = NE_ID</li>
-<li>Join table = natural_earth</li>
-<li>Join field = NE_ID</li>
-<li>Use Field Mapping:
-<ul>
-<li>Remove all but centroid_x, centroid_y and ADMIN</li>
-<li>Double click to rename these as source_x, source_y, source_admin</li>
-</ul>
-</li>
-<li>Validate and run</li>
-</ul>
-<p><em>Note</em> we are including the <code>ADMIN</code> attribute here, as we will use this later to link to cultural distance index</p>
-<p>[11] Then repeat for the target locations, which is as simple as changing the input file = NID, and to target_x, target_y and target_admin</p>
-<p>[12] Now we can use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a>, using source_xy and target_xy, “and preserve attributes” (all other settings as default)</p>
-<p>[13] Engage critically with visualisation e.g., France? (centroid location is outside of the contiguous part of France, due to S. America)</p>
-</div>
-<div id="comparison-with-cultural-distance" class="section level3" number="2.2.3">
-<h3>
-<span class="header-section-number">2.2.3</span> Comparison with cultural distance<a class="anchor" aria-label="anchor" href="#comparison-with-cultural-distance"><i class="fas fa-link"></i></a>
-</h3>
-<p>[14] Open the matrix of cultural distance [<code>cultural-distance.csv</code>] which I’ve edited to leave only unique combinations (using “-”.join(sorted([!country_1!, !country_2!]))), as summarised in <code>join_key</code>. Our task is to match those to the data created above i.e.,</p>
+<p>According to Tobler’s Law <span class="citation">(<a href="references.html#ref-tobler1970">Tobler, 1970</a>)</span>:</p>
+<p>“<em>everything is related to everything else, but near things are more related than distant things.</em>”</p>
+<p>This idea has resonated strongly across geography, see <span class="citation">Miller (<a href="references.html#ref-miller2004">2004</a>)</span>. As spatial analysts, it also raises some fundamental questions:</p>
 <div class="question">
-<p>Are ‘neighbouring’ countries (as defined by the swm), more culturally similar?</p>
+<p>What do we mean by <strong>near</strong> and <strong>distant</strong>? i.e., <em>proximity</em></p>
 </div>
-<p><em>Note</em> the smaller the cultural distance value, the more similiar the countries are e.g., Egypt and Norway are dissimiliar (0.5953), whereas Australia and the UK are highly similar (0.0319)</p>
-<p>[15] This csv is not editable so Export Table, and save in a gdb i.e., <code>practical-2.gdb</code>. Remove the original csv from ArcGIS to avoid confusion</p>
-<div class="task">
-<p>To do, discuss geodatabases?</p>
+<div class="question">
+<p>For a given set of spatial objects, which are <strong>neighbours</strong>? i.e., <em>adjacency</em></p>
 </div>
-<p>[16] Next use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a>, with the XY to Line layer created in [12], with Fields = Shape, to remove comparable geometries e.g., (IRE-UK, UK-IRE, N=344)</p>
-<p>[17] Create a <code>target_key</code> in the XY to Lines dataset via Attribute Table -&gt; Calculate Field. Equation: “-”.join(sorted([!Source_ADM!, !Target_ADM!]))</p>
-<p>[18] Using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a>, with the <strong>editable</strong> cultural distance (gdb) dataset as input:</p>
-<ul>
-<li>Input Field = <code>join_key</code> (created by MT)</li>
-<li>Join Table = cultural-distance</li>
-<li>Join Field = <code>target_key</code> (created in [17])</li>
-<li>Transfer Fields = <code>target_key</code>
-</li>
-</ul>
-<p><em>Note</em> if there is a match, the <code>target_key</code> field will have data, else <code>&lt;Null&gt;</code></p>
-<p>[19] Calculate Field (distance_table): <code>neighbours</code> (text): “false” if !target_key! is None else “true”</p>
-<p><em>Note</em> I originally had this as “Non-bordering” and “Bordering” but this could be misleading. This is only correct if a contiguity-based SWM was created, and not a distance-based rule</p>
-<p>[20] Finally, use [Summary Statistics] to outline results:</p>
-<ul>
-<li>Statistic Fields = distance [Mean, SD]</li>
-<li>Case Fields = neighbours</li>
-</ul>
+<div class="question">
+<p>How do we define and model <strong>proximity</strong> and <strong>adjacency</strong>?</p>
 </div>
-<div id="results" class="section level3" number="2.2.4">
+<p>Answering these spatial questions is a necessary step before embarking on further spatial analysis. Before we can ask …</p>
+<div class="question">
+<p>What spatial <strong>patterns</strong> are present in a dataset?<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;As we’ll cover in Part II (&lt;em&gt;Spatial Patterns&lt;/em&gt;) of GEOG73001: Practicals 2 - 5.&lt;/p&gt;"><sup>5</sup></a></p>
+</div>
+<div class="question">
+<p>What spatial <strong>processes</strong> are important in my study area?<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;As we’ll cover in Part III (&lt;em&gt;Spatial Modelling&lt;/em&gt;) of GEOG73001: Practicals 6 - 8.&lt;/p&gt;"><sup>6</sup></a></p>
+</div>
+<p>… we need to define how the features of our spatial data (e.g., Points, Lines, Polygons, cells of a Raster) are <strong>topologically connected</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;em&gt;Topological&lt;/em&gt; properties of an object are those that are retained when a geometric object undergoes continuous deformation (e.g., stretching, twisting, bending). An example of a topological property would be whether two objects (&lt;span class="math inline"&gt;\(A,B\)&lt;/span&gt;) are &lt;em&gt;touching&lt;/em&gt;. If these objects are deformed, their geometries properties would change (e.g., area, perimeter) but their topology would be retained. You will learn much more about topology in Understanding GIS - Week 2.&lt;/p&gt;'><sup>7</sup></a> i.e., which are defined as <em>neighbouring</em> and which are <em>non-neighbouring</em>.</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/europe-example.png" style="width:50.0%"></p>
+<div class="question">
+<p>For the highlighted country, how would you define neighbours?</p>
+</div>
+<p>In the field of spatial <strong>econometrics</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; we’ll discuss the history and conceptual approaches of the fields of &lt;strong&gt;econometrics&lt;/strong&gt; and &lt;strong&gt;geostatistics&lt;/strong&gt; in later weeks, but as brief introduction - The field of &lt;em&gt;econometrics&lt;/em&gt; focuses on analysis of &lt;strong&gt;discretised space&lt;/strong&gt; (i.e., “areal data”), where continuous space is broken down into discrete zones (e.g., counties, countries), often represented by Polygons or Points, see &lt;span class="citation"&gt;Anselin (&lt;a href="references.html#ref-anselin1988"&gt;1988&lt;/a&gt;)&lt;/span&gt;. While closely related, &lt;em&gt;geostatistics&lt;/em&gt; focuses on processes operating over &lt;strong&gt;continuous space&lt;/strong&gt;, where spatial interpolation is a key method, see &lt;span class="citation"&gt;Diggle and Ribeiro (&lt;a href="references.html#ref-diggle2007"&gt;2007&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>8</sup></a>, which we’ll discuss more fully later in the unit, spatial relationships between objects are defined using <strong>spatial weights</strong>.</p>
+</div>
+<div id="defining-spatial-weights" class="section level3" number="2.2.2">
 <h3>
-<span class="header-section-number">2.2.4</span> Results<a class="anchor" aria-label="anchor" href="#results"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.2.2</span> Defining spatial weights<a class="anchor" aria-label="anchor" href="#defining-spatial-weights"><i class="fas fa-link"></i></a>
 </h3>
-<p>[21] Inspect output of Summary Statistics</p>
+<p>Spatial weights (<span class="math inline">\(w\)</span>) are used to represent the presence and/or strength of the spatial relationship between two objects. In the example above, we could define neighbours based on whether countries share a common border<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; this is just an example, and we’ll discuss the various methods for calculating spatial weights as we progress through the practical.&lt;/p&gt;"><sup>9</sup></a>, in which case:</p>
 <ul>
-<li>Neighbouring country distance mean = 0.07, SD = 0.05 (n=85)</li>
+<li>For neighbouring objects, <span class="math inline">\(w=1\)</span>.</li>
+<li>For non-neigbouring objects, <span class="math inline">\(w=0\)</span>.</li>
 </ul>
-<p><em>Note</em> This is for where countries are neighbouring (as defined by the swm) AND there is a cultural distance value i.e., UK-Ireland not in the dataset.</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/europe-example-weights.png" style="width:50.0%"></p>
+<p>We would typically calculate the spatial weight (<span class="math inline">\(w\)</span>) for every pair of objects in a dataset (<span class="math inline">\(ij\)</span>), and store this in a <strong>spatial weights matrix</strong> (<span class="math inline">\(\mathbf{W}\)</span>), which conceptually looks like this:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} w_{11} &amp; w_{12} &amp; ... &amp; w_{1n} \\ w_{21} &amp; w_{22} &amp; ... &amp; w_{2n} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ w_{n1} &amp; w_{n2} &amp; ... &amp; w_{nn} \end{bmatrix}\]</span></p>
+<p><span class="math inline">\(\mathbf{W}\)</span> contains the spatial weights for every pair of objects (<span class="math inline">\(w_{ij}\)</span>). In this example, the top row contains the spatial weight associated with Object 1 and itself (<span class="math inline">\(w_{11}\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Self-neighbor relations are typically excluded so &lt;span class="math inline"&gt;\(W=0\)&lt;/span&gt;.&lt;/p&gt;'><sup>10</sup></a>), the spatial weight for Object 1 and Object 2 (<span class="math inline">\(w_{12}\)</span>), up to the number of objects (<span class="math inline">\(n\)</span>) in the dataset (<span class="math inline">\(w_{1n}\)</span>). The second row contains all the spatial weights associated with Object 2 and every other object in the dataset (<span class="math inline">\(w_{2n}\)</span>), and so on.</p>
+<p>Let’s illustrate with a simple example, focusing on six European countries: <em>Netherlands (<span class="math inline">\(n\)</span>), Belgium (<span class="math inline">\(b\)</span>), Luxembourg (<span class="math inline">\(l\)</span>), Germany (<span class="math inline">\(g\)</span>), Austria (<span class="math inline">\(a\)</span>), and Czechia (<span class="math inline">\(c\)</span>)</em>:</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/central-europe.png" style="width:50.0%"></p>
+<p>If we apply our current neighbourhood rule (<em>if</em> countries share a border, <span class="math inline">\(w=1\)</span>, <em>else</em> <span class="math inline">\(w=0\)</span>), then:</p>
 <ul>
-<li>Non-neighbouring country distance mean = 0.14, SD = 0.08 (n=3075)</li>
+<li>
+<span class="math inline">\(w_{nb}=1\)</span> for the Netherlands (<span class="math inline">\(n\)</span>) and Belgium (<span class="math inline">\(n\)</span>), as these are directly bordering.</li>
+<li>
+<span class="math inline">\(w_{na}=0\)</span> for the Netherlands (<span class="math inline">\(n\)</span>) and Austria (<span class="math inline">\(a\)</span>), as these are <em>not</em> directly bordering.</li>
 </ul>
-<p>[22] Interpretation: non-neighbouring countries are characterised (on average) by greater cultural distance (0.14 vs. 0.07, 2x). However, we can be critical here:</p>
-<ul>
-<li>Extreme un-eveness of sample sizes</li>
-<li>Overlap with SD (t-test for significance?)</li>
-<li>Sensitive to our designation of neighbourhood-ness</li>
-<li>Sensitive to calculation of cultural similarity/distance. Can this be expressed well with a single value?</li>
-</ul>
+<p>We would calculate <span class="math inline">\(w\)</span> for all pairs, and store these values with the following structure:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} w_{nn} &amp; w_{nb} &amp; w_{nl} &amp; w_{ng} &amp; w_{na} &amp; w_{nc} \\  w_{bn} &amp; w_{bb} &amp; w_{bl} &amp; w_{bg} &amp; w_{ba} &amp; w_{bc} \\  w_{ln} &amp; w_{lb} &amp; w_{ll} &amp; w_{lg} &amp; w_{la} &amp; w_{lc} \\  w_{gn} &amp; w_{gb} &amp; w_{gl} &amp; w_{gg} &amp; w_{ga} &amp; w_{gc} \\  w_{an} &amp; w_{ab} &amp; w_{al} &amp; w_{ag} &amp; w_{aa} &amp; w_{ac} \\  w_{cn} &amp; w_{cb} &amp; w_{cl} &amp; w_{cg} &amp; w_{ca} &amp; w_{cc}\end{bmatrix}\]</span></p>
+<p>Using our previous neighbourhood rule, the spatial weights matrix would be as follows:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0\end{bmatrix}\]</span></p>
+<div class="question">
+<p>Which country has the highest number of neighbours? What do you notice about the spatial pattern of the values?</p>
+</div>
+<p>Graphically, <span class="math inline">\(\mathbf{W}\)</span> would resemble the following, where lines are connecting each neighbouring country (<span class="math inline">\(w=1\)</span>), and are absent for non-neighbouring countries (<span class="math inline">\(w=0\)</span>):</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/central-europe-topology.png" style="width:50.0%" alt="central Europe, showing the topological connections stored in \mathbf{W}"></p>
+<p>The examples above are just <em>one</em> approach to calculating spatial weights <span class="math inline">\(w\)</span> and we’ll explore a range of methods as we progress through the practical. Irrespective of choice of method, the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span> is a way of defining the <strong>connectivity</strong> (topology) between all pairs of observations.</p>
+</div>
+<div id="weights-in-practice" class="section level3" number="2.2.3">
+<h3>
+<span class="header-section-number">2.2.3</span> Spatial weights in practice<a class="anchor" aria-label="anchor" href="#weights-in-practice"><i class="fas fa-link"></i></a>
+</h3>
+<p>So far we’ve defined spatial weights (<span class="math inline">\(w\)</span> = the presence and/or strength of the spatial relationship between two objects) and explored how we can store <span class="math inline">\(w\)</span> for all pairs of observations in a spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>.</p>
+<p>The best way to <em>really</em> understand <span class="math inline">\(w\)</span> and <span class="math inline">\(\mathbf{W}\)</span> is through data exploration, so let’s get started:</p>
+<blockquote>
+<p>Open ArcGIS Pro and create a new project with a suitable name (e.g., <code>practical-2</code>), making sure to select the corresponding directory on your P Drive (<code>P:\GEOG73001\practical-2</code>) and <em>unchecking</em> ‘Create a folder for this local project’.</p>
+</blockquote>
+<blockquote>
+<p>Create a connection to <code>GEOG73001/data</code> and then load the Ordnance Survey (OS) 100 km grid (<code>osbng_grid_100km.shp</code>).</p>
+</blockquote>
+<p>This layer is the National Grid for Great Britain, comprising grid squares each of size 100 km by 100 km:</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/os_grid.png" style="width:50.0%"></p>
+<p>The Coordinate Reference System (CRS) for this dataset is <a href="https://epsg.io/27700">EPSG:27700</a>, which is designed to minimise <strong>distortion</strong> in the area of interest (i.e., Great Britain)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Distortion is discussed more fully in &lt;em&gt;Understanding GIS&lt;/em&gt; (Weeks 2 and 5)&lt;/p&gt;"><sup>11</sup></a>.</p>
+<div class="question">
+<p>Can you remember how to check the CRS for a map layer?</p>
+</div>
+<p>When loading data, ArcGIS will automatically update the <em>map’s</em> coordinate reference system to match that of the <em>first</em> feature layer added.</p>
+<blockquote>
+<p>In the Contents Pane, right click Map → Properties → Coordinate Systems, to verify.</p>
+</blockquote>
+<p>The National Grid is unlike most spatial data (i.e., all features are of the same size, regularly spaced). This simplicity is useful, as it will allow us to investigate and understand the different approaches we can use for calculating <span class="math inline">\(w\)</span>.</p>
+</div>
+<div id="contig-swm" class="section level3" number="2.2.4">
+<h3>
+<span class="header-section-number">2.2.4</span> Contiguity weights<a class="anchor" aria-label="anchor" href="#contig-swm"><i class="fas fa-link"></i></a>
+</h3>
+<p>The first main approach for calculating <span class="math inline">\(w\)</span> is referred to as <strong>contiguity weights</strong> i.e., neighbouring (contiguous) spatial objects are those that share a common border. However, the definition of “common border” is more complex than you might think. We can explore this complexity using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/introduction-to-neighborhood-explorer.html">Neighborhood Explorer</a>.</p>
+<blockquote>
+<p>In the top ribbon, navigate to Analysis → Neighbourhood Explorer, ensuring that <code>osbng_grid_100km</code> is selected in the Contents Pane. For “Unique ID Field”, use <code>FID</code>.</p>
+</blockquote>
+<p>The Neighbourhood Explorer is a powerful tool that allows us to visualise and investigate different <em>conceptualisations of spatial relationships</em>.</p>
+<div id="rook-contiguity" class="section level4 unnumbered unlisted">
+<h4>Rook Contiguity<a class="anchor" aria-label="anchor" href="#rook-contiguity"><i class="fas fa-link"></i></a>
+</h4>
+<blockquote>
+<p>For “Conceptualisations of Spatial Relationships”, choose “Contiguity Edges Only” and then press Apply.</p>
+</blockquote>
+<p>When complete, your map cursor will have changed, and a new layer will now be visible in the Contents Pane.</p>
+<blockquote>
+<p>Select one of the OS grid squares, which should visualise the connections between the <strong>focal</strong> feature (the one you’ve selected) and all the neighbouring features (based on the “contiguity edges only” rule).</p>
+</blockquote>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/rook-contig-ne.png" style="width:50.0%"></p>
+<p>As the name suggests, <em>Contiguity Edges Only</em> identifies neighbouring objects which <strong>share an edge</strong>. This is also known as <em>Rook contiguity</em>, reflecting one of the possible moves in the game of chess.</p>
+<p>For example, take the simple <span class="math inline">\(3 \times 3\)</span> grid below, labelled <span class="math inline">\(a-i\)</span>:</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/grid-1.png" style="width:50.0%"></p>
+<p>Using Contiguity Edges Only (<em>Rook</em>), our neighbours would resemble the following i.e., <span class="math inline">\(a\)</span> shares edges with <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> (so are neighbouring), but does <em>not</em> share an <strong>edge</strong> with <span class="math inline">\(e\)</span> (non-neighbouring):</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/rook-schematic.png" style="width:50.0%"></p>
+<p>Conceptually, <span class="math inline">\(\mathbf{W}\)</span> would resemble the following, storing <span class="math inline">\(w\)</span> for all pairs of observations.</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} w_{aa} &amp; w_{ab} &amp; w_{ac} &amp; w_{ad} &amp; w_{ae} &amp; w_{af} &amp; w_{ag} &amp; w_{ah} &amp; w_{ai} \\ w_{ba} &amp; w_{bb} &amp; w_{bc} &amp; w_{bd} &amp; w_{be} &amp; w_{bf} &amp; w_{bg} &amp; w_{bh} &amp; w_{bi} \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ w_{ia} &amp; w_{ib} &amp; w_{ic} &amp; w_{id} &amp; w_{ie} &amp; w_{if} &amp; w_{ig} &amp; w_{ih} &amp; w_{ii}\end{bmatrix}\]</span></p>
+<p>For the example rows above, the values for <span class="math inline">\(w\)</span> would be as follows:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix}\]</span></p>
+</div>
+<div id="queens-contiguity" class="section level4 unnumbered unlisted">
+<h4>Queen’s Contiguity<a class="anchor" aria-label="anchor" href="#queens-contiguity"><i class="fas fa-link"></i></a>
+</h4>
+<p>An alternative and more commonly used approach to calculating contiguity weights is referred to by ESRI as <em>Contiguity Edges Corners</em> or more widely as <em>Queen’s contiguity</em>, which identifies neighbouring objects which <strong>share an edge or a point</strong>.</p>
+<blockquote>
+<p>In Neighbourhood Explorer, update the “Conceptualisations of Spatial Relationships” to “Contiguity Edges Corners”, press Apply, and explore the connections in the Map View.</p>
+</blockquote>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/queen-contig-ne.png" style="width:50.0%"></p>
+<p>Returning to our simple <span class="math inline">\(3 \times 3\)</span> grid, but this time using Contiguity Edges Corners (<em>Queen’s</em>), our neighbours would resemble the following i.e., <span class="math inline">\(a\)</span> shares edges <em>and</em> points with <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span>, so are defined as neighbouring. While <span class="math inline">\(a\)</span> does <em>not</em> share an <strong>edge</strong> with <span class="math inline">\(e\)</span>, it <em>does</em> share a <strong>point</strong>, so is also neighbouring:</p>
+<p align="center">
+<a name=""></a><img src="images/practical-2/queen-schematic.png" style="width:50.0%"></p>
+<p>The conceptual structure of <span class="math inline">\(\mathbf{W}\)</span> would remain the same as above, storing <span class="math inline">\(w\)</span> for all pairs of observations, but the values of <span class="math inline">\(w\)</span> will change with our new neighbourhood rule:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix}\]</span>
+Both of these approaches are examples of <strong>binary</strong> classifications of spatial relationships, objects are either neighbouring (<span class="math inline">\(w=1\)</span>) or not (<span class="math inline">\(w=0\)</span>). Objects <em>cannot</em> be partly neighbouring<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;You will have noticed that there is one additional method in the ‘Contiguity’ group, known as ‘Trimmed Delaunay Triangulation’. You can explore this later in the &lt;a href="spatial_weights.html#weights-extra"&gt;extra&lt;/a&gt; section.&lt;/p&gt;'><sup>12</sup></a>.</p>
 </div>
 </div>
-<div id="extra-1" class="section level2" number="2.3">
+<div id="dist-swm" class="section level3" number="2.2.5">
+<h3>
+<span class="header-section-number">2.2.5</span> Distance based weights<a class="anchor" aria-label="anchor" href="#dist-swm"><i class="fas fa-link"></i></a>
+</h3>
+<p>Another approach to define <span class="math inline">\(w\)</span> is based upon distance between objects (i.e., <em>proximity</em>), with “near” objects defined as neighbours.</p>
+<div id="fixed-distance" class="section level4 unnumbered unlisted">
+<h4>Fixed Distance<a class="anchor" aria-label="anchor" href="#fixed-distance"><i class="fas fa-link"></i></a>
+</h4>
+<blockquote>
+<p>Return to the Neighbourhood Explorer, and update the “Conceptualisations of Spatial Relationships” to “Fixed Distance”, keeping the “Distance Method” as ‘Euclidean’. Explore the effects of the “Distance Band” attribute on the neighbourhood classification.</p>
+</blockquote>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/distance-200km-ne.png" style="width:50.0%"></p>
+<div class="question">
+<p>When using a “Distance Band” of 50 km, no neighbours are returned for any of the selected cells. Why might this be? Where are distances measured from?</p>
+</div>
+<p>The “Fixed Distance” approach is also <strong>binary</strong> and we can confirm this by returning to the Neighbourhood Explorer, where the table at the bottom lists the IDs of all the neighbours for the selected focal feature and the corresponding weight <span class="math inline">\(w\)</span>. The ‘Statistics’ tab also includes important information about the number of features in the layer and neighbour counts.</p>
+</div>
+<div id="k-nearest-neighbours" class="section level4 unnumbered unlisted">
+<h4>K Nearest Neighbours<a class="anchor" aria-label="anchor" href="#k-nearest-neighbours"><i class="fas fa-link"></i></a>
+</h4>
+<p>Another distance based approach returns the “<span class="math inline">\(K\)</span> Nearest Neighbours” for each feature, with the value of <span class="math inline">\(K\)</span> selected by the user.</p>
+<blockquote>
+<p>Use the Neighbourhood Explorer to explore the effects of changing <span class="math inline">\(K\)</span>.</p>
+</blockquote>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/k-nearest-ne.png" style="width:50.0%"></p>
+<div class="question">
+<p>Inspect the example above, where <span class="math inline">\(K=10\)</span>. What do you notice about the pattern of neighbours?</p>
+</div>
+<p>In the example above, the eight nearest neighbours are fairly easy to identify (immediately <span class="math inline">\(N, NE, E, ...\)</span>), but when identifying the remaining two neighbours (to achieve <span class="math inline">\(K=10\)</span>), there are <em>four</em> grid cells that are equidistant to the focal feature (<em>two</em> grid cells <span class="math inline">\(N,E,S\)</span> and <span class="math inline">\(W\)</span>, respectively).</p>
+<div class="question">
+<p>What method do you think ArcGIS has used to select the cells to the south and west? Try to replicate the above result yourself, and test a few locations…</p>
+</div>
+<p>This might be an issue for our simple regularly-spaced dataset, but is unlikely to be a significant problem for more typical spatial datasets, where multiple equidistant features are unlikely.</p>
+</div>
+<div id="inverse-distance" class="section level4 unnumbered unlisted">
+<h4>Inverse Distance<a class="anchor" aria-label="anchor" href="#inverse-distance"><i class="fas fa-link"></i></a>
+</h4>
+<p>The final distance based approach to consider is <em>Inverse Distance</em>, which marks a shift away from a <strong>binary</strong> classification of <span class="math inline">\(w\)</span> to a <strong>continuous</strong> classification. Rather than <span class="math inline">\(w = 0|1\)</span>, <span class="math inline">\(w\)</span> can be continuous, where “nearer” objects have larger weights than “distant” objects, in accordance with Tobler’s Law <span class="citation">(<a href="references.html#ref-tobler1970">Tobler, 1970</a>)</span>.</p>
+<blockquote>
+<p>Return to the Neighbourhood Explorer, and update the “Conceptualisations of Spatial Relationships” to “Inverse Distance” and choose a suitable Distance Band (e.g. 200 km) and apply.</p>
+</blockquote>
+<p><img src="screenshots/practical-2/inverse-distance-weights.png" style="width:100.0%"><br></p>
+<p>Here we can see that <span class="math inline">\(w\)</span> is now continuous, with the largest weights for the nearest grid cells (0.00001, immediately <span class="math inline">\(N, E, S\)</span> and <span class="math inline">\(W\)</span>) and the smallest weights for the furthest objects (0.000005).</p>
+<p>The magnitude of this <em>distance decay</em> effect (i.e., Tobler’s Law) is controlled by the weighting scheme used and any associated model parameters. Our weighting scheme here is inverse distance weighting, defined as follows:</p>
+<p><span class="math display">\[w=1/d^p\]</span>
+where <span class="math inline">\(d\)</span> is the distance between objects, and <span class="math inline">\(p\)</span> is an exponent controlling how <span class="math inline">\(w\)</span> varies with distance. Our current approach uses <span class="math inline">\(p=1\)</span>. In the calculations above, our distance <span class="math inline">\(d\)</span> uses the units of the Coordinate Reference System (m), so for cells that are 100 km apart, the calculation would be as follows: <span class="math inline">\(1 / 100000^1 = 0.00001\)</span>.</p>
+<blockquote>
+<p>Explore how changing the “Exponent” parameter (<span class="math inline">\(p\)</span>) influences <span class="math inline">\(w\)</span>.</p>
+</blockquote>
+<p>As <span class="math inline">\(p\)</span> increases, closer objects receive proportionally larger weights, relative to distant objects. For example, when <span class="math inline">\(p=1\)</span> and using a distance threshold of 200 km, the closest cells have a weight twice as large as distant objects, here defined as those within 200 km i.e., <span class="math inline">\(w=0.00001\)</span> compared to <span class="math inline">\(w=0.000005\)</span> for distant cells (<span class="math inline">\(2 \times w\)</span>). When <span class="math inline">\(p=2\)</span>, the difference is four times as large (<span class="math inline">\(w=1 \times 10^{10}\)</span> compared to <span class="math inline">\(w=2.5 \times 10^{11}\)</span>).</p>
+<p>The “Inverse Distance” conceptualisation is just one weighting scheme, but there are others we can use to control the <em>distance decay</em> effect. These can be accessed by selecting the “Manual” conceptualisation at the bottom of the Neighbourhood Explorer, using “Distance Band” for Neighbourhood Type, and then selecting the Weighting Method.</p>
+<blockquote>
+<p>Explorer the effects of these alternative methods on <span class="math inline">\(w\)</span>.</p>
+</blockquote>
+</div>
+<div id="row_standard" class="section level4" number="2.2.5.1">
+<h4>
+<span class="header-section-number">2.2.5.1</span> Row Standardisation<a class="anchor" aria-label="anchor" href="#row_standard"><i class="fas fa-link"></i></a>
+</h4>
+<p>One option you may have noticed in the Neighbourhood Explorer is <strong>Row Standardisation</strong>. This is a useful approach to account for uneven spatial data and/or edge effects (i.e., objects near the edge of your dataset are likely to have fewer neighbours than those near the centre), both of which can result in significant differences in the number of neighbours.</p>
+<p>Row standardisation converts each value of <span class="math inline">\(w\)</span> in the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span> into <strong>proportional</strong> <em>standardised</em> weights <span class="math inline">\(w_{ij(s)}\)</span>, dividing each weight <span class="math inline">\(w_{ij}\)</span> by the sum of all its neighbour weights (the row <span class="math inline">\(j\)</span>):</p>
+<p><span class="math display">\[w_{ij(s)}=w_{ij}/\sum_{j}w_{ij}\]</span></p>
+<p>For example, take <span class="math inline">\(\mathbf{W}\)</span> for our European example, where I’ve added the row sums for each feature (i.e., the number of neighbours):</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0\end{bmatrix} =\begin{matrix} 2 \\ 3 \\ 2 \\ 5 \\ 2 \\ 2 \end{matrix}\]</span></p>
+<p>A row standardised <span class="math inline">\(\mathbf{W}\)</span> would resemble the following:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} 0 &amp; 1/2 &amp; 0 &amp; 1/2 &amp; 0 &amp; 0 \\ 1/3 &amp; 0 &amp; 1/3 &amp; 1/3 &amp; 0 &amp; 0 \\ 0 &amp; 1/2 &amp; 0 &amp; 1/2 &amp; 0 &amp; 0 \\ 1/5 &amp; 1/5 &amp; 1/5 &amp; 0 &amp; 1/5 &amp; 1/5 \\ 0 &amp; 0 &amp; 0 &amp; 1/2 &amp; 0 &amp; 1/2 \\ 0 &amp; 0 &amp; 0 &amp; 1/2 &amp; 1/2 &amp; 0\end{bmatrix}\]</span>
+Each row now sums to 1, hence row <em>standardisation</em>.</p>
+</div>
+</div>
+<div id="spatial-weights-for-real-data" class="section level3" number="2.2.6">
+<h3>
+<span class="header-section-number">2.2.6</span> Spatial weights for “real” data<a class="anchor" aria-label="anchor" href="#spatial-weights-for-real-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>So far we’ve explored key concepts related to spatial weights and common approaches to define <span class="math inline">\(w\)</span> using a very simple spatial dataset. You should now have an understanding of <a href="spatial_weights.html#contig-swm">contiguity</a> and <a href="spatial_weights.html#dist-swm">distance based</a> weights, and the important choices involved (e.g., selecting <span class="math inline">\(K\)</span>, exponents, distance bands, row standardisation).</p>
+<p>However, our OS dataset is unlike most spatial data, so to develop our understanding further, let’s investigate spatial weights with a more typical spatial dataset.</p>
+<blockquote>
+<p>Load the Natural Earth data from Practical 1 [<code>ne_10m_admin_0_countries.shp</code>].</p>
+</blockquote>
+<p>If you change the map scale, your Map View should resemble the following:</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/natural-earth-bng.png" style="width:50.0%"></p>
+<div class="question">
+<p>This is very different to the Map View from Practical 1. Can you think why this might be?</p>
+</div>
+<details><summary>
+Answer
+</summary>
+This is because our Map View is using <a href="https://epsg.io/27700">EPSG:27700</a> as the coordinate reference system (CRS). This does a good job of minimising <strong>distortion</strong> for Great Britain, but at the cost of enhancing distortion elsewhere. As a result, we should really change our Map CRS to that of the Natural Earth data (<a href="https://epsg.io/4326">EPSG:4326</a>), or a similar CRS designed for global data.
+</details><blockquote>
+<p>Right click on “Map” in the Contents Pane → Properties → Coordinate Systems, and choose a suitable <code>Projected Coordinate System</code> for the World e.g., Equal Earth, Natural Earth, Robinson, or use <code>Geographic Coordinate System</code> → World → WGS 1984.</p>
+</blockquote>
+<p>Our new Map CRS will make it much easier to see our spatial relationships:</p>
+<div class="float">
+<img src="screenshots/practical-2/natural-earth-crs.png" style="width:100.0%" alt="Natural Earth data, visualised using the Natural Earth CRS (EPSG:54077)"><div class="figcaption"><em>Natural Earth data, visualised using the Natural Earth CRS (EPSG:54077)</em></div>
+</div>
+<p><br></p>
+<p>If we change our Map View back to Great Britain, we can see the local distortion quite clearly:</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/distortion-os-grid.png" style="width:50.0%"></p>
+<blockquote>
+<p>Use the Neighbourhood Explorer to investigate different <em>conceptualisations of spatial relationships</em>, using “Unique ID” = <code>NE_ID</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We could use &lt;code&gt;FID&lt;/code&gt; here but ESRI recommends against using the Object ID (Warning &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/110001-120000/tool-errors-and-warnings-110626-110650-110635.html"&gt;110635&lt;/a&gt;), as these system-managed fields can be reordered, for example if you were to sort the Attribute Table.&lt;/p&gt;'><sup>13</sup></a>. This is a stable and unique ID provided in the Natural Earth dataset.</p>
+</blockquote>
+<div class="question">
+<p>What do you think is the most appropriate method for this dataset? e.g., <em>Contiguity</em> or <em>Distance based</em>, <em>Binary</em> or <em>Continuous</em>?</p>
+</div>
+<div class="question">
+<p>Is there a “correct” neighbourhood for each country?</p>
+</div>
+<div class="question">
+<p>Do you notice any interesting or unexpected behaviour? <em>Hint</em>: France is a useful country to explore…</p>
+</div>
+<div id="generating-the-spatial-weights-matrix" class="section level4" number="2.2.6.1">
+<h4>
+<span class="header-section-number">2.2.6.1</span> Generating the spatial weights matrix<a class="anchor" aria-label="anchor" href="#generating-the-spatial-weights-matrix"><i class="fas fa-link"></i></a>
+</h4>
+<p>The Neighbourhood Explorer is a really useful tool which allows us to <em>dynamically</em> view connections for a single feature of interest by selecting the <em>focal feature</em>. To generate these connections for the entire dataset, and potentially use the result for further analysis, we need to create our spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>.</p>
+<blockquote>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a>. The inputs and underlying concepts should be very familiar to you by now, so select the <code>Natural-Earth</code> data as input using “Unique ID” = <code>NE_ID</code>. For the output spatial weights matrix, choose a suitable file name (e.g., <code>natural-earth-swm.swm</code>) and save to the <code>practical-2</code> directory. You are welcome to choose the Neighbourhood Type, although <strong>Queen’s contiguity</strong> might be a suitable choice here. Leave all other settings as the default (e.g., ‘Row Standaridation’ = checked).</p>
+</blockquote>
+<p>If successful, <code>natural-earth-swm.swm</code> should now be visible in the <code>practical-2</code> directory.</p>
+<p>There are some warnings to check:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="spatial_weights.html#cb1-1" tabindex="-1"></a>WARNING <span class="dv">001605</span><span class="sc">:</span> Distances <span class="cf">for</span> Geographic <span class="fu">Coordinates</span> (degrees, minutes, seconds) are analyzed using Chordal Distances <span class="cf">in</span> meters.</span>
+<span id="cb1-2"><a href="spatial_weights.html#cb1-2" tabindex="-1"></a>WARNING <span class="dv">000846</span><span class="sc">:</span> <span class="dv">83</span> <span class="fu">feature</span>(s) had no neighbors which generally invalidates the statistical properties of a test.</span></code></pre></div>
+<p>WARNING <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-01601-01625-001605.html">001605</a> is an important one to note, as it raises questions about the accuracy of any distance measurements. However, here we are using <strong>contiguity</strong> weights, which are based on a <em>topological</em> relationship between objects (i.e., do they share an edge or a point?), rather than a <em>geometric</em> relationship (i.e., are objects within a certain distance of each other?). When using <strong>distance based</strong> weights, we should be cautious about the CRS of our data and the distance measurement approach used.</p>
+<p>WARNING <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00826-00850-000846.html">000846</a> also provides useful information, where 83 features have no contiguous neighbours e.g., islands. If we were running further statistical analysis using <span class="math inline">\(\mathbf{W}\)</span>, we could exclude these features from our dataset, or use a less conservative approach e.g., <span class="math inline">\(K\)</span> nearest neighbours.</p>
+<p>To check our output:</p>
+<blockquote>
+<p>Re-open the Neighbourhood Explorer, but this time choose <code>Get Spatial Weights from File</code> and use <code>natural-earth-swm.swm</code> as the input. When applied, the defined neighbours should match those identified previously. <em>Note</em> our <code>.swm</code> file is static, so to switch conceptualisation, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> would have to be run again.</p>
+</blockquote>
+</div>
+<div id="visualising-the-spatial-weights-matrix" class="section level4" number="2.2.6.2">
+<h4>
+<span class="header-section-number">2.2.6.2</span> Visualising the spatial weights matrix<a class="anchor" aria-label="anchor" href="#visualising-the-spatial-weights-matrix"><i class="fas fa-link"></i></a>
+</h4>
+<p>We now have a static <code>.swm</code> file that we could use for further analysis<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For example, we could use this to identify patterns of &lt;strong&gt;spatial autocorrelation&lt;/strong&gt;, which is the focus of Practical 3.&lt;/p&gt;"><sup>14</sup></a>. However, we can’t easily inspect this output in its current format. Before we use our <code>.swm</code> file, it might be useful to investigate the weights and visualise <em>all</em> of the neighbourhood connections in <span class="math inline">\(\mathbf{W}\)</span>. This can be achieved by (1) converting our spatial weights matrix to a table, (2) adding geometry attributes, and (3) converting our table to a feature layer for visualisation.</p>
+<blockquote>
+<p>First, open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a>, using <code>natural-earth-swm.swm</code> as the input. For the output location, I would like you to select <code>practical-2.gdb</code>, which can be found within the <code>practical-2</code> directory. Use a suitable output name e.g., <code>natural_earth_swm_table</code>.</p>
+</blockquote>
+<div class="note">
+<p>Rather than saving to a directory, we have saved our output to a <strong>File Geodatabase</strong> (<code>practical-2.gdb</code>). This was created automatically when we initialised our Project at the <a href="spatial_weights.html#weights-in-practice">start</a> of the practical. This is an ESRI data storage format which is described more fully <a href="https://doc.esri.com/en/arcgis-pro/latest/help/data/geodatabases/manage-file-gdb/file-geodatabases.html">here</a>. While there are some advantages to using geodatabases, our main reason for doing so here is that tables stored within a <code>.gdb</code> are easily editable via ArcGIS, which is not always the case for standalone tables (e.g., separate <code>.csv</code> or <code>.xls</code> files).</p>
+</div>
+<p>The output should now be listed in the Contents Pane and when opened should resemble the following:</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/swm-table.png" style="width:50.0%"></p>
+<p>The key fields are as follows:</p>
+<ul>
+<li>
+<code>NE_ID</code>: the unique ID of the <em>focal feature</em> for that row e.g., Indonesia = 1159320845</li>
+<li>
+<code>NID</code>: the unique ID of a neighbouring feature e.g., Malaysia = 1159321083</li>
+<li>
+<code>WEIGHT</code>: <span class="math inline">\(w\)</span> for that <code>NE_ID-NID</code> pair using the selected conceptualisation (i.e., Contiguity).</li>
+</ul>
+<div class="question">
+<p>We have used a <strong>binary</strong> classification for calculating <span class="math inline">\(w\)</span>. Why are our weights continuous?</p>
+</div>
+<details><summary>
+Answer
+</summary>
+This is because we used <strong>row standardisation</strong>, see <a href="spatial_weights.html#row_standard">here</a> for a refresher.
+</details><div class="note">
+<p>The format of this table differs from the <em>dense</em> spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span> introduced above, where all pairs of observations are present, irrespective of whether they are neighbouring or not. The output here is a <em>sparse</em> representation of the same data, where non-neighbouring pairs have been removed, and each row represents a neighbouring pair.</p>
+</div>
+<p>Our output file <code>natural-earth-swm-table</code> contains useful information, but is not associated with any <em>geographic information</em> (i.e., feature geometries) that we could use to visualise the topological connections. To address this:</p>
+<blockquote>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a>, using <code>ne_10m_admin_0_countries</code> as input. For the ‘Geometry Attributes’, we want to calculate two properties: <code>Centroid x-coordinate</code> and <code>Centroid y-coordinate</code>, providing a new field name for each (e.g., <code>centroid_x</code>, <code>centroid_y</code>).</p>
+</blockquote>
+<p>If successful, <code>ne_10m_admin_0_countries</code> will be modified in place, with new fields (<code>centroid_x</code>, <code>centroid_y</code>) in the Attribute Table. These fields are in the units of the CRS (i.e., decimal degrees). Our next step is to join this data to our spatial weights matrix.</p>
+<blockquote>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a>. In Practical 1 we used a <em>dynamic</em> table join via Joins and Relatives → <a href="geo_data.html#poly-raster">Add Join</a>, linking feature layers via a common attribute. One key difference here is that our table join is <em>static</em> i.e., the joined fields are permanently joined to the input table.</p>
+</blockquote>
+<blockquote>
+<p>Use <code>natural-earth-swm-table</code> as the Input Table, with the Input Field as <code>NE_ID</code>, and use <code>ne_10m_admin_0_countries</code> as the Join Table (also <code>NE_ID</code>). Here we are finding rows in the spatial weights matrix and the Natural Earth data which share a common attribute (<code>NE_ID</code>).</p>
+</blockquote>
+<p>Before we run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a>, we need to decide which fields we want to transfer. Dynamic table joins via Joins and Relatives → <a href="geo_data.html#poly-raster">Add Join</a> transfer <strong>all</strong> of the fields in the join table. There are many (!) in the Natural Earth attribute table, and we are only interested in a small number e.g., <code>centroid_x</code> and <code>centroid_y</code>, and <code>ADMIN</code> for labelling.</p>
+<div class="note">
+<p>Tools in ArcGIS can be slow to initialise. To minimise the risk of any crashes, avoid making changes to any settings until the blue processing dots have disappeared:</p>
+</div>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/processing-status.png" style="width:30.0%"></p>
+<blockquote>
+<p>For “Transfer Method”, switch to <code>Use Field Mapping</code>. This will load all of the fields into the window below. Next remove all of the fields <strong>except</strong> <code>centroid_x</code>, <code>centroid_y</code> and <code>ADMIN</code>. Finally, double click each and rename as <code>focal_x</code>, <code>focal_y</code> and <code>focal_name</code>, and press Run. Do <strong>not</strong> close the Geoprocessing pane, as we’ll be using the tool again shortly.</p>
+</blockquote>
+<p>If successful, our spatial weights matrix should contain attribute and geometric information related to the <strong>focal</strong> feature for each row (as identified using <code>NE_ID</code>).</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/swm-table-focal-attributes.png" style="width:60.0%"></p>
+<p>Our next step is to repeat this process, but this time targeting information related to the <strong>neighbouring</strong> feature for each row (as identified using <code>NID</code>).</p>
+<blockquote>
+<p>Return to <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a>, where the previous inputs should still be present. To switch to the <strong>neighbouring</strong> feature, this should be as simple as updating the Input Field to <code>NID</code>, and switching the transfer field names to <code>nb_x</code>, <code>nb_y</code> and <code>nb_name</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;code&gt;nb&lt;/code&gt; denoting neighbour.&lt;/p&gt;"><sup>15</sup></a>.</p>
+</blockquote>
+<p>Our spatial weights matrix now contains geographic information for both the <strong>focal</strong> and <strong>neighbouring</strong> features, so let’s visualise the connections between them as <em>Lines</em> connecting the feature centroids:</p>
+<blockquote>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY To Line</a>, using <code>focal_x</code> and <code>focal_y</code> as the “Start X and Y Fields”, and <code>nb_x</code> and <code>nb_y</code> as the “End X and Y Fields”. Save the output to our project directory, using a suitable name (e.g., <code>natural_earth_swm_lines</code>), and make sure to “preserve attributes”.</p>
+</blockquote>
+<p>Here is our output, visualising all the neighbourhood connections in <span class="math inline">\(\mathbf{W}\)</span>, using contiguity weights.</p>
+<div class="float">
+<img src="screenshots/practical-2/natural-earth-topological.png" style="width:100.0%" alt="Natural Earth data, visualised using the Natural Earth CRS (EPSG:54077), showing contiguous neighbourhood connections "><div class="figcaption"><em>Natural Earth data, visualised using the Natural Earth CRS (EPSG:54077), showing contiguous neighbourhood connections </em></div>
+</div>
+<p><br></p>
+<div class="question">
+<p>Which parts of the world have many / few connections?</p>
+</div>
+<div class="question">
+<p>What are the limitations of using feature centroids to represent our topological connections?</p>
+</div>
+</div>
+</div>
+<div id="cultural-distance" class="section level3" number="2.2.7">
+<h3>
+<span class="header-section-number">2.2.7</span> Cultural Distance<a class="anchor" aria-label="anchor" href="#cultural-distance"><i class="fas fa-link"></i></a>
+</h3>
+<p>By now you should understand the structure of <span class="math inline">\(\mathbf{W}\)</span>, how to calculate <span class="math inline">\(w\)</span>, and can investigate and visualise the spatial connections in a dataset. In most cases, this is where a spatial analyst would move on to further analysis, using the spatial weights matrix as an input.</p>
+<p>However, spatial weights can be useful <em>in their own right</em>, particularly when the spatial structure of a dataset can be linked to other spatial attributes. To demonstrate this, we are going to finish the practical by comparing <span class="math inline">\(\mathbf{W}\)</span> to the Cultural Fixation Index (CFST) produced by <span class="citation">Muthukrishna <em>et al.</em> (<a href="references.html#ref-muthukrishna2020">2020</a>)</span>. This dataset includes an estimate of <strong>cultural distance</strong> for 80 country pairs, which prompts the following line of enquiry:</p>
+<div class="question">
+<p>Are “neighbouring” countries, as defined by our spatial weights matrix, more culturally similar?</p>
+</div>
+<blockquote>
+<p>Add <code>cultural-distance.csv</code> to ArcGIS and inspect.</p>
+</blockquote>
+<p>This table contains unique combinations of countries, as summarised in <code>join_key</code>, and the corresponding cultural distances (<code>distance</code>). Our next task is to join this information to our spatial weights matrix created above.</p>
+<div class="note">
+<p>The smaller the cultural distance value, the more similar the countries are e.g., Egypt and Norway are dissimiliar (0.5953), whereas Australia and the UK are highly similar (0.0319).</p>
+</div>
+<div id="data-wrangling" class="section level4" number="2.2.7.1">
+<h4>
+<span class="header-section-number">2.2.7.1</span> Data wrangling<a class="anchor" aria-label="anchor" href="#data-wrangling"><i class="fas fa-link"></i></a>
+</h4>
+<p>As discussed above, this standalone table (<code>.csv</code>) is not easily editable, so:</p>
+<blockquote>
+<p>Export Table, saving to our project <strong>File Geodatabase</strong> (<code>practical-2.gdb</code>), with a suitable name. When complete, remove the original standalone table <code>cultural-distance.csv</code> from ArcGIS to avoid confusion.</p>
+</blockquote>
+<p>Next we are going to remove identical geometries from the XY to Line layer created above. This is because the spatial weights matrix is often <strong>isomorphic</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Here we are referring to dataset structures that share identical structural connectivity.&lt;/p&gt;"><sup>16</sup></a>, especially when using contiguity weights i.e., if <span class="math inline">\(A\)</span> is a neighbour of <span class="math inline">\(B\)</span>, then <span class="math inline">\(B\)</span> is a neighbour of <span class="math inline">\(A\)</span>. This explains why we often see symmetry in <span class="math inline">\(\mathbf{W}\)</span>:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0\end{bmatrix}\]</span>
+In our case, every neighbour relationship is represented <em>twice</em> in <code>natural_earth_swm_lines</code> e.g., there is a feature representing the relationship between the United Kingdom and the Republic of Ireland, and <em>another</em> feature representing the relationship between the Republic of Ireland and the United Kingdom. We can be justified in removing one of these as follows:</p>
+<blockquote>
+<p>Open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a> with <code>natural_earth_swm_lines</code> as the input. For “Fields” select <code>Shape</code> i.e., we want to remove rows which have identical geometries. This modifies the input layer, so press Run.</p>
+</blockquote>
+<p>To link this dataset to our table of cultural distance, we are going to use a table join, linking to the <code>join_key</code> in the latter (e.g., <code>Algeria-Andorra</code>). To achieve this, we need to create a comparable field in our XY to Line dataset:</p>
+<blockquote>
+<p>Open the Attribute Table for <code>natural_earth_swm_lines</code>, right click on the table → Calculate Field. For “Field Name”, use <code>target_key</code> with “Field Type” = <code>Text</code>. The “Expression” input allows us to combine our existing Fields using Python, or we can create more complex functions in the “Code Block”. Paste the following equation into the “Expression” input: <code>"-".join(sorted([!focal_name!, !nb_name!]))</code> and Apply.</p>
+</blockquote>
+<p>This should create a new field in the Attribute Table, where the output is the two country names (<code>[!focal_name!, !nb_name!]</code>), <code>sorted()</code> alphabetically, and then joined together using <code>join()</code>, with the country names separated by <code>-</code>.</p>
+<p>We can join this information to our spatial weights matrix as follows:</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> with <code>cultural_distance</code> as the Input Table (the editable version stored in your project <code>.gdb</code>) and <code>natural_earth_swm_lines</code> as the Join Table, joining based on the <code>join_key</code> in the former and <code>target_key</code> from the latter. For “Transfer Fields”, we only want to transfer the <code>target_key</code>.</p>
+</blockquote>
+<p>When complete, rows with a match between <code>join_key</code> and <code>target_key</code> will have data, and those without a match will contain <code>&lt;Null&gt;</code>:</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/join_target_keys.png" style="width:50.0%"></p>
+<p>We can utilise this pattern to create a new field, summarising whether rows are neighbouring or non-neighbouring.</p>
+<blockquote>
+<p>Open the Attribute Table for <code>cultural_distance</code> and Create Field (“Name” = <code>neighbours</code>, “Field Type” = <code>Text</code>) using the following Expression: <code>"false" if !target_key! is None else "true"</code> and Apply:</p>
+</blockquote>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/cultural-table-neighbours.png" style="width:70.0%"></p>
+<div class="note">
+<p>This approach populates the <code>neighbours</code> field with <code>true</code> for country pairs which are neighbouring (as defined by our spatial weights matrix) AND which have a cultural distance value from <span class="citation">Muthukrishna <em>et al.</em> (<a href="references.html#ref-muthukrishna2020">2020</a>)</span>. Rows where the value is <code>false</code> denotes country pairs which are <strong>not</strong> neighbouring OR do <strong>not</strong> have a cultural distance value. For example, the United Kingdom and the Republic of Ireland are classed as neighbouring in <span class="math inline">\(\mathbf{W}\)</span>, but there is no cultural distance value, hence <code>false</code>.</p>
+</div>
+</div>
+<div id="interpretation" class="section level4" number="2.2.7.2">
+<h4>
+<span class="header-section-number">2.2.7.2</span> Interpretation<a class="anchor" aria-label="anchor" href="#interpretation"><i class="fas fa-link"></i></a>
+</h4>
+<p>We now have all the data we need to answer our initial question:</p>
+<div class="question">
+<p>Are “neighbouring” countries, as defined by our spatial weights matrix, more culturally similar?</p>
+</div>
+<blockquote>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary Statistics</a>, using <code>cultural_distance</code> as the input and choosing a suitable output name. For “Statistics Fields”, use <code>distance</code> as the “Field”, and select <code>Mean</code> and <code>Standard deviation</code> for “Statistic Type”. For “Case Fields”, use <code>Neighbours</code></p>
+</blockquote>
+<p>When complete:</p>
+<blockquote>
+<p>Inspect the output, which should contain the mean and standard deviation of the cultural distance values for each group (neighbours, non-neighbours).</p>
+</blockquote>
+<div class="question">
+<p>What is your intepretation of the results? Are neighbouring countries more culturally similar?</p>
+</div>
+<div class="question">
+<p>What are the limitations of this approach?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>Our results indicate that non-neighbouring countries are characterised by (on average) greater (<span class="math inline">\(\times 2\)</span>) cultural distance (0.14) compared to neighbouring countries (0.07). However, we can be critical here:</p>
+<ul>
+<li>Note the extreme un-evenness of sample sizes.</li>
+<li>The estimates overlap when considering the standard deviation. Could we use a statistical test for significance?</li>
+<li>The results are sensitive to our designation of <span class="math inline">\(\mathbf{W}\)</span>.</li>
+<li>The results are sensitive to the calculation of cultural distance. Can this be expressed well by a single value?</li>
+</ul></details><p><br></p>
+<p><strong>Congratulations!</strong> You have completed the practical and should now be familiar with the conceptual and mathematical background to spatial weights. We have also demonstrated an application of spatial weights, and will explore this further in next weeks practical.</p>
+<p><a href="index.html#index"><strong>Finished!</strong></a></p>
+</div>
+</div>
+</div>
+<div id="weights-extra" class="section level2" number="2.3">
 <h2>
-<span class="header-section-number">2.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.3</span> Extra<a class="anchor" aria-label="anchor" href="#weights-extra"><i class="fas fa-link"></i></a>
 </h2>
-<p>We’ve been working with Polygon data, but what would we do with Points?</p>
-<p>[23] Load the Cities data from Practical 1 [<code>data/esri/World_Cities.shp</code>] and use the Neighbourhood Explorer again, where we can use fixed distances, k-nearest neighbours, Trimmed Delaunay Triangulation</p>
-<p>[24] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> to establish a neighbourhood network, and use Neighbourhood Explorer (Contiguity Edges Corners). This is an approach I’ve used in my own work, see <span class="citation">Tomkins <em>et al.</em> (<a href="references.html#ref-tomkins2021">2021</a>)</span>.</p>
+<p>In the practical we’ve worked exclusively with Polygons. How would we define neighbours for a Point dataset?</p>
+<blockquote>
+<p>Open the <code>world_cities_5m</code> layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Fixed distances and <span class="math inline">\(K\)</span> nearest neighbours are common approaches.</p>
+</blockquote>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/points-fixed-distance.png" style="width:50.0%"></p>
+<p>Another approach is to use “Trimmed Delaunay Triangulation”, which can be run much like the other conceptualisations. To really understand how this works:</p>
+<blockquote>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> and run with the <code>world_cities</code> layer as input, and preserve all “Output Fields”.</p>
+</blockquote>
+<p>This tool creates <strong>Thiessen</strong> or <strong>Voronoi</strong> Polygons around a set of Points, where the area within each Polygon is closer to the focal point than any other point in the dataset, as shown here:</p>
+<p align="center">
+<a name=""></a><img src="screenshots/practical-2/thiessen.png" style="width:80.0%"></p>
+<blockquote>
+<p>Return to the Neighbourhood Explorer but use the output of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> as the input, and using <code>Contiguity Edges Corners</code> as the conceptualisation.</p>
+</blockquote>
+<p><img src="images/practical-2/point-neighbours.png" style="width:100.0%"><br></p>
+<p>While Trimmed Delaunay Triangulation and Thiessen Polygons are <strong>not</strong> identical approaches (the former creates a mesh of non-overlapping triangles connecting the Points), they are <em>conceptually</em> similiar: both methods convert our Point data to areal data before contiguity weights are applied. A Thiessen approach is one I’ve used in my own research, see <span class="citation">Tomkins <em>et al.</em> (<a href="references.html#ref-tomkins2021">2021</a>)</span>.</p>
 <div class="task">
-<p>This will be useful for A1, as students will be working with a Point dataset. Include a subtle hint here?</p>
+<p><strong>Remember</strong> - we can define neighbours for all types of spatial data (e.g., Points, Lines, Polygons), so keep this in mind for later tasks in the unit.</p>
 </div>
 </div>
 <div id="sw_resources" class="section level2" number="2.4">
@@ -257,6 +614,7 @@
 </ul>
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="geo_data.html"><span class="header-section-number">1</span> Working with Geographic Data</a></div>
 <div class="next"><a href="spatial_autocorrelation.html"><span class="header-section-number">3</span> Spatial Autocorrelation</a></div>
@@ -274,13 +632,16 @@
 </li>
 <li>
 <a class="nav-link" href="#practical-1"><span class="header-section-number">2.2</span> Practical</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#spatial-weights-using-a-grid"><span class="header-section-number">2.2.1</span> Spatial weights using a grid</a></li>
-<li><a class="nav-link" href="#spatial-weights-using-country-polygons"><span class="header-section-number">2.2.2</span> Spatial weights using country Polygons</a></li>
-<li><a class="nav-link" href="#comparison-with-cultural-distance"><span class="header-section-number">2.2.3</span> Comparison with cultural distance</a></li>
-<li><a class="nav-link" href="#results"><span class="header-section-number">2.2.4</span> Results</a></li>
+<li><a class="nav-link" href="#conceptual-approach"><span class="header-section-number">2.2.1</span> Conceptual approach</a></li>
+<li><a class="nav-link" href="#defining-spatial-weights"><span class="header-section-number">2.2.2</span> Defining spatial weights</a></li>
+<li><a class="nav-link" href="#weights-in-practice"><span class="header-section-number">2.2.3</span> Spatial weights in practice</a></li>
+<li><a class="nav-link" href="#contig-swm"><span class="header-section-number">2.2.4</span> Contiguity weights</a></li>
+<li><a class="nav-link" href="#dist-swm"><span class="header-section-number">2.2.5</span> Distance based weights</a></li>
+<li><a class="nav-link" href="#spatial-weights-for-real-data"><span class="header-section-number">2.2.6</span> Spatial weights for “real” data</a></li>
+<li><a class="nav-link" href="#cultural-distance"><span class="header-section-number">2.2.7</span> Cultural Distance</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#extra-1"><span class="header-section-number">2.3</span> Extra</a></li>
+<li><a class="nav-link" href="#weights-extra"><span class="header-section-number">2.3</span> Extra</a></li>
 <li><a class="nav-link" href="#sw_resources"><span class="header-section-number">2.4</span> Resources</a></li>
 </ul>
 

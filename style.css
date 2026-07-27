@@ -79,6 +79,6 @@ main blockquote p {
 }
 
 /* Adapt paragraph spacing */
-.notes p {
+.note p {
   margin: 0;
 }
