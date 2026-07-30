@@ -17,12 +17,10 @@ Discuss spatial analysis, key principles, methods change through time --- often 
 
 In *Introduction to Spatial Analysis* we have covered... 
 
-## Acknowledgments {.unnumbered}
+## Acknowledgements {.unnumbered}
 
 The development of *Introduction to Spatial Analysis* has benefited from fruitful discussions with [Jonny Huck](https://research.manchester.ac.uk/en/persons/jonathan.huck/) and [Matt Dennis](https://research.manchester.ac.uk/en/persons/matthew.dennis/), testing by [James Tomlinson](https://research.manchester.ac.uk/en/persons/james-tomlinson-2/), and wider support from the [Mapping, Computing and Geographical Information Science](https://www.humanities.manchester.ac.uk/geography/research/groups/mapping-computing-geographical-information-science/) research group. 
 
-The design of the practical materials has also been improved thanks to resources made available by the wider GIS community, including Sergio J. Rey, Dani Arribas-Bel and Levi J. Wolf ([Geographic Data Science with Python](https://geographicdata.science/book/)), Luc Anselin ([An Introduction to Spatial Data Science with GeoDa](https://lanselin.github.io/introbook_vol1/)), Edzer Pebesma and Roger Bivand ([Spatial Data Science with Applications in R](https://doi.org/10.1201/9780429459016)), and Adam Dennett ([Guide to Spatial Interaction Modelling](Guide to Spatial Interaction Modelling)). 
-
-I hope that *Introduction to Spatial Analysis* has inspired you to explore the topic further, and if so, I'd recommend delving into the resources above, alongside the wider literature included in the [reference list](#references).
+I hope that *Introduction to Spatial Analysis* has inspired you to explore the topic further, and if so, I'd recommend delving into the resources listed [here](#intro-acknowledgements), alongside the wider literature included in the [reference list](#references).
 
 *Matt*

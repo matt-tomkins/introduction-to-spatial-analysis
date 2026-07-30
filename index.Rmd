@@ -123,3 +123,7 @@ The following formatting is used for **advice** or **key notes**:
 <div class="note"> 
 This is a note. 
 </div>
+
+## Acknowledgments {#intro-acknowledgements .unnumbered}
+
+The design of the practical materials has been improved thanks to resources made available by the wider GIS community, including Sergio J. Rey, Dani Arribas-Bel and Levi J. Wolf ([Geographic Data Science with Python](https://geographicdata.science/book/)), Luc Anselin ([An Introduction to Spatial Data Science with GeoDa](https://lanselin.github.io/introbook_vol1/)), Edzer Pebesma and Roger Bivand ([Spatial Data Science with Applications in R](https://doi.org/10.1201/9780429459016)), and Adam Dennett ([Guide to Spatial Interaction Modelling](Guide to Spatial Interaction Modelling)). 
