@@ -152,11 +152,8 @@ Can you think why this might be?
 :::
 
 <details>
-
 <summary>Answer</summary>
-
 This is because the **maps** coordinate reference system is still using that of the *first* feature layer added (EPSG: [4269](https://epsg.io/4269)). While we have reprojected our county geometries, these are being reprojected again "on-the-fly" to match the map CRS.
-
 </details>
 
 > Update the map CRS to that of the `us_county_500k_contig_cf` layer, which should now resemble the following:
@@ -363,6 +360,10 @@ Describing these parts more fully, on the left hand side of the function we have
 $$\frac{n}{\sum_{i}\sum_{j}w_{ij}}$$
 
 which is simply the number of observations ($n$) in the dataset (i.e., the number of US counties, $n=3105$) divided by the sum of all the non-zero weights in the spatial weights matrix ($\sum_{i}\sum_{j}w_{ij}$). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., $n = \sum_{i}\sum_{j}w_{ij}$ (assuming all observations are connected[^03-autocorrelation-11]). If so, this part of the function cancels out and can be ignored. If row-standardisation is *not* used, then this ratio would need to be calculated.
+
+::: problem
+Need to explain why this part of the function is here...
+:::
 
 [^03-autocorrelation-11]: We ensured this by removing the four US counties with no *contiguous* neighbours (FID = `425`, `533`, `2017`, `2615`).
 
@@ -657,7 +658,7 @@ i.e., how much of the total "value" of the dataset (~83%) is contained in the cu
 How do results of $G_{i}^{*}$ differ from those of $I_{i}$?
 :::
 
-### Summary
+### Summary {#autocorrelation_summary}
 
 While $I$ and $G$ (global) and $I_{i}$ and $G_{i}^{*}$ (local) will often generate complementary results, the results are not always identical and can sometimes diverge. Fundamentally, the two sets of indicators are evaluating different phenomenon. 
 

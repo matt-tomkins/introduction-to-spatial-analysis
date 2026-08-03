@@ -52,7 +52,7 @@ interpreting-local-morans-i_i
 alternative-indices
 getis-and-ords-g
 getis-and-ords-g_i
-summary
+autocorrelation_summary
 extra-1
 resources
 spatial_correlation
@@ -115,11 +115,16 @@ resources-6
 spatial_interaction
 introduction-9
 practical-8
+understanding-spatial-interaction-models
 pre-processing-6
 data-exploration-1
 model-description
-unconstrained-and-total-constrained-models
+unconstrained_total
 tuning-parameters
+a-log-normal-approach
+a-poisson-approach
+implementing-poisson-regression
+gravity-model-variants
 origin-constrained-models
 destination-contrained-models
 doubly-constrained-models

@@ -82,3 +82,9 @@ main blockquote p {
 .note p {
   margin: 0;
 }
+
+/* Remove borders from figures */
+.inline-figure {
+  border: none !important;
+  box-shadow: none !important;
+}

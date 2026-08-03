@@ -238,7 +238,8 @@ The following expression will select all rows which meet the following condition
 </div>
 <details><summary>
 Answer
-</summary><p>This is because the <strong>maps</strong> coordinate reference system is still using that of the <em>first</em> feature layer added (EPSG: <a href="https://epsg.io/4269">4269</a>). While we have reprojected our county geometries, these are being reprojected again “on-the-fly” to match the map CRS.</p>
+</summary>
+This is because the <strong>maps</strong> coordinate reference system is still using that of the <em>first</em> feature layer added (EPSG: <a href="https://epsg.io/4269">4269</a>). While we have reprojected our county geometries, these are being reprojected again “on-the-fly” to match the map CRS.
 </details><blockquote>
 <p>Update the map CRS to that of the <code>us_county_500k_contig_cf</code> layer, which should now resemble the following:</p>
 </blockquote>
@@ -390,6 +391,9 @@ Answer
 <p>Describing these parts more fully, on the left hand side of the function we have the following:</p>
 <p><span class="math display">\[\frac{n}{\sum_{i}\sum_{j}w_{ij}}\]</span></p>
 <p>which is simply the number of observations (<span class="math inline">\(n\)</span>) in the dataset (i.e., the number of US counties, <span class="math inline">\(n=3105\)</span>) divided by the sum of all the non-zero weights in the spatial weights matrix (<span class="math inline">\(\sum_{i}\sum_{j}w_{ij}\)</span>). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., <span class="math inline">\(n = \sum_{i}\sum_{j}w_{ij}\)</span> (assuming all observations are connected<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We ensured this by removing the four US counties with no &lt;em&gt;contiguous&lt;/em&gt; neighbours (FID = &lt;code&gt;425&lt;/code&gt;, &lt;code&gt;533&lt;/code&gt;, &lt;code&gt;2017&lt;/code&gt;, &lt;code&gt;2615&lt;/code&gt;).&lt;/p&gt;"><sup>27</sup></a>). If so, this part of the function cancels out and can be ignored. If row-standardisation is <em>not</em> used, then this ratio would need to be calculated.</p>
+<div class="problem">
+<p>Need to explain why this part of the function is here…</p>
+</div>
 <div class="note">
 <p>If you are interested you can confirm this by using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> for the <code>us_county_gop_sl</code> layer, using Queen’s contiguity and row-standardisation. If you convert the output to a readable table via <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a>, the sum of the <code>WEIGHT</code> field should equal the number of observations (<span class="math inline">\(n=3105\)</span>).</p>
 </div>
@@ -596,9 +600,9 @@ i.e., how much of the total “value” of the dataset (~83%) is contained in th
 </div>
 </div>
 </div>
-<div id="summary" class="section level3" number="3.2.7">
+<div id="autocorrelation_summary" class="section level3" number="3.2.7">
 <h3>
-<span class="header-section-number">3.2.7</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.2.7</span> Summary<a class="anchor" aria-label="anchor" href="#autocorrelation_summary"><i class="fas fa-link"></i></a>
 </h3>
 <p>While <span class="math inline">\(I\)</span> and <span class="math inline">\(G\)</span> (global) and <span class="math inline">\(I_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> (local) will often generate complementary results, the results are not always identical and can sometimes diverge. Fundamentally, the two sets of indicators are evaluating different phenomenon.</p>
 <div class="question">
@@ -675,7 +679,7 @@ The county geometries, names, and/or FIPS codes might have changed in this perio
 <li><a class="nav-link" href="#global-spatial-autocorrelation"><span class="header-section-number">3.2.4</span> Global spatial autocorrelation</a></li>
 <li><a class="nav-link" href="#local-spatial-autocorrelation"><span class="header-section-number">3.2.5</span> Local spatial autocorrelation</a></li>
 <li><a class="nav-link" href="#alternative-indices"><span class="header-section-number">3.2.6</span> Alternative indices</a></li>
-<li><a class="nav-link" href="#summary"><span class="header-section-number">3.2.7</span> Summary</a></li>
+<li><a class="nav-link" href="#autocorrelation_summary"><span class="header-section-number">3.2.7</span> Summary</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#extra-1"><span class="header-section-number">3.3</span> Extra</a></li>
