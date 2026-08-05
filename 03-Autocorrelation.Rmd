@@ -162,7 +162,7 @@ This is because the **maps** coordinate reference system is still using that of 
 
 <br>
 
-#### Election results
+#### Election results {#election_results}
 
 Next we are going to combine our geometries with the county-level election results for 2024.
 
@@ -215,11 +215,11 @@ Can you see any evidence of spatial autocorrelation?
 
 While initial exploratory analysis is important, our pattern recognition abilities are not perfect. We might miss subtle but important patterns (a Type II error) or identify spurious or random patterns as significant (a Type I error). As a result, it is important that we use a statistical approach to identify and assess the significance of spatial autocorrelation.
 
-### Spatial Lag
+### Spatial Lag {#spatial_lag}
 
 Before we begin to explore spatial autocorrelation and start running ArcGIS tools, it is important that we understand the underlying mathematics. In particular, we need to introduce the **spatial lag** operator, which is one of the key use cases for the spatial weights matrix $\mathbf{W}$.
 
-The spatial lag captures the *weighted average value of a variable for each locations neighbourhood*. In our case, this could be the weighted average Republican vote share (`per_gop`) for the neighbourhood surrounding each US county, as illustrated below:
+The spatial lag captures the *weighted value of a variable for each locations neighbourhood*. In our case, this could be the weighted Republican vote share (`per_gop`) for the neighbourhood surrounding each US county, as illustrated below:
 
 <p align="center">
 <a name=""></a>![](./images/practical-3/spatial_lag.png){width="40%"}
@@ -229,7 +229,7 @@ Mathematically it is defined as follows:
 
 $$y_{sl-i}=\sum_{j}w_{ij}y_{j}$$
 
-where $y_{sl-i}$ is the spatial lag, representing the weighted average of the neighbourhood values for the focal object, excluding itself ($-i$). This is calculated as the sum of the spatial weights $w$ for row $i$ and column $j$ in the spatial weights matrix multiplied by the corresponding value for the neighbourhood location $y_j$.
+where $y_{sl-i}$ is the spatial lag, representing the weighted neighbourhood value for the focal object, excluding itself ($-i$). This is calculated as the sum of the spatial weights $w$ for row $i$ and column $j$ in the spatial weights matrix multiplied by the corresponding value for the neighbourhood location $y_j$.
 
 As an example, here is a *sparse* spatial weights matrix, subset to a single focal object $f$. As $f$ has seven neighbours and $\mathbf{W}_f$ is row-standardised, $w=1/7$
 
@@ -243,14 +243,16 @@ The products of the spatial weight $w$ and the value $y$ would be:
 
 $$w_{ij}y_{j}=\begin{bmatrix} 0.06 & 0.05 & 0.07 & 0.05 & 0.10 & 0.03 & 0.06 \end{bmatrix}$$
 
-The sum of these products is our **spatial lag** i.e., the weighted average for the neighbourhood:
+The sum of these products is our **spatial lag** i.e., the weighted value for the neighbourhood:
 
 $$y_{sl-i} = \sum w_{ij}y_{j}=0.41$$
+
+When row-standardisation is used, the spatial lag is effectively a weighted **average** for the neighbourhood, because the weights will sum to 1. When binary weights are used and row-standardisation is *not*, the spatial lag would produce the sum of the neighbourhood values. 
 
 You may find it easier to understand this visually, so here is a schematic using the same weights and values, illustrating how the values ($y$, `gop_perc`) are multiplied by the corresponding spatial weights ($w$), where the sum is the **spatial lag** ($y_{sl-i}$) for the focal feature = $0.41$.
 
 <p align="center">
-<a name=""></a>![](./images/practical-3/spatial-lag-schematic.png){width="100%"}
+<a name=""></a>![](./images/practical-3/spatial-lag-schematic.png){#lag_schematic width="100%"}
 </p>
 
 The above matrices and schematics illustrate the process for a *single* focal feature, and this would be replicated to create a spatially-lagged variable for all features in the dataset.
@@ -331,7 +333,7 @@ Would you describe the county-level Republican vote share as clustered or disper
 
 Using the Moran Plot, we can infer that *on average*, **positive** autocorrelation is present i.e., Republican voting counties tend to be surrounded by other Republican voting counties. However, that doesn't mean that this applies to every situation e.g., there may be instances where Republican voting counties are surrounded by Democratic voting counties, and vice-versa.
 
-#### Calculating Moran's $I$
+#### Calculating Moran's $I$ {#calc_moran_i}
 
 The **Moran Plot** is a powerful visualisation that tells us a great deal about the presence or absence of spatial autocorrelation for a dataset *as a whole*. However, there are some unanswered questions:
 
@@ -361,10 +363,6 @@ $$\frac{n}{\sum_{i}\sum_{j}w_{ij}}$$
 
 which is simply the number of observations ($n$) in the dataset (i.e., the number of US counties, $n=3105$) divided by the sum of all the non-zero weights in the spatial weights matrix ($\sum_{i}\sum_{j}w_{ij}$). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., $n = \sum_{i}\sum_{j}w_{ij}$ (assuming all observations are connected[^03-autocorrelation-11]). If so, this part of the function cancels out and can be ignored. If row-standardisation is *not* used, then this ratio would need to be calculated.
 
-::: problem
-Need to explain why this part of the function is here...
-:::
-
 [^03-autocorrelation-11]: We ensured this by removing the four US counties with no *contiguous* neighbours (FID = `425`, `533`, `2017`, `2615`).
 
 ::: note
@@ -387,7 +385,7 @@ The final piece of the puzzle is the numerator:
 
 $$\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}$$
 
-Some of this might be familiar. The **spatial lag** variable is here, albeit with slightly different notation, which you'll remember is the *weighted average value of a variable for each locations neighbourhood*. This is present as $w_{ij}z_{i}$, the only difference is we are using standardised values $(z_{i}-\overline{z})$ rather than the raw values, to capture the deviation from the global mean. As discussed above, this approach centers the dataset at 0, which allows us to easily identify whether values are above or below the average.
+Some of this might be familiar. The **spatial lag** variable is here, albeit with slightly different notation, which you'll remember is the *weighted value of a variable for each locations neighbourhood*. This is present as $w_{ij}z_{i}$, the only difference is we are using standardised values $(z_{i}-\overline{z})$ rather than the raw values, to capture the deviation from the global mean. As discussed above, this approach centers the dataset at 0, which allows us to easily identify whether values are above or below the average.
 
 The spatial lag is multiplied by all other standardised values in the dataset ($z_{j}$), with the outputs summed. This is measure of the **overall similarity of observations to their neighbours**.
 
@@ -510,7 +508,7 @@ Putting it all together, local Moran's $I_{i}$ is the cross-product of the stand
 This normalisation is important because it places the observed deviations from the mean $z_{i}$ within the context of the overall variability in the dataset, and makes $I_{I}$ dimensionless, allowing for comparison of $I_{I}$ for different datasets and measurement scales. Take the example below, which shows two different data distributions:
 
 <p align="center">
-<a name=""></a>![](./images/practical-3/normalisation.png){width="80%"}
+<a name=""></a>![](./images/practical-3/normalisation.png){#normalisation_figure width="80%"}
 </p>
 
 The datasets have the same mean, but very different levels of variance ($m_{2}$). If we pick a value at random (denoted by the vertical arrows), the absolute deviation $z_{i}$ will be the same for both distributions, as these are measured relative to the mean. In [A], that value would be considered quite *normal*, being close to the mean and within the range of typical values. By contrast, that same value in [B] might be considered *abnormal*, being significantly different from most other values. This example illustrates that we need to interpret the absolute deviation $z_{i}$ within the overall spread of the data, which is what normalising by $m_{2}$ achieves[^03-autocorrelation-16].

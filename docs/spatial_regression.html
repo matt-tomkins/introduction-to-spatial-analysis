@@ -209,9 +209,9 @@
 <div class="task">
 <p>Key themes to discuss through the practical: spatial heterogeneity, dependence, nonstationarity, defined well <a href="https://gdsl-ul.github.io/san/02-spatial_data.html#key-challenges">here</a></p>
 </div>
-<div id="pre-processing-3" class="section level3" number="7.2.1">
+<div id="pre-processing-4" class="section level3" number="7.2.1">
 <h3>
-<span class="header-section-number">7.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-3"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-4"><i class="fas fa-link"></i></a>
 </h3>
 <p>[1] Load MSOA geometries [<code>MSOA_2021_EW_BGC_V3.shp</code>] and check / set map projection (British National Grid, CRS 27700)</p>
 <p>[2] Load and inspect lookup table [<code>MSOA_2021_lookup_table.csv</code>] which contains additional attributes of interest e.g., region name [<code>RGN22NM</code>]</p>
@@ -297,7 +297,7 @@ Worth reiterating that these are aspatial comparisons. We know from earlier week
 <li>If desired, generate an Output Report File (PDF)</li>
 </ul>
 <p>[12] OLS interpretation. As discussed previously, it is important to assess any warnings that appear, which in this case is as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="spatial_regression.html#cb2-1" tabindex="-1"></a>WARNING <span class="dv">000851</span><span class="sc">:</span> Use the Spatial <span class="fu">Autocorrelation</span> (Moran<span class="st">'s I) Tool to ensure residuals are not spatially autocorrelated.</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="spatial_regression.html#cb4-1" tabindex="-1"></a>WARNING <span class="dv">000851</span><span class="sc">:</span> Use the Spatial <span class="fu">Autocorrelation</span> (Moran<span class="st">'s I) Tool to ensure residuals are not spatially autocorrelated.</span></span></code></pre></div>
 <p>This is good advice and is described more fully <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00851-00875-000851.html">here</a>.</p>
 <p><em>For now</em> we’ll ignore this and inspect the results, which gives us an R<sup>2</sup> of ~0.62 (matching the Scatter Chart created previously), p-values for each independent variable (n=1), and a wealth of information in the PDF.</p>
 <p>We can also inspect the spatial pattern of the standardised residuals (model errors) to see if there are areas where the OLS model is systematically overpredicting (+) or underpredicting (-) life expectancy.</p>
@@ -356,7 +356,7 @@ Worth reiterating that these are aspatial comparisons. We know from earlier week
 </div>
 <p>[15] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a>, selecting Spatial Error Model (SEM) and using <code>Contiguity Edges Corners</code> as the spatial weights method.</p>
 <p>This runs successfully, albeit with the following warning, which is flagging rows where we have missing data (no <code>life_expectancy_male</code>)</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="spatial_regression.html#cb3-1" tabindex="-1"></a>WARNING <span class="dv">000848</span><span class="sc">:</span> Features with bad <span class="fu">records</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> OBJECTID <span class="ot">=</span> <span class="dv">21</span>, <span class="dv">27</span>, <span class="dv">50</span>, <span class="dv">78</span>, <span class="dv">107</span>, <span class="dv">145</span>, <span class="dv">170</span>, <span class="dv">174</span>, <span class="dv">367</span>, <span class="dv">419</span>, <span class="dv">492</span>, <span class="dv">755</span>, <span class="dv">791</span>, <span class="dv">911</span>, <span class="dv">912</span>, <span class="dv">914</span>, <span class="dv">921</span>, <span class="fl">923.</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="spatial_regression.html#cb5-1" tabindex="-1"></a>WARNING <span class="dv">000848</span><span class="sc">:</span> Features with bad <span class="fu">records</span> (only includes first <span class="dv">30</span>)<span class="sc">:</span> OBJECTID <span class="ot">=</span> <span class="dv">21</span>, <span class="dv">27</span>, <span class="dv">50</span>, <span class="dv">78</span>, <span class="dv">107</span>, <span class="dv">145</span>, <span class="dv">170</span>, <span class="dv">174</span>, <span class="dv">367</span>, <span class="dv">419</span>, <span class="dv">492</span>, <span class="dv">755</span>, <span class="dv">791</span>, <span class="dv">911</span>, <span class="dv">912</span>, <span class="dv">914</span>, <span class="dv">921</span>, <span class="fl">923.</span></span></code></pre></div>
 <p>Some interesting output statistics:</p>
 <ul>
 <li>Neighbourhood Summary (<code>Percentage of Spatial Connectivity</code>)</li>
@@ -496,7 +496,7 @@ Worth reiterating that these are aspatial comparisons. We know from earlier week
 </li>
 <li>
 <a class="nav-link" href="#practical-5"><span class="header-section-number">7.2</span> Practical</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#pre-processing-3"><span class="header-section-number">7.2.1</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#pre-processing-4"><span class="header-section-number">7.2.1</span> Pre-processing</a></li>
 <li><a class="nav-link" href="#data-exploration"><span class="header-section-number">7.2.2</span> Data exploration</a></li>
 <li><a class="nav-link" href="#ols"><span class="header-section-number">7.2.3</span> Ordinary Least Squares</a></li>
 <li><a class="nav-link" href="#spat_reg_details"><span class="header-section-number">7.2.4</span> Spatial Regression</a></li>

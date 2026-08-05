@@ -121,8 +121,8 @@ issue.</li>
 <p>To that end, we’ll develop spatial interaction models to predict
 internal migration flows between local authorities in England and Wales.</p>
 </div>
-<div id="data-8" class="section level3 unnumbered">
-<h3>Data<a class="anchor" aria-label="anchor" href="#data-8"><i class="fas fa-link"></i></a>
+<div id="data-7" class="section level3 unnumbered">
+<h3>Data<a class="anchor" aria-label="anchor" href="#data-7"><i class="fas fa-link"></i></a>
 </h3>
 <p>All data for this practical have been sourced from the Office for
 National Statistics (ONS) at the local authority level and are found in
@@ -166,7 +166,7 @@ Attributes</a>
 </h3>
 <p>In 1687, Isaac Newton published <em>Philosophiæ Naturalis Principia
 Mathematica</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The Mathematical Principles of Natural
-Philosophy&lt;/p&gt;"><sup>40</sup></a>, arguably the most important
+Philosophy&lt;/p&gt;"><sup>54</sup></a>, arguably the most important
 scientific work in history:</p>
 <p align="center">
 <a name=""></a><img src="images/practical-10/Newtons_Principia_title_page.png" style="width:20.0%"></p>
@@ -222,7 +222,7 @@ Palau, …). Similarly, we might expect migration to be greater for
 <em>distant</em> country pairs (e.g., France → Japan). In reality, patterns of
 migration might also be explained by additional drivers e.g., shared
 language, cultural similarity<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As we explored in Practical 1: &lt;a href="geo_data.html#geo_data"&gt;Working
-with Geographic Data&lt;/a&gt;.&lt;/p&gt;'><sup>41</sup></a>, wealth
+with Geographic Data&lt;/a&gt;.&lt;/p&gt;'><sup>55</sup></a>, wealth
 inequality, to name a few.</p>
 <p>Returning to our model:</p>
 <ul>
@@ -274,9 +274,9 @@ provided by Adam Dennett and the functionality available in the <code>R</code>
 package <code>simodels</code> <span class="citation">(<a href="references.html#ref-lovelace2025">Lovelace and Nowosad, 2025</a>)</span> were used to guide development of
 this practical.</p>
 </div>
-<div id="pre-processing-6" class="section level3" number="10.2.2">
+<div id="pre-processing-7" class="section level3" number="10.2.2">
 <h3>
-<span class="header-section-number">10.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-6"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-7"><i class="fas fa-link"></i></a>
 </h3>
 <p>To begin:</p>
 <blockquote>
@@ -334,7 +334,7 @@ small<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&l
 &lt;a href="https://ukdataservice.ac.uk/app/uploads/censusgeography2022-10-18.pdf"&gt;here&lt;/a&gt;),
 although I haven’t been able to find documentation to confirm this.
 Alternatively, the coordinates are geometric-only, but produced by
-an alternative method.&lt;/p&gt;'><sup>42</sup></a> and given we are using the modelled
+an alternative method.&lt;/p&gt;'><sup>56</sup></a> and given we are using the modelled
 Points to calculate an <em>approximate</em> distance between local authorities,
 rather than actual travel paths (for example), we can be justified in
 using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To
@@ -779,7 +779,7 @@ product of the individual probabilities i.e.,
 &lt;span class="math inline"&gt;\(L=P_{1} \times P_{2}\times \cdots \times P_{n}\)&lt;/span&gt;. You can also
 obtain the same result by taking the logarithm of both sides, which
 can solve numerical problems i.e.,
-&lt;span class="math inline"&gt;\(\log(L)=\log(P_{1}) + \log(P_{2})+ \cdots + \log(P_{n})\)&lt;/span&gt;.&lt;/p&gt;'><sup>43</sup></a>… <span class="math inline">\(L=0.00000000161903\)</span>.</p>
+&lt;span class="math inline"&gt;\(\log(L)=\log(P_{1}) + \log(P_{2})+ \cdots + \log(P_{n})\)&lt;/span&gt;.&lt;/p&gt;'><sup>57</sup></a>… <span class="math inline">\(L=0.00000000161903\)</span>.</p>
 <p>Now let’s say we have created a new model with a <strong>different</strong> set of values for
 <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>, which will therefore produce a different set of
 modelled flow values <span class="math inline">\(λ\)</span>:</p>
@@ -806,7 +806,7 @@ generated using different values for the model parameters, in our case
 origin-destination pair, we can assess the probability of observing the
 <strong>empirical</strong> flow value given the expected (modelled) flow
 value<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Using the following equation:
-&lt;span class="math inline"&gt;\(\frac{λ^{n}e^{-λ}}{n!}\)&lt;/span&gt;&lt;/p&gt;'><sup>44</sup></a>. The model <em>likelihood</em> <span class="math inline">\(L\)</span> is the
+&lt;span class="math inline"&gt;\(\frac{λ^{n}e^{-λ}}{n!}\)&lt;/span&gt;&lt;/p&gt;'><sup>58</sup></a>. The model <em>likelihood</em> <span class="math inline">\(L\)</span> is the
 product of these probabilities for all observations i.e., how well does
 this particular set of parameters explain the observed flow? This
 process is repeated, trying different values for each of the parameters
@@ -834,7 +834,7 @@ uses &lt;code&gt;e&lt;/code&gt; as the default, which is consistent with the log
 in
 &lt;a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log"&gt;R&lt;/a&gt;.
 For those more familiar with Excel, the function log() defaults to
-base10. For any future analysis, be aware of this difference! In Excel, the same result can be obtained using log(val, EXP(1)) or the LN() function.&lt;/p&gt;'><sup>45</sup></a>
+base10. For any future analysis, be aware of this difference! In Excel, the same result can be obtained using log(val, EXP(1)) or the LN() function.&lt;/p&gt;'><sup>59</sup></a>
 origin population, destination GDP and distance variables e.g.,
 <code>log_orig_pop</code> (<code>Double</code>) = <code>math.log(!orig_pop!)</code>. To simplify the
 calculations for distance, you may also want to covert to kilometers
@@ -948,11 +948,11 @@ ensure that the sum of all modelled flows equals the sum of all
 empirical flows. The other variants are defined as follows:</p>
 <ul>
 <li>An <strong>origin-constrained</strong> model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Also referred to as a &lt;strong&gt;production
-constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>46</sup></a> is
+constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>60</sup></a> is
 designed to constrain the total modelled flows <em>from each origin</em> to
 match the total empirical flows <em>from each origin</em>.</li>
 <li>A <strong>destination-constrained</strong> model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Also referred to as an &lt;strong&gt;attraction
-constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>47</sup></a> is
+constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>61</sup></a> is
 designed to constrain the total modelled flows <em>to each destination</em>
 to match the total empirical flows <em>to each destination</em>.</li>
 <li>A <strong>doubly-constrained</strong> model does both and is designed to
@@ -1092,18 +1092,18 @@ messages and ask for help!</p>
 and <a href="https://www.statsmodels.org/stable/index.html"><code>statsmodels</code></a>, as
 well as <code>os</code> for interacting with the operating system and accessing
 directories and files:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="spatial_interaction.html#cb6-1" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb6-2"><a href="spatial_interaction.html#cb6-2" tabindex="-1"></a><span class="im">import</span> arcpy</span>
-<span id="cb6-3"><a href="spatial_interaction.html#cb6-3" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb6-4"><a href="spatial_interaction.html#cb6-4" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb6-5"><a href="spatial_interaction.html#cb6-5" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb6-6"><a href="spatial_interaction.html#cb6-6" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="spatial_interaction.html#cb8-1" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb8-2"><a href="spatial_interaction.html#cb8-2" tabindex="-1"></a><span class="im">import</span> arcpy</span>
+<span id="cb8-3"><a href="spatial_interaction.html#cb8-3" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-4"><a href="spatial_interaction.html#cb8-4" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-5"><a href="spatial_interaction.html#cb8-5" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb8-6"><a href="spatial_interaction.html#cb8-6" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code></pre></div>
 <p>The next part creates an object <code>aprx</code> which is connected to the current
 ArcGIS project, and then extracts the first <code>[0]</code> (and only) map as <code>m</code>.
 We should now have access to the map layers:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="spatial_interaction.html#cb7-1" tabindex="-1"></a><span class="co"># Current ArcGIS project and return the</span></span>
-<span id="cb7-2"><a href="spatial_interaction.html#cb7-2" tabindex="-1"></a>aprx <span class="op">=</span> arcpy.mp.ArcGISProject(<span class="st">"CURRENT"</span>)</span>
-<span id="cb7-3"><a href="spatial_interaction.html#cb7-3" tabindex="-1"></a>m <span class="op">=</span> aprx.listMaps()[<span class="dv">0</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="spatial_interaction.html#cb9-1" tabindex="-1"></a><span class="co"># Current ArcGIS project and return the</span></span>
+<span id="cb9-2"><a href="spatial_interaction.html#cb9-2" tabindex="-1"></a>aprx <span class="op">=</span> arcpy.mp.ArcGISProject(<span class="st">"CURRENT"</span>)</span>
+<span id="cb9-3"><a href="spatial_interaction.html#cb9-3" tabindex="-1"></a>m <span class="op">=</span> aprx.listMaps()[<span class="dv">0</span>]</span></code></pre></div>
 <p>You can run the code using the “play” button, and if successful, the
 code blocks will switch from <code>[*]</code> to <code>[#]</code> to denote completion, without
 errors or warnings:</p>
@@ -1112,17 +1112,17 @@ errors or warnings:</p>
 interested in the Near Table <code>LAD_point_neartable</code>, which contains all of the fields we’ve
 been using for modelling. This is converted to a Pandas dataframe for
 easier analysis:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="spatial_interaction.html#cb8-1" tabindex="-1"></a><span class="co"># Access near table</span></span>
-<span id="cb8-2"><a href="spatial_interaction.html#cb8-2" tabindex="-1"></a>table <span class="op">=</span> m.listTables(<span class="st">"LAD_point_neartable"</span>)[<span class="dv">0</span>]</span>
-<span id="cb8-3"><a href="spatial_interaction.html#cb8-3" tabindex="-1"></a>table_path <span class="op">=</span> table.dataSource</span>
-<span id="cb8-4"><a href="spatial_interaction.html#cb8-4" tabindex="-1"></a>workspace <span class="op">=</span> arcpy.Describe(table_path)</span>
-<span id="cb8-5"><a href="spatial_interaction.html#cb8-5" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="spatial_interaction.html#cb8-6" tabindex="-1"></a><span class="co"># List of fields</span></span>
-<span id="cb8-7"><a href="spatial_interaction.html#cb8-7" tabindex="-1"></a>fields <span class="op">=</span> [f.name <span class="cf">for</span> f <span class="kw">in</span> arcpy.ListFields(table_path)]</span>
-<span id="cb8-8"><a href="spatial_interaction.html#cb8-8" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="spatial_interaction.html#cb8-9" tabindex="-1"></a><span class="co"># Convert to pandas dataframe</span></span>
-<span id="cb8-10"><a href="spatial_interaction.html#cb8-10" tabindex="-1"></a>rows <span class="op">=</span> arcpy.da.SearchCursor(table_path, fields)</span>
-<span id="cb8-11"><a href="spatial_interaction.html#cb8-11" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(<span class="bu">list</span>(rows), columns<span class="op">=</span>fields)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="spatial_interaction.html#cb10-1" tabindex="-1"></a><span class="co"># Access near table</span></span>
+<span id="cb10-2"><a href="spatial_interaction.html#cb10-2" tabindex="-1"></a>table <span class="op">=</span> m.listTables(<span class="st">"LAD_point_neartable"</span>)[<span class="dv">0</span>]</span>
+<span id="cb10-3"><a href="spatial_interaction.html#cb10-3" tabindex="-1"></a>table_path <span class="op">=</span> table.dataSource</span>
+<span id="cb10-4"><a href="spatial_interaction.html#cb10-4" tabindex="-1"></a>workspace <span class="op">=</span> arcpy.Describe(table_path)</span>
+<span id="cb10-5"><a href="spatial_interaction.html#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="spatial_interaction.html#cb10-6" tabindex="-1"></a><span class="co"># List of fields</span></span>
+<span id="cb10-7"><a href="spatial_interaction.html#cb10-7" tabindex="-1"></a>fields <span class="op">=</span> [f.name <span class="cf">for</span> f <span class="kw">in</span> arcpy.ListFields(table_path)]</span>
+<span id="cb10-8"><a href="spatial_interaction.html#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="spatial_interaction.html#cb10-9" tabindex="-1"></a><span class="co"># Convert to pandas dataframe</span></span>
+<span id="cb10-10"><a href="spatial_interaction.html#cb10-10" tabindex="-1"></a>rows <span class="op">=</span> arcpy.da.SearchCursor(table_path, fields)</span>
+<span id="cb10-11"><a href="spatial_interaction.html#cb10-11" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(<span class="bu">list</span>(rows), columns<span class="op">=</span>fields)</span></code></pre></div>
 <p>We can inspect the data using <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>:</p>
 <p align="center">
 <a name=""></a><img src="screenshots/practical-10/head.png" style="width:60.0%"></p>
@@ -1131,8 +1131,8 @@ and independent variables. This was managed for us in the <a href="https://doc.e
 Linear
 Regression</a>
 tool, but here we specify that manually:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="spatial_interaction.html#cb9-1" tabindex="-1"></a><span class="co"># Poisson formula</span></span>
-<span id="cb9-2"><a href="spatial_interaction.html#cb9-2" tabindex="-1"></a>model_formula <span class="op">=</span> <span class="st">"flow_int ~ C(orig_LAD21CD) + log_dest_gdp + log_dist - 1"</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="spatial_interaction.html#cb11-1" tabindex="-1"></a><span class="co"># Poisson formula</span></span>
+<span id="cb11-2"><a href="spatial_interaction.html#cb11-2" tabindex="-1"></a>model_formula <span class="op">=</span> <span class="st">"flow_int ~ C(orig_LAD21CD) + log_dest_gdp + log_dist - 1"</span></span></code></pre></div>
 <p>Here we are specifying that <code>flow_int</code> is our dependent variable, and this
 is modelled (<code>~</code>) as a function of the distance between origins and destinations
 <code>log_dist</code>, the destination GDP <code>log_dest_gdp</code>, and dummy variables for
@@ -1140,11 +1140,11 @@ the origin name <code>C(orig_LAD21CD)</code>. The <a href="https://www.statsmode
 operator</a>
 in <code>statsmodels</code> indicates we want to treat that variable as
 “categorical”, thereby creating a dummy variables for each origin.</p>
-<p>The final component is<code>-1</code> which removes the model intercept. When an intercept is included, one category must normally be omitted and treated as a <em>reference category</em>. For example, if there were three origins <span class="math inline">\(A,B,C\)</span>, a typical model would estimate an intercept together with coefficients for <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, which are interpreted <em>relative</em> to <span class="math inline">\(A\)</span>. This is necessary to avoid the <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variable trap</a>, whereby there is perfect multicollinearity between the intercept term in a model and the dummy variables<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We are moving towards some complex mathematics here, including how regression works in &lt;a href="https://en.wikipedia.org/wiki/Linear_regression"&gt;&lt;strong&gt;matrix notation&lt;/strong&gt;&lt;/a&gt;. For example, if we developed a regression using a single independent variable, in matrix form the model inputs would be stored in a matrix as follows e.g., &lt;span class="math inline"&gt;\(x = \begin{bmatrix} 1 &amp;amp; x_1 \\ 1 &amp;amp; x_2 \\ \vdots &amp;amp; \vdots \\ 1 &amp;amp; x_n \end{bmatrix}\)&lt;/span&gt; where &lt;span class="math inline"&gt;\(1\)&lt;/span&gt; denotes the intercept term, and &lt;span class="math inline"&gt;\(x_n\)&lt;/span&gt; denotes the independent variable &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; for each observation &lt;span class="math inline"&gt;\(n\)&lt;/span&gt;. Following regression, the model coefficients would be stored in a separate matrix e.g., &lt;span class="math inline"&gt;\(\beta = \begin{bmatrix} \beta_0 \\ \beta_1 \end{bmatrix}\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(\beta_0\)&lt;/span&gt; is the intercept coefficient and &lt;span class="math inline"&gt;\(\beta_1\)&lt;/span&gt; is the slope coefficient for the single independent variable. &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; is then multiplied by &lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; to obtain the model predictions. Perfect multicollinearity would exist if the intercept term and &lt;strong&gt;all&lt;/strong&gt; the categorical variables were included as dummy variables. As each observation belongs to exactly one category, the row-wise sum of the dummy variables would always equal 1. This would be a perfect duplicate of the intercept column (which also consists entirely of 1’s, as shown above), making one column an exact linear combination of the others.&lt;/p&gt;'><sup>48</sup></a>. To avoid this, we remove the intercept using <code>-1</code>, allowing the model to estimate a separate coefficient for every origin (in <code>orig_LAD21CD</code>), which represent their own baseline effect, rather than measuring relative to an arbitrary baseline category.</p>
+<p>The final component is<code>-1</code> which removes the model intercept. When an intercept is included, one category must normally be omitted and treated as a <em>reference category</em>. For example, if there were three origins <span class="math inline">\(A,B,C\)</span>, a typical model would estimate an intercept together with coefficients for <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, which are interpreted <em>relative</em> to <span class="math inline">\(A\)</span>. This is necessary to avoid the <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variable trap</a>, whereby there is perfect multicollinearity between the intercept term in a model and the dummy variables<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We are moving towards some complex mathematics here, including how regression works in &lt;a href="https://en.wikipedia.org/wiki/Linear_regression"&gt;&lt;strong&gt;matrix notation&lt;/strong&gt;&lt;/a&gt;. For example, if we developed a regression using a single independent variable, in matrix form the model inputs would be stored in a matrix as follows e.g., &lt;span class="math inline"&gt;\(x = \begin{bmatrix} 1 &amp;amp; x_1 \\ 1 &amp;amp; x_2 \\ \vdots &amp;amp; \vdots \\ 1 &amp;amp; x_n \end{bmatrix}\)&lt;/span&gt; where &lt;span class="math inline"&gt;\(1\)&lt;/span&gt; denotes the intercept term, and &lt;span class="math inline"&gt;\(x_n\)&lt;/span&gt; denotes the independent variable &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; for each observation &lt;span class="math inline"&gt;\(n\)&lt;/span&gt;. Following regression, the model coefficients would be stored in a separate matrix e.g., &lt;span class="math inline"&gt;\(\beta = \begin{bmatrix} \beta_0 \\ \beta_1 \end{bmatrix}\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(\beta_0\)&lt;/span&gt; is the intercept coefficient and &lt;span class="math inline"&gt;\(\beta_1\)&lt;/span&gt; is the slope coefficient for the single independent variable. &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; is then multiplied by &lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; to obtain the model predictions. Perfect multicollinearity would exist if the intercept term and &lt;strong&gt;all&lt;/strong&gt; the categorical variables were included as dummy variables. As each observation belongs to exactly one category, the row-wise sum of the dummy variables would always equal 1. This would be a perfect duplicate of the intercept column (which also consists entirely of 1’s, as shown above), making one column an exact linear combination of the others.&lt;/p&gt;'><sup>62</sup></a>. To avoid this, we remove the intercept using <code>-1</code>, allowing the model to estimate a separate coefficient for every origin (in <code>orig_LAD21CD</code>), which represent their own baseline effect, rather than measuring relative to an arbitrary baseline category.</p>
 <p>We can now use this formula as an input to a Poisson regression model implemented via the <code>smf.glm</code> function,
 using the following code:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="spatial_interaction.html#cb10-1" tabindex="-1"></a><span class="co"># Fit a model, using the specified formula and data, and using a Poisson approach</span></span>
-<span id="cb10-2"><a href="spatial_interaction.html#cb10-2" tabindex="-1"></a>model <span class="op">=</span> smf.glm(formula<span class="op">=</span>model_formula, data<span class="op">=</span>df, family<span class="op">=</span>sm.families.Poisson()).fit()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="spatial_interaction.html#cb12-1" tabindex="-1"></a><span class="co"># Fit a model, using the specified formula and data, and using a Poisson approach</span></span>
+<span id="cb12-2"><a href="spatial_interaction.html#cb12-2" tabindex="-1"></a>model <span class="op">=</span> smf.glm(formula<span class="op">=</span>model_formula, data<span class="op">=</span>df, family<span class="op">=</span>sm.families.Poisson()).fit()</span></code></pre></div>
 <p>If successful, <code>print(model.summary())</code> can be used to evaluate the
 model results:</p>
 <div class="inline-figure"><img src="screenshots/practical-10/glr-output.png" style="width:100.0%"></div>
@@ -1156,8 +1156,8 @@ empirical origin flows:</p>
 data, as we did for <code>gm1</code> and <code>gm2</code>. This uses the explanatory
 (independent) variables stored in <code>df</code>, and stores the values in the
 <code>df</code> dataframe in the <code>gm3</code> field i.e., our third gravity model.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="spatial_interaction.html#cb11-1" tabindex="-1"></a><span class="co"># Generate predictions for each row of df</span></span>
-<span id="cb11-2"><a href="spatial_interaction.html#cb11-2" tabindex="-1"></a>df[<span class="st">"gm3"</span>] <span class="op">=</span> model.predict(exog<span class="op">=</span>df)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="spatial_interaction.html#cb13-1" tabindex="-1"></a><span class="co"># Generate predictions for each row of df</span></span>
+<span id="cb13-2"><a href="spatial_interaction.html#cb13-2" tabindex="-1"></a>df[<span class="st">"gm3"</span>] <span class="op">=</span> model.predict(exog<span class="op">=</span>df)</span></code></pre></div>
 <p>You can inspect some of the predicted values by running <code>df.gm3</code>:</p>
 <p align="center">
 <a name=""></a><img src="screenshots/practical-10/gm3_predictions.png" style="width:60.0%"></p>
@@ -1165,11 +1165,11 @@ data, as we did for <code>gm1</code> and <code>gm2</code>. This uses the explana
 us to investigate the outputs further in ArcGIS. The code below
 specifies our file name, and updates the path to the directory of our
 project, as stored in <code>aprx.homeFolder</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="spatial_interaction.html#cb12-1" tabindex="-1"></a><span class="co"># Set output file path (Project directory) and file name</span></span>
-<span id="cb12-2"><a href="spatial_interaction.html#cb12-2" tabindex="-1"></a>output <span class="op">=</span> os.path.join(aprx.homeFolder, <span class="st">"LAD_point_neartable_pred_origconst.csv"</span>)</span>
-<span id="cb12-3"><a href="spatial_interaction.html#cb12-3" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="spatial_interaction.html#cb12-4" tabindex="-1"></a><span class="co"># Export</span></span>
-<span id="cb12-5"><a href="spatial_interaction.html#cb12-5" tabindex="-1"></a>df.to_csv(output, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="spatial_interaction.html#cb14-1" tabindex="-1"></a><span class="co"># Set output file path (Project directory) and file name</span></span>
+<span id="cb14-2"><a href="spatial_interaction.html#cb14-2" tabindex="-1"></a>output <span class="op">=</span> os.path.join(aprx.homeFolder, <span class="st">"LAD_point_neartable_pred_origconst.csv"</span>)</span>
+<span id="cb14-3"><a href="spatial_interaction.html#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="spatial_interaction.html#cb14-4" tabindex="-1"></a><span class="co"># Export</span></span>
+<span id="cb14-5"><a href="spatial_interaction.html#cb14-5" tabindex="-1"></a>df.to_csv(output, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
 <p>If successful, the output file should be present in the project
 directory:</p>
 <div class="inline-figure"><img src="screenshots/practical-10/notebook_output.png" style="width:100.0%"></div>
@@ -1221,7 +1221,7 @@ but for completeness, the model is as follows:
 &lt;span class="math inline"&gt;\(D_{j}=\sum_{i}T_{ij}\)&lt;/span&gt;. &lt;span class="math inline"&gt;\(B_{j}\)&lt;/span&gt; is a balancing factor which is used
 to scale the modelled values to ensure the modelled total flow for
 each &lt;strong&gt;destination&lt;/strong&gt; equals the known total flow &lt;span class="math inline"&gt;\(D_{j}\)&lt;/span&gt;, defined as
-&lt;span class="math inline"&gt;\(B_{j} = \frac{1}{\sum_{i}V_{i}^{μ}d_{ij}^{-\beta}}\)&lt;/span&gt;.&lt;/p&gt;'><sup>49</sup></a>:</p>
+&lt;span class="math inline"&gt;\(B_{j} = \frac{1}{\sum_{i}V_{i}^{μ}d_{ij}^{-\beta}}\)&lt;/span&gt;.&lt;/p&gt;'><sup>63</sup></a>:</p>
 <p><span class="math display">\[λ_{ij} = \exp(μ\log(V_i)+ α_{i}- \beta\log(d_{ij}))\]</span></p>
 <p>The variable <span class="math inline">\(α_{i}\)</span> is a vector of destination-specific intercepts,
 which as before are represented in our model using <strong>dummy variables</strong>,
@@ -1277,7 +1277,7 @@ conundrum is solved, except that it is solved <em>iteratively</em>, beginning
 with a starting value and calculating <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{j}\)</span> in turn until
 the values stabilise<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For more information, Adam Dennett’s
 &lt;a href="https://rpubs.com/adam_dennett/376877"&gt;walkthrough&lt;/a&gt; is a good
-place to start, as is the paper by &lt;span class="citation"&gt;Senior (&lt;a href="references.html#ref-senior1979c"&gt;1979&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>50</sup></a>.</p>
+place to start, as is the paper by &lt;span class="citation"&gt;Senior (&lt;a href="references.html#ref-senior1979c"&gt;1979&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>64</sup></a>.</p>
 <p>Our Poisson regression model is similar to the previous models but here we
 have no variables for modelling emissiveness (<span class="math inline">\(V_i^μ\)</span>) or attractiveness
 (<span class="math inline">\(W_j^α\)</span>), as both total origin flows and total destination flows are
@@ -1366,14 +1366,14 @@ Opportunities. Geographical Analysis, 57(3), pp.540-554.</li>
 <a class="nav-link" href="#introduction-9"><span class="header-section-number">10.1</span> Introduction</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#aims-9">Aims</a></li>
 <li><a class="nav-link" href="#application-9">Application</a></li>
-<li><a class="nav-link" href="#data-8">Data</a></li>
+<li><a class="nav-link" href="#data-7">Data</a></li>
 <li><a class="nav-link" href="#tools-9">Tools</a></li>
 </ul>
 </li>
 <li>
 <a class="nav-link" href="#practical-8"><span class="header-section-number">10.2</span> Practical</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#understanding-spatial-interaction-models"><span class="header-section-number">10.2.1</span> Understanding Spatial Interaction Models</a></li>
-<li><a class="nav-link" href="#pre-processing-6"><span class="header-section-number">10.2.2</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#pre-processing-7"><span class="header-section-number">10.2.2</span> Pre-processing</a></li>
 <li><a class="nav-link" href="#data-exploration-1"><span class="header-section-number">10.2.3</span> Data exploration</a></li>
 <li><a class="nav-link" href="#model-description"><span class="header-section-number">10.2.4</span> Model description</a></li>
 <li><a class="nav-link" href="#unconstrained_total"><span class="header-section-number">10.2.5</span> Unconstrained and Total-constrained models</a></li>
