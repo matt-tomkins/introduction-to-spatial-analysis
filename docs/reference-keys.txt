@@ -72,11 +72,16 @@ resources-1
 point_patterns
 introduction-4
 practical-3
+point_introduction
 pre-processing-2
-visualisation-and-centrography
+point_vis
+point_centro
 p5_randomness
+observation-window
 cluster-analysis
+summary
 extra-2
+ripleys-alphabet-of-clustering-functions
 resources-2
 interpolation
 introduction-5

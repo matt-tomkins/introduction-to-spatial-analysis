@@ -141,247 +141,476 @@
 <h2>
 <span class="header-section-number">5.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-3"><i class="fas fa-link"></i></a>
 </h2>
-<div id="pre-processing-2" class="section level3" number="5.2.1">
+<div id="point_introduction" class="section level3" number="5.2.1">
 <h3>
-<span class="header-section-number">5.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.1</span> Value and object patterning<a class="anchor" aria-label="anchor" href="#point_introduction"><i class="fas fa-link"></i></a>
 </h3>
-<p>[1] Load occurrence data and inspect [<code>occurrence.csv</code>]</p>
-<p>[2] Convert to Point - <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table To Point</a></p>
-<p>[3] Load the Natural Earth data from Week 1 [<code>data/natural-earth/ne_10m_admin_0_countries.shp</code>] which we’ll use to subset to our area of interest (Indian subcontinent).</p>
-<ul>
-<li>Select by Attributes (ADMIN = ‘India’ OR ADMIN = ‘Nepal’ OR ADMIN = ‘Bhutan’ OR ADMIN = ‘Bangladesh’)</li>
-<li>Either Export Selection (or keep selected)</li>
-<li>Clip: Input = Tiger Points, Feature = Natural Earth (selected record)</li>
-</ul>
-<div class="task">
-<p><em>Discuss</em> Spatial Joins / Overlay / Clip</p>
+<p>In our exploration of <a href="spatial_autocorrelation.html#spatial_autocorrelation">spatial autocorrelation</a> and <a href="spatial_correlation.html#spatial_correlation">spatial correlation</a>, we focused on how the <strong>values</strong> associated with objects can vary across discretised space.</p>
+<p>For example, we investigated the spatial patterns in the county-level Republican vote share for the 2024 US election, using Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span>, local Moran’s <span class="math inline">\(I_i\)</span> <span class="citation">(<a href="references.html#ref-anselin1995">Anselin, 1995</a>)</span>, and Getis and Ord’s <span class="math inline">\(G\)</span>, <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> <span class="citation">(<a href="references.html#ref-getis1992">Getis and Ord, 1992</a>)</span> to assess for spatial randomness, positive spatial autocorrelation and negative spatial autocorrelation. We also investigated the degree to which the vote share was spatially associated with other county-level datasets, using Lee’s <span class="math inline">\(L\)</span>, a bivariate spatial association measure <span class="citation">(<a href="references.html#ref-lee2001">Lee, 2001</a>)</span>.</p>
+<p>One thing we <em>haven’t</em> explored is the spatial patterning of the <strong>objects themselves</strong>, rather than the patterning of the values alone.</p>
+<p>In our exploration of spatial autocorrelation, we asked:</p>
+<div class="question">
+<p>Are the <strong>values</strong> randomly distributed or is there evidence of spatial structure? i.e., <em>clustering and/or divergence.</em></p>
 </div>
-<div class="task">
-<p><em>To do?</em> Remove non-contiguous part? i.e., Andaman Islands, Maldives. This could be achieved using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/multipart-to-singlepart.html?tabs=dialog">Multipart To Singlepart</a> (Data Management Tools)</p>
+<p>Today we will ask:</p>
+<div class="question">
+<p>Are the <strong>objects</strong> randomly distributed or is there evidence of spatial structure?</p>
 </div>
-<p>[4] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">Dissolve</a> our area of interest (Indian Subcontinent):</p>
-<ul>
-<li>Natural Earth</li>
-<li>Use the selected records</li>
-<li>Dissolve Fields: leave blank = all features together</li>
-<li>Statistics Fields: also blank (just using area to define study extent), but could do statistics here e.g., <code>POS_EST</code> [SUM], <code>GDP_MD</code> [Mean]</li>
-</ul>
-<div class="task">
-<p><em>Discuss</em> polygon-representation issues i.e., does the Tiger recognise political boundaries?</p>
+<p>Within this context, <strong>point pattern analysis</strong> seeks to visualise and describe the spatial distribution of points, with the understanding that their locations and distribution reveals information about the <strong>important underlying processes</strong>.</p>
+<p>For example, here are some <a href="https://www.inaturalist.org/observations?place_id=any&amp;view=species">iNaturalist</a> point observations of <em>Canis lupus</em> (the wolf) in the contiguous United States, obtained via <a href="https://www.gbif.org/species/search">GBIF</a>.</p>
+<center>
+<img src="screenshots/practical-5/canis_lupus_us.png" style="width:100.0%">
+</center>
+<p><em>iNaturalist observations of Canis lupus, which you can also explore <a href="https://www.gbif.org/occurrence/search?taxonKey=QLXL&amp;view=map&amp;datasetName=iNaturalist+research-grade+observations">here</a>. I’d recommend <a href="https://www.penguin.co.uk/books/448173/lone-wolf-by-weymouth-adam/9781529158335">“Lone Wolf”</a> by Adam Weymouth for your next read…</em></p>
+<p>At this scale, the distribution of <em>Canis lupus</em> observations appears to be spatially structured, perhaps reflecting differences in climate, habitat availability, topography, human influence, or environmental protection.</p>
+<p>This example reveals an important distinction between <strong>point processes</strong>, which generate point patterns, and <strong>point-patterns</strong>, which are the realisations of those processes. In turn, while point pattern analysis is primarily <strong>descriptive</strong> (e.g., are the points clustered, dispersed or random?), this is a necessary step to <strong>understand</strong> the processes which give rise to those patterns.</p>
+<p>In short:</p>
+<div class="note">
+<p><strong>Points</strong> <em>are a reflection of</em> <strong>Process</strong><em>, so by understanding patterns, we can begin to reveal processes.</em></p>
 </div>
-<p>[5] Update Projection</p>
-<p>In the previous practicals, we’ve largely been dealing with topological issues (i.e., neighbouring, bordering) and haven’t deal in great depth with geometric issues i.e., areas, distances (link to Understanding GIS, Week 2)</p>
-<p>In this practical, we are certainly in the realm of geometry i.e., are points clustered or randomly dispersed? As a result, the choice of projection is an important one!</p>
-<p>How do we select a suitable CRS?</p>
+<p>In this practical, we will focus on point pattern analysis, introducing techniques to characterise the spatial distribution of points. You will be able to explore point-process modelling in more detail in the Semester 2 unit GEOG71922 <em>Spatial Ecology</em> with <a href="https://research.manchester.ac.uk/en/persons/matthew.dennis/">Matt Dennis</a>.</p>
+</div>
+<div id="pre-processing-2" class="section level3" number="5.2.2">
+<h3>
+<span class="header-section-number">5.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-2"><i class="fas fa-link"></i></a>
+</h3>
+<p>In today’s practical, we are using research-grade species observations of <em>Panthera tigris</em> from <a href="https://www.inaturalist.org/observations?place_id=any&amp;view=species">iNaturalist</a>, obtained via <a href="https://www.gbif.org/species/search">GBIF</a>.</p>
+<p>To begin:</p>
+<blockquote>
+<p>Open ArcGIS, initialise a new project in the <code>practical-5</code> directory, establish a connection to <code>data</code> and load <code>occurrence.csv</code>, which is a simplified version of the iNaturalist data containing the locations of <em>Panthera tigris</em> observations (<code>decimalLatitude</code>, <code>decimalLongitude</code>), plus a few other key attributes (e.g., <code>year</code>, <code>gbifID</code>)</p>
+</blockquote>
+<blockquote>
+<p>You can inspect individual observations by navigating to <code>https://www.gbif.org/occurrence/&lt;id&gt;</code>, updating <code>&lt;id&gt;</code> with a value stored in the <code>gbifID</code> field.</p>
+</blockquote>
+<div class="inline-figure"><img src="screenshots/practical-5/gbif_example.png" style="width:100.0%"></div>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table To Point</a> to create a point feature layer based on the <code>decimalLatitude</code> and <code>decimalLongitude</code> fields, using EPSG <a href="https://epsg.io/4326">4326</a> and saving in the project <strong>geodatabase</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is necessary because the &lt;code&gt;gbifID&lt;/code&gt; field has a “Data Type” of &lt;code&gt;Big Integer&lt;/code&gt;, which is a 64-bit data type. The shapefile format can’t handle this, and if you try to save in your project directory as a shapefile, you’ll encounter &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00301-00325-000308.html"&gt;&lt;code&gt;ERROR 000308&lt;/code&gt;&lt;/a&gt;: &lt;em&gt;Invalid field type&lt;/em&gt;. This is not an issue when saving as a feature class in the geodatabase.&lt;/p&gt;'><sup>50</sup></a> as <code>tiger_points</code>.</p>
+</blockquote>
+<div class="inline-figure"><img src="screenshots/practical-5/tiger_points.png" style="width:100.0%"></div>
+<p>Next, we are going to subset these points to our area of interest, the <a href="https://en.wikipedia.org/wiki/Indian_subcontinent">Indian subcontinent</a>, using the <code>Natural Earth</code> data from Practical 1.</p>
+<blockquote>
+<p>Load <code>ne_10m_admin_0_countries.shp</code> and use Select by Attributes to select India, Nepal, Bhutan and Bangladesh, and export the selected features as <code>indian_subcontinent</code>.</p>
+</blockquote>
+<p>Next, we are going to <strong>clip</strong> our <em>Panthera tigris</em> observations to our area of interest, which is an example of an <strong>overlay</strong> operation. In this case, we only want to retain the points that overlay the clip feature:</p>
+<div class="inline-figure"><img src="images/practical-5/clip_schematic.png" style="width:100.0%"></div>
+<blockquote>
+<p>Use the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a> to subset the point data to the area of interest, and save as <code>tiger_points_clip</code>.</p>
+</blockquote>
+<blockquote>
+<p>When complete, remove any original layers e.g., <code>occurrence</code>, <code>tiger_points</code>, <code>natural-earth</code>.</p>
+</blockquote>
+<p>For some of our later analyses, we need to define an <strong>observation window</strong>. We’ll explore this concept more fully later on, but as a brief introduction, this is the region within which point patterns are observed and analysed. Here, this is represented by the Natural Earth data, subset to the Indian subcontinent.</p>
+<p>At present, this layer consists of <em>four</em> separate features, one for each country, which is evident in the Attribute Table and on the Map View. It would be simpler if this was a single feature, which we can produce by <strong>dissolving</strong> our layer, a process which aggregates separate features into one:</p>
+<center>
+<img src="images/practical-5/simple-dissolve.png" style="width:80.0%">
+</center>
+<p><br></p>
+<p>We can dissolve all features into one, shown above, or can dissolve based on shared attributes, as shown below:</p>
+<center>
+<img src="images/practical-5/attribute-dissolve.png" style="width:80.0%">
+</center>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">Dissolve</a> to dissolve the <code>indian_subcontinent</code> layer. Leave “Dissolve Fields” and “Statistics Fields” blank and run.</p>
+</blockquote>
+<div class="note">
+<p>If you want to develop your understanding of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">dissolving</a>, you can do some testing on the main <code>Natural Earth</code> dataset. The “Dissolve Fields” option will allow you to dissolve by an attribute (e.g., <code>CONTINENT</code>), while the “Statistics Fields” will allow to calculate aggregate statistics for those dissolved features (e.g., <code>POP_EST</code>, Sum).</p>
+<p><br></p>
+<div class="inline-figure"><img src="screenshots/practical-5/dissolve_example_attributes.png" style="width:100.0%"></div>
+</div>
+<p>Here is our current dataset, showing the iNaturalist observations clipped to our study area, which has also been dissolved into a single feature:</p>
+<center>
+<img src="screenshots/practical-5/dissolved_output.png" style="width:60.0%">
+</center>
+<p>This is a reasonable approach to define our study area based on political and (to some extent) topographic boundaries e.g., the Himalayas, although we can be critical here:</p>
+<div class="question">
+<p>Does the tiger recognise these political boundaries?</p>
+</div>
+<p>As final task before we begin to analyse point patterns, we need to consider our choice of <strong>projection</strong>. In previous practicals, we’ve largely been dealing with <em>topological</em> issues, for example when utilising contiguity weights. By comparison, we haven’t dealt with <em>geometric</em> issues in great depth e.g., measuring areas or distances.</p>
+<p>In this practical, we are in the realm of <strong>geometry</strong>. Accurate measurements of the distances between points is necessary if want to characterise the spatial distribution of points with any degree of confidence. As a result, the choice of the coordinate reference system (CRS) is an important one!</p>
+<div class="question">
+<p>How then do we select a suitable CRS?</p>
+</div>
+<p>In general, I would recommend the following approach<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;This should be familiar to those of you taking GEOG71551: &lt;em&gt;Understanding GIS&lt;/em&gt;&lt;/p&gt;"><sup>51</sup></a>:</p>
 <ul>
-<li>Best option (for global analysis or if in doubt) = ellipsoidal / geodesic measurement</li>
-<li>Smaller areas, projected CRS, selecting a property to preserve (conformal, equal area, equidistant)</li>
-<li>For individual countries, we can often use the national grid e.g., the CRS for the UK is British National Grid (conformal), but is sufficiently accurate for area and distance calculations</li>
+<li>For global analysis, or if in doubt, use ellipsoidal (geodesic) measurement, taking the shape of the Earth into account.</li>
+<li>For smaller areas, and for computational efficiency, it would be appropriate to use a suitable projected CRS, selecting a distortion property to minimise (i.e., shape, area, or distance).</li>
 </ul>
-<p>For our study area, which doesn’t fit neatly into a national grid, we can select via:</p>
+<p>For individual countries, we would typically use a national grid designed for this purpose, such as the British National Grid (EPSG <a href="https://epsg.io/27700">27700</a>). This is a <em>conformal</em> example, so is designed to minimise shape distortion, but is sufficiently accurate for most area and distance calculations.</p>
+<p>Our study area is much larger, so doesn’t fit neatly into a national grid e.g., EPSG <a href="https://epsg.io/6207">6207</a>. As a result, our options are to either (i) select from a list of published CRS’, which can be found <a href="https://epsg.io/">here</a>, or (ii) we can define our own. For the latter, there are a couple of straightforward ways to achieve this.</p>
+<p>Our <strong>first</strong> approach is via the <a href="https://projectionwizard.org/">Projection Wizard</a> which allows you to select the geographic extent of interest and distortion property e.g.,</p>
+<div class="inline-figure"><img src="screenshots/practical-5/proj_wizard_map.png" style="width:100.0%"></div>
+<p>Based on these choices, the Projection Wizard defines a CRS which minimises distortion of the selected property:</p>
+<center>
+<img src="screenshots/practical-5/proj_wizard_suggestion.png" style="width:70.0%">
+</center>
+<p>To use this CRS, we can:</p>
 <ul>
-<li>The <a href="https://projectionwizard.org/">Projection Wizard</a>:
-<ul>
-<li>Select area of interest and distortion property</li>
-<li>Open WKT information</li>
-<li>Copy to a text file and save with the extension <code>.prj</code>, denoting a projection file</li>
-<li>In ArcGIS, we can apply this to our Map using Properties -&gt; Coordinate Systems -&gt; Add, then Import Coordinate System and Apply.</li>
+<li>Select <code>WKT</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;WKT (Well-Known Text) and PROJ are both formats used to define coordinate reference systems.&lt;/p&gt;"><sup>52</sup></a>, copy the information to a text file (e.g., in Notepad), and save with the extension <code>.prj</code>, denoting a projection (CRS) file.</li>
+<li>In ArcGIS, we can apply this to our map by right clicking the Map in the Contents Pane → Coordinate Systems → Add, then “Import Coordinate System” and “Apply”.</li>
 </ul>
-</li>
-<li>Alternatively, we can let ArcGIS suggest one for us:
+<p>Our <strong>second</strong> approach is very similar, but in this case the CRS definition is done via ArcGIS. This can be achieved by:</p>
 <ul>
-<li>New suggested projected coordinate system</li>
-<li>Name and choose GCS (WGS 1984 - link to Understanding GIS here)</li>
-<li>Extent of a layer (Natural Earth data subset to Indian subcontinent)</li>
-<li>Select distortion Property (conformal, equal-area, etc) and Save</li>
-</ul>
-</li>
+<li>Navigating to Coordinate Systems → New suggested projected coordinate system.</li>
+<li>Providing a name and selecting a geographic coordinate system. <code>WGS 1984</code> is a common choice here, as it provides a good <em>overall</em> fit between the ellipsoid (a mathematical approximation of the Earth’s overall shape) and the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/mapping/properties/geoid.html">geoid</a>.</li>
+<li>Defining our geographic extent, which can be the extent of an individual layer (e.g., <code>indian_subcontinent_dissolve</code>), all the map layers, or the current visible extent.</li>
+<li>Selecting a distortion property to minimise (e.g., conformal, equal-area, equidistant).</li>
 </ul>
 <blockquote>
 <p>Use either method to select a suitable <strong>conformal</strong> projection for our area of interest.</p>
 </blockquote>
-<p><em>Note</em> this applies to the map visualisation, but doesn’t change the underlying data in any way, which are reprojected “on-the-fly`.</p>
+<p>As discussed previously, we have updated the <strong>map</strong> CRS, but this doesn’t change the CRS of the features, which are being reprojected “on-the-fly”.</p>
 <blockquote>
-<p>To change the feature data, use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a> on the <code>Point</code> data.</p>
+<p>Finalise preprocessing by using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a> to reproject the relevant point and polygon data to your new CRS.</p>
 </blockquote>
 </div>
-<div id="visualisation-and-centrography" class="section level3" number="5.2.2">
+<div id="point_vis" class="section level3" number="5.2.3">
 <h3>
-<span class="header-section-number">5.2.2</span> Visualisation and Centrography<a class="anchor" aria-label="anchor" href="#visualisation-and-centrography"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.3</span> Visualisation<a class="anchor" aria-label="anchor" href="#point_vis"><i class="fas fa-link"></i></a>
 </h3>
-<p>[6] In our first step, we are going to create a grid across the study area, and then symbolise the cells based on the # species observations. This is useful, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters. When <em>tesselated</em>, there are one or two areas that stand out (&gt;500 observations).</p>
-<p>We could also use this as the basis for statistical testing e.g., <a href="https://en.wikipedia.org/wiki/Chi-squared_test"><span class="math inline">\(χ^2\)</span></a>, where we could compare the # observations in each cell or <em>quadrat</em> vs. an even distribution. However, this is rather tricky to do in ArcGIS!</p>
-<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog">Generate Tessellation</a>:</p>
-<ul>
-<li>Extent = Natural Earth data subset to Indian subcontinent</li>
-<li>Shape Type = Square</li>
-<li>Size = 2000 km^2</li>
-<li>Proj = Match extent layer</li>
-</ul>
-<p>[7] Next, we will use a <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/spatial-join.html?tabs=dialog">Spatial Join</a>:</p>
-<ul>
-<li>Target = Output of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog">Generate Tessellation</a>,</li>
-<li>Join = occurrence points</li>
-<li>Field name = Count</li>
-<li>Join Operation = one to one</li>
-<li>Match Option = Completely contains [or intersects])</li>
-</ul>
-<div class="task">
-<p><em>Discuss</em> Symbology effects, Graduated Colours (using quantiles etc) or Unclassed Colours (min to max)</p>
-</div>
-<p>[8] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a>:</p>
-<ul>
-<li>Input = occurrence points</li>
-<li>Population field = NONE</li>
-<li>Cell size e.g., 10_000 m</li>
-<li>Method = Geodesic (incorporating Earth shape)</li>
-</ul>
+<p>In the following sections, we are going to look at ways we can <strong>visualise</strong> the <em>Panthera tigris</em> observations, before we characterise their <strong>centrography</strong>, <strong>randomness</strong> and <strong>clustering</strong>, replicating the workflow of Sergio J. Rey, Dani Arribas-Bel and Levi J. Wolf in their book <a href="https://geographicdata.science/book/">Geographic Data Science with Python</a>.</p>
+<p>The raw point observations, as shown below, can tell us a lot about the distribution of <em>Panthera tigris</em>, but this visualisation also <em>obscures</em> a great deal of information. For example, multiple observations at the same location are hidden. Moreover, while we can see there are broad regions with lots of observations, and conversely, regions with no observations, it is impossible to assess which of those regions have a greater <strong>density</strong> of observations at this map scale, given the overlap between the point symbologies.</p>
+<div class="inline-figure"><img src="screenshots/practical-5/raw_points.png" style="width:100.0%"></div>
+<p>There are a few alternative visualisations which could be used to address this. One approach is to create a <strong>grid</strong> across the study area, and then symbolise the cells based on the number of observations within each cell. This is useful, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters. When <em>tesselated</em>, there may be one or two areas that stand out (e.g., &gt;500 observations).</p>
+<p>We could also use this grid as the basis for statistical testing, for example using <a href="https://en.wikipedia.org/wiki/Chi-squared_test"><span class="math inline">\(χ^2\)</span></a>, which compares the number of observations in each cell (or <em>quadrat</em>) vs. an even distribution of observations across the cells. Unfortunately, this is rather tricky to do in ArcGIS, although quite simple in Python e.g., via <a href="https://pysal.org/pointpats/generated/pointpats.QStatistic.html"><code>pointspats</code></a>.</p>
+<p>To generate a grid across our study area:</p>
 <blockquote>
-<p>Explore changing search radius e.g., 20,000 m<sup>2</sup> to 200,000 m<sup>2</sup> Explore effects of barriers (e.g., Natural Earth polygon).</p>
+<p>Use the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog">Generate Tessellation</a>, setting the extent to match your <strong>projected</strong> layer for the Indian subcontinent, using “Shape Type” = <code>Square</code>, and setting the “Size” to 2000 km<sup>2</sup>.</p>
 </blockquote>
-<p><em>Note</em> this tool produces values within the data range (min-max xy) and creates static layers.</p>
-<p>We can use a dynamic approach via Symbology, which is more flexible, but arguably less robust i.e., Radius is in screen units (points), rather than map units (meters, feet, etc)</p>
-<blockquote>
-<p>Explore constant vs. dynamic approach.</p>
-</blockquote>
-<p>[9] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog">Mean Center</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog">Median Center</a></p>
-<ul>
-<li>Provides information on the center of Mass e.g., discrepancy of mean-median caused by skew. For the median, 50% of points above+below point, and left+right. For the tiger dataset, the mean is skewed north by Himalayan observations</li>
-</ul>
-<p>[10] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog">Standard Distance</a> i.e., on average, how far are observations from the geometric mean center?</p>
-<ul>
-<li>For the occurrence dataset, this produces 559904.230305 m i.e., on average, observations are ~560 km from the mean center. The reported distance is in the units of the projection here. In [5] we switched to a projected CRS, with units in meters, but if we were to use a geographic projection, units would typically be in degrees.</li>
-</ul>
-<p>[11] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/directional-distribution.html?tabs=dialog">Directional Distribution (Standard Deviational Ellipse)</a>, which provides information on the center, dispersion, and orientation.</p>
-<ul>
-<li>For the occurrence dataset, CenterX and CentreY should be identical to outputs of <code>mean centre</code> and <code>standard distance</code> tools</li>
-<li>The shape of the output indicates wider disperson along N-S axis (YStdDist) vs. E-W axis (XStdDist), with rotation of ~12deg.</li>
-<li>This probably reflects outlier points in Bangladesh, Assam etc, coupled with points in SW India</li>
-</ul>
+<p>Your output should resemble the following.</p>
+<center>
+<img src="screenshots/practical-5/grid.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>Next we want to calculate the number of observations per grid cell, and this can be achieved in a few different ways. One approach would be to use a <strong>Spatial Join</strong>. Previously, we’ve combined datasets based on shared <strong>attribute</strong> information using a <em>table join</em> i.e., via a common attribute value (e.g., ID). A spatial join combines datasets based on shared <strong>spatial</strong> information i.e., via a common geographic location, as shown below:</p>
+<div class="float">
+<img src="images/practical-5/spatial_join.png" style="width:100.0%" alt="A spatial join, linking attributes from one input to another based on their spatial relationship"><div class="figcaption"><em>A spatial join, linking attributes from one input to another based on their spatial relationship</em></div>
 </div>
-<div id="p5_randomness" class="section level3" number="5.2.3">
+<p><br></p>
+<p>While we could use a <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/spatial-join.html?tabs=dialog">Spatial Join</a>, we’re not really interested in the <strong>attributes</strong> of either layer (we just want the number of observations), so we can achieve this more simply via <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summarize-within.html?tabs=dialog">Summarize Within</a>, as follows:</p>
+<blockquote>
+<p>Open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summarize-within.html?tabs=dialog">Summarize Within</a> using the newly created grid as the “Input Polygons” and the observation points as the “Summary Features”. The “Summary Fields” option allows us to calculate statistics for different fields but here can be left blank. Ensure “Add shape summary attributes” is checked, as this will return the number of points per input polygon<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Or the length of lines or areas of polygons depending on the “Input Summary Features” geometry type.&lt;/p&gt;"><sup>53</sup></a>.</p>
+</blockquote>
+<p>The Attribute Table should now contain a <code>Count of Points</code> field.</p>
+<blockquote>
+<p>Modify the grid symbology based on this attribute.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-5/grid_join.png" style="width:50.0%">
+</center>
+<div class="question">
+<p>How has your interpretation of the distribution of observations changed, compared to the raw points?</p>
+</div>
+<div class="question">
+<p>Did you symbolise using <strong>Graduated</strong> Colours (discrete classes) or <strong>Unclassed</strong> Colours (continuous)? How would this influence your interpretation?</p>
+</div>
+<p>A <strong>quadrat</strong> approach can be very effective for revealing spatial patterns, especially when analysed statistically e.g., <span class="math inline">\(χ^2\)</span>. However, there are some limitations. For example, the results will vary as the grid extent, cell size, and cell shape changes (e.g., square, hexagon). More fundamentally, we have represented a potentially <strong>continuous</strong> phenomena (i.e., the <em>probability</em> of observing a tiger) in a <strong>discrete</strong> way, with sharp boundaries between cells. If we change our grid specification, and where those boundaries fall, we might influence our interpretations. This is a great example of the Modifiable Aerial Unit Problem <span class="citation">Openshaw (<a href="references.html#ref-openshaw1984">1984</a>)</span>.</p>
+<p>An alternative approach, which is (arguably) a better reflection of the continuous nature of the phenomena, is <strong>kernel density estimation</strong> (KDE) which creates a smooth surface representing the estimated density (relative probability <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;A &lt;a href="https://en.wikipedia.org/wiki/Probability_density_function"&gt;probability density function&lt;/a&gt; describes the likelihood that a variable will fall within a specific range of values.&lt;/p&gt;'><sup>54</sup></a>) or intensity (expected number) of occurrences across space. In the interests of brevity, we won’t go into the underlying methodology here, but if you’re interested you can consult the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/how-kernel-density-works.html">documentation</a> and related literature e.g., <span class="citation">Silverman (<a href="references.html#ref-silverman2018">2018</a>)</span>. KDE can be applied to two-dimensional spatial data (i.e., <span class="math inline">\(xy\)</span> coordinates) to produce a continuous density (or intensity) surface, but is also commonly applied to one-dimensional data (i.e., a vector of values) to produce a <a href="https://en.wikipedia.org/wiki/Density_estimation">smooth density curve</a>, as used in my previous research <span class="citation">(<a href="references.html#ref-dortch2022b">Dortch <em>et al.</em>, 2022</a>)</span>, and visualised below:</p>
+<p><img src="images/practical-5/kernel_density.png" style="width:100.0%" alt="1D and 2D kernel density estimation"><br></p>
+<blockquote>
+<p>Run the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a> tool using the occurrence points as the “Input point feature”, “Population Field” = <code>NONE</code>, and set the “Output cell size” to 20000 (m) for consistency with the grid created earlier. For “Method”, we can choose either Planar or Geodesic measurement<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For each cell in the output grid, the calculated probability is based on the number of points around the cell, weighted by distance, so accurate distance measurement is important.&lt;/p&gt;"><sup>55</sup></a>. Although we are using a projected CRS for our data, if in doubt, use a geodesic approach.</p>
+</blockquote>
+<p>If successful, the tool should return a raster layer, where its dimensions are determined by the minimum and maximum coordinates of the input layer.</p>
+<div class="question">
+<p>How your interpretation changed when using KDE?</p>
+</div>
+<blockquote>
+<p>Explore changing search radius e.g., 20,000 m<sup>2</sup> to 200,000 m<sup>2</sup>, and the the effect of including barriers i.e., the study area polygon.</p>
+</blockquote>
+<p>The kernel density raster produced by <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a> is <em>static</em>. We can perform create a similar output <em>dynamically</em> via Symbology → Heat Map, although this is arguably less robust i.e., the “Radius” setting is in screen units (points), rather than map units (meters, feet, etc).</p>
+<blockquote>
+<p>Explore the Heat Map settings (Method, Radius).</p>
+</blockquote>
+<div class="question">
+<p>Is the default colour scale an appropriate choice? See <span class="citation">Crameri <em>et al.</em> (<a href="references.html#ref-crameri2020">2020</a>)</span></p>
+</div>
+</div>
+<div id="point_centro" class="section level3" number="5.2.4">
 <h3>
-<span class="header-section-number">5.2.3</span> Randomness<a class="anchor" aria-label="anchor" href="#p5_randomness"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.4</span> Centrography<a class="anchor" aria-label="anchor" href="#point_centro"><i class="fas fa-link"></i></a>
 </h3>
-<p>[12] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>, which is Clark-Evans R <span class="citation">(<a href="references.html#ref-clark1954">Clark and Evans, 1954</a>)</span>.</p>
+<p>If you were presented with a set of values (e.g., measurements of <a href="spatial_correlation.html#species-richness">species richness</a> in a forest) and were asked to describe the dataset, you would probably calculate some summary statistics, such as measures of central tendency (e.g., mean, median, mode), or measures of dispersion (e.g., standard deviation, range, interquartile range). In doing so, we are attempting to capture the core properties of the dataset.</p>
+<p>In much the same way, we can measure the <strong>centrography</strong> of a spatial dataset i.e., the “<em>degree of centrality in a point pattern</em>”. The mean center and the median center are two examples, and both can be used to represent the center of mass. In isolation, these measures don’t provide a great deal of information, but are important for measuring <strong>dispersion</strong>, which we’ll introduce in a moment.</p>
+<blockquote>
+<p>Run the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog">Mean Center</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog">Median Center</a> tools using the observations points as the input.</p>
+</blockquote>
+<div class="question">
+<p>What does the difference between the mean and median locations tell you about the spatial distribution of observations?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The mean center is the arithmetic average of the coordinate values. The median center is defined as the location which minimises the overall distance to all features in the dataset. The latter is a more robust measure of central tendency as it is less affected by extreme observations. You can read about ArcGIS implementation <a href="(https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog)">here</a>, while the <code>PySAL</code> <a href="https://pysal.org/notebooks/explore/pointpats/centrography.html#Euclidean-Median-$(x_%7Bem%7D,y_%7Bem%7D)$">documentation</a> is also worth a read.</p>
+<p>In this case, the mean location is further north than the median, which is indicative of <strong>skew</strong> i.e., the mean is being biased northwards by Himalayan observations.</p>
+</details><p><br></p>
+<p>Using these measures of central tendency, we can evaluate the <strong>standard distance</strong> i.e., on average, how far are observations from the geometric mean center? This is analogous to the standard deviation and is a measure of <strong>dispersion</strong>.</p>
+<blockquote>
+<p>Run the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog">Standard Distance</a> tool. This produces a circle with a radius equal to the standard distance. This can be modified using the “Circle Size” option, while the “Weight Field” can be used if the points are not of equal importance. For example, in an ecological setting we might want to weight observations based on the <em>strength of evidence</em> e.g., a photograph vs. a <a href="centrography">pugmark</a> vs. <a href="https://www.wildlifetrusts.org/wildlife/how-identify/identify-poo">scat</a>.</p>
+</blockquote>
+<p>For this dataset, the standard distance is 560913.288262 m<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This value may vary slightly depending on your choice of CRS, as &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog"&gt;Standard Distance&lt;/a&gt; uses planar rather than geodesic measurement.&lt;/p&gt;'><sup>56</sup></a> i.e., on average, observations are ~560 km from the mean center. As above, this value is not particularly meaningful in isolation, but it can be useful through comparison. For example, if we were comparing observations for two species (e.g., <em>Panthera tigris</em> vs. <em>Canis lupus</em>), differences in the standard distance would reflect the degree of compaction or dispersion of the two species ranges.</p>
+<p>As a final measure of centrography, the <strong>standard deviational ellipse</strong> can be used to represent the center and dispersion of a point pattern, but also its orientation.</p>
+<blockquote>
+<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/directional-distribution.html?tabs=dialog">Directional Distribution (Standard Deviational Ellipse)</a>, which should produce the following:</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-5/ellipse.png" style="width:50.0%">
+</center>
+<div class="question">
+<p>What does this visualisation tell you?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The <strong>Standard Deviational Ellipse</strong> is an extension of standard distance, and also uses the mean center for calculations, which is defined in the Attribute Table as <code>CenterX</code> and <code>CenterY</code>. This should be identical to the outputs of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog">Mean Center</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog">Standard Distance</a>.</p>
+<p>Unlike standard distance, which measures average coordinate dispersion, the standard deviational ellipse measures dispersion separately in <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, which can be used to calculate the direction of greatest dispersion, see <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-directional-distribution-standard-deviationa.html">here</a>. Unlike standard distance, this provides information on the orientation and shape of the distribution (e.g., compact vs. directional).</p>
+<p>For our data, there is greater dispersion on the N-S axis (<code>YStdDist</code>) vs. the E-W axis (<code>XStdDist</code>), and a slight rotation of ~13 degrees (<code>Rotation</code>), which is probably a reflection of observations in the NE e.g,. Arunachal Pradesh, Assam and Bangladesh, coupled with those in the SW e.g., Kerala, Karnataka.</p>
+<p>By comparison, if the distribution of species observations was uniform or spatially random, we would except identical <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> dispersion and no rotation.</p>
+</details><p><br></p>
+</div>
+<div id="p5_randomness" class="section level3" number="5.2.5">
+<h3>
+<span class="header-section-number">5.2.5</span> Randomness<a class="anchor" aria-label="anchor" href="#p5_randomness"><i class="fas fa-link"></i></a>
+</h3>
+<p>So far we’ve explored how to <a href="point_patterns.html#point_vis">visualise</a> our point patterns to maximise the information on display, and introduced some measures of <a href="point_patterns.html#point_centro">centrography</a> which we can use to characterise the point pattern. A logical progression from this is to assess spatial <strong>randomness</strong> i.e.,</p>
+<div class="question">
+<p>Are the <strong>objects</strong> randomly distributed or is there evidence of spatial structure?</p>
+</div>
+<p>One way to achieve this is via <strong>quadrat statistics</strong>, as introduced above, in which the <em>observed</em> number of points per quadrat is compared with an even distribution, and with statistical significance assessed using <span class="math inline">\(χ^2\)</span>, for example. While we cannot assess statistical significance in ArcGIS without <a href="https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-conda.html">additional Python packages</a>, we can assess the distribution qualitatively, by summarising and visualising the <code>Count of Points</code> field in the grid Attribute Table.</p>
+<div class="question">
+<p>What is the mean and median of the number of observations per quadrat? How would you characterise the distribution?</p>
+</div>
+<p>An alternative approach is Clark-Evans <span class="math inline">\(R\)</span> <span class="citation">(<a href="references.html#ref-clark1954">Clark and Evans, 1954</a>)</span>, which is a commonly used measure of the degree of clustering or dispersion of a point pattern, defined as:</p>
+<p><span class="math display">\[R=\frac{\bar{r}_A}{\bar{r}_E}\]</span> which is the ratio <span class="math inline">\(R\)</span> of the <strong>actual</strong> mean nearest neighbour distance <span class="math inline">\(\bar{r}_A\)</span> and the <strong>expected</strong> mean nearest neighbour distance <span class="math inline">\(\bar{r}_E\)</span>. <span class="math inline">\(R&lt;1\)</span> is indicative of clustering i.e., the actual mean nearest neighbour distance is less than the expected value, while <span class="math inline">\(R&gt;1\)</span> is indicative of ordering i.e., dispersion. If <span class="math inline">\(R\approx1\)</span>, this would be indicative of spatial randomness.</p>
+<center>
+<img src="images/practical-5/clark-evans-example.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>The calculation of <span class="math inline">\(\bar{r}_A\)</span> is as follows:</p>
+<p><span class="math display">\[\bar{r}_A=\frac{\sum r}{n}\]</span> where <span class="math inline">\(r\)</span> is a vector of distances between each point and its nearest neighbour and <span class="math inline">\(n\)</span> is the number of points.</p>
+<center>
+<img src="images/practical-5/clark-evans.png" style="width:30.0%">
+</center>
+<p><br></p>
+<p>The expected mean nearest neighbour distance <span class="math inline">\(\bar{r}E\)</span> is calculated using a Poisson point process<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We’ll introduce Poisson distributions in &lt;strong&gt;Practical 10&lt;/strong&gt;: &lt;em&gt;Spatial Interaction Modelling&lt;/em&gt;.&lt;/p&gt;"><sup>57</sup></a>, which can be simplified to:</p>
+<p><span class="math display">\[\bar{r}E = \frac{1}{2\sqrt{p}}\]</span></p>
+<p>where <span class="math inline">\(p\)</span> is the density of observed points i.e., number of points per unit of area, which is simply <span class="math inline">\(n/a\)</span>, where <span class="math inline">\(a\)</span> is the area of the study extent.</p>
+<p>The <strong>z-score</strong> for Clark-Evans <span class="math inline">\(R\)</span> can tell us whether the observed value of <span class="math inline">\(R\)</span> is significantly different from the expectation under complete spatial randomness. It represents the number of standard deviations that <span class="math inline">\(\bar{r}_A\)</span> differs from <span class="math inline">\(\bar{r}_E\)</span>, and is calculated as follows:</p>
+<p><span class="math display">\[z=\frac{\bar{r}_A-\bar{r}_E}{SE}\]</span></p>
+<p>where <span class="math inline">\(SE\)</span> is the standard error of the expected mean distance<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The constant &lt;span class="math inline"&gt;\(0.26136\)&lt;/span&gt; is derived by &lt;span class="citation"&gt;Clark and Evans (&lt;a href="references.html#ref-clark1954"&gt;1954&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>58</sup></a> i.e., the amount of variation in the mean due to random chance:</p>
+<p><span class="math display">\[SE = \frac{0.26136}{\sqrt{n^2/a}}\]</span></p>
+<div id="observation-window" class="section level4" number="5.2.5.1">
+<h4>
+<span class="header-section-number">5.2.5.1</span> Observation window<a class="anchor" aria-label="anchor" href="#observation-window"><i class="fas fa-link"></i></a>
+</h4>
+<p>Before we test the ArcGIS implementation of Clark-Evans <span class="math inline">\(R\)</span>, it is worth reflecting on the inputs it requires: <span class="math inline">\(r, n\)</span> and <span class="math inline">\(a\)</span>. The nearest neighbour distances <span class="math inline">\(r\)</span> and the number of observations <span class="math inline">\(n\)</span> are fixed in our analysis (although the measured distances will vary depending on the choice of CRS and distance measurement approach), but the area of our study extent <span class="math inline">\(a\)</span> is not.</p>
+<p>This leads us nicely onto a key concept in point pattern analysis, which is the <strong>observation window</strong>. Earlier we defined this as “the region within which point patterns are observed and analysed”. While this is easy to define e.g., analysing the distribution of <em>Panthera tigris</em> for India-alone, or India and Bangaladesh, or the entire Indian subcontinent, this definition can have a significant impact on our assessment of spatial randomness, both qualitatively and statistically.</p>
+<p>For example, take the following distribution of points, where the observation window is represented by the circled area:</p>
+<center>
+<img src="images/practical-5/obs_window_1.png" style="width:50.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>How would you characterise the distribution of the points? Random, clustered, or dispersed?</p>
+</div>
+<p>Now take a look at the <strong>same</strong> distribution of points, but with a <em>different</em> observation window:</p>
+<center>
+<img src="images/practical-5/obs_window_2.png" style="width:50.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>Would you characterise the distribution differently to before?</p>
+</div>
+<p>These examples illustrate the importance of the observation window - the same point pattern can <em>look</em> random or clustered, depending on the scale of the observation. This also affects our statistical measures of randomness, influencing Clark-Evans <span class="math inline">\(R\)</span> via the area value <span class="math inline">\(a\)</span>.</p>
+<p>In the ArcGIS implementation of this technique, which is referred to as <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>, somewhat confusingly without any reference to <span class="citation">Clark and Evans (<a href="references.html#ref-clark1954">1954</a>)</span>, the default value for <span class="math inline">\(a\)</span> is the area of a minimum enclosing rectangle around the input points, with some examples <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog">here</a>, or the user can specify their own value for <span class="math inline">\(a\)</span>.</p>
+<blockquote>
+<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>, using Euclidean (planar) distance measurement. Select “Generate Report” amd for now leave “Area” blank and run. This should produce the following:</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-5/clark_evans_results.png" style="width:70.0%">
+</center>
+<div class="question">
+<p>What is your interpretation of Clark-Evans <span class="math inline">\(R\)</span> (<code>Nearest Neighbor Ratio</code>) and the z-score and <span class="math inline">\(p\)</span> value?</p>
+</div>
+<details><summary>
+Answer
+</summary><p><em>Remember that your measured distances might differ slightly from mine depending on the CRS definition.</em></p>
+<p>In my analysis, the observed mean distance <span class="math inline">\(\bar{r}_A\approx1830\;\text{m}\)</span> i.e., on average, the nearest observation is ~2 km away. By comparison, the expected distance <span class="math inline">\(\bar{r}_E\approx16,400\;\text{m}\)</span> i.e., we would <em>expect</em> an average of ~16 <strong>km</strong>, based on the default value for <span class="math inline">\(a\)</span>. This is a rather large difference, which is reflected in the extremely high z-score, and the highly significant <span class="math inline">\(p\)</span> value.</p>
+<p>This interpretation is backed up the <code>.html</code> report, which sums it up nicely: “<em>Given the z-score of -109.650509, there is a less than 1% likelihood that this clustered pattern could be the result of random chance.</em>” In fact, this is a rather conservative statement, as this would equate to <span class="math inline">\(p=0.01\)</span>, when the reported <span class="math inline">\(p\)</span> value is actually many times smaller.</p>
+</details><p><br></p>
+<blockquote>
+<p>Evaluate the impact of changing the observation window (<code>area</code>). For example, you could use the area of the Indian subcontinent polygon. This can be calculated using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a>, specifing a “Field” name of your choice and using <code>Area</code> for the “Property” option. This will produce a new field in the Attribute Table for the Indian subcontinent layer, which can then be pasted into <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>.</p>
+</blockquote>
+<div class="question">
+<p>How has changing <span class="math inline">\(a\)</span> influenced <span class="math inline">\(\bar{r}_E\)</span> and the corresponding z-score? Has this changed your interpretations?</p>
+</div>
+</div>
+</div>
+<div id="cluster-analysis" class="section level3" number="5.2.6">
+<h3>
+<span class="header-section-number">5.2.6</span> Cluster analysis<a class="anchor" aria-label="anchor" href="#cluster-analysis"><i class="fas fa-link"></i></a>
+</h3>
+<p>While our appraisal of randomness is sensitive to the observation window, we can be reasonably confident here that the point pattern is not random, and instead is highly <strong>clustered</strong>. In this final section, we are going to investigate the existence and location of individual clusters.</p>
+<p>This is analogous to the different information provided by Moran’s <span class="math inline">\(I\)</span> and <span class="math inline">\(I_{i}\)</span>. While the former is used to investigate <strong>global</strong> spatial autocorrelation, much like Clark-Evans <span class="math inline">\(R\)</span> provides information on the degree of clustering for a dataset <em>as a whole</em>, we would use Moran’s <span class="math inline">\(I_{i}\)</span> to reveal <em>where</em> spatial autocorrelation is present within a dataset.</p>
+<center>
+<img src="images/practical-5/cluster_algorithm.png" style="width:70.0%">
+</center>
+<p><br></p>
+<p>There are lots of approaches we could use to identify point clusters, but we’ll focus on a very widely used algorithm known as DBSCAN (<em>Density-Based Spatial Clustering of Applications</em>)<span class="citation">(<a href="references.html#ref-ester1996">Ester <em>et al.</em>, 1996</a>)</span>. As the name implies, this is a density-based clustering algorithm, which defines clusters based on two user-defined parameters:</p>
 <ul>
-<li>Use Euclidean distances (projected data)</li>
-<li>Generate report (<code>html</code>)</li>
+<li>the minimum number of points <span class="math inline">\(m\)</span> required to form a cluster.</li>
+<li>a search distance <span class="math inline">\(\epsilon\)</span>, which defines a maximum radius of a neighborhood around a point.</li>
+</ul>
+<p>You’ll be pleased to know that the implementation of DBSCAN is too complicated to run through here, but we can talk through the algorithm in some detail. DBSCAN classifies points as either:</p>
+<ul>
 <li>
-<strong>Area</strong> is critical - the default is the minimum bounding rectangle enclosing all of the observations</li>
+<strong>core</strong>, for those inside a cluster with a least <span class="math inline">\(m\)</span> points in the cluster within distance <span class="math inline">\(\epsilon\)</span>.</li>
+<li>
+<strong>border</strong>, for those inside a cluster with less than <span class="math inline">\(m\)</span> points in the cluster within distance <span class="math inline">\(\epsilon\)</span>.</li>
+<li>
+<strong>noise</strong>, for those outside a cluster.</li>
 </ul>
-<p>Default Output:</p>
-<ul>
-<li>Observed Mean Distance = 1830.375410</li>
-<li>Expected Mean Distance = 16414.771642</li>
-<li>Nearest Neighbor Ratio = 0.111508</li>
-<li>z-score = -109.656790</li>
-<li>p-value = 0.000000</li>
-<li>Given the z-score of -109.65679, there is a less than 1% likelihood that this clustered pattern could be the result of random chance.</li>
-</ul>
-<p>Very straightforward implementation and interpretation, but key discussion points:</p>
-<div class="task">
-<p><strong>Discuss</strong>:</p>
-<ul>
-<li>Analytical approach</li>
-<li>Distance calculations (observed and expected mean distance)</li>
-<li>Nearest neighbor ratio</li>
-<li>Z-scores</li>
-<li>Introduce the <strong>Observation Window</strong>
-</li>
-</ul>
+<p>This is achieved by:</p>
+<ol style="list-style-type: decimal">
+<li>Finding the number of points within <span class="math inline">\(\epsilon\)</span> of very point, and identifying the core points (those with <span class="math inline">\(\ge m\)</span> neighbours).</li>
+<li>Connecting the core points if they are within <span class="math inline">\(\epsilon\)</span> of each other. Connected core points define a cluster.</li>
+<li>If a non-core point is within <span class="math inline">\(\epsilon\)</span> of a core point, it is classed as a border point.</li>
+<li>If a non-core point is not within <span class="math inline">\(\epsilon\)</span> of a core point, it is classed as an outlier point.</li>
+</ol>
+<p><br></p>
+<p>Here is a schematic I’ve created to help you understanding the process:</p>
+<center>
+<img src="images/practical-5/dbscan.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>DBSCAN is a very powerful and flexible algorithm. This flexibility is both a strength and limitation, however, as the number and distribution of clusters is highly sensitive to the selection of <span class="math inline">\(m\)</span> and <span class="math inline">\(\epsilon\)</span>.</p>
+<div class="question">
+<p>How would you pick <span class="math inline">\(m\)</span> and <span class="math inline">\(\epsilon\)</span> for our current analysis?</p>
 </div>
+<details><summary>
+Suggestion
+</summary><p>I would probably derive <span class="math inline">\(m\)</span> from a desired percentage of the dataset. For example, if we wanted the minimum cluster size to be 1% of the number of observations, this would be <span class="math inline">\(m=45\)</span>, based on the ~4,500 observations.</p>
+<p>Selecting <span class="math inline">\(\epsilon\)</span> is more challenging, but in this case I think we can do so quite confidently based on ecological grounds and the home range of <em>Panthera tigris</em> i.e., how far does the tiger typically travel? <span class="citation">Naha <em>et al.</em> (<a href="references.html#ref-naha2016">2016</a>)</span> report average home ranges of 56.4 km<sup>2</sup> (female) and 110 km<sup>2</sup> (male) for tigers in the Sundarban of India and Bangladesh. <span class="citation">Sarkar <em>et al.</em> (<a href="references.html#ref-sarkar2016">2016</a>)</span> report average home ranges of 73.6 km<sup>2</sup> (female) and 132.7 km<sup>2</sup> (male) in the Panna Tiger Reserve, central India, although they can travel much further <span class="citation">(<a href="references.html#ref-hussain2022">Hussain <em>et al.</em>, 2022</a>)</span>. I’ll use <span class="math inline">\(\epsilon=110\)</span> km.</p>
+</details><p><br></p>
 <blockquote>
-<p>Evaluate the impact of changing the observation window (<code>area</code>), for example using the area of the Natural Earth polygons, calculated using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a></p>
+<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog">Find Point Clusters</a>, setting the “Minimum Features per Cluster” <span class="math inline">\(m\)</span> to 45 and “Search Distance” <span class="math inline">\(\epsilon\)</span> to 110. For “Clustering Method”, use <code>DBSCAN</code>, and save with an informative name e.g., <code>dbscan_m45_e110</code>.</p>
 </blockquote>
+<div class="problem">
+<p>James - This was failing with ERROR 001409: Failed to write to the output location (P Drive). The tool seemed to run effectively until then, as the messages lists: Number of Clusters 7, Noise features 52. It worked when saving to C!</p>
 </div>
-<div id="cluster-analysis" class="section level3" number="5.2.4">
+<p>This should produce the following output, which seems a reasonable characterisation of the degree of clustering, with seven main clusters (containing core and border points), plus outliers. It is worth emphasising that there is no “correct” output here, as the results are entirely dependent on our choice of <span class="math inline">\(m\)</span> and <span class="math inline">\(\epsilon\)</span>.</p>
+<center>
+<img src="screenshots/practical-5/dbscan_output.png" style="width:50.0%">
+</center>
+<blockquote>
+<p>Explore how the results change with different values for <span class="math inline">\(m\)</span> and <span class="math inline">\(\epsilon\)</span>.</p>
+</blockquote>
+<p>Another option in <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog">Find Point Clusters</a> is <strong>HDBSCAN</strong>, which is a modification of DBSCAN that allows clusters of different densities to be identified, with <span class="math inline">\(\epsilon\)</span> varying across the modelled area, see <span class="citation">Campello <em>et al.</em> (<a href="references.html#ref-campello2013">2013</a>)</span> and <span class="citation">McInnes <em>et al.</em> (<a href="references.html#ref-mcinnes2017">2017</a>)</span>. HDBSCAN could be more effective if clusters are characterised by different densities, or if there are theoretical grounds for varying the value of <span class="math inline">\(\epsilon\)</span> e.g., tiger species with different home ranges, such as the <em>Panthera tigris altaica</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;If you’re interested in related reading, I’d recommend &lt;a href=""&gt;“Great Soul of Siberia”&lt;/a&gt; by Sooyong Park, and &lt;a href="https://www.penguin.co.uk/books/439320/the-amur-river-by-thubron-colin/9781529110890"&gt;“The Amur River”&lt;/a&gt; by Colin Thubron.&lt;/p&gt;'><sup>59</sup></a> (the Amur tiger), see <span class="citation">Long <em>et al.</em> (<a href="references.html#ref-long2021a">2021</a>)</span>.</p>
+<blockquote>
+<p>Re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog">Find Point Clusters</a> using <code>HDBSCAN</code>.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-5/hdbscan_output.png" style="width:50.0%">
+</center>
+<div class="question">
+<p>What is your appraisal of the HDBSCAN results? Which output do you think is “best”?</p>
+</div>
+<details><summary>
+Suggestion
+</summary><p>In my view, DBSCAN has produced the more reasonable and more <a href="https://en.wikipedia.org/wiki/Occam's_razor">parsimonious</a> result. It is also more defensible, with <span class="math inline">\(\epsilon\)</span> selected based on ecological grounds, rather than arbitrarily based on the degree of point clustering.</p>
+</details><p><br></p>
+</div>
+<div id="summary" class="section level3" number="5.2.7">
 <h3>
-<span class="header-section-number">5.2.4</span> Cluster analysis<a class="anchor" aria-label="anchor" href="#cluster-analysis"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.7</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
 </h3>
-<p>[13] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">Multi-Distance Spatial Cluster Analysis (Ripley’s K Function)</a>, developed by <span class="citation">Ripley (<a href="references.html#ref-ripley_statistical_1988">1988</a>)</span>.</p>
-<ul>
-<li>This tool is very slow with high number of permutations, and very slow even with no permutations</li>
-<li>As above, it is highly sensitive to “study area” method, as described <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">here</a>
-</li>
-<li>Boundary correction is also important.</li>
-</ul>
-<div class="task">
-<p><em>Discuss</em> the Ripley alphabet of functions (<span class="math inline">\(G, F, K\)</span>)</p>
-</div>
-<p><em>Interpretation</em>:</p>
-<ul>
-<li>Observed K [actual data] &gt; Expected K [complete spatial randomness] = Clustered i.e., points closer together than by pure chance, at that specific distance</li>
-<li>Observed K &lt; Expected K = Dispered i.e., points spread out compared to a random pattern</li>
-<li>Visually, when Observed K line far from Expected K line, clustering is statistically significant</li>
-</ul>
-<p>[13] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog">Find Point Clusters</a>, key methods include DBSCAN (defined-distance) and HDBSCAN (self-adjusting)</p>
-<p>Important choices include the minimum number of features (% of dataset) and search distance. This flexibility is a strength and a limitation, as the # and distribution of clusters is highly sensitive to user choice.</p>
-<p>Reasonable selection of parameters:</p>
-<ul>
-<li>Search distance based on ecological grounds e.g., an average home range of 110 km<sup>2</sup> for Sundarban of India and Bangladesh <span class="citation">(<a href="references.html#ref-naha2016">Naha <em>et al.</em>, 2016</a>)</span>, although they can travel much further <span class="citation">(<a href="references.html#ref-hussain2022">Hussain <em>et al.</em>, 2022</a>)</span>!</li>
-<li>Minimum number - 45 (1%)</li>
-<li>This generate a reasonable pattern (7 main clusters, plus outliers)</li>
-</ul>
-<p>HDBSCAN gives different results, varying distance based on point density (central block broken up into smaller clusters, and v.v elsewhere). For this dataset, DBSCAN makes more sense, using a fixed distance, based on ecological evidence (rather than the degree of Point clustering)</p>
-<div class="task">
-<p><strong>To finish the practical</strong>:</p>
-<ul>
-<li>Ensure the practical finishes with a natural progression to <strong>point-process modelling</strong> i.e., all of this is great, and tells us about the pattern of points, but not how that pattern arises. This is outside the scope of this unit, but you can explorer ecological examples in Spatial Ecology in Semester 2.</li>
-<li>Emphasise the importance of the <strong>Observation Window</strong>.</li>
-<li>Touch on <strong>uncertainty</strong>, with many points at the same location (n=125), reported positional uncertainty of ±30 km. How important is this at our scale of analysis?</li>
-<li>DON’T discuss <strong>presence-absence</strong> problems here, as this will be better suited to the interpolation practical.</li>
-</ul>
-</div>
+<p>In this practical, we have <strong>visualised</strong> and characterised the <strong>centrography</strong>, <strong>randomness</strong> and <strong>clustering</strong> of <em>Panthera tigris</em> observations. A few summary thoughts to finish:</p>
+<p>Analysing point-patterns is great, but as we discussed in the <a href="point_patterns.html#point_introduction">introduction</a>, is really only a precursor to studying <strong>point processes</strong> i.e., which spatial factors and mechanisms give rise to the observed distribution of points? You can explore point-process modelling from an ecological perspective in GEOG71922 <em>Spatial Ecology</em>. A species distribution model is an excellent example of a point-process model, see <span class="citation">Elith and Leathwick (<a href="references.html#ref-elith2009">2009</a>)</span>.</p>
+<p>It is also worth emphasising the importance of the <strong>observation window</strong>. This has a direct influence on some statistical measures (e.g., Clark-Evans <span class="math inline">\(R\)</span>), but arguably is a more fundamental issue. Our assessment of the degree of dispersion, randomness and clustering of a point pattern is always dependent on the scale of observation. In turn, we must be careful to match our scale of observation to the operational scale of the phenonemon, see <span class="citation">McMaster and Sheppard (<a href="references.html#ref-mcmaster2004">2004</a>)</span>.</p>
+<p>Finally, one key concept we haven’t considered is <strong>uncertainty</strong>. In our analysis, <em>Panthera tigris</em> observations are represented by points with high digital precision. In reality, all spatial observations are characterised by some degree of uncertainty. The iNaturalist dataset we’ve been working with does include uncertainty estimates, although it is not exactly clear how these are derived. If you investigate closely, you may notice that there are many points at the same exact location, and some with reported positional uncertainty of <span class="math inline">\(± 30\)</span> km. A more rigorous analysis of point patterns would take that uncertainty into account, for example by pertubating each point based on the stated uncertainty…</p>
+<p>…and with that, <strong>congratulations!</strong> You have completed the practical and should now have an appreciation for the complexities of point pattern analysis, and be able to implement some key approaches in ArcGIS.</p>
+<p><a href="index.html#index"><strong>Finished!</strong></a></p>
 </div>
 </div>
 <div id="extra-2" class="section level2" number="5.3">
 <h2>
 <span class="header-section-number">5.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-2"><i class="fas fa-link"></i></a>
 </h2>
-<div id="testing-observation-window" class="section level3 unnumbered">
-<h3>Testing Observation Window<a class="anchor" aria-label="anchor" href="#testing-observation-window"><i class="fas fa-link"></i></a>
+<p>There is a smorgasbord of extra content this week, allowing you to explore another clustering algorithm (Ripley’s <span class="math inline">\(K\)</span>) and test the sensitivity of our analysis to the observation window. For those of you want to use species observations in your own work, I have also included instructions on how to download these from GBIF.</p>
+<div id="ripleys-alphabet-of-clustering-functions" class="section level3" number="5.3.1">
+<h3>
+<span class="header-section-number">5.3.1</span> Ripley’s alphabet of clustering functions<a class="anchor" aria-label="anchor" href="#ripleys-alphabet-of-clustering-functions"><i class="fas fa-link"></i></a>
 </h3>
-<p>To evaluate the effects of the observation window further:</p>
-<p>[14] Load Protected areas feature layer [<code>data/gbif/protected-area-india.shp</code>]</p>
-<p>[15] Filter to Corbett Tiger Reserve (<code>Corbett National Park</code>), the first in India, and named after <a href="https://en.wikipedia.org/wiki/Jim_Corbett">Jim Corbett</a>, an Anglo-Indian hunter, naturalist, and <a href="https://en.wikipedia.org/wiki/Man-Eaters_of_Kumaon">author</a>.</p>
-<p>[16] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a> to conformal projection used elsewhere</p>
-<p>[17] Filter to Points within the reserve using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a></p>
-<p>[18] Area is critical for subsequent calculations, so calculate the reserve area using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a></p>
-<p>[19] Assess the spatial pattern using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a> = Clustered</p>
-<ul>
-<li>Result is because there are many points at the same location (repeat observations?)</li>
-</ul>
-<p>[20] Filter to unique locations using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a>, using <code>Shape</code> as the input</p>
-<p>[21] Re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a> = Random</p>
-<p>[22] We could also compare to a random distribution:</p>
-<ul>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a>, constraining to reserve extent and using # points to match the occurrence data.</li>
-<li>Re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a> = Random</li>
-<li>Changing the area (e.g., x2) and re-run = Clustered</li>
-</ul>
+<p>“<em>Statistical Inference for Spatial Processes</em>” by <span class="citation">Ripley (<a href="references.html#ref-ripley_statistical_1988">1988</a>)</span> is a highly influential work which provided an “alphabet” of functions for analysing points patterns, named <span class="math inline">\(G, F, K\)</span> and <span class="math inline">\(L\)</span>. Unfortunately, not all of these are implemented in ArcGIS, hence their exclusion from the main part of the practical. They are available in the Python package <a href="https://pysal.org/pointpats/user-guide/ripley.html"><code>pointpats</code></a>, and the R package <a href="https://doi.org/10.18637/jss.v012.i06"><code>spatstat</code></a>, and elsewhere, with a good walkthrough of <span class="math inline">\(G\)</span> and <span class="math inline">\(F\)</span> in <a href="https://geographicdata.science/book/notebooks/08_point_pattern_analysis.html#ripleys-alphabet-of-functions">“Geographic Data Science with Python”</a>.</p>
+<p>In ArcGIS, the only available function is Ripley’s <span class="math inline">\(K\)</span>, via the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">Multi-Distance Spatial Cluster Analysis (Ripley’s K Function)</a> geoprocessing tool, alongside the following <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">documetation</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-multi-distance-spatial-cluster-analysis-ripl.html">guidance</a>.</p>
+<p>It is not within the scope of the practical to discuss the mathematics of <span class="math inline">\(K\)</span> in detail, but as a brief introduction, Ripley’s <span class="math inline">\(K\)</span> is similar to Clark-Evans <span class="math inline">\(R\)</span>, in that it also evaluates point-neighbour distances. However, unlike <span class="math inline">\(R\)</span>, which measures the distance to only the nearest neighbour, <span class="math inline">\(K\)</span> measures the actual distance to all neighbours within a defined distance threshold (<span class="math inline">\(K_{A}\)</span>), and compares this to the expected number of neighbours at that defined distance (<span class="math inline">\(K_{E}\)</span>) to evaluate the degree of clustering, randomness or dispersion. Importantly, <span class="math inline">\(K\)</span> is <strong>multi-scale</strong>, so rather than testing the degree of clustering for a single distance, <span class="math inline">\(K\)</span> operates over a range of distances, testing each one in turn. In turn, <span class="math inline">\(K\)</span> can be used to detect clustering or disperson across multiple spatial scales.</p>
+<p>Ripley’s <span class="math inline">\(K\)</span> can be interpreted visually, with comparison of the expected pattern, produced assuming complete spatial randomness (blue line <span class="math inline">\(±\)</span> confidence envelope), with the observed spatial pattern, as shown below. Significant deviations above the expected pattern (<span class="math inline">\(K_{A}&gt;K_{E}\)</span>) indicate <strong>clustering</strong> at that defined distance, and deviations below the expected pattern (<span class="math inline">\(K_{A}&lt;K_{E}\)</span>) indicate <strong>dispersion</strong>. Correspondence between the observed and expected pattern (<span class="math inline">\(K_{A}\approx K_{E}\)</span>) indicates spatial randomness:</p>
+<center>
+<img src="images/practical-5/ripleys_k.png" style="width:60.0%">
+</center>
+<blockquote>
+<p>Have a play with <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">Multi-Distance Spatial Cluster Analysis (Ripley’s K Function)</a>, which should produce a standalone table of results, containing <span class="math inline">\(K_{A}\)</span> and <span class="math inline">\(K_{E}\)</span> for the tested distances, and the <span class="math inline">\(K\)</span> function chart. The confidence envelope is calculated based on the number of permutations - more is better, but at the cost of computation time…</p>
+</blockquote>
+<center>
+<div class="inline-figure"><img src="screenshots/practical-5/ripley_k_result.png" style="width:60.0%"></div>
+<p><em>Ripley’s <span class="math inline">\(K\)</span> chart (no permutations)</em></p>
+</center>
+<div class="question">
+<p>What is your interpretation of the <span class="math inline">\(K\)</span> function chart?</p>
+</div>
+<p>As with other metrics, Ripley’s <span class="math inline">\(K\)</span> is sensitive to the calculation area, which can be specified with the “Study Area Method” option. Additional processing is also often used to correct points near the boundary of the observation window, as these will have part of their defined neighbourhood outside of the study area, where points cannot be observed, see <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog">here</a>. This is less of an issue for Clark-Evans <span class="math inline">\(R\)</span>, as this is based on the single nearest neighbour. Solutions include using an isotropic correction (i.e., weighting neighbours based on the amount of the search area inside the observation window), or excluding points which are too close to the boundary for a given distance.</p>
+</div>
+<div id="testing-the-observation-window" class="section level3 unnumbered">
+<h3>Testing the observation window<a class="anchor" aria-label="anchor" href="#testing-the-observation-window"><i class="fas fa-link"></i></a>
+</h3>
+<p>To evaluate the effects of the <strong>observation window</strong>, we could analyse our point patterns at a different scale, for example focusing on a single national park. In the following section, I’ll provide some instructions to analyse <em>Panthera tigris</em> observations within the Corbett Tiger Reserve, the first in India, and named after <a href="https://en.wikipedia.org/wiki/Jim_Corbett">Jim Corbett</a>, an Anglo-Indian hunter, naturalist, and <a href="https://en.wikipedia.org/wiki/Man-Eaters_of_Kumaon">author</a>.</p>
+<blockquote>
+<p>Load the protected areas feature layer [<code>data/gbif/protected-area-india.shp</code>] and use Select by Attributes to subset to the <code>Corbett National Park</code>. For consistency with the previous analysis, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">project</a> the data to the conformal projection used elsewhere.</p>
+</blockquote>
+<blockquote>
+<p>Following the approach used above, filter the observations to those within the reserve using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a>.</p>
+</blockquote>
+<p>The area of the observation window is critical for our calculations, so:</p>
+<blockquote>
+<p>Calculate the reserve area using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry Attributes</a>, and then assess the degree of clustering using Clark-Evans <span class="math inline">\(R\)</span> i.e., <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>, using the calculated area as an input.</p>
+</blockquote>
+<div class="question">
+<p>What is your interpretation of Clark-Evans <span class="math inline">\(R\)</span> (<code>Nearest Neighbor Ratio</code>) and the z-score and <span class="math inline">\(p\)</span> value?</p>
+</div>
+<p>One weakness of the dataset is that we have many points at the same location. These <em>could</em> be repeat observations or it could reflect the positional uncertainty of the data. Either way, it would be interesting to repeat the analysis with only unique locations:</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog">Delete Identical</a> to filter to unique locations, using <code>Shape</code> as the input for “Fields”, and then re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>.</p>
+</blockquote>
+<div class="question">
+<p>How has Clark-Evans <span class="math inline">\(R\)</span> changed?</p>
+</div>
+<p>An interesting comparison would also be with a completely random distribution.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to generate a set of random points, using the extent of the Corbett Tiger Reserve as the “Constaining Feature Class” and setting the “Number of Points” to match the number within the nature reserve, and then re-run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbor</a>.</p>
+</blockquote>
+<div class="question">
+<p>Is the result clustered (<span class="math inline">\(R&lt;1\)</span>) or dispersed (<span class="math inline">\(R&gt;1\)</span>)?</p>
+</div>
+<div class="question">
+<p>How does this change if you double the calculation area?</p>
+</div>
 </div>
 <div id="gbif_download" class="section level3 unnumbered">
 <h3>Downloading data from GBIF<a class="anchor" aria-label="anchor" href="#gbif_download"><i class="fas fa-link"></i></a>
 </h3>
-<p>To download species-observation data <strong>manually</strong> via GBIF:</p>
-<ul>
-<li>
-<a href="https://www.gbif.org/user/register">Register</a> for GBIF</li>
-<li><a href="https://www.gbif.org/taxon/search">Get data - Species</a></li>
-<li>Full text search e.g., <em>Canis lupus</em> (Linnaeus, 1758, Gray Wolf)</li>
-<li>Select Occurrences</li>
-<li>Apply Filters of interest e.g.,
-<ul>
-<li>Country or area (United States of America)</li>
-<li>Dataset (iNaturalist Research-grade Observations)</li>
-<li>Location (Has coordinates = Yes”)</li>
-</ul>
-</li>
-<li>Download simple occurrence data (<code>csv</code>)</li>
-<li>If using and publishing the data, include the recommended data attribution e.g., GBIF.org (7 July 2026) GBIF Occurrence Download <a href="https://doi.org/10.15468/dl.vdnczk" class="uri">https://doi.org/10.15468/dl.vdnczk</a>
-</li>
-</ul>
+<p>To download species-observation data <strong>manually</strong> from GBIF:</p>
+<blockquote>
+<p><a href="https://www.gbif.org/user/register">Register</a> for GBIF.</p>
+</blockquote>
+<blockquote>
+<p>Navigate to <a href="https://www.gbif.org/taxon/search">Get data - Species</a> and use “Full text search” to search for the species of interest e.g., <em>Canis lupus</em> (Linnaeus, 1758, Gray Wolf)</p>
+</blockquote>
+<blockquote>
+<p>Select the species → Occurrences</p>
+</blockquote>
+<blockquote>
+<p>Apply Filters of interest e.g., Country or area (<code>United States of America</code>), Dataset (<code>iNaturalist Research-grade Observations</code>), Location (Has coordinates = <code>Yes</code>)</p>
+</blockquote>
+<blockquote>
+<p>Download simple occurrence data (<code>csv</code>)</p>
+</blockquote>
+<p>If using and publishing the data, make sure to include the recommended data attribution e.g., GBIF.org (7 July 2026) GBIF Occurrence Download <a href="https://doi.org/10.15468/dl.vdnczk" class="uri">https://doi.org/10.15468/dl.vdnczk</a></p>
 <p>It is also possible to download data via a <strong>geoprocessing tool</strong> in ArcGIS [<a href="https://www.arcgis.com/home/item.html?id=927944e867624504bfd6c489b0d2aec7">Source</a>] [<a href="https://techdocs.gbif.org/en/data-use/importing-gbif-data-into-arcgis">Instuctions</a>].</p>
 </div>
 </div>
@@ -396,6 +625,7 @@
 </ul>
 </div>
 </div>
+
 
 
 
@@ -416,15 +646,19 @@
 </li>
 <li>
 <a class="nav-link" href="#practical-3"><span class="header-section-number">5.2</span> Practical</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#pre-processing-2"><span class="header-section-number">5.2.1</span> Pre-processing</a></li>
-<li><a class="nav-link" href="#visualisation-and-centrography"><span class="header-section-number">5.2.2</span> Visualisation and Centrography</a></li>
-<li><a class="nav-link" href="#p5_randomness"><span class="header-section-number">5.2.3</span> Randomness</a></li>
-<li><a class="nav-link" href="#cluster-analysis"><span class="header-section-number">5.2.4</span> Cluster analysis</a></li>
+<li><a class="nav-link" href="#point_introduction"><span class="header-section-number">5.2.1</span> Value and object patterning</a></li>
+<li><a class="nav-link" href="#pre-processing-2"><span class="header-section-number">5.2.2</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#point_vis"><span class="header-section-number">5.2.3</span> Visualisation</a></li>
+<li><a class="nav-link" href="#point_centro"><span class="header-section-number">5.2.4</span> Centrography</a></li>
+<li><a class="nav-link" href="#p5_randomness"><span class="header-section-number">5.2.5</span> Randomness</a></li>
+<li><a class="nav-link" href="#cluster-analysis"><span class="header-section-number">5.2.6</span> Cluster analysis</a></li>
+<li><a class="nav-link" href="#summary"><span class="header-section-number">5.2.7</span> Summary</a></li>
 </ul>
 </li>
 <li>
 <a class="nav-link" href="#extra-2"><span class="header-section-number">5.3</span> Extra</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#testing-observation-window">Testing Observation Window</a></li>
+<li><a class="nav-link" href="#ripleys-alphabet-of-clustering-functions"><span class="header-section-number">5.3.1</span> Ripley’s alphabet of clustering functions</a></li>
+<li><a class="nav-link" href="#testing-the-observation-window">Testing the observation window</a></li>
 <li><a class="nav-link" href="#gbif_download">Downloading data from GBIF</a></li>
 </ul>
 </li>

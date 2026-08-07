@@ -67,11 +67,7 @@ Pearson's $r$ is strictly a measure of the **linear** correlation between two va
 
 [^04-correlation-3]: For non-linear relationships, [Spearman's rank correlation coefficient](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient) is a better choice.
 
-<center>
-
-![](./images/practical-4/non-linear.png){width="80%"}
-
-</center>
+<center>![](./images/practical-4/non-linear.png){width="80%"}</center>
 
 There are multiple ways to define Pearson's $r$, for example depending on whether we are assessing the correlation for an entire *population* of data i.e., the entire group you are looking to analyse[^04-correlation-4], or assessing the correlation for a *sample* i.e., a subset of the population.
 
@@ -79,7 +75,7 @@ There are multiple ways to define Pearson's $r$, for example depending on whethe
 
 A common formulation for $r$ is as follows:
 
-$$r= \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_{i}-\bar{y})^2}}$$ 
+$$r= \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_{i}-\bar{y})^2}}$$
 
 where $x_i$ and $y_i$ are the paired observations for the two variables you are studying, $\bar{x}$ and $\bar{y}$ are the mean values for $x$ and $y$, and $n$ is the number of observations.
 
@@ -89,42 +85,46 @@ $$r=\frac{\text{Cov}(XY)}{\sigma_{X}\sigma_{Y}}$$
 
 The numerator is the **covariance**, a measure of the joint variability between the variables $X$ and $Y$, while the denominator is the product of the **standard deviations** of the two variables. The standard deviations $\sigma_{X}$ and $\sigma_{Y}$ measure the dispersion of the observations around their respective means. As the covariance value is influenced by the measurement units, dividing by the product of the standard deviations normalises the output to between $-1$ and $+1$.
 
-Let's use an example to illustrate, using data from @russell1975[^04-correlation-5], with paired observations of nicotine yield (mg) $x$ and carbon monoxide yield (mg) $y$ for 12 brands of cigarette.
+Let's use an example to illustrate, using ecological data from @getzin2012, which consists of paired measurements of the median gap shape complexity index (GSCI) $x$ and species richness (SR) $y$ for a forest patch (Hainich) in central Germany[^04-correlation-5]. 
 
-[^04-correlation-5]: As used in the BMJ guide to [correlation and regression](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/11-correlation-and-regression).
+[^04-correlation-5]: You'll also use this dataset in **GEOG62411** *Data Acquisition for GI Scientists*. Values generated using [PlotDigitizer](https://plotdigitizer.com/), and rounded here for ease of calculation.
 
 $$\begin{array}{cc}
-\text{Nicotine yield (mg)} & \text{Carbon monoxide yield (mg)}\\
+\text{Median GSCI} & \text{SR}\\
 \hline
-0.1 & 4.8\\
-0.2 & 6.3\\
-0.2 & 6.3\\
-0.7 & 10.4\\
-0.8 & 12.3\\
-1.1 & 14.6\\
-1.1 & 14.6\\
-1.2 & 15.4\\
-1.0 & 17.2\\
-1.6 & 12.9\\
-1.2 & 19.3\\
-1.4 & 20.5\\
-3.4 & 16.8\\
-2.0 & 20.2
+1.42 & 15.86\\
+1.53 & 20.79\\
+1.34 & 22.82\\
+1.69 & 26.82\\
+1.45 & 33.86\\
+1.55 & 33.95\\
+1.63 & 33.86\\
+1.87 & 29.79\\
+1.87 & 36.84\\
+1.94 & 37.86\\
+1.95 & 33.86\\
+2.17 & 38.79\\
+2.18 & 33.86\\
+2.29 & 31.83\\
+2.52 & 38.87\\
+2.90 & 40.83\\
+2.70 & 44.82\\
+2.95 & 52.89\\
+3.08 & 50.93\\
+3.04 & 48.05
 \end{array}$$
 
-Here is a plot of the paired observations, adapted from @russell1975:
+Here is a plot of the paired measurements, redrawn from @getzin2012:
 
 <center>
-
-![](./images/practical-4/russell-nicotine.png){width="50%"}
-
+![](./images/practical-4/getzin.png){#species-richness width="50%"}
 </center>
 
-Plugging these paired observations into our full equation above, the numerator calculates the differences between each value and their respective means $\bar{x}\approx1.14$ and $\bar{y}\approx13.69$. The summed product of these paired differences is $\approx38.97$.
+Plugging these paired observations into our full equation above, the numerator calculates the differences between each value and their respective means $\bar{x}\approx2.10$ and $\bar{y}\approx35.36$. The summed product of these paired differences is $\approx90.88$.
 
-For the denominator, we use the *squared* differences between each value and the mean i.e., $(x_{i}-\bar{x})^2$ and $(y_{i}-\bar{y})^2$. The demoninator is calculated as the product of the square root of the summed squared differences for $x$ and $y$, which in this case equals $\approx56.97$. Therefore:
+For the denominator, we use the *squared* differences between each value and the mean i.e., $(x_{i}-\bar{x})^2$ and $(y_{i}-\bar{y})^2$. The demoninator is calculated as the product of the square root of the summed squared differences for $x$ and $y$, which in this case equals $\approx105.71$. Therefore:
 
-$$r= \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_{i}-\bar{y})^2}}\approx\frac{38.97}{56.97}\approx0.68$$
+$$r= \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_{i}-\bar{y})^2}}\approx\frac{90.88}{105.71}\approx0.86$$
 
 ::: question
 What is your interpretation of the correlation coefficient?
@@ -134,7 +134,7 @@ What is your interpretation of the correlation coefficient?
 
 <summary>Answer</summary>
 
-$r=0.68$ is indicative of **positive** correlation between nicotine yield $x$ and carbon monoxide yield $y$.
+$r=0.86$ is indicative of strong **positive** correlation between median gap shape complexity index (GSCI) $x$ and species richness (SR) $y$. 
 
 </details>
 
@@ -142,12 +142,12 @@ $r=0.68$ is indicative of **positive** correlation between nicotine yield $x$ an
 
 Here is the data, if you want to do the calculations yourself[^04-correlation-6], for example in Excel:
 
-[^04-correlation-6]: I've rounded the numerator and denominator and the resulting $r$ value to simplify presentation, so if you do decide to do the calculations yourself, the values may differ very slightly. Values generated using [PlotDigitizer](https://plotdigitizer.com/).
+[^04-correlation-6]: I've rounded the numerator and denominator and the resulting $r$ value to simplify presentation, so if you do decide to do the calculations yourself, the values may differ very slightly. 
 
 ```{python, eval=FALSE}
-# Data from Russell et al. (1975)
-nicotine = [0.1, 0.2, 0.2, 0.7, 0.8, 1.1, 1.1, 1.2, 1, 1.6, 1.2, 1.4, 3.4, 2]
-carbon_monoxide = [4.8, 6.3, 6.3, 10.4, 12.3, 14.6, 14.6, 15.4, 17.2, 12.9, 19.3, 20.5, 16.8, 20.2]
+# Data from Getzin et al. (2012)
+gsci = [1.42, 1.53, 1.34, 1.69, 1.45, 1.55, 1.63, 1.87, 1.87, 1.94, 1.95, 2.17, 2.18, 2.29, 2.52, 2.90, 2.70, 2.95, 3.08, 3.04]
+sr = [15.86, 20.79, 22.82, 26.82, 33.86, 33.95, 33.86, 29.79, 36.84, 37.86, 33.86, 38.79, 33.86, 31.83, 38.87, 40.83, 44.82, 52.89, 50.93, 48.05]
 ```
 
 We now know how to calculate Pearson's $r$ and could begin to measure the association between election results (the topic of the previous practical) and other variables of interest, such as the average income, education levels, or ethnic diversity of the US counties, as described in the [data section](#correlaton_data).
@@ -188,7 +188,7 @@ To illustrate why that matters, below are the distributions $B$ and $C$ from @le
 
 <br>
 
-The overall correlation coefficient $r$ would be unchanged, because the dataset mean, variance and paired structure would be unchanged. However, each dataset now has a very different degree of spatial autocorrelation, and in turn, a very different level of **spatial co-patterning**. In total, we could generate $n$ ([factorial](https://en.wikipedia.org/wiki/Factorial)) different pairs of spatial patterns ($!n$) given the number of observations $n$. For example, with three paired observations, there are $!3=3\times2\times1=6$ possible configurations:
+The overall correlation coefficient $r$ would be unchanged, because the dataset mean, variance and paired structure would be unchanged. However, each dataset now has a very different degree of spatial autocorrelation, and in turn, a very different level of **spatial co-patterning**. In total, we could generate $n$ [factorial](https://en.wikipedia.org/wiki/Factorial) different pairs of spatial patterns ($!n$) given the number of observations $n$. For example, with three paired observations, there are $!3=3\times2\times1=6$ possible configurations:
 
 <center>
 
@@ -225,7 +225,7 @@ As discussed in Practical 3, these are currently in different data formats, whic
 With our FIPS code in the correct data format:
 
 > Use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to produce static table joins between `us_county_500k_contig_cf` and the eduction, poverty and demographic tables, joining based on `GEOID_int` and `FIPS_code`.
->
+
 > To simplify our analysis, we are only going to transfer some key fields, including:
 >
 > -   `MEDHHINC_2023` (poverty): Median household income (\$)
@@ -304,7 +304,7 @@ We already know that there is global positive spatial autocorrelation of the Rep
 
 > Using tools of your choice, investigate **global** and **local** spatial autcorrelation for the eduction, poverty and demographic variables. I would recommend focusing on the median household income, the percentage of the total population classed as "white", and the percentage of adults with a bachelor's degree or higher.
 
-![*An output of local Moran's* $I_{I}$](./screenshots/practical-4/lisa-income.png){width="100%"}
+![*An output of local Moran's* $I_{i}$](./screenshots/practical-4/lisa-income.png){width="100%"}
 
 <br>
 
@@ -328,7 +328,7 @@ Is Pearson's $r$ capturing the "true" correlation between our spatial variables?
 
 Based on this reasoning, we need to use a more appropriate measure, which incorporates the following distinct forms of association, as discussed by @hubert1985 and @lee2001:
 
--   **point-to-point association** i.e., the numerical relationship between two variables measured at the same location (as measured using Pearson's $r$).
+-   **point-to-point association** i.e., the numerical relationship between two variables measured at the same location (for example, as measured using Pearson's $r$).
 -   **spatial association** i.e., the spatial clustering of the data (for example, as measured using Moran's $I$)
 
 This measure would enable us to investigate:
@@ -337,54 +337,53 @@ This measure would enable us to investigate:
 Are the two variables numerically related **and/or** do they exhibit similar geographic patterns?
 :::
 
-#### Lee's $L$ 
+#### Lee's $L$
 
 One solution to this is Lee's $L$ [@lee2001], which is defined as:
 
-$$L_{XY}=\frac{n}{\sum_i(\sum_{j}w_{ij})^2}\frac{\sum_{i}[(\sum_{j}w_{ij}(x_{j}-\bar{x}))(\sum_{j}w_{ij}(y_{j}-\bar{y}))]}{\sqrt{\sum_{i}(x_{i}-\bar{x})^2}\sqrt{\sum_{i}(y_{i}-\bar{y})^2}}$$
-This **looks** quite complicated (and it took me a while to untangle the mathematics!), but there are lots of components here that you should be familiar with[^notation].
+$$L_{XY}=\frac{n}{\sum_i(\sum_{j}w_{ij})^2}\frac{\sum_{i}[(\sum_{j}w_{ij}(x_{j}-\bar{x}))(\sum_{j}w_{ij}(y_{j}-\bar{y}))]}{\sqrt{\sum_{i}(x_{i}-\bar{x})^2}\sqrt{\sum_{i}(y_{i}-\bar{y})^2}}$$ This **looks** quite complicated (and it took me a while to untangle the mathematics!), but there are lots of components here that you should be familiar with[^04-correlation-10].
 
-[^notation]: If you read @lee2001, you'll notice the notation in Equation 12 is slightly different to that provided above. I've made some small changes (not affecting the calculations) for consistency with other equations we've used previously. For example, $w_{ij}$ relates to the values in the spatial weights matrix, introduced [here](#spatial_lag), which is defined by @lee2001 as $v_{ij}$. 
+[^04-correlation-10]: If you read @lee2001, you'll notice the notation in Equation 12 is slightly different to that provided above. I've made some small changes (not affecting the calculations) for consistency with other equations we've used previously. For example, $w_{ij}$ relates to the values in the spatial weights matrix, introduced [here](#spatial_lag), which is defined by @lee2001 as $v_{ij}$.
 
-For example, the **spatial lag** is present $\sum_{j}w_{ij}(x_{j}-\bar{x})$, which we introduced in the [previous practical](#spatial_lag) and which forms a key component of Moran's $I$. Remember this is the *weighted value of a variable for each locations neighbourhood* and here is calculated using the deviation from the mean value i.e., $x_{j}-\bar{x}$. 
+For example, the **spatial lag** is present $\sum_{j}w_{ij}(x_{j}-\bar{x})$, which we introduced in the [previous practical](#spatial_lag) and which forms a key component of Moran's $I$. Remember this is the *weighted value of a variable for each locations neighbourhood* and here is calculated using the deviation from the mean value i.e., $x_{j}-\bar{x}$.
 
-The spatial lag is present in the **numerator** on the right hand side: 
+The spatial lag is present in the **numerator** on the right hand side:
 
 $$\sum_{i}[(\sum_{j}w_{ij}(x_{j}-\bar{x}))(\sum_{j}w_{ij}(y_{j}-\bar{y}))]$$
 
 which can be summarised as follows. For each location $i$:
 
-- compute the **spatial lag** for the mean-centered variable $x$ i.e., the weighted neighbourhood value.
-- compute the **spatial lag** for the mean-centered variable $y$. 
-- multiply the spatial lags together.
+-   compute the **spatial lag** for the mean-centered variable $x$ i.e., the weighted neighbourhood value.
+-   compute the **spatial lag** for the mean-centered variable $y$.
+-   multiply the spatial lags together.
 
-The numerator is therefore the sum of this product for all $i$ locations. 
+The numerator is therefore the sum of this product for all $i$ locations.
 
 It may be helpful to understand this visually, so:
 
-> Inspect the schematic below, which illustrates the process for a single focal feature (Sante Fe County, New Mexico, GEOID: 35049). 
+> Inspect the schematic below, which illustrates the process for a single focal feature (Sante Fe County, New Mexico, GEOID: 35049).
 
 ![*Calculating the product of the spatial lags for a focal feature* $i$](./images/practical-4/bivariate-spatial-lag-transposed.png){#local_l_schematic width="100%"}
 
 <br>
 
-The process is very similar to that introduced in the [previous practical](#lag_schematic). A minor difference is that here we are using standardised (mean-centered) values. The more striking difference is that the process involves **two** variables, rather than one, in this case the Republican vote share (`gop_perc`) and the percentage of the total population in poverty (`PCTPOVALL_2023`). Standardised values for each variable are multiplied by the corresponding spatial weights (in this case, row-standardisation has been used, so $w=1/7$[^lee_focal]), and then summed to produce the **spatial lags**. The value for the focal feature is the product of these spatial lags, which here is $-0.52$. This process would be repeated for all features in the dataset, and the final numerator value is the sum of those values $\sum_{i}$. 
+The process is very similar to that introduced in the [previous practical](#lag_schematic). A minor difference is that here we are using standardised (mean-centered) values. The more striking difference is that the process involves **two** variables, rather than one, in this case the Republican vote share (`gop_perc`) and the percentage of the total population in poverty (`PCTPOVALL_2023`). Standardised values for each variable are multiplied by the corresponding spatial weights (in this case, row-standardisation has been used, so $w=1/7$[^04-correlation-11]), and then summed to produce the **spatial lags**. The value for the focal feature is the product of these spatial lags, which here is $-0.52$. This process would be repeated for all features in the dataset, and the final numerator value is the sum of those values $\sum_{i}$.
 
-[^lee_focal]: In the schematic above, I've used a traditional neighbourhood definition, which would typically exclude the focal feature. Having tested the ArcGIS implementation of $L$, and carefully read the [documentation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-bivariate-spatial-association-works.html#DD4), the implementation **does** include the focal feature: "*All features will have a weight equal to one for the weight of the feature to itself, even if the spatial weights file does not have these weights assigned.*". 
+[^04-correlation-11]: In the schematic above, I've used a traditional neighbourhood definition, which would typically exclude the focal feature. Having tested the ArcGIS implementation of $L$, and carefully read the [documentation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-bivariate-spatial-association-works.html#DD4), the implementation **does** include the focal feature: "*All features will have a weight equal to one for the weight of the feature to itself, even if the spatial weights file does not have these weights assigned.*".
 
 We can interpret the values for the focal feature as follows:
 
-- the spatial lag for the Republican vote share $x$ is **negative** at $-0.25$ i.e., the neighbours of $i$ have a weighted Republication vote share that is *below* the global average. 
-- the spatial lag for the poverty percentage $y$ is **positive** at $2.09$ i.e., the neighbours of $i$ have a weighted poverty percentage that is *above* the global average. 
+-   the spatial lag for the Republican vote share $x$ is **negative** at $-0.25$ i.e., the neighbours of $i$ have a weighted Republication vote share that is *below* the global average.
+-   the spatial lag for the poverty percentage $y$ is **positive** at $2.09$ i.e., the neighbours of $i$ have a weighted poverty percentage that is *above* the global average.
 
 When combined:
 
-- the product of the spatial lags is **negative**[^product_pos_neg], which is indicative of a negative local spatial association between $x$ and $y$ i.e., the neighbourhood is characterised by a relatively low Republican vote share but a relatively high poverty percentage, with respect to the global mean values.
-- the focal feature would therefore contribute negatively to the overall test statistic $L$. 
+-   the product of the spatial lags is **negative**[^04-correlation-12], which is indicative of a negative local spatial association between $x$ and $y$ i.e., the neighbourhood is characterised by a relatively low Republican vote share but a relatively high poverty percentage, with respect to the global mean values.
+-   the focal feature would therefore contribute negatively to the overall test statistic $L$.
 
-[^product_pos_neg]: As covered last week, when both values are positive or both values are negative, the cross-product is positive i.e., Positive $\times$ Positive = Positive, and Negative $\times$ Negative = Positive. By comparison, if the signs of the values differ, the cross-product is negative i.e., Positive $\times$ Negative = Negative.
+[^04-correlation-12]: As covered last week, when both values are positive or both values are negative, the cross-product is positive i.e., Positive $\times$ Positive = Positive, and Negative $\times$ Negative = Positive. By comparison, if the signs of the values differ, the cross-product is negative i.e., Positive $\times$ Negative = Negative.
 
-If you'd like to run through the calculations yourself to help your understanding, here are the data: 
+If you'd like to run through the calculations yourself to help your understanding, here are the data:
 
 ```{python, eval=FALSE}
 # Neighbourhood values (Queen's contiguity) for Sante Fe County, New Mexico, GEOID: 35049
@@ -396,11 +395,11 @@ gop_mean = 0.66
 poverty_perc_mean = 14.5
 ```
 
-The **denominator** for the right hand side of Lee's $L$ is as follows: 
+The **denominator** for the right hand side of Lee's $L$ is as follows:
 
 $$\sqrt{\sum_{i}(x_{i}-\bar{x})^2}\sqrt{\sum_{i}(y_{i}-\bar{y})^2}$$
 
-This should be very familiar, as it is identical to the denominator for Pearson's $r$, albeit with slightly different notation. This is capturing the **standard deviations** of the two variables, measuring the dispersion of the observations around their respective means. This approach standardises the numerator (which measures the similarity of the spatial lag patterns of $x$ and $y$ for all locations) by the overall variability of the two variables (see [here](#normalisation_figure) for a refresher). 
+This should be very familiar, as it is identical to the denominator for Pearson's $r$, albeit with slightly different notation. This is capturing the **standard deviations** of the two variables, measuring the dispersion of the observations around their respective means. This approach standardises the numerator (which measures the similarity of the spatial lag patterns of $x$ and $y$ for all locations) by the overall variability of the two variables (see [here](#normalisation_figure) for a refresher).
 
 The following schematic outlines how that would be applied to the Sante Fe example, where local $L$ is divided by the product of the standard deviations ($0.92$):
 
@@ -413,35 +412,35 @@ As with Moran's $I$, the left hand side of the equation accounts for the number 
 $$\frac{n}{\sum_i(\sum_{j}w_{ij})^2}$$
 
 ::: question
-How is this different to the approach used for Moran's $I$? 
+How is this different to the approach used for Moran's $I$?
 :::
 
 <details>
 
 <summary>Answer</summary>
 
-If you compared the two equations carefully, you will have noticed that the denominator for Moran's $I$ is $\sum_{i}\sum_{j}w_{ij}$, whereas for Lee's $L$ it is $\sum_i(\sum_{j}w_{ij})^2$. This difference arises because Lee's $L$ is based on the **product of two spatial lags**, whereas Moran's $I$ is based on the cross-product between an observation and the spatial lag of the same variable. 
+If you compared the two equations carefully, you will have noticed that the denominator for Moran's $I$ is $\sum_{i}\sum_{j}w_{ij}$, whereas for Lee's $L$ it is $\sum_i(\sum_{j}w_{ij})^2$. This difference arises because Lee's $L$ is based on the **product of two spatial lags**, whereas Moran's $I$ is based on the cross-product between an observation and the spatial lag of the same variable.
 
-The aim here is to remove the effect of different neighbourhood sizes and weight magntiudes. In Moran's $I$ this is achieved by scaling based on the total sum of weights in the spatial weights matrix. This is appropriate because the numerator involves a single spatial lag, which represents a single application of the spatial weights matrix. For Lee's $L$, **two** spatial lags are calculated, one for $x$ and $y$, representing two applications of the spatial weights matrix. As these two spatial lags are then multiplied, normalisation accounts for the squared influence of the row sums of the spatial weights.
+The aim of the denominator in both $I$ and $L$ is to remove the effect of different neighbourhood sizes and weight magntiudes. In Moran's $I$ this is achieved by scaling based on the total sum of weights in the spatial weights matrix. This is appropriate because the numerator involves a single spatial lag, which represents a single application of the spatial weights matrix. For Lee's $L$, **two** spatial lags are calculated, one for $x$ and $y$, representing two applications of the spatial weights matrix. As these two spatial lags are then multiplied, normalisation accounts for the squared influence of the row sums of the spatial weights.
 
-For example, take the following binary spatial weights matrix, with the row sums (# neighbours) included:
+For example, take the following binary spatial weights matrix, with the row sums (number iof neighbours) included:
 
 $$W=\begin{bmatrix}0 & 1 & 1 & 1 \\ 1 & 0 & 1 & 0 \\ 1 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0\end{bmatrix} \rightarrow \begin{matrix}3 \\ 2 \\ 2 \\ 1 \end{matrix} $$
 
-For Moran's $I$, normalisation is based on the sum of all the non-zero weights in the spatial weights matrix ($\sum_{i}\sum_{j}w_{ij}$) i.e., $1 + 1 + 1 +\cdots + 1=8$. 
+For Moran's $I$, normalisation is based on the sum of all the non-zero weights in the spatial weights matrix ($\sum_{i}\sum_{j}w_{ij}$) i.e., $1 + 1 + 1 +\cdots + 1=8$.
 
 For Lee's $L$, normalisation is based on the sum of the squared row sums in the spatial weights matrix $(\sum_{j}w_{ij})^2$ i.e., $3^{2}+2^{2}+2^{2}+1^{2}=18$.
 
-In Moran's $I$, the first feature has three neighbours, which would contribute $3$ to the total sum of weights. In Lee's $L$, the same neighbours contribute to the spatial lags for both $x$ and $y$. When these spatial lags are multiplied, the contribution of the neighbourhood is also multiplied, so the corresponding weight is proportional to $3^{2}=9$. 
+In Moran's $I$, the first feature has three neighbours, which would contribute $3$ to the total sum of weights. In Lee's $L$, the same neighbours contribute to the spatial lags for both $x$ and $y$. When these spatial lags are multiplied, the contribution of the neighbourhood is also multiplied, so the corresponding weight is proportional to $3^{2}=9$.
 
-As a final point, this normalisation is **not** required when row-standardisation is used. 
+As a final point, this normalisation is **not** required when row-standardisation is used.
 
 </details>
 
 <br>
 
 ::: note
-If there's anything you didn't understand, now is the time to ask! 
+If there's anything you didn't understand, now is the time to ask!
 :::
 
 #### Interpreting Lee's $L$
@@ -464,9 +463,9 @@ Can you think why this might be?
 
 <summary>Answer</summary>
 
-Intuitively, we might expect Lee's $L$ to also equal 1. Fundamentally, we are comparing the same dataset against itself... surely this should produce perfect co-patterning? 
+Intuitively, we might expect Lee's $L$ to also equal 1. Fundamentally, we are comparing the same dataset against itself... surely this should produce perfect co-patterning?
 
-The answer is **no**. This is because Lee's $L$ is not comparing the values of $A$ vs. the (identical) values of $A$, as with Pearson's $r$. It is comparing the spatially lagged values of $A$ (numerator) with the overall variation in the original values of $A$ (denominator). As we discussed in the previous practical, the former is a *smoothed* version of the original values, whereby the spatial lag is a weighted average of its neighbours. 
+The answer is **no**. This is because Lee's $L$ is not comparing the values of $A$ vs. the (identical) values of $A$, as with Pearson's $r$. It is comparing the spatially lagged values of $A$ (numerator) with the overall variation in the original values of $A$ (denominator). As we discussed in the previous practical, the former is a *smoothed* version of the original values, whereby the spatial lag is a weighted average of its neighbours.
 
 In turn, Lee's $L$ allows us to evaluate:
 
@@ -480,30 +479,29 @@ How closely do the spatial patterns of the two variables correspond after accoun
 
 Here you'll notice that for $B-B$ and $C-C$, Pearson's $r$ is also $1$, because the attribute values are identical. However, Lee's $L$ is lower, at $0.418$ and $0.175$. These examples are an excellent illustration of what Lee's $L$ is trying to detect, which is the magnitude of neighbourhood-level variation compared to the magnitude of the original variation.
 
-For the $A-A$ comparison, there is evidence of relatively strong co-pattering ($L=0.649$). Progressively lower neighbourhood similarity for $B-B$ and $C-C$ is reflected in lower $L$ values, particularly for $C-C$, where **negative** spatial autocorrelation is observed (Moran's $I=-0.186$). As the standard deviation of the datasets is identical (the denominator in Lee's $L$), any variability in $L$ must therefore reflect their different spatial structures. 
+For the $A-A$ comparison, there is evidence of relatively strong co-pattering ($L=0.649$). Progressively lower neighbourhood similarity for $B-B$ and $C-C$ is reflected in lower $L$ values, particularly for $C-C$, where **negative** spatial autocorrelation is observed (Moran's $I=-0.186$). As the standard deviation of the datasets is identical (the denominator in Lee's $L$), any variability in $L$ must therefore reflect their different spatial structures.
 
-These self-comparisons are useful to understand $L$, but the comparisons of $A-A'$ (flipped) and $A-C$ are more typical of actual data. 
+These self-comparisons are useful to understand $L$, but the comparisons of $A-A'$ (flipped) and $A-C$ are more typical of actual data.
 
 ::: question
-What is your interpretation of $A-A'$ and $A-C$. 
+What is your interpretation of $A-A'$ and $A-C$.
 :::
 
 <details>
 
 <summary>Answer</summary>
 
-For $A-A'$, this is indicative of moderate to strong negative spatial association between the variables ($L=0.512$) i.e., locations where $A$ has relatively high neighbourhood values tend to correspond to locations where $A'$ has relatively low neighbourhood values, and vice versa. 
+For $A-A'$, this is indicative of moderate to strong negative spatial association between the variables ($L=0.512$) i.e., locations where $A$ has relatively high neighbourhood values tend to correspond to locations where $A'$ has relatively low neighbourhood values, and vice versa.
 
-For $A-C$, there is both weak attribute similarity ($r=0.107$) and very weak spatial co-pattering ($L=-0.074$). 
+For $A-C$, there is both weak attribute similarity ($r=0.107$) and very weak spatial co-pattering ($L=-0.074$).
 
 </details>
 
 <br>
 
-
 #### Local Lee's $L$
 
-Lee's $L$, like Moran's $I$, is a **global** statistic, providing information on the degree of point-to-point association and spatial association for a dataset *as a whole*. 
+Lee's $L$, like Moran's $I$, is a **global** statistic, providing information on the degree of point-to-point association and spatial association for a dataset *as a whole*.
 
 However, we often want to go further:
 
@@ -511,51 +509,47 @@ However, we often want to go further:
 Which *parts* of the map show spatial co-patterning?
 :::
 
-Luckily we don't need to do any further calculations, because the global value for $L$ is calculated based on feature-specific $L$ values. We've already covered how those are calculated in some detail, including in the [schematic](#local_l_schematic) above. These $L$ values indicate whether the focal feature is characterised by positive, negative or negligible local spatial association. 
+Luckily we don't need to do any further calculations, because the global value for $L$ is calculated based on feature-specific "local" $L$ values. We've already covered how those are calculated in some detail, including in the [schematic](#local_l_schematic) above. These local $L$ values indicate whether the focal feature is characterised by positive, negative or negligible local spatial association.
 
-The **statistical significance** of the global and local $L$ values can be determined by permutation tests, as with Moran's $I$ and $I_{i}$. For the latter, this allows us to distinguish statistically significant categories (High-High, Low-Low, High-Low, Low-High), much like with local Moran's $I_{i}$. 
+The **statistical significance** of the global and local $L$ values can be determined by permutation tests, as with Moran's $I$ and $I_{i}$. For the latter, this allows us to distinguish statistically significant categories (High-High, Low-Low, High-Low, Low-High), much like with local Moran's $I_{i}$.
 
 ### Running bivariate spatial association
 
 That's enough theory. Let's play with some data.
 
-> Open the Geoprocessing tool [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), using `us_county_500k_contig_cf` as the "Input Features", with `per_gop` and `PCTPOVALL_2023` as the analysis fields[^variable_order] and use Queen's contiguity. Save the output features to the project directory with a suitable name e.g., `L_gop_pov_qc`
+> Open the Geoprocessing tool [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), using `us_county_500k_contig_cf` as the "Input Features", with `per_gop` and `PCTPOVALL_2023` as the analysis fields[^04-correlation-13] and use Queen's contiguity. Save the output features to the project directory with a suitable name e.g., `L_gop_pov_qc`
 
-[^variable_order]: Unlike regression, the order of the variables is not important here i.e., correlation $\text{correlation}\:A-B=\text{correlation}\:B-A$.
+[^04-correlation-13]: Unlike regression, the order of the variables is not important here i.e., correlation $\text{correlation}\:A-B=\text{correlation}\:B-A$.
 
 The tool has produced a striking map of local $L$, but before we explore it, we need to investigate the global results, which are shown here:
 
-<center>
-
-![](./screenshots/practical-4/gop_poverty_L.png){width="60%"}
-
-</center>
+<center>![](./screenshots/practical-4/gop_poverty_L.png){width="60%"}</center>
 
 ::: question
 What is your interpretation of the global level results, including $L$ and it's associated $p$ value, and Pearson's $r$ (`Pearson Correlation - raw`).
 :::
 
-The ArcGIS implementation also returns the **spatial smoothing scalar** for both variables. We haven't defined this yet, as it doesn't feature directly in the main $L$ equation, but you'll notice it's very similar:
+The ArcGIS implementation also returns the **spatial smoothing scalar** for both variables. We haven't defined this yet, as it doesn't feature directly in the main $L$ equation, but you'll notice it's very similar to $L$: 
 
 $$SSS_X=\frac{n}{\sum_{i}(\sum_{j} w_{ij})^2}\frac{\sum_{i}(\sum_{j}w_{ij}(x_{j}-\bar{x}))^2}{\sum_{i}(x_{i}-\bar{x})^2}$$
 
-Broadly this is measuring the degree of variation in a single spatially smoothed variable, with values closer to $1$ indicating strong positive spatial autocorrelation, and values closer to $0$ indicating strong negative spatial autocorrelation. 
+Broadly this is measuring the degree of variation in a **single** spatially smoothed variable, with values closer to $1$ indicating strong positive spatial autocorrelation, and values closer to $0$ indicating strong negative spatial autocorrelation.
 
-In our case, while the global $p$ value is "significant" $p<0.05$, the magnitude of both $L$ and $r$ is very small. As a result, the statistical significance of the result is unlikely to meaningful. Instead, it likely reflects the fact that both variables show autocorrelation, but with little cross correlation between them. 
+In our case, while the global $p$ value is "significant" $p<0.05$, the magnitude of both $L$ and $r$ is very small. As a result, the statistical significance of the result is unlikely to be meaningful. Instead, it likely reflects the fact that both variables show autocorrelation (as revealed by $SSS_X$), even though there is little *cross correlation* between them.
 
-While we should be cautious about the local statistics in light of this, the Attribute Table still contains some useful information, such as local $L$ and the neighbourhood averages for each variable[^not_spatial_lag].
+While we should be cautious about the local statistics in light of this, the Attribute Table still contains some useful information, such as local $L$ and the neighbourhood averages for each variable[^04-correlation-14].
 
-[^not_spatial_lag]: Note these are not exactly the same as the **normalised** spatial lags we calculated above i.e., $\sum_{j}w_{ij}(y_{j}-\bar{y})$. They appear to be $\sum_{j}w_{ij}y_{j}$. 
+[^04-correlation-14]: Note these are not exactly the same as the **normalised** spatial lags we calculated above i.e., $\sum_{j}w_{ij}(y_{j}-\bar{y})$. They appear to be $\sum_{j}w_{ij}y_{j}$.
 
 ::: question
-What is local $L$ for our test county (Sante Fe County, GEOID: 35049)? Why does this differ from the [calculations](#local_l_schematic) above? 
+What is the local $L$ for our test county (Sante Fe County, GEOID: 35049)? Why does this differ from the [calculations](#local_l_schematic) above?
 :::
 
 <details>
 
 <summary>Answer</summary>
 
-This is because the ArcGIS implementation includes the focal feature in the calculations. 
+This is because the ArcGIS implementation includes the focal feature in the calculations.
 
 </details>
 
@@ -563,7 +557,7 @@ This is because the ArcGIS implementation includes the focal feature in the calc
 
 Given the unclear global pattern, let's investigate some other bivariate associations.
 
-> Re-run [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), comparing against the percentage of the population with a bachelor's degree of higher (`Bachelors_or_higher_perc`). Use the same spatial weights approach for consistency. 
+> Re-run [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), comparing against the percentage of the population with a bachelor's degree of higher (`Bachelors_or_higher_perc`). Use the same spatial weights approach for consistency.
 
 ::: question
 Is education level associated with the Republican vote share? Does this match your expectations?
@@ -577,31 +571,32 @@ Do $r$ and $L$ differ and what does this suggest?
 Where are the clusters of **positive** spatial association (high-high, low-low)? What might explain these?
 :::
 
+![*Local spatial association for Republican vote share vs. Share of the population with a Bachelors degree or higher*](./screenshots/practical-4/lisa-gop-bachelors.png){width="100%"}
+
+<br>
+
 ::: question
 Where are the clusters of **negative** spatial association (high-low, low-high)?
 :::
 
 [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog) also produces a Lee's $L$ scatter plot, which shows the neighbourhood weighted averages (spatial lags) for each feature for both variables, as well as those features classed as statistically significant:
 
-<center>
+<center>![](./screenshots/practical-4/lee-scatter.png){width="60%"}</center>
 
-![](./screenshots/practical-4/lee-scatter.png){width="60%"}
+<br>
 
-</center>
+In my view, a more accurate visualisation would be based on the normalised spatial lags i.e., $\sum_{j}w_{ij}(x_{j}-\bar{x})$, given this is the basis for Lee's $L$. However, unnormalised neighbourhood averages are perhaps more easily interpretable, reflecting the typical values observed in the raw data.
 
-In my view, a more accurate visualisation would be based on the normalised spatial lags i.e., $\sum_{j}w_{ij}(x_{j}-\bar{x})$, given this is the basis for Lee's $L$. However, unnormalised neighbourhood averages are more easily interpretable, reflecting the typical values observed in the raw data. 
-
-> Repeat the analysis, looking at the percentage of the population classed as "white" (`WA_perc`) and the median household income (`MEDHHINC_2023`).
+> Repeat the analysis, looking at the percentage of the population classed as "white" (`WA_perc`) and the median household income (`MEDHHINC_2023`), and any other bivariate comparisons of interest.
 
 ::: question
-Which indicators show positive or negative spatial association with the Republican vote share? 
+Which indicators show positive or negative spatial association with the Republican vote share?
 :::
-
 
 ::: problem
 James, some values for your testing. Can you reproduce these?
 
-<br> 
+<br>
 
 -   White % [`WA_%`]:
     -   An example of **positive** association i.e., as White % increases, GOP vote percent increases.
@@ -621,7 +616,7 @@ A further observation - all of the reported P-values are **identical** (0.002). 
 
 ### Now that's what I call spatial correlation...
 
-In this practical we've introduced Lee's $L$ which measures the association between two spatial variables, taking into account their spatial structure and the arrangement of values across neighbouring locations. While Pearson's $r$ (and similar aspatial metrics) measure **point-to-point association** i.e., the numerical relationship between two variables measured at the same location, Lee's $L$ evaluates whether this relationship is reflected in the spatial patterns of the two variables. 
+In this practical we've introduced Lee's $L$ which measures the association between two spatial variables, taking into account their spatial structure and the arrangement of values across neighbouring locations. While Pearson's $r$ (and similar aspatial metrics) measure **point-to-point association** i.e., the numerical relationship between two variables measured at the same location, Lee's $L$ evaluates whether this relationship is reflected in the spatial patterns of the two variables.
 
 To finish the practical:
 
@@ -634,13 +629,16 @@ How do we interpret the global and local results?
 :::
 
 ::: question
-How might the results change if an alternative spatial weighting approach was used? i.e., *distance based, $k$ neighbours.* 
+How might the results change if an alternative spatial weighting approach was used?
 :::
 
-If you are satisfied with your understanding... **congratulations!** You have completed the practical and should now have a thorough understanding of the limitations of aspatial measures of correlation (when applied to spatial data), and alternative measures which take spatial structure into account. 
+> Run [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog) using a distance based or $k$ neighbours weighting to evaluate this.
+
+<br>
+
+If you are satisfied with your understanding... **congratulations!** You have completed the practical and should now have a thorough understanding of the limitations of aspatial measures of correlation (when applied to spatial data), and alternative measures which take spatial structure into account.
 
 [**Finished!**](#index)
-
 
 ## Extra {#correlation-extra}
 
@@ -664,9 +662,10 @@ What are some limitations of our approach?
 
 There are a few obvious limitations to our approach:
 
-- As ever, the results are sensitive to our designation of the spatial weights matrix.
-- We're also using the same spatial weights matrix for both variables. There might be circumstances where we'd want to use different neighbourhood definitions, see @illanas2025.
-- We're also only dealing with **bivariate** associations, rather than a combination of factors, which might ultimately be needed to **explain** spatial variability in Republican vote share. We'll explore this in [Practical 7](#spatial_regression) and [Practical 8](#gwr).
+-   As ever, the results are sensitive to our designation of the spatial weights matrix.
+-   We're also using the same spatial weights matrix for both variables. There might be circumstances where we'd want to use different neighbourhood definitions, see @illanas2025.
+-   We're also only dealing with **bivariate** associations, rather than a combination of factors, which might ultimately be needed to **explain** spatial variability in Republican vote share. We'll explore this in [Practical 7](#spatial_regression) and [Practical 8](#gwr).
+- We can also engage critically with the ArcGIS implementation of $L$, given it is doesn't allow us to investigate the *normalised* (mean-centered) spatial lags for each variable, and seems to enforce the inclusion of the focal feature in the calculations. 
 
 </details>
 
@@ -680,3 +679,45 @@ For those of you interested in exploring further, there are lots of other county
 -   Lee, S.I. ([2017](https://doi.org/10.1007/978-3-319-17885-1_1524)). Correlation and Spatial Autocorrelation. In: Shekhar, S., Xiong, H., Zhou, X. (eds) Encyclopedia of GIS. Springer, Cham.
 -   Illanas, S., Gómez-Rubio, V., Vicente, J. and Acevedo, P. ([2025](https://doi.org/10.1016/j.ecolind.2025.113551)). Assessment of bivariate relationships between spatial patterns: Revisiting the global and local L bivariate indices for wildlife management and conservation[MT1.1]. Ecological Indicators, 175, p.113551.
 -   Wolf, L.J. ([2024](https://doi.org/10.1080/24694452.2024.2326541)). Confounded Local Inference: Extending Local Moran Statistics to Handle Confounding. Annals of the American Association of Geographers, 114(6), 1216–1231.
+
+
+```{r, eval=FALSE, echo=FALSE}
+
+#------------ Code to generate plot of Getzin et al. (2012) data
+
+# Import library
+library(ggplot2)
+
+# Define data, generated using PlotDigitzer
+data <- data.frame(
+  gsci = c(1.42, 1.53, 1.34, 1.69, 1.45, 1.55, 1.63, 1.87, 1.87, 1.94,
+               1.95, 2.17, 2.18, 2.29, 2.52, 2.90, 2.70, 2.95, 3.08, 3.04),
+  sr = c(15.86, 20.79, 22.82, 26.82, 33.86, 33.95, 33.86, 29.79, 36.84, 37.86,
+         33.86, 38.79, 33.86, 31.83, 38.87, 40.83, 44.82, 52.89, 50.93, 48.05)
+)
+
+# Scatter plot
+g <- ggplot(data, aes(x = gsci, y = sr)) +
+  geom_point(
+    fill = "black",
+    color = "black",
+    size = 1,
+    alpha = 0.8, shape = 21
+  ) +
+  labs(
+    x = "Median GSCI",
+    y = "Species richness (Hainich)",
+  ) +
+  theme_classic()
+
+# Save
+ggsave(
+  plot = g,
+  "./images/practical-4/getzin.png",
+  height = 3,
+  width = 3,
+  units = "in",
+  dpi = 300
+)
+
+```
