@@ -83,7 +83,7 @@ In the field of spatial **econometrics**[^field_discuss], which we'll discuss mo
 [^field_discuss]:
 *Note* we'll discuss the history and conceptual approaches of the fields of **econometrics** and **geostatistics** in later weeks, but as brief introduction - The field of *econometrics* focuses on analysis of **discretised space** (i.e., "areal data"), where continuous space is broken down into discrete zones (e.g., counties, countries), often represented by Polygons or Points, see @anselin1988. While closely related, *geostatistics* focuses on processes operating over **continuous space**, where spatial interpolation is a key method, see @diggle2007.
 
-### Defining spatial weights
+### Defining spatial weights {#define_sw}
 
 Spatial weights ($w$) are used to represent the presence and/or strength of the spatial relationship between two objects. In the example above, we could define neighbours based on whether countries share a common border[^weight-example], in which case:
 
@@ -585,7 +585,7 @@ What are the limitations of this approach?
 
 In the practical we've worked exclusively with Polygons. How would we define neighbours for a Point dataset?
 
-> Open the `world_cities_5m` layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Fixed distances and $K$ nearest neighbours are common approaches.
+> Open the `world_cities_5m` layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Inverse distance, fixed distances and $K$ nearest neighbours are common approaches.
 
 <p align="center">
 <a name=""></a>![](./screenshots/practical-2/points-fixed-distance.png){width=50%}

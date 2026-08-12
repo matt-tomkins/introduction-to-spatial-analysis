@@ -108,7 +108,8 @@
 </h3>
 <p>The aims of this practical are to:</p>
 <ol style="list-style-type: decimal">
-<li>Introduce deterministic and geostatistical approaches for analysing spatial data.</li>
+<li>Introduce deterministic and geostatistical approaches for analysing
+spatial data.</li>
 <li>Understand how common spatial interpolation techniques work.</li>
 <li>Perform interpolation in ArcGIS and become familiar with common
 applications e.g., for prediction, as an input for spatial
@@ -124,7 +125,11 @@ Office</a>
 <a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/uk-synoptic-and-climate-stations">automatic monitoring
 stations</a>,
 obtained via the <a href="https://datahub.metoffice.gov.uk/docs/o/category/observations/overview">Land Observations
-API</a>. We’ll tackle a problem also faced by the Met Office - given limited meteorological observations, how do we <a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/data/haduk-grid/haduk-grid">predict</a> the weather for unsampled locations?</p>
+API</a>.
+We’ll tackle a problem also faced by the Met Office - given limited
+meteorological observations, how do we
+<a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/data/haduk-grid/haduk-grid">predict</a>
+the weather for unsampled locations?</p>
 </div>
 <div id="data-4" class="section level3 unnumbered">
 <h3>Data<a class="anchor" aria-label="anchor" href="#data-4"><i class="fas fa-link"></i></a>
@@ -160,581 +165,970 @@ Interpolation</a>
 <h2>
 <span class="header-section-number">6.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-4"><i class="fas fa-link"></i></a>
 </h2>
-<p>Context: Interpolation techniques are used to estimate unknown values at new
-locations based on known measurements from surrounding sample points.</p>
-<p>We could use our species observation Points (<em>Panthera tigris</em>) from
-<a href="point_patterns.html#point_patterns">Practical 5</a> here, but it’s not an ideal example, for
-a few reasons:</p>
+<div id="introduction-6" class="section level3" number="6.2.1">
+<h3>
+<span class="header-section-number">6.2.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-6"><i class="fas fa-link"></i></a>
+</h3>
+<p>In the following introduction, I provide a rationale for interpolation,
+some background on spatial econometric and geostatistical approaches to
+spatial analysis, and discuss the practical data.</p>
+<div id="why_interpolate" class="section level4" number="6.2.1.1">
+<h4>
+<span class="header-section-number">6.2.1.1</span> Why interpolate?<a class="anchor" aria-label="anchor" href="#why_interpolate"><i class="fas fa-link"></i></a>
+</h4>
+<p>In the <a href="point_patterns.html#point_patterns">previous practical</a>, we characterised the
+<strong>centrography</strong>, <strong>randomness</strong> and <strong>clustering</strong> of a point pattern,
+based on the understanding that the point locations and their overall
+distribution was a reflection of the relevant influencing factors and
+mechanisms. In short, the geography of the points was <strong>important</strong>,
+being a realisation of point processes.</p>
+<p>In other circumstances, the distribution of points can be less
+meaningful. For example, the spatial arrangements of points may simply
+reflect how the data was collected, rather than being the result of the
+process we are interested in. In this case, the geography of the points
+is <strong>secondary</strong>, where the presence (and absence) of points is <em>not</em> a
+realisation of point processes, but a direct consequence of sampling
+strategy.</p>
+<p>This matters because many geographic phenomena or processes are
+<strong>spatially continuous</strong> (e.g., temperature, elevation, air pollution),
+but our data collection is often limited to discrete sampling locations.
+In these circumstances, our interest lies <em>less</em> in the specific values
+measured at the sampling locations<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Although of course we should still design a
+robust and representative sampling strategy, and collect the best
+data with the available time and resources, as discussed in
+&lt;strong&gt;GEOG62411&lt;/strong&gt; &lt;em&gt;Data Acquisition for GI Scientists&lt;/em&gt;.&lt;/p&gt;"><sup>60</sup></a>, but in
+understanding and characterising the continuous nature of the phenomena.
+In turn, our aim is to move from a discrete to a continuous estimate of
+the phenomenon, which enables prediction of unknown values at new
+locations based on known measurements from surrounding sample points.
+This is <strong>spatial interpolation</strong>.</p>
+</div>
+<div id="econometrics-and-geostatistics" class="section level4" number="6.2.1.2">
+<h4>
+<span class="header-section-number">6.2.1.2</span> Econometrics and Geostatistics<a class="anchor" aria-label="anchor" href="#econometrics-and-geostatistics"><i class="fas fa-link"></i></a>
+</h4>
+<p>This difference between <em>discretised</em> and <em>continuous</em> modelling of
+space is a reflection of two distinct but closely-related fields of
+spatial analysis: <strong>spatial econometrics</strong> and <strong>geostatistics</strong>. Both
+focus on analysis of spatial data and grapple with similar concepts
+(e.g., spatial structure, spatial dependence), but using very different
+tools and originating from different academic backgrounds and
+industries.</p>
+<p>Much of this unit utilises spatial econometric methods, which are
+focused on analysis of <em>discretised space</em> (i.e., “areal data”), where
+continuous space is broken down into discrete zones (e.g., counties,
+countries), often represented by Polygons or Points. The spatial
+structure of these data is represented by the spatial weights matrix
+<span class="math inline">\(\mathbf{W}\)</span> and spatially lagged variables, which underpin analysis of
+spatial autocorrelation using Moran’s <span class="math inline">\(I\)</span> and <span class="math inline">\(I_{i}\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>; <a href="references.html#ref-anselin1995a">Anselin, 1995b</a>)</span> and spatial correlation using Lee’s <span class="math inline">\(L\)</span> <span class="citation">(<a href="references.html#ref-lee2001">Lee, 2001</a>)</span>. As
+we’ll discover in later weeks, <span class="math inline">\(\mathbf{W}\)</span> is also a key component of
+both global <span class="citation">(<a href="references.html#ref-anselin2002">Anselin, 2002</a>)</span> and local spatial regression <span class="citation">(<a href="references.html#ref-brunsdon1996">Brunsdon <em>et al.</em>, 1996</a>; <a href="references.html#ref-fotheringham2017">Fotheringham <em>et al.</em>, 2017</a>)</span>. Perhaps the most influential figure in the field of
+spatial econometrics is <a href="https://spatial.uchicago.edu/directory/luc-anselin">Luc
+Anselin</a>,
+particularly since the publication of <em>Spatial Econometrics: Methods and
+Models</em> in 1988 <span class="citation">(<a href="references.html#ref-anselin1988a">Anselin, 1988b</a>)</span>. For an overview of the history of the
+field, I would recommend <span class="citation">Anselin (<a href="references.html#ref-anselin2010">2010</a>)</span> and <span class="citation">Elhorst and Kesina (<a href="references.html#ref-elhorst2026">2026</a>)</span>, but as a <em>brief</em>
+introduction, spatial econometrics arose from the field of
+econometrics<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The statistical study of economics.&lt;/p&gt;"><sup>61</sup></a>, with the recognition that “<em>economic
+phenomena localized in a certain space must often be explained by causal
+factors in other spaces</em>” <span class="citation">(<a href="references.html#ref-paelinck1978">Paelinck, 1978</a>)</span> i.e., spatial dependence. In
+short, spatial econometric methods seek to account for the spatial
+<strong>dependence</strong> i.e., observations being related across space, and
+spatial <strong>heterogeneity</strong> i.e., observations or processes varying across
+space, that characterise spatial data, where the underlying observations
+are <strong>discrete</strong> spatial entities.</p>
+<p>In contrast, the field of <strong>geostatistics</strong> focuses on processes
+operating over <strong>continuous space</strong> and developed from the work of
+<span class="citation">Krige (<a href="references.html#ref-krige1951b">1951a</a>)</span> and <span class="citation">Matheron (<a href="references.html#ref-matheron1963a">1963a</a>)</span>, which introduced new methods to estimate
+ore reserves in South African gold mines. <span class="citation">Diggle and Ribeiro (<a href="references.html#ref-diggle2007">2007</a>)</span> provides a useful
+summary of the geostatistical perspective, which focuses on phenomena
+which exist continuously throughout a region (e.g., air pollution). At
+every point within that region, there is a “true” air pollution value,
+but this is not directly observable. Instead, the researcher has access
+to a finite set of measurements <span class="math inline">\(Y_{1}, Y_{2}, \cdots, Y_{n}\)</span> at
+locations <span class="math inline">\(X_{1}, X_{2}, \cdots, X_{n}\)</span>. Importantly, the values <span class="math inline">\(Y_{i}\)</span>
+are not necessarily equal to the true underlying values, with
+uncertainty introduced by measurement error or noise. Under the
+conventional assumption that the sampling locations <span class="math inline">\(X_{i}\)</span> are
+independent of the underlying spatial process, geostatistics seeks to
+model the unknown spatial pattern, accounting for spatial dependence and
+measurement error. This enables prediction at unsampled locations i.e.,
+<strong>interpolation</strong>. Geostatistics therefore deals with the same
+geographic issues as spatial econometrics, such as spatial dependence
+(i.e., autocorrelation), but using alternative methods, such as
+semi-variograms, which we’ll introduce today.</p>
+<center>
+<img src="images/practical-6/econometric_geostatistic.png" style="width:75.0%">
+</center>
+</div>
+<div id="data-description" class="section level4" number="6.2.1.3">
+<h4>
+<span class="header-section-number">6.2.1.3</span> Data description<a class="anchor" aria-label="anchor" href="#data-description"><i class="fas fa-link"></i></a>
+</h4>
+<p>Spatial interpolation is a key component of geostatistics, and is used
+to predict unknown <strong>values</strong> at new locations based on known
+measurements from surrounding sample points. We could use our
+observations points of <em>Panthera tigris</em> from <a href="point_patterns.html#point_patterns">Practical
+5</a> to demonstrate this, but it’s not an ideal example,
+for a few reasons:</p>
 <ol style="list-style-type: decimal">
-<li><p>Our Points don’t have corresponding <code>values</code> that could be used for
-spatial interpolation e.g., animal height, age, or mass for each
-observation.</p></li>
-<li><p>As our Points represent individual observations, we would typically
-have to aggregate these data in some way to perform interpolation
-i.e., either via
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/generatetesellation.html?tabs=dialog">tessellation</a>
-to a grid or by generating a new Point dataset, where the <code>value</code>
-represents the number of observations within a specified distance.</p></li>
+<li><p>Our points don’t have corresponding <strong>values</strong> that could be easily
+used for spatial interpolation e.g., animal height, age, or mass.</p></li>
 <li><p>As demonstrated in <a href="point_patterns.html#point_patterns">Practical 5</a>, the distribution
 of <em>Panthera tigris</em> observations is highly clustered and
-non-continuous, with observations primarily in designated nature
-reserves. Interpolation techniques will typically struggle to
-capture this spatial pattern, and instead, we’d probably want to use
-a <em>species distribution model</em> (an example of a <em>point-process
-model</em>) in this situation. You can learn about these in <a href="https://www.manchester.ac.uk/study/masters/courses/list/07053/msc-geographical-information-science/">Spatial
+<strong>non-continuous</strong>, with observations primarily in designated nature
+reserves. Most interpolation techniques will struggle to capture
+this spatial pattern, and instead we’d probably want to use a
+species distribution model in this situation. You can learn about
+these in <a href="https://www.manchester.ac.uk/study/masters/courses/list/07053/msc-geographical-information-science/">Spatial
 Ecology</a>
 in Semester 2.</p></li>
-<li><p>Finally, our species observations are <em>Presence-Only</em> data (i.e.,
-recorded observations of <em>Panthera tigris</em>), and we have no access
-to corresponding <em>Absence-data</em>, which you can read about more fully
-in <span class="citation">Grattarola <em>et al.</em> (<a href="references.html#ref-grattarola2023">2023</a>)</span> and <span class="citation">Kent and Carmel (<a href="references.html#ref-kent2011">2011</a>)</span>. As a result, we do not know
-whether the “gaps” in our <a href="point_patterns.html#p5_randomness">Point-pattern</a> analysis
-reflects true absence, or simply sampling bias <span class="citation">(<a href="references.html#ref-hughes2021">Hughes <em>et al.</em>, 2021</a>)</span>.</p></li>
+<li><p>Our species observations are <em>presence-only</em> data (i.e., recorded
+observations of <em>Panthera tigris</em>), and we have no access to
+corresponding <em>absence-data</em>, which you can read about more fully in
+<span class="citation">Grattarola <em>et al.</em> (<a href="references.html#ref-grattarola2023">2023</a>)</span> and <span class="citation">Kent and Carmel (<a href="references.html#ref-kent2011">2011</a>)</span>. As a result, we do not know whether
+the “gaps” in our <a href="point_patterns.html#p5_randomness">point pattern</a> reflect true
+absence, or simply sampling bias <span class="citation">(<a href="references.html#ref-hughes2021">Hughes <em>et al.</em>, 2021</a>)</span>.</p></li>
+<li><p>As a final consideration, and linking back to the introductory
+<a href="interpolation.html#why_interpolate">discussion</a>, one of the key assumptions in our
+analysis of <em>Panthera tigris</em> was that the observed point patterns
+were a reflection of point processes. Most traditional
+geostatistical approaches to interpolation, including those
+introduced today, assume (often implicitly) that the sampling
+approach (and by definition, the point pattern) is non-preferential
+i.e., sampling locations were not determined or influenced by the
+underlying process. This is unlikely to be the case for <em>Panthera
+tigris</em>, as sampling intensity and locations are likely influenced
+by the knowledge that tiger populations are higher in protected
+areas. While this is not a “deal breaker” for a geostatistical
+approach, it does require alternative methods <span class="citation">(<a href="references.html#ref-diggle2010">Diggle <em>et al.</em>, 2010</a>)</span>.</p></li>
 </ol>
-<p><strong>Instead</strong>, we are going to apply interpolation to a <strong>continuous</strong>
-entity that <em>could</em> be measured anywhere within our study area (temperature), but
-which is represented by a finite number of sampled locations (monitoring stations).</p>
-<div id="pre-processing-3" class="section level3" number="6.2.1">
+<p>Instead, we are going to apply interpolation to a <strong>continuous</strong> entity
+that <em>could</em> be measured anywhere within our study area (air
+temperature), but which is represented by a finite number of discrete
+sampling locations (<a href="https://weather.metoffice.gov.uk/maps-and-charts/temperature-map#?model=ukmo-ukv&amp;layer=temperature&amp;bbox=%5B%5B46.6795944656402,-32.12402343750001%5D,%5B60.823494332539646,24.125976562500004%5D%5D">Met
+Office</a>
+<a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/uk-synoptic-and-climate-stations">automatic monitoring
+stations</a>).</p>
+</div>
+</div>
+<div id="pre-processing-3" class="section level3" number="6.2.2">
 <h3>
-<span class="header-section-number">6.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-3"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-3"><i class="fas fa-link"></i></a>
 </h3>
-<p>[1] Exploratory data analysis</p>
-<ul>
-<li>Load CSV [<code>observations-20260716_1400.csv</code>] which includes
-temperature data from 127 monitoring stations, with data from
-2026-07-16 at 14:00:00.</li>
-<li><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table to
-Point</a></li>
-<li>Symbology</li>
-<li>Direct to <a href="spatial_autocorrelation.html#spatial_autocorrelation">spatial autcorrelation</a> and
-<a href="point_patterns.html#point_patterns">point pattern</a> analysis</li>
-<li>Scatter Plot of Latitude vs. Temperature</li>
-</ul>
-<p>[2]
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a>
-to British National Grid (27700)</p>
-<p>[3] Elevation correction</p>
-<p>As the weather stations are at different elevations, this can complicate
-analysis e.g., compare Aonach Mor (~18.1°C) with Tulloch Bridge
-(~27.1°C), just ~17 km apart! One solution is to produce
-elevation-corrected temperature, normalising to sea level. This can be
-used by applying the <strong>environmental lapse rate</strong> of ~6.49°C / km i.e.,
-for every 1000 m of elevation gained, the temperature (on average) would
-be ~6.49°C lower.</p>
-<ul>
-<li>Load the ETOPO DEM [<code>etopo-2022.tiff</code>]</li>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog">Extract Multi Values to
+<p>To begin:</p>
+<blockquote>
+<p>Open ArcGIS, initialise a new project in the <code>practical-6</code> directory,
+establish a connection to <code>data</code> and load
+<code>observations-20260716_1400.csv</code>, which includes air temperature
+measurements from 127 Met Office monitoring stations, with data from
+2026-07-16 at 14:00:00. Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table to
+Point</a>
+(EPSG: <a href="https://epsg.io/4326">4326</a>) and save to the project directory
+e.g., <code>met_office_temp</code>.</p>
+</blockquote>
+<p>As we are focused on the British Isles:</p>
+<blockquote>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a>
+the resulting layer to the British National Grid (EPSG
+<a href="https://epsg.io/27700">27700</a>), update the map CRS to match, and then
+investigate the dataset.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-6/temp_original.png" style="width:50.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>What was the average measured temperature (<code>temp</code>) for that datetime?</p>
+</div>
+<div class="question">
+<p>Does the monitoring station location (<code>latitude</code>, <code>longitude</code>) influence
+the measured temperature?</p>
+</div>
+<blockquote>
+<p>Investigate spatial autocorrelation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation
+(Global Moran’s
+I)</a>
+and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s
+I)</a>,
+and review the Practical 2 <a href="spatial_weights.html#weights-extra">materials</a> for a refresher
+on constructing the spatial weights matrix for points.</p>
+</blockquote>
+<div class="question">
+<p>Is there evidence of global spatial autocorrelation?</p>
+</div>
+<div class="question">
+<p>Is there evidence of positive local spatial autocorrelation (HH, LL) or
+negative local spatial autocorrelation (HL, LH)?</p>
+</div>
+<p>Following on from our analysis of <a href="point_patterns.html#point_patterns">point patterns</a>:</p>
+<div class="question">
+<p>How would you characterise the distribution of Met Office monitoring
+stations? e.g., <a href="point_patterns.html#point_centro">Centrography</a> and
+<a href="point_patterns.html#p5_randomness">Randomness</a>.</p>
+</div>
+<p>Before we can use our temperature data for spatial interpolation, it is
+worth noting that the monitoring stations are at different elevations,
+which can complicate analysis. For example, the temperature at <a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/location-specific-long-term-averages/gfhesbk6q">Tulloch
+Bridge</a>
+was recorded as ~27.1°C, but on nearby <a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/location-specific-long-term-averages/gfh7qbnkj">Aonach
+Mor</a>,
+~17 km away but ~1000 m higher, it was just ~18.1°C.</p>
+<p>One solution is to produce an <em>elevation-corrected temperature</em>,
+normalising to sea level. This can be produced by applying the standard
+<strong>environmental lapse rate</strong> of ~6.49°C per km i.e., for every 1000 m
+of elevation gained, the temperature (on average) would be ~6.49°C
+lower.</p>
+<blockquote>
+<p>Load the Earth Topography (ETOPO) 2022 global digital elevation model
+<code>etopo-2022.tiff</code> and use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog">Extract Multi Values to
 Points</a>
 to store the elevation value (m) for each monitoring station as
-<code>elev</code>. <em>Note</em> this is a highly generalised representation of
-topography, and there are many more detailed datasets available
-e.g., <a href="https://www.ordnancesurvey.co.uk/products/os-terrain-5">OS Terrain
+<code>elev</code>.</p>
+</blockquote>
+<div class="note">
+<p>Note this is a highly generalised representation of topography, and
+there are many more detailed datasets available e.g., <a href="https://www.ordnancesurvey.co.uk/products/os-terrain-5">OS Terrain
 5</a>. In the
-interests of file size and processing time…</li>
-<li>Due to this generalisation, a small number of the elevation values
-are implausible (i.e., &lt; 0 m). Correct these by using Calculate Field,
-updating <code>elev</code> using: 0 if !elev! &lt; 0 else !elev!</li>
-<li>We can now produce an elevation-corrected temperature (<code>sl_temp</code>),
-using Calculate Field:
-<ul>
-<li>Field = Double</li>
-<li>Equation = !temp! + (!elev! * 0.00649)</li>
-<li>i.e., increasing the temperature by 0.00649°C for every 1 m above
-sea level.</li>
-</ul>
-</li>
-</ul>
-<p><em>Note</em> it is recognised that this is at best an approximate, as the
+interests of file size and processing time…</p>
+</div>
+<p>Due to this generalisation, a small number of the elevation values are
+implausible (i.e., <code>elev</code>&lt; 0 m).</p>
+<blockquote>
+<p>Use Calculate Field, updating <code>elev</code> using:
+<code>0 if !elev! &lt; 0 else !elev!</code> to set all negative values to 0.</p>
+</blockquote>
+<p>We can now calculate our sea-level equivalent temperature as follows:</p>
+<blockquote>
+<p>Create a new field in the Attribute Table using Calculate Field
+(<code>sl_temp</code>, “Field Type” = <code>Double</code>), using the following expression:
+<code>!temp! + (!elev! * 0.00649)</code>, which increases each temperature value
+by 0.00649°C for every 1 m above sea level.</p>
+</blockquote>
+<div class="note">
+<p>Note it is recognised that this is at best an approximate, as the
 lapse rate can vary spatially and temporally e.g., temperature
 inversions.</p>
-<p>Our dataset is now ready for interpolation, so remove the original csv
-and topographic raster.</p>
 </div>
-<div id="interpolation-types" class="section level3" number="6.2.2">
+<p>Our dataset is now ready for interpolation, so:</p>
+<blockquote>
+<p>Remove the original standalone Met Office table, the ETOPO raster, and
+any other map layers (e.g., the points <em>before</em> projection to the
+British National Grid).</p>
+</blockquote>
+</div>
+<div id="interpolation-types" class="section level3" number="6.2.3">
 <h3>
-<span class="header-section-number">6.2.2</span> Interpolation types<a class="anchor" aria-label="anchor" href="#interpolation-types"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.3</span> Interpolation types<a class="anchor" aria-label="anchor" href="#interpolation-types"><i class="fas fa-link"></i></a>
 </h3>
-<div class="task">
-<p>Discuss <strong>deterministic</strong> and <strong>geostatistical</strong> approaches.</p>
-<p>Briefly introduce the history of <strong>econometrics</strong> (Practicals 2 - 5, 7 - 8) and <strong>geostatistics</strong> (Practical 6)</p>
-<p>Discuss <strong>global</strong> and <strong>local</strong> interpolators, and <strong>exact</strong> and <strong>approximate</strong> interpolators.</p>
+<p>Before we explore spatial interpolation methods in more detail, it is
+important to first discuss some of key differences between the methods.</p>
+<p>The first important distinction is between <strong>deterministic</strong> and
+<strong>geostatistical</strong> approaches. <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/deterministic-methods-for-spatial-interpolation.html"><em>Deterministic</em></a> approaches produce
+spatial predictions at unsampled locations based on pre-determined
+mathematical rules, applied to the geometric properties and values of
+the observations. A widely-used example would be Inverse Distance
+Weighting (<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/how-inverse-distance-weighted-interpolation-works.html">IDW</a>), in which the predicted value at a location is
+calculated based on the measured values and their proximity, with nearby
+observations weighted more heavily than distant observations, in
+accordance with Tobler’s Law <span class="citation">(<a href="references.html#ref-tobler1970">Tobler, 1970</a>)</span>.</p>
+<p>While <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/what-are-geostatistical-interpolation-techniques-.html"><em>geostatistical</em></a> methods also incorporate the geometric properties
+and values of the observations, these methods assume that the
+observations are a partial and imperfect realisation of the true
+underlying spatial process, which can be treated as a <em>spatial random
+process</em>. This is not to say that the process itself is physically
+random (e.g., temperature is predictably influenced by factors such as
+latitude, elevation, and humidity), but that the value of the process at
+an unobserved location can be represented as a <em>random
+variable</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;A &lt;a href="https://en.wikipedia.org/wiki/Random_variable"&gt;&lt;strong&gt;random
+variable&lt;/strong&gt;&lt;/a&gt; is a
+function which describes the range of possible values that could
+occur, and their probabilities. For example, let’s say the “true”
+(unobserved) temperature at a location is &lt;span class="math inline"&gt;\(17.6\)&lt;/span&gt; °C. The possible
+values at that location might be &lt;span class="math inline"&gt;\(..., 17.0, 17.1, 17.2, ...\)&lt;/span&gt;, each
+with different probabilities of occurrence. In turn, there is a
+random variable for each unobserved location in the modelling area,
+and collectively these are referred to as a &lt;strong&gt;spatial random
+field&lt;/strong&gt;.&lt;/p&gt;'><sup>62</sup></a>, reflecting our uncertainty about its
+unknown value.</p>
+<p>Geostatistical methods model the spatial dependence (i.e., spatial
+autocorrelation) between values at different locations to produce a
+model of the underlying spatial process. This model can then be used for
+prediction, rather than relying solely on pre-determined mathematical
+rules, such as those used in IDW. The most commonly used geostatistical
+method is Kriging <span class="citation">(<a href="references.html#ref-krige1951">Krige, 1951b</a>)</span>, along with its many
+variants.</p>
+<p>Another important distinction is between <strong>global</strong> and <strong>local</strong>
+interpolators. <em>Global</em> interpolators make predictions for unsampled
+locations based on the entire set of values in the dataset (although
+these may be weighted based on distance, for example), while local
+interpolators make predictions based on a smaller set of neighbouring
+locations. This is analogous to the calculation of <a href="spatial_weights.html#define_sw">spatial
+weights</a>, which could incorporate all of the objects in the
+dataset (e.g., inverse distance), or alternatively could use a binary
+approach to define neighbouring (<span class="math inline">\(w=1\)</span>) and non-neighbouring objects
+(<span class="math inline">\(w=0\)</span>).</p>
+<center>
+<img src="images/practical-6/global_local.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>Finally, the outputs of spatial interpolation can be described as either
+<strong>exact</strong> or <strong>approximate</strong>. <em>Exact</em> methods will force the predicted
+values to match the observed values, whereas <em>approximate</em> methods can
+produce predicted values which differ from the observed values at the
+measurement locations.</p>
+<center>
+<img src="images/practical-6/exact_approx.png" style="width:100.0%">
+</center>
+<p><br></p>
 </div>
-<p>The ArcGIS Pro
-<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/deterministic-methods-for-spatial-interpolation.html">documentation</a>
-is a useful overview, including for individual tools e.g.,
-<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/how-inverse-distance-weighted-interpolation-works.html">IDW</a></p>
-</div>
-<div id="deterministic-interpolation-proximity" class="section level3" number="6.2.3">
+<div id="deterministic-interpolation-proximity" class="section level3" number="6.2.4">
 <h3>
-<span class="header-section-number">6.2.3</span> Deterministic interpolation: proximity<a class="anchor" aria-label="anchor" href="#deterministic-interpolation-proximity"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.4</span> Deterministic interpolation: proximity<a class="anchor" aria-label="anchor" href="#deterministic-interpolation-proximity"><i class="fas fa-link"></i></a>
 </h3>
-<p>[4] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen
-Polygons</a>,
-Output Fields = All Fields, Symbolise.</p>
-<p>i.e., <em>Assign the value of the closest sampled location to unsampled
-locations</em>.</p>
-<p>A historic interpolation method, designed by <span class="citation">Thiessen (<a href="references.html#ref-thiessen1911">1911</a>)</span> for
-meteorological data (rainfall).</p>
+<p>The simplest form of deterministic spatial interpolation is <strong>proximity</strong> or <strong>Thiessen</strong> interpolation, which assigns the value of the closest sampled location to unsampled locations.</p>
+<p>A historic interpolation method, designed by <span class="citation">Thiessen (<a href="references.html#ref-thiessen1911">1911</a>)</span> for meteorological data (rainfall), proximity interpolation involves the construction of a set of polygons around each sampling point, where all locations within the polygon are closer to the sampling point than any other point in the dataset<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We introduced this approach briefly in the &lt;a href="spatial_weights.html#weights-extra"&gt;Extra&lt;/a&gt; section of the &lt;strong&gt;Spatial Weights&lt;/strong&gt; practical. These polygons are referred to as &lt;em&gt;Thiessen&lt;/em&gt; polygons after &lt;span class="citation"&gt;Thiessen (&lt;a href="references.html#ref-thiessen1911"&gt;1911&lt;/a&gt;)&lt;/span&gt;, or &lt;em&gt;Voronoi&lt;/em&gt; polygons after mathematician Georgy Feodosevich Voronoy.&lt;/p&gt;'><sup>63</sup></a>.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a>, with “Output Fields” = <code>All Fields</code>. Save the output with a suitable name e.g., <code>met_office_thiessen</code> and then modify the Symbology to explore the result.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-6/thiessen.png" style="width:60.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>To what extent do you think is this a good representation of the “true” (unobserved) spatial variation in temperature?</p>
 </div>
-<div id="deterministic-interpolation-idw" class="section level3" number="6.2.4">
+<details><summary>
+Interpretation
+</summary><p>I think you’ll agree that this is <em>unlikely</em> to be a good representation of the true variability in air temperature, given the abrupt changes in temperature at polygon boundaries. Our expectation is that air temperature would vary gradually with space.</p>
+<p>To assess the quality of this output more rigorously, we could compare the “predicted” values with an independent set of air temperature values, held back from the original analysis. For example, this could be measurements from the <a href="https://wow.metoffice.gov.uk/">Weather Observations Website</a> (WOW), which allows anyone to contribute weather data from their own monitoring station, although sadly this has been recently retired.</p>
+</details><p><br></p>
+</div>
+<div id="deterministic-interpolation-idw" class="section level3" number="6.2.5">
 <h3>
-<span class="header-section-number">6.2.4</span> Deterministic interpolation: IDW<a class="anchor" aria-label="anchor" href="#deterministic-interpolation-idw"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.5</span> Deterministic interpolation: IDW<a class="anchor" aria-label="anchor" href="#deterministic-interpolation-idw"><i class="fas fa-link"></i></a>
 </h3>
-<p>[5] We’ll continue with a more common interpolation method, inverse
-distance weighting, via
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a>:</p>
-<ul>
-<li>Input: Monitoring stations</li>
-<li>Z value field: <code>sl_temp</code>
-</li>
-<li>Output raster: <em>suitable name</em>
-</li>
-<li>Output cell size: default (units of CRS, m)</li>
-<li>Leave all inputs as default, which we’ll explore further later on
-(Power, Search neighborhood, # neighbors, sector type)</li>
-</ul>
-<div class="task">
-<p><em>TO DO</em>: include IDW equation and explanation.</p>
-</div>
-<p><span class="math display">\[\hat{Z}_j=\frac{\sum_iZ_i/d_{ij}^{n}}{\sum_i1/d_{ij}^{n}}\]</span> Source:
-<a href="https://mgimond.github.io/Spatial/chp16_0.html" class="uri">https://mgimond.github.io/Spatial/chp16_0.html</a></p>
-<p>[6] Interpret outputs:</p>
-<ul>
-<li>IDW produces predictions within the bounds of the input data, hence
-<em>interpolation</em>, rather than <em>extrapolation</em>
-</li>
-</ul>
+<p>A more commonly used deterministic interpolation method is <strong>Inverse Distance Weighting</strong> (IDW), in which the estimated value <span class="math inline">\(\hat{Z}_{j}\)</span> at location <span class="math inline">\(j\)</span> is a distance-weighted average of the observed values, defined as:</p>
+<p><span class="math display">\[\hat{Z}_j=\frac{\sum_{i}z_{i}w_{i}}{\sum_{i}w_{i}}\]</span></p>
+<p>where <span class="math inline">\(z_{i}\)</span> is the observed value at location <span class="math inline">\(i\)</span> and <span class="math inline">\(w_i\)</span> is the corresponding weight, which can be calculated as:</p>
+<p><span class="math display">\[w_{i}=\frac{1}{d_{i}^{p}}\]</span></p>
+<p>Here <span class="math inline">\(d_{i}\)</span> is the distance between locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, and <span class="math inline">\(p\)</span> is the power coefficient, which determines how the influence of observations varies with distance i.e., as <span class="math inline">\(p\)</span> increases, nearer observations are weighted more heavily, and vice versa.</p>
+<p>For example, take the following distribution of observations and values:</p>
+<center>
+<img src="images/practical-6/idw_schematic.png" style="width:40.0%">
+</center>
+<p><br></p>
+<p>Here is a summary of the above observations, including the values <span class="math inline">\(z_i\)</span> and the corresponding distances <span class="math inline">\(d_{i}\)</span>:</p>
+<p><span class="math display">\[\begin{array}{cc}
+z_{i} &amp; d_{i}\\
+\hline
+5 &amp; 1.8\\
+10 &amp; 2.2\\
+9 &amp; 3.0\\
+7 &amp; 2.0\\
+4 &amp; 0.9\\
+6 &amp; 2.0\\
+\end{array}\]</span></p>
+<p>A typical power coefficient might be <span class="math inline">\(p=2\)</span>, so we can calculate the weight <span class="math inline">\(w_i\)</span> for each observation as:</p>
+<p><span class="math display">\[\begin{array}{cc}
+w_{i}\\
+\hline
+0.31\\
+0.21\\
+0.11\\
+0.25\\
+1.23\\
+0.25\\
+\end{array}\]</span></p>
+<p>Using an IDW approach, the closest observation has the highest weight (<span class="math inline">\(z_i=4, w_i=1.23\)</span>) and the furthest observation has the lowest weight (<span class="math inline">\(z_i=10, w=0.11\)</span>). We can modify the influence of distance on the weights via <span class="math inline">\(p\)</span>, as shown below:</p>
+<p><span class="math display">\[\begin{array}{cc}
+&amp; w_{i} &amp; &amp; \\
+p=1 &amp; p=2 &amp; p=4\\
+\hline
+0.56 &amp; 0.31 &amp; 0.10\\
+0.45 &amp; 0.21 &amp; 0.04\\
+0.33 &amp; 0.11 &amp; 0.01\\
+0.50 &amp; 0.25 &amp; 0.06\\
+1.11 &amp; 1.23 &amp; 1.52\\
+0.50 &amp; 0.25 &amp; 0.06\\
+\end{array}\]</span></p>
+<p>Continuing with <span class="math inline">\(p=2\)</span>, the numerator includes the weighted observations, while the denominator is based on the weights alone:</p>
+<p><span class="math display">\[\begin{array}{cc}
+z_{i}w_{i} &amp; w_{i}\\
+\hline
+1.54 &amp; 0.31\\
+2.07 &amp; 0.21\\
+1.00 &amp; 0.11\\
+1.75 &amp; 0.25\\
+4.94 &amp; 1.23\\
+1.50 &amp; 0.25\\
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{cc}
+\sum_{i}z_{i}w_{i} &amp; \sum_{i}w_{i}\\
+\hline
+12.80 &amp; 2.36\\
+\end{array}\]</span></p>
+<p>The estimated value <span class="math inline">\(\hat{Z}_{j}\)</span> at location <span class="math inline">\(j\)</span> is therefore:</p>
+<p><span class="math display">\[\hat{Z}_{j}=\frac{\sum_{i}z_{i}w_{i}}{\sum_{i}w_{i}}=\frac{12.80}{2.36}\approx5.42\]</span></p>
+<p>To run IDW in ArcGIS:</p>
+<blockquote>
+<p>Use the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a> (Geostatistical Analyst Tools), with the Met Office monitoring stations as the “Input point features”, “Z value field” = <code>sl_temp</code>, and “Power” <span class="math inline">\(p=2\)</span>. Use a suitable name for the “Output Raster”, but leave the “Output geostatistical layer” blank. For now, leave all other inputs as the default, including the Output cell size, Search Neighbourhood, Neighbour count, and Sector Type, as we’ll explore these in a moment.</p>
+</blockquote>
+<p>IDW produces predictions within the the bounds of the input data, hence <em>interpolation</em>, rather than <em>extrapolation</em>.</p>
+<center>
+<img src="screenshots/practical-6/idw_output.png" style="width:40.0%">
+</center>
+<p><br></p>
 <div class="question">
 <p>Does IDW produce the key spatial trends in temperature?</p>
 </div>
 <div class="question">
 <p>Are there are any regions where model performance varies?</p>
 </div>
-<p>[7] The
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a>
-tool used above has produced a static layer, and we could re-run the
+<p>The <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a> tool used above has produced a static layer, and we could re-run the
 tool with different settings to explore their impact on the predicted
-surface. We can achieve this much more simply, however, via the
-<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3">Geostatistical
-Wizard</a>.
-This tool includes a range of deterministic and geostatistical
+surface (e.g., varying <span class="math inline">\(p\)</span>). We can achieve this much more simply, however, via the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3">Geostatistical
+Wizard</a>. This workflow includes a range of <em>deterministic</em> and <em>geostatistical</em>
 interpolation methods and guides the user as they construct and evaluate
 the performance of an interpolation model.</p>
-<p>As a result, while all of the interpolation methods can be run in a
-standalone tool, such as
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a>
-or <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/empirical-bayesian-kriging.html?tabs=dialog">Empirical Bayesian
-Kriging</a>,
-the Geostatistical Wizard can offer a more streamlined and dynamic
-experience.</p>
-<p>[8] First run with the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3">Geostatistical
-Wizard</a>:</p>
-<ul>
-<li>Select Deterministic Methods</li>
-<li>Inverse Distance Weighting</li>
-<li>Source Dataset and Data Field</li>
-<li>Leave <code>Weight Field</code> blank: this allows us to weight each
-observation i.e., some Points will have more / less impact on the
-output surface</li>
-</ul>
-<p>The output should be identical to the
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a>
-output, but this is difficult to assess given the different symbologies.</p>
-<p>To assess this, the most rigorous approach is as follows:</p>
-<ul>
-<li>Select Finish to export the layer to the Map</li>
-<li>This is a Shapefile Feature Class, so we need to Export Layer - To
-Rasters</li>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog">Minimum Bounding Geometry</a> to create a bbox for the met station data (<code>Envelope</code>)</li>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to create n (100) random points within bbox</li>
-<li>We can then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog">Extract Multi Values to Points</a>
-to sample both rasters at our original Point locations, storing
-values modelled via the IDW tool (<code>pred_idw</code>) and those produced by
-the Geostatistical Wizard (<code>pred_gw</code>)</li>
-<li>Create Chart - Scatter Plot - R2</li>
-</ul>
-<div class="task">
-<p>Explain why we aren’t using the Met Office locations for validation i.e., IDW is an <em>exact</em> interpolator - the values <strong>should</strong> match the input!</p>
-</div>
-<p>Broadly, the two tools are returning similar values when the
-default settings are used (R<sup>2</sup> = 0.99), albeit with some minor to moderate
-differences.</p>
-<p>We could create a new field to summarise these differences:
-abs(!pred_idw!-!pred_gw!), mean = 0.5°C, max = 1.64°C.</p>
+<p>As a result, while all of the interpolation methods can be run in a standalone tool, such as <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a> or <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/empirical-bayesian-kriging.html?tabs=dialog">Empirical Bayesian Kriging</a>, the Geostatistical Wizard can offer a more streamlined and dynamic experience.</p>
+<blockquote>
+<p>Open the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3">Geostatistical Wizard</a>, which is available under Analysis → Workflows. Under “Deterministic Methods”, select “Inverse Distance Weighting” and choose the relevant “Source Dataset” and “Data Field” (<code>sl_temp</code>). Leave “Weight Field” blank<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;This option allows the user to apply further weighting to each observation, in addition to the distance-based weighting which is intrinsic to IDW. For example, if the monitoring stations used different equipment with varying levels of accuracy and precision, we might want to weight some observations more highly than others.&lt;/p&gt;"><sup>64</sup></a> and then press <strong>Finish</strong>, which should export a default IDW output to the Map View.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-6/idw_gw.png" style="width:40.0%">
+</center>
+<p><br></p>
+<p>The Geostatistical Wizard output <em>should</em> be identical to the output of the standalone
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/idw.html?tabs=dialog">IDW</a> tool, but this is difficult to assess, given the different layer symbologies and data formats (i.e., vector and raster).</p>
+<blockquote>
+<p>Export Layer → To Rasters, using the default settings, and save to the project directory with a suitable name e.g., <code>temp_idw_gw</code>.</p>
+</blockquote>
+<p>To apply the symbology of an existing layer:</p>
+<blockquote>
+<p>Right click the layer in the Contents Pane with the symbology you want to apply → Sharing → Save as Layer File, saving to the project directory. To apply this to the IDW raster produced by the Geostatistical Wizard, navigate to Symbology → Import from Layer File.</p>
+</blockquote>
+<p>Using this approach, there is a clear correspondence between the outputs, although the intensity of values seems to differ in places, when the same colour scale is used:</p>
+<center>
+<img src="images/practical-6/idw_comparison.png" style="width:70.0%">
+</center>
+<p><br></p>
 <div class="problem">
-<p><strong>James</strong> can you reproduce this? The outputs of IDW and the
-Geostatistical Wizard don’t show systematic error (R2=0.99), but there are
-deviations for most points. Perhaps I’ve missing something in the tool setup, but intuitively we would expect the IDW to be the same “under the hood”.</p>
+<p><strong>James</strong> can you reproduce the above plots, and the outputs below? The outputs of IDW and the
+Geostatistical Wizard don’t show systematic error (R2=0.99), but there
+are deviations for most points. Perhaps I’ve missing something in the
+tool setup, but intuitively we would expect the IDW to be the same
+“under the hood”.</p>
 </div>
-<p>[9] Now that we know how to run IDW, we need to explore and understand
-the key properties that influence the modelled surface, rather than
-simply accepting the defaults. Open the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3">Geostatistical
-Wizard</a>:</p>
+<p>A more rigorous approach to assess the degree of correspondence would be to generate a set of a random points within the modelled area, and compare the predicted values from both methods at those points.</p>
+<div class="question">
+<p>Why can’t we just use the Met Office monitoring stations for this purpose?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>IDW is an <strong>exact</strong> interpolator, so the predicted values from both methods should match the observed values at the monitoring station locations.</p>
+</details><p><br></p>
 <blockquote>
-<p>Click on the map to identify the predicted value (for the current
-settings)</p>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog">Minimum Bounding Geometry</a> to create a bounding box for the Met Office monitoring stations (“Geometry Type” = <code>Envelope</code>), and then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to create 100 random points within the output geometry.</p>
 </blockquote>
 <blockquote>
-<p>Change Point size for visibility and toggle ‘Show Source Dataset’ to
-identify the Points which are contributing to the predicted value at
-the current location, where the colour represents the weight (inverse
-distance)</p>
+<p>When complete, use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog">Extract Multi Values to Points</a> to sample the IDW rasters at the random point locations, storing the values produced via the standalone IDW tool (<code>pred_idw</code>) and those produced by the Geostatistical Wizard (<code>pred_gw</code>). Inspect the relationship between the predictions using Create Chart → Scatter Plot.</p>
+</blockquote>
+<div class="question">
+<p>How would you assess the correspondence between the IDW and Geostatistical Wizard outputs?</p>
+</div>
+<p>To quantify this further:</p>
+<blockquote>
+<p>Create a new field in the Attribute Table to summarise the difference e.g., <code>abs(!pred_idw!-!pred_gw!)</code>.</p>
+</blockquote>
+<div class="question">
+<p>What is the average and maximum absolute deviation between the methods?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>Broadly, the two tools are returning similar values when the default settings are used, with no evidence of <strong>systematic error</strong> (R<sup>2</sup> = 0.99). However, there are some minor to moderate differences between the predictions, which I am unable to account for!</p>
+</details><p><br></p>
+<p>Now that we know how to run IDW, we need to understand the key properties that influence the modelled surface, rather than simply accepting the defaults.</p>
+<blockquote>
+<p>Open the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/get-started-with-geostatistical-analyst-in-arcgis-pro.html#9E3">Geostatistical
+Wizard</a>,
+again selecting “Inverse Distance Weighting” under “Deterministic Methods”, and the correct “Source Dataset” and “Data Field” (<code>sl_temp</code>). This time select <strong>next</strong>.</p>
+</blockquote>
+<p>The following screen allows you to inspect the modelled IDW surface, and evaluate how this changes with different settings. You can:</p>
+<blockquote>
+<p>Click on the map to identify the predicted value (for the current IDW configuration) at location <span class="math inline">\(j\)</span>.</p>
 </blockquote>
 <blockquote>
-<p>If we modify ‘Maximum Nieghbours’, we can see how this increases the
-size of the ‘Source Dataset’. Note that once the maximum reaches ~70,
-the number of selected neighbours stops increasing, presumably because
-ArcGIS curtails this process once they have a negligble impact on the
-output.</p>
+<p>Change point size for visibility and toggle “Show Source Dataset” to identify the points which are contributing to the predicted value at the current location <span class="math inline">\(\hat{Z}_{j}\)</span>, where the colour represents the weight (inverse distance).</p>
 </blockquote>
-<div class="task">
-<p><em>To do</em> find documentation to support this.</p>
+<blockquote>
+<p>Modify “Maximum Nieghbours”, which should then be reflected in the size of the “Source Dataset”.</p>
+</blockquote>
+<p>The size of the source dataset is determined by the “Major and Minor Semiaxis” values, which govern the search neighbourhood around <span class="math inline">\(j\)</span>. For this dataset, the default value is ~330 km<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;I couldn’t find any documentation explaining how this was calculated, but after a bit of testing, it appears to be a fraction (25%) of the diagonal length of the bounding box (i.e., the &lt;strong&gt;hypoteneuse&lt;/strong&gt; &lt;span class="math inline"&gt;\(h\)&lt;/span&gt;) enclosing the points. You can test this yourself by using &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog"&gt;Calculate Geometry Attributes&lt;/a&gt; on the output of &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog"&gt;Minimum Bounding Geometry&lt;/a&gt;, storing the mininum and maximum of the &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; and &lt;span class="math inline"&gt;\(y\)&lt;/span&gt; coordinates, which are (approximately) as follows: &lt;span class="math inline"&gt;\(x_\text{min}=75425\)&lt;/span&gt;, $x_=634483, $y_=9956, &lt;span class="math inline"&gt;\(y_\text{max}=1207985\)&lt;/span&gt;. The diagonal length &lt;span class="math inline"&gt;\(h\)&lt;/span&gt; is calculated as: &lt;span class="math inline"&gt;\(h=\sqrt{(x_\text{max}-x_\text{min})^2+(y_\text{max}-y_\text{min})^2}=1,322,051 \: \text{m}\)&lt;/span&gt;. The ratio of the default semiaxis (&lt;span class="math inline"&gt;\(\approx330,512\)&lt;/span&gt;) to &lt;span class="math inline"&gt;\(h\)&lt;/span&gt; is exactly 0.25, which is too much of a coincidence!&lt;/p&gt;'><sup>65</sup></a>.</p>
+<div class="question">
+<p>With the default value, is this a <strong>global</strong> or <strong>local</strong> interpolator?</p>
 </div>
 <blockquote>
-<p>We can also change ‘Sector Type’. Default = 1 i.e., we will look for
-nearest N neighbours within that area. If we increase to 4 or 8
-sectors (and modify their <code>Angle</code>), we look for N neighbours per
-sector.</p>
+<p>Change the “Sector Type”. The default = 1, which searches for <span class="math inline">\(n\)</span> neighbours within a circle around each predicted location <span class="math inline">\(j\)</span>. This can be increased to four or eight sectors, and the search neighbourhood can be rotated using the “Angle” input.</p>
 </blockquote>
-<p>Using different sector types can prevent prevent directional bias i.e., if there is only sector, the K nearest points might be in one broad direction (e.g., N). Splitting into multiple sectors forces neighbors to come from different directions.</p>
+<p>Using different sector types can prevent directional bias i.e., if there is only sector, the <span class="math inline">\(n\)</span> nearest points might be in one broad direction (e.g., north). Splitting into multiple sectors forces neighbors to come from different directions.</p>
 <blockquote>
-<p>An important setting is <strong>power</strong> which determines the influence of
-the input points on the prediction, as a function of distance. The
-default is 2 i.e., <span class="math inline">\(distance^2\)</span>. As we increase this parameter, closer
-points play an increasingly important role in the output. Compare
-power = 1 - 10.</p>
+<p>The <strong>power</strong> setting is our power coefficient <span class="math inline">\(p\)</span>, with a default of <span class="math inline">\(p=2\)</span>.</p>
 </blockquote>
-<blockquote>
-<p>For example, if we set k = 100, this is resembling the output of
-proximity interpolation (Thiessen)</p>
-</blockquote>
-<blockquote>
-<p>Power can also be optimised, which is via <em>root-mean-square cross
-validation</em> which we’ll discuss more fully in the next section.</p>
-</blockquote>
-<p>[10] Cross validation of IDW</p>
-<p>On the next tab, we are presented with <em>predicted</em> values, <em>errors</em>,
-and the <em>distribution</em> of the predicted values.</p>
-<p>These are derived from
-<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/performing-cross-validation-and-validation.html">cross-validation</a>,
-which involves removing a single point from the input dataset,
-re-running interpolation, and then evaluating the deviation of the
-predicted value from the input value. This is repeated for all points in
-the input dataset.</p>
-<p>This can be used to calculated root-mean-square error (RMSE):</p>
-<p><span class="math display">\[\sqrt{\sum_{i=1}^n(O_i-M_i)^2} \]</span> which is the square root of the sum
-(<span class="math inline">\(\sum\)</span>) of the squared differences between observed values (<span class="math inline">\(O_i\)</span>,
-<em>input temperature</em>) and modelled values (<span class="math inline">\(M_i\)</span>, <em>interpolated
-temperature</em>). This is the average distance between the model
-predictions and the observed values and is expressed in the units of the
-observed values (i.e., °C).</p>
-<blockquote>
-<p>Interpret the RMSE value (~2.66) and the correspondence between
-observed and modelled</p>
-</blockquote>
-<blockquote>
-<p>Inspect the pattern of error - is this systematic? (X = measured
-values, Y = error)</p>
-</blockquote>
-<blockquote>
-<p>Inspect the distribution of values</p>
-</blockquote>
+<div class="question">
+<p>How does the modelled surface change across <span class="math inline">\(p=1-10\)</span>?</p>
 </div>
-<div id="geostatistical-interpolation-ordinary-kriging" class="section level3" number="6.2.5">
+<div class="question">
+<p>What does the output resemble for <span class="math inline">\(p=100\)</span>?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>As we increase <span class="math inline">\(p\)</span>, the modelled surface increasingly resembles the output of <strong>proximity</strong> or <strong>Thiessen</strong> interpolation, due to the increasing weight allocated to the closest observation.</p>
+</details><p><br></p>
+<p>The power coefficient <span class="math inline">\(p\)</span> can also be optimised via <em>cross validation</em> which we’ll discuss more fully in the next section.</p>
+<blockquote>
+<p>When you are happy with your chosen settings, or you have returned to the default settings, click <strong>next</strong>.</p>
+</blockquote>
+<div id="cross-validation-of-idw" class="section level4" number="6.2.5.1">
+<h4>
+<span class="header-section-number">6.2.5.1</span> Cross-validation of IDW<a class="anchor" aria-label="anchor" href="#cross-validation-of-idw"><i class="fas fa-link"></i></a>
+</h4>
+<p>On the next tab in the Geostatistical Wizard, we are presented with <em>predicted</em> values, <em>errors</em>, and the <em>distribution</em> of the predicted values.</p>
+<p>These are derived from <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/performing-cross-validation-and-validation.html">leave-one-out-cross-validation</a>, which involves removing a single point from the input dataset, re-running interpolation, and then evaluating the deviation of the predicted value from the input value <em>at that location</em>. This is repeated for all points in the input dataset.</p>
+<p>This can be used to calculate root-mean-square error (RMSE), which is defined as:</p>
+<p><span class="math display">\[\text{RMSE}=\sqrt{\sum_{i=1}^n(O_i-M_i)^2}\]</span></p>
+<p>which is the square root of the sum of the squared differences between observed values (<span class="math inline">\(O_i\)</span>, <em>input temperature</em>) and modelled values (<span class="math inline">\(M_i\)</span>, <em>interpolated temperature</em>). This is the average distance between the model predictions and the observed values and is expressed in the units of the observed values (i.e., °C).</p>
+<blockquote>
+<p>Interpret the RMSE value and the correspondence between observed and modelled values.</p>
+</blockquote>
+<blockquote>
+<p>Inspect the pattern of error, with the measured values on <span class="math inline">\(x\)</span> and the errors on <span class="math inline">\(y\)</span>.</p>
+</blockquote>
+<div class="question">
+<p>Is the pattern systematic or random?</p>
+</div>
+<p>When complete:</p>
+<blockquote>
+<p>Export your layer.</p>
+</blockquote>
+<div class="question">
+<p>How different is your modified IDW output compared to the default settings?</p>
+</div>
+</div>
+</div>
+<div id="geostatistical-interpolation-ordinary-kriging" class="section level3" number="6.2.6">
 <h3>
-<span class="header-section-number">6.2.5</span> Geostatistical interpolation: Ordinary Kriging<a class="anchor" aria-label="anchor" href="#geostatistical-interpolation-ordinary-kriging"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.6</span> Geostatistical interpolation: Ordinary Kriging<a class="anchor" aria-label="anchor" href="#geostatistical-interpolation-ordinary-kriging"><i class="fas fa-link"></i></a>
 </h3>
-<div class="task">
-<p>To start, we’ll discussing the origin of geostatistics and the key differences with deterministic methods i.e., incorporating the spatial structure of the data (<em>variography</em>, spatial autocorrelation). As summarised in the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/kriging-in-geostatistical-analyst.html">documentation</a>: “<em>Some of the spatial variation … can be modeled by random processes with spatial autocorrelation, and require that the spatial autocorrelation be explicitly modeled</em>.”</p>
-</div>
-<p><strong>Kriging</strong>, developed and popularised by <span class="citation">Krige (<a href="references.html#ref-krige1951">1951</a>)</span> and <span class="citation">Matheron (<a href="references.html#ref-matheron1963">1963</a>)</span>,
+<p>One disadvantage of IDW and other deterministic approaches is that there is no explicit consideration of the spatial structure of the data, while predictions are made based on pre-determined mathematical rules (e.g., <span class="math inline">\(w_{i}=\frac{1}{d_{i}^{p}}\)</span>), independent of the actual spatial dependence between observations. In contrast, <strong>geostatistical</strong> approaches incorporate the spatial dependence of the observations (also known as <strong>variography</strong>) to develop a model of the underlying (unobserved) spatial process. This typically results in more accurate predictions, and importantly, allows for quantification of <strong>uncertainty</strong>.</p>
+<p><strong>Kriging</strong>, developed and popularised by <span class="citation">Krige (<a href="references.html#ref-krige1951">1951b</a>)</span> and <span class="citation">Matheron (<a href="references.html#ref-matheron1963">1963b</a>)</span>,
 is synonymous with the field of geostatistics, and comes in <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/what-are-the-different-kriging-models-.html">many
-versions</a>,
+variants</a>,
 including Ordinary, Universal, Co-kriging, Indicator, and Empirical
 Bayesian, some of which we’ll use today. Understanding how these work,
 and selecting the appropriate version for your data and analysis, is
 therefore critical.</p>
-<div id="variograms" class="section level4" number="6.2.5.1">
+<div id="variogram-construction" class="section level4" number="6.2.6.1">
 <h4>
-<span class="header-section-number">6.2.5.1</span> Variograms<a class="anchor" aria-label="anchor" href="#variograms"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.6.1</span> Variogram construction<a class="anchor" aria-label="anchor" href="#variogram-construction"><i class="fas fa-link"></i></a>
 </h4>
-<p>One of the key components of all forms of Kriging is the variogram,
-which measures the difference between data points at specific distances
-i.e., the similarity of data points (y) with distance (x).</p>
-<div class="task">
-<p>Include schematic <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/creating-empirical-semivariograms.html">example</a></p>
+<p>One of the key components of all forms of Kriging is the <strong>variogram</strong>, which represents the differences between data points at specific distances i.e., the similarity of data points <span class="math inline">\(y\)</span> with increasing distance <span class="math inline">\(x\)</span>. This is used to model spatial dependence, which is the key distinction between deterministic and geostatistical approaches to interpolation. Rather than introducing a schematic of a variogram here<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Although &lt;a href="https://en.wikipedia.org/wiki/Variogram"&gt;here&lt;/a&gt; is a taster if you can’t wait…&lt;/p&gt;'><sup>66</sup></a>, we’ll begin by exploring how variograms are defined and constructed. While there isn’t a standalone tool to produce a variogram in ArcGIS, we can produce one manually with a bit of data wrangling, and this is useful to develop your understanding.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/generate-near-table.html?tabs=dialog">Generate Near Table</a>, using the monitoring station data as both “Input Features” and “Near Features”, and unchecking “Find only closest feature”. This will return the distances between all pairs of observations (<code>NEAR_DIST</code>).</p>
+</blockquote>
+<div class="question">
+<p>Why is “Method” = <code>Planar</code> suitable here?</p>
 </div>
-<div class="task">
-<p>Include variogram example here and explain key components (range, nugget, sill). What do they represent?</p>
-</div>
-<p>As usual, this can be calculated for us via the Geostatistical Wizard.
-While there isn’t a standalone tool to produce a variogram in ArcGIS, we can
-produce one manually with a bit of data wrangling, and this is useful to
-develop your understanding.</p>
-<p>[11] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/generate-near-table.html?tabs=dialog">Generate Near
-Table</a>,
-using the weather stations as input, unchecking “Find only closest
-feature”.</p>
-<p>[12] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join
-Field</a>
-to add relevant temperature values to the near table, using “Field
-Mapping”</p>
+<details><summary>
+Answer
+</summary><p>As we are using a suitable <strong>projected</strong> CRS for our area of interest (EPSG <a href="https://epsg.io/27700">27700</a>), errors in distance calculations will be very small, compared to an ellipsoidal (geodesic) approach.</p>
+</details><p><br></p>
+<blockquote>
+<p>Next use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog">Join Field</a> to modify the Attribute Table of the Near Table, joining temperature values for the origins (<code>IN_FID</code>) and destinations (<code>NEAR_FID</code>) using “Field Mapping”:</p>
 <ul>
-<li>IN_FID - FID - <code>sl_temp</code>, rename to <code>orig_temp</code>
+<li>“Input Field” = <code>IN_FID</code>, “Join Field” = <code>FID</code>, rename <code>sl_temp</code> to <code>orig_temp</code>
 </li>
-<li>NEAR_FID - FID - <code>sl_temp</code>, rename to <code>dest_temp</code>
+<li>“Input Field” = <code>NEAR_FID</code>, “Join Field” = <code>FID</code>, rename <code>sl_temp</code> to <code>dest_temp</code>
 </li>
 </ul>
-<p>[13] Calculate average squared difference (<code>delta</code>, Double) using
-Calculate Field as follows:</p>
-<p><span class="math display">\[γ=\frac{(Z_2-Z_1)^2}{2}\]</span></p>
-<p>i.e., ((!orig_temp!-!dest_temp!)**2)/2</p>
-<p>[14] Create variogram <strong>cloud</strong>, see <span class="citation">Ploner (<a href="references.html#ref-ploner1999">1999</a>)</span> - Create Chart -
-Scatter Plot (<code>NEAR_DIST</code>, <code>delta</code>).</p>
-<p>This is the empirical data of distances vs. differences, that is used as the basis for
-subsequent geostatistical modelling.</p>
-<p>[15] This is large and very noisy dataset (~16,000 point pairs), so
-before producing a model to describe the observed pattern, it is typical
-to bin the points into intervals, referred to as <strong>lags</strong>, and calculate
-summary statistics for each lag.</p>
-<p>As above, this is done for us via the Geostatistical Wizard, but we can
-achieve this manually using Calculate Field again (<code>lag</code>, Long 32-bit
-integer), using the following code: int(!NEAR_DIST! // 25000), which
-sorts our distances into lags of 25 km i.e., 0 - 25 km is lag 0, 25 - 50
-km is lag 1, and so on.</p>
-<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary
-Statistics</a>
-on the Near Table, calculating the mean of the differences (<code>delta</code>),
-using <code>lag</code> as the case field. The output of this tool can be visualised
-using Create Chart - Scatter Plot, which reveal how the <em>average</em>
-difference between points changes with distance. We would refer to this
-as the <strong>sample variogram</strong>.</p>
-<p>To clarify, the manual approach we’ve taken here has been used for
-illustrative purposes, and hopefully you should now have a better
-understanding of the data that underpin the later modelling. In future,
-you should use the Geostatistical Wizard, the standalone tools, or other
-implementations, which give you greater control over the data and model
-choices e.g., our selection of a 25 km lag size is somewhat arbitrary!</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-6/neartable_join.png" style="width:80.0%">
+</center>
+<p><br></p>
+<p>With the distances between observations included in the Attribute Table (<code>NEAR_DIST</code>), as well as the origin-destination temperatures (<code>orig_temp</code>, <code>dest_temp</code>), we can calculate the <strong>semivariance</strong> (<span class="math inline">\(γ\)</span>) for each pair following <span class="citation">Matheron (<a href="references.html#ref-matheron1963">1963b</a>)</span> as follows:</p>
+<p><span class="math display">\[γ=\frac{(z_2-z_1)^2}{2}\]</span></p>
+<p>where <span class="math inline">\(z_{1}\)</span> and <span class="math inline">\(z_{2}\)</span> are the observed temperature values for each pair of observations. The <strong>semivariance</strong> is simply half the squared difference between the observed values.</p>
+<blockquote>
+<p>Using Calculate Field, devise your own expression to create a <code>gamma</code> field (“Field Type” = <code>Double</code>) representing the semivariance <span class="math inline">\(γ\)</span>.</p>
+</blockquote>
+<details><summary>
+Expression
+</summary><p>Here is an expression: <code>((!orig_temp!-!dest_temp!)**2)/2</code> or <code>pow(!orig_temp!-!dest_temp!, 2)/2</code></p>
+</details><p><br></p>
+<p>If successful, we now have all the information we need to start building our variogram. The first step in this process is the creation of the <strong>variogram cloud</strong>, which represents the empirical (observed) relationship between distance and semivariance for all pairs of observations, and is the basis for subsequent geostatistical modelling, see <span class="citation">Ploner (<a href="references.html#ref-ploner1999">1999</a>)</span>.</p>
+<blockquote>
+<p>To create a <strong>variogram cloud</strong>, use Create Chart → Scatter Plot, with <code>NEAR_DIST</code> on <span class="math inline">\(x\)</span> and <code>gamma</code> on <span class="math inline">\(y\)</span>.</p>
+</blockquote>
+<p>Your output should resemble the following:</p>
+<center>
+<img src="screenshots/practical-6/variogram_cloud.png" style="width:80.0%">
+</center>
+<p><br></p>
+<p>This is large and very noisy dataset, containing around ~16,000 point pairs<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The number of ordered pairs is calculated as &lt;span class="math inline"&gt;\(n(n-1)\)&lt;/span&gt;, which equals 16,002 for the 127 Met Office monitoring stations.&lt;/p&gt;'><sup>67</sup></a>, so a typical next step is to simplify the dataset, which is achieved by binning the paired observations into intervals, referred to as <strong>lags</strong>, and calculating summary statistics for each lag.</p>
+<p>As above, this can be calculated for us via the Geostatistical Wizard, but we can also achieve this manually:</p>
+<blockquote>
+<p>In the Attribute Table for the Near Table, use Calculate Field to create a new field (<code>lag</code>, “Field Type” = <code>Long 32-bit integer</code>), using the following expression: <code>int(!NEAR_DIST! // 25000)</code>, which sorts our measured distances into lags of 25 km i.e., distances of 0 - 25 km are lag <span class="math inline">\(0\)</span>, 25 - 50 km are lag <span class="math inline">\(1\)</span>, and so on.</p>
+</blockquote>
+<p>When complete:</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary Statistics</a> on the Near Table, calculating the mean of the semivariance values (<code>gamma</code>), using <code>lag</code> as the case field.</p>
+</blockquote>
+<p>The output of this tool can be visualised using Create Chart → Scatter Plot, which reveals how the <em>average</em> semivariance between points changes with distance. We would refer to this as the <strong>sample variogram</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;You may also see this referred to as the &lt;strong&gt;experimental&lt;/strong&gt; or &lt;strong&gt;empirical&lt;/strong&gt; variogram.&lt;/p&gt;"><sup>68</sup></a>.</p>
+<center>
+<img src="screenshots/practical-6/sample_variogram.png" style="width:80.0%">
+</center>
+<p><br></p>
+<div class="note">
+<p>You should now have an understanding of the <strong>variogram cloud</strong> (i.e., empirical data showing distances and semivariances for each point pair) and the <strong>sample variogram</strong> (i.e., simplification of the empirical data into bins or <em>lags</em>).</p>
 </div>
-<div id="ordinary-kriging" class="section level4 unnumbered">
-<h4>Ordinary Kriging<a class="anchor" aria-label="anchor" href="#ordinary-kriging"><i class="fas fa-link"></i></a>
+<p>To clarify, the manual approach we’ve taken here has been used for illustrative purposes, and hopefully you should now have a better understanding of the data that underpin the later modelling. In future, you should use the Geostatistical Wizard, the standalone tools, or other implementations, which give you greater control over the data and model choices e.g., our selection of a 25 km lag size is somewhat arbitrary!</p>
+</div>
+<div id="variogram-modelling" class="section level4 unnumbered">
+<h4>Variogram modelling<a class="anchor" aria-label="anchor" href="#variogram-modelling"><i class="fas fa-link"></i></a>
 </h4>
-<p>Now that we understand the variogram cloud (i.e., empirical data showing
-distances and differences for each point pair) and the sample variogram
-(i.e., simplification of the empirical data into bins or <strong>lags</strong>), the
-next step is to produce models which describe the trends observed in the
-sample variogram.</p>
-<p>This can be achieved using a number of different approaches, and we’ll
-start with a widely used version of Kriging, known as <em>Ordinary
-Kriging</em>. The assumes the data has a constant, but unknown mean
-(<em>stationarity</em>)</p>
-<p>[16] Ordinary Kriging via the Geostatistical Wizard, although this can
-also be acheived via
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kriging.html?tabs=dialog">Kriging</a>
-(Spatial Analyst Tools).</p>
+<p>The next step in the geostatistical workflow is to produce a <strong>variogram model</strong> which describes the trends in the sample variogram. This is a mathematical representation of the observed spatial dependence in the dataset.</p>
+<p>These models are fitted to the sample variogram, with a <a href="https://en.wikipedia.org/wiki/Variogram">schematic</a> example here:</p>
+<center>
+<img src="images/practical-6/Schematic_variogram.svg" style="width:70.0%">
+</center>
+<p><br></p>
+<p>Some of this should be very familiar to you. Our <strong>sample variogram</strong> is present as the <em>observed points</em>, which represents the average semivariance <span class="math inline">\(y\)</span> for each lag <span class="math inline">\(x\)</span>, which we calculated using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/summary-statistics.html?tabs=dialog">Summary Statistics</a>. A <strong>variogram model</strong> has then been fitted to the observed points (“<em>empirical</em>” black line). This model typically has the following <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/understanding-a-semivariogram-the-range-sill-and-nugget.html">components</a>:</p>
 <ul>
-<li>In the former, selecting Kriging / CoKriging, and then Ordinary
-Kriging, using <code>sl_temp</code> as the data field</li>
-<li>For each Kriging method, we can generate a range of
-<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/what-output-surface-types-can-the-interpolation-models-generate-.html">outputs</a>:
+<li>
+<strong>Range</strong>: the distance <span class="math inline">\(x\)</span> at which spatial dependence between observations is no longer detected (<span class="math inline">\(\approx25 \: \text{km}\)</span>). Observations within this range would be considered spatially autocorrelated.<br>
+</li>
+<li>
+<strong>Sill</strong>: the corresponding semivariance on the <span class="math inline">\(y\)</span> axis for the detected <em>range</em>. This represents the typical degree of dissimilarity (increasing <span class="math inline">\(y\)</span>) for observations that are greater than the <em>range</em> apart.</li>
+<li>
+<strong>Nugget</strong>: the height of the jump of the variogram model at the origin (<span class="math inline">\(x=0\)</span>). Theoretically, as the distance between observations shrinks to 0, the semivariance should also equal 0. However, many fitted variogram models exhibit a discontinuity at the origin, with <span class="math inline">\(γ&gt;0\)</span>. This is typically attributed to measurement error and/or spatial variation on a scale smaller than the smallest distance between any two points <span class="citation">(<a href="references.html#ref-diggle2007">Diggle and Ribeiro, 2007</a>)</span>.</li>
+</ul>
+<p><br></p>
+<p>There are lots of Kriging variants we can use to develop the variogram model. Here we will use <strong>Ordinary Kriging</strong>, which assumes the data has a constant but unknown mean
+(i.e., <em>stationarity</em>).</p>
+<blockquote>
+<p>Open the Geostatistical Wizard → “Kriging / CoKriging”, using <code>sl_temp</code> as the “Data Field” for “Input Dataset 1”, and press <strong>next</strong>.</p>
+</blockquote>
+<p>For each Kriging method, we can generate a range of <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/what-output-surface-types-can-the-interpolation-models-generate-.html">outputs</a>, including:</p>
 <ul>
 <li>
 <em>Prediction</em> i.e., the interpolated values (default)</li>
 <li>
-<em>Standard Error</em> i.e., errors associated with those interpolated
-values (standard deviation)</li>
+<em>Standard Error</em> i.e., errors associated with those interpolated values (standard deviation)</li>
 <li>
-<em>Probability</em> i.e., the probability that the interpolated value
-will be above or below a predefined threshold (e.g., pollutant
-level)</li>
+<em>Probability</em> i.e., the probability that the interpolated value will be above or below a predefined threshold (e.g., a pollutant level relative to a legal limit)</li>
 <li>
-<em>Quantile</em> i.e., a layer for the specified quantile (e.g.,
-10<sup>th</sup>, 95<sup>th</sup>)</li>
+<em>Quantile</em> i.e., a prediction layer for the specified quantile (e.g., 10<sup>th</sup>, 95<sup>th</sup>)</li>
 </ul>
-</li>
-<li>Determine Transformation type (None)</li>
-<li>Determine Order of Trend Removal (None)</li>
-</ul>
-<p>This produces the sample variogram for our dataset, which we produced
-above in [15] albeit with different settings (lag size, number of
-lags).</p>
-<p>Our <strong>objective</strong> is to produce a variogram model (blue line) which
-achieves the best match with the sample variogram (blue crosses), which
-is built upon the variogram cloud (red points, binned). As summarised in
-the
-<a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/fitting-a-model-to-the-empirical-semivariogram.html">documentation</a>,
+<blockquote>
+<p>Select “Ordinary Kriging” and “Prediction”, leaving “Transformation type” and other settings as <code>None</code>, and press <strong>next</strong>.</p>
+</blockquote>
+<p>You will be presented with a lot of information and a great many options on the Semivariogram/Covariance Modelling tab, so we’ll explore this slowly:</p>
+<center>
+<img src="screenshots/practical-6/semivariogram_tab.png" style="width:80.0%">
+</center>
+<p><br></p>
+<p>The <strong>sample variogram</strong> and an initial <strong>variogram model</strong> are here, although using different settings for the lag size to those we selected earlier.</p>
+<center>
+<img src="screenshots/practical-6/semivariogram_default.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>Our <strong>objective</strong> is to produce a variogram model (blue line) which achieves the best match with the sample variogram (blue crosses). As a reminder, the sample variogram is built on the variogram cloud (red points, binned). As summarised in the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/fitting-a-model-to-the-empirical-semivariogram.html">documentation</a>,
 our model should:</p>
 <ul>
 <li>Pass through the center of the cloud of binned values (red dots).</li>
 <li>Pass as closely as possible to the averaged values (blue crosses).</li>
 </ul>
-<p>The initial model produced by the tool is as follows: <span class="math inline">\(0*Nugget+9.5457*Stable(128310,1.3057)\)</span></p>
-<p>[17] Variogram calibration</p>
-<p><strong>However</strong>, our ability to achieve the above is sensitive to our choice of model, with <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/fitting-a-model-to-the-empirical-semivariogram.html">11 options</a>
-for the user (i.e., Stable, Gaussian, Circular, Exponential, …), as well as the
-choice of lag size (measured in the units of the CRS, m), and their
-combination. For example, if our lag size is too large, short-range autocorrelation may be masked.</p>
+<p><br></p>
+<p>The initial model produced by the Geostatistical Wizard is defined mathematically as follows:</p>
+<p><span class="math display">\[0*\text{Nugget}+9.5457*\text{Stable}(128310,1.3057)\]</span></p>
+<p>where <span class="math inline">\(\text{nugget}=0\)</span>, <span class="math inline">\(\text{sill}=9.5457\)</span> and <span class="math inline">\(\text{range}=128,310\)</span>. The model type (which we’ll discuss momentarily) is referred to by esri as “Stable”, which has a smoothing parameter, in this case of <span class="math inline">\(1.3057\)</span>.</p>
+<p>This model describes how semivariance changes with distance. This information is then used to calculate how observations and their values <span class="math inline">\(i\)</span> should be weighted when predicting at an unsampled location <span class="math inline">\(j\)</span>. For example, let’s say the distance between <span class="math inline">\(j\)</span> and <span class="math inline">\(i\)</span> is <span class="math inline">\(100\:\text{km}\)</span>. If we plug the value of <span class="math inline">\(100\:\text{km}\)</span> into the model above, we can predict the semivariance, which in turn, is used to produce weights for each observation<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that we are &lt;strong&gt;not&lt;/strong&gt; going to explore the mathematics of the model in great depth, as this requires a reasonably advanced level of understanding e.g., simultaenous equations. If you are interested in the models, some are described &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html#DC0"&gt;here&lt;/a&gt;. Our focus is on &lt;strong&gt;understanding&lt;/strong&gt; what the models represent and how they are applied.&lt;/p&gt;'><sup>69</sup></a>. In turn, the Kriging approach shares components with IDW, and is defined as follows:</p>
+<p><span class="math display">\[\hat{Z}_j=\sum_{i=1}^n\lambda_i Z_i\]</span></p>
+<p>Both methods predict values at an unsampled location (<span class="math inline">\(\hat{Z}_j\)</span>), taking into account the <strong>weighted</strong> values at the sampled locations <span class="math inline">\(Z_i\)</span>. However, while IDW uses pre-determined rules to calculate the weights for each observation<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Weights for each observation are calculated as follows: &lt;span class="math inline"&gt;\(w_{i}=\frac{1}{d_{i}^{p}}\)&lt;/span&gt;&lt;/p&gt;'><sup>70</sup></a>, Kriging calculates weights <span class="math inline">\(\lambda_i\)</span> for each observation based on the observed spatial dependence, which is represented by our model above. Importantly, weights are not calculated independently for each observation (as with IDW), but are calculated <strong>simultaneously</strong> for all the observations that contribute to the prediction <span class="math inline">\(\hat{Z}_j\)</span>. The advantage of this is that Kriging can reduce the weights for nearby and spatially dependent observations, ensuring they are not “double counted” when predicting, as illustrated below:</p>
+<center>
+<img src="images/practical-6/idw_krig.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>Before we apply our “Stable” model, we need to understand how it was developed and more broadly, variogram <strong>calibration</strong>.</p>
+</div>
+<div id="variogram-calibration" class="section level4" number="6.2.6.2">
+<h4>
+<span class="header-section-number">6.2.6.2</span> Variogram calibration<a class="anchor" aria-label="anchor" href="#variogram-calibration"><i class="fas fa-link"></i></a>
+</h4>
+<p>The variogram model is sensitive to the specification of the sample variogram and the properties of the model itself. There are <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/fitting-a-model-to-the-empirical-semivariogram.html">11 model options</a> available to the user (i.e., Stable, Gaussian, Circular, Exponential, …), and there is flexibility to modify the lag size (measured in the units of the CRS, m) and the number of lags, among other properties. Correct specification of the sample variogram and model is important. For example, if the selected lag size is too large, then short-range autocorrelation may be masked.</p>
 <blockquote>
-<p>Keep a note of the current lag size, and then change this to 25000 (25 km), matching the setting using in [15] above. If you increase the number of lags (50), the sample variogram should match the binned values produced previously. When you’re happy you understand this, return to the default lag size (15954.53388184552) and number (12).</p>
+<p>Keep a note of the current lag size (<span class="math inline">\(15954.53388184552\)</span>) and number of lags (<span class="math inline">\(12\)</span>), and then update the “Lag Size” value to 25,000 m, which is the lag value we selected earlier. If you increase the “Number of Lags”, this should begin to resemble the sample variogram we created earlier. When you’re happy you understand this, return to the default lag size and number.</p>
 </blockquote>
-<p>There are various techniques that can be used for selecting the lag size and the number of lags.</p>
-<p>For lag size, we can use <a href="https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview">Average Nearest Neighbour</a> to determine the average distance between points and their nearest neighbour (36183.191699 m).</p>
-<p>For number of lags, this can be half of the largest distance between any two points (1254273.865999 m / 2 = 627136.932999 m), divide by the lag size (~17).</p>
-<div class="task">
-<p><em>To do</em> discuss <a href="https://eol.pages.cms.hu-berlin.de/gcg_quantitative-methods/Lab14_Kriging.html#Cutoff_and_lag_width">cutoff</a></p>
-</div>
-<p>Another approach is to use <strong>cross-validation</strong> i.e., for a given model type (i.e., Stable, Gaussian, Circular, Exponential, …), adjust the lag size and the sample variogram parameters (nugget, sill, range) and then assess performance via cross-validation, returning the combination with the lowest RMSE.</p>
-<div class="task">
-<p><em>To do</em> include a schematic of the different model types e.g., <a href="https://mgimond.github.io/Spatial/chp16_0.html#experimental-variogram-model">here</a>. Note there are some useful schematics and equations <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html#9B6">here</a></p>
-</div>
+<center>
+<img src="screenshots/practical-6/semivariogram_modified_lag.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>There are various techniques that can be used for selecting the lag size and the number of lags. For example, a starting point might be the average distance between each point and their nearest neighbour, as outlined in the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/choosing-a-lag-size.html">documentation</a>.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbour</a> to calculate this.</p>
+</blockquote>
+<p>A rule-of-thumb for the number of lags is half of the largest distance between any two points, divided by the lag size.</p>
+<p>Another approach is to use <strong>cross-validation</strong> i.e., for a given model type (i.e., Stable, Gaussian, Circular, Exponential, …), adjust the lag size and the sample variogram parameters (nugget, sill, range) and then assess performance via cross-validation, returning the combination with the lowest RMSE. Some of the ArcGIS model types are described <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html#DC0">here</a>. A better visualisation of model types is from the R <code>gstat</code> package, although not all are available in ArcGIS:</p>
+<center>
+<img src="images/practical-6/model_types.png" style="width:80.0%">
+</center>
+<p><br></p>
 <blockquote>
 <p>Using the <code>Stable</code> model, select <code>Optimize model</code> to perform cross-validation.</p>
 </blockquote>
 <div class="question">
+<p>What is the lag size?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The lag size is <span class="math inline">\(\approx32.6\:\text{km}\)</span>, which is a good approximation of the output of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog">Average Nearest Neighbour</a>.</p>
+</details><p><br></p>
+<div class="question">
 <p>Is this a good fit to the sample variogram?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>In a word, <strong>yes</strong>. While we do not have to any quantitative measures of fit, visually the model fits our earlier criteria, passing through the variogram cloud and passing close to the sample variogram.</p>
+</details><p><br></p>
 <div class="question">
-<p>What is the range? What does this mean?</p>
+<p>What is the “Major range”? What does this mean?</p>
 </div>
-<p><em>Answer</em>: distance at which two points are no longer correlated.</p>
+<details><summary>
+Answer
+</summary><p>The range (<span class="math inline">\(\approx260\:\text{km}\)</span>) is the distance at which spatial dependence between observations is no longer detected.</p>
+</details><p><br></p>
 <blockquote>
-<p>Replicate this approach with other model types.</p>
+<p>Evaluate the other model types, assessing the fit between the variogram model and the sample variogram.</p>
 </blockquote>
 <div class="question">
 <p>Which model types are candidates and which show a poor fit to the sample variogram?</p>
 </div>
-<p>Based on my testing, there are some models which aren’t worth considering further (e.g., <code>Exponential</code>) and others which show promise (<code>Stable</code>, <code>Gaussian</code>, <code>K-Bessel</code>). Of these both <code>Stable</code> and <code>K-Bessel</code> return a lag size similar to our previous rule-of-thumb using <a href="https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview">Average Nearest Neighbour</a>. We’ll use the former (<code>Stable</code>) = <span class="math inline">\(2.2216*Nugget+10.762*Stable(261220,1.3479)\)</span>, which is also known as the Matérn model elsewhere.</p>
-<p>:::
-<em>To do</em> discuss other options here (anisotropy). Note that while we can edit the model parameters manually here (nugget, sill, range) or use a combination of models to represent complex behaviour, it is very challenging to finalise the settings without some form of validation.
-:::</p>
-<p>:::
-<em>To do</em> inspect the semivariogram <strong>map</strong>, which gives the weights, and visualises <a href="https://www.spatialanalysisonline.com/HTML/core_concepts.htm">anisotropy</a>. How do we interpret this?
-:::</p>
-<p>[18] Neighbourhood calibration</p>
-<p>The following tab should be familiar following our exploration with IDW in [9].</p>
+<details><summary>
+Interpretation
+</summary><p>Based on my testing, there are some models which aren’t worth considering further (e.g., <code>Exponential</code>, <code>Rational Quadratic</code>), as these exhibit a poor fit between the variogram model and the sample variogram, even when cross-validation has been used. By comparison, there are others which show promise (<code>Stable</code>, <code>Gaussian</code>, <code>K-Bessel</code>). Of these, both <code>Stable</code> and
+<code>K-Bessel</code> return a lag size similar to our previous rule-of-thumb using <a href="https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview">Average Nearest Neighbour</a>.</p>
+<p>We’ll select the former (<code>Stable</code>), which is known as the Matérn model elsewhere, and which has produced the following model following cross-validation:</p>
+<p><span class="math display">\[2.2216*\text{Nugget}+10.762*\text{Stable}(261220,1.3479)\]</span>
+The smoothness parameter in the Matérn model (<span class="math inline">\(1.3479\)</span>) can change the shape of the function to resemble either an exponential and Gaussian shape, or something in between. The <a href="https://scikit-gstat.readthedocs.io/en/latest/userguide/variogram.html#matern-model">documentation</a> for the Python package <code>gstat</code> provides a useful description and visualisation of this.</p>
+</details><p><br></p>
+<p>For the selected model parameters, you also have access to the <strong>semivariogram map</strong>, which is a visual representation of how semivariance changes with both distance <strong>and</strong> direction:</p>
+<center>
+<img src="screenshots/practical-6/variogram_map.png" style="width:40.0%">
+</center>
+<p><br></p>
+<p>This provides information on spatial dependence, where the colours denote the average semivariance (dissimilarity) for that distance and direction. The spatial pattern can either be <em>isotropic</em> (same in all directions), as represented by a circular or symmetrical distribution, or <em>anistropic</em> (varying with direction), as represented by an elliptical or stretched distribution.</p>
+<p>Within the model range<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The &lt;strong&gt;range&lt;/strong&gt; component of the variogram model i.e., the distance &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; at which spatial dependence between observations is no longer detected, not the range of the values (i.e., min, max).&lt;/p&gt;'><sup>71</sup></a>, which is denoted by the circle, there is some evidence of <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/accounting-for-anisotropy-using-directional-semivariogram-and-covariance-functions.html">anistropy</a>, although this is more noticeable at greater distances, with the greatest semivariance in the north-south direction, and reduced semivariance in the east-west direction. This is a reflection of the phenonemon we are studying: <strong>temperature</strong>. Monitoring stations which share the same <em>longitude</em> are relatively similar, even if separated by greater distances (e.g., west coast vs. east coast), whereas those which share the same <em>latitude</em> are highly dissimilar (e.g., south coast vs. north coast).</p>
+<div class="note">
+<p>While we can edit the model parameters manually (e.g., lag size, nugget, sill, range, anistropy), or use a combination of models to represent complex behaviour, it is very
+challenging to finalise the settings without some form of cross-validation.</p>
+</div>
+<blockquote>
+<p>Press <strong>next</strong> to continue with the “Stable” model, and inspect the resulting interpolated surface.</p>
+</blockquote>
+<p>The following tab should be familiar following our earlier exploration of Inverse Distance Weighting.</p>
 <blockquote>
 <p>Explore the effects of changing the number of neighbours and sector type.</p>
 </blockquote>
 <div class="question">
-<p>Does this have a significant effect on the outcome surface? If not, why might this be?</p>
+<p>Does this have a significant effect on the interpolated surface?</p>
 </div>
-<p><em>Answer</em>: Because the weights are primarily contributed by the variogram model. If this is well fitted, nearby points receive most the weight, so adding additional distant points has little impact, because of low weighting.</p>
-<p>[19] Cross-validation of Ordinary Kriging</p>
+<details><summary>
+Interpretation
+</summary><p>The weights for each observation are a product of the variogram model, as described above. If the model is well fitted, nearby points are weighted most heavily, so
+including additional distant, and therefore minimally-weighted, points has little impact.</p>
+<p><br></p>
 <blockquote>
-<p>Following the cross-validation of the IDW results, explore the final tabs to evaluate model performance.</p>
+<p>Inspect the weights produced by Kriging.</p>
 </blockquote>
 <div class="question">
-<p>How has RMSE changed? Is it significantly better or worse?</p>
+<p>How are these different to IDW?</p>
 </div>
-<p><em>Answer</em> RMSE is slightly lower (~2.43 vs. 2.66°C).</p>
-<p>Additional metrics and plots are provided for Ordinary Kriging, including QQ plots, which are good way of visualising whether data follow a specific theoretical distribution (e.g., a normal distribution). While it is not within the scope of this unit to interrogate these in detail, the 1:1 line represents the theoretical distribution, while the points (the dataset) represent the actual distribution of the data. If these converge, it suggests that the data match that distribution. Any significant deviations suggests otherwise! See this <a href="https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot">post</a> on Stack Exchange for a good explanation.</p>
+<details><summary>
+Answer
+</summary><p>You will have noticed that many of the weights are <strong>negative</strong>. This represents <strong>spatial redundancy</strong>. This occurs where there is spatial dependence between neighbouring observations, which are therefore providing similar information, or where an individual observation is being “screened” by those nearer to the prediction location.</p>
+</details><p><br></p>
+</details>
+</div>
+<div id="variogram-evaluation" class="section level4" number="6.2.6.3">
+<h4>
+<span class="header-section-number">6.2.6.3</span> Variogram evaluation<a class="anchor" aria-label="anchor" href="#variogram-evaluation"><i class="fas fa-link"></i></a>
+</h4>
+<p>The final stage of our Ordinary Kriging analysis is to evaluate the quality of the interpolated surface, which as with IDW, is computed via <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/performing-cross-validation-and-validation.html">leave-one-out cross-validation</a> (LOOCV). The “Table” (shown below) includes both <code>Measured</code> and <code>Predicted</code> values. <strong>Importantly</strong>, Ordinary Kriging is an <strong>exact</strong> interpolator, so the predicted values in the output surface should match the observed values at the monitoring station locations.</p>
+<p>Instead, the <code>Predicted</code> values in the table are those produced during LOOCV, when that observation has been removed from the analysis.</p>
+<center>
+<img src="screenshots/practical-6/loocv_table.png" style="width:40.0%">
+</center>
+<p><br></p>
 <blockquote>
-<p>Finish the Geostatistical Wizard, and export the output layer to raster.</p>
+<p>Evaluate the model performance using the summary statistics and plots.</p>
 </blockquote>
-<div class="question">
-<p>How does the Ordinary Kriging layer compare to the output of IDW?</p>
-</div>
-</div>
-</div>
-<div id="geostatistical-interpolation-universal-kriging" class="section level3" number="6.2.6">
-<h3>
-<span class="header-section-number">6.2.6</span> Geostatistical interpolation: Universal Kriging<a class="anchor" aria-label="anchor" href="#geostatistical-interpolation-universal-kriging"><i class="fas fa-link"></i></a>
-</h3>
-<p>In the introduction above, we noted that <em>Ordinary Kriging</em> assumes <em>stationarity</em> i.e., the data has a constant, but unknown mean. The critical among you might have questioned this choice, in the context of our dataset.</p>
-<div class="question">
-<p>Do we expect there to be a constant mean (unknown) temperature across the British Isles, for the measured datetime?</p>
-</div>
-<p><strong>No!</strong> Our <a href="https://weather.metoffice.gov.uk/maps-and-charts/temperature-map#?model=ukmo-ukv&amp;layer=temperature&amp;bbox=%5B%5B47.010225655683485,-32.12402343750001%5D,%5B61.05828537037916,24.125976562500004%5D%5D">automatic monitoring stations</a> span approximately 10 degrees of latitude, from as far south as the Isles of Scilly to as far north as Lerwick on the Shetland Islands. It is highly likely that the mean temperature will vary across this area, so our assumption of a constant mean is not easily defensible. Perhaps this is why our model performance (RMSE) is only slightly improved compared to IDW?</p>
-<p>As a result, we should use a method that assumes the data mean is <strong>not</strong> constant, but varies gradually across space
-according to a mathematical function (<em>non-stationarity</em>). We should use this approach whenever we expect non-stationarity i.e., trends in climate, elevation… This is known as <strong>University Kriging</strong>:</p>
-<p><span class="math display">\[Z(s)= μ(s)+ε(s)\]</span>
-::: task
-<em>To do</em> describe equation
-:::</p>
-<p>:::
-<em>To do</em> describe the Universal Kriging approach fully i.e., a structural trend (e.g., temperature changing with latitude) is subtracted from the original measured points, and then spatial autocorrelation is modelled from the random errors. To make a prediction, the structural trend is added back to the predictions. As per the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html">documentation</a> “<em>Universal kriging should only be used when you know there is a trend in your data and you can give a scientific justification to describe it.</em>”
-:::</p>
-<p>[20] Re-open the Geostatistical Wizard, select Universal Kriging and then think carefully about Order of Trend Removal:</p>
+<p>The Geostatistical Wizard includes a range of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geostatistical-analyst/cross-validation.html?tabs=dialog">metrics</a> for evaluation. For simplicity, we could prioritise:</p>
 <ul>
-<li>Constant: removes a constant value, which is not valid given our assumption of non-stationarity.</li>
-<li>First: removes a linear gradient e.g., temperature decreasing from south to north.</li>
-<li>Second: removes a quadratic surface (curved gradients)</li>
-<li>Third: removes a cubic polynomial.</li>
+<li>A <strong>mean error</strong> close to 0, indicating removal of bias. This is a simple arithmetic mean of the residuals, so the mean error can reveal if the model is systematically underpredicting or overpredicting.</li>
+<li>A <strong>RSME</strong> as small as possible, reflecting the average distance between the model predictions and the observed values. To reiterate the discussion point above, these are the predictions produced via LOOCV.</li>
+<li>A <strong>standardised RMSE</strong> close to 1, which is the RMSE of the standardised errors, which is a measure of whether the estimated standard errors (produced during LOOCV) are an accurate reflection of the actual prediction errors.</li>
 </ul>
-<p>With model parsimony in model, a <strong>first order</strong> polynomial is the most appropriate choice here, as we have a clear scientific justification for a linear gradient i.e., temperature with latitude. There is perhaps scope to explore a second order polynomial, which might do a better job of incorporating gradients related to longitude (e.g., proximity to North Atlantic). There are lots of other aspects involved, distance to the coastline seems to be important too.</p>
-<p>[21] Polynomial Construction</p>
-<p>On the next tab, we can influence the construction of the polynomial, and a key parameter is the “Exploratory Trend Surface Analysis” which can range from 0 - 100. When 0, the trend is a global polynomial interpolation i.e., a single smooth function applied to the entire dataset. Values &gt; 0 represent local polynomial interpolation, where increasing values equate to more local interpolation.</p>
+<div class="question">
+<p>How has RMSE changed?</p>
+</div>
+<p>Additional metrics and plots are provided for Ordinary Kriging, including <strong>QQ plots</strong>, which are good way of visualising whether data follow a specific theoretical distribution (e.g., a normal distribution). While it is not within the scope of this unit to interrogate these in detail, the 1:1 line represents the theoretical distribution, while the points (the dataset) represent the actual distribution of the data. If these converge, it suggests that the data match that distribution. Any significant deviations suggests otherwise! See this <a href="https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot">post</a> on Stack Exchange for a good explanation.</p>
+<blockquote>
+<p>Finish the Geostatistical Wizard, and then export the output layer to raster.</p>
+</blockquote>
+<div class="question">
+<p>How does the Ordinary Kriging interpolation compare to the output of IDW?</p>
+</div>
+<center>
+<img src="images/practical-6/idw_ok_comparison.png" style="width:70.0%">
+</center>
+<p><br></p>
+</div>
+</div>
+<div id="geostatistical-interpolation-universal-kriging" class="section level3" number="6.2.7">
+<h3>
+<span class="header-section-number">6.2.7</span> Geostatistical interpolation: Universal Kriging<a class="anchor" aria-label="anchor" href="#geostatistical-interpolation-universal-kriging"><i class="fas fa-link"></i></a>
+</h3>
+<p>In the introduction above, we noted that <em>Ordinary Kriging</em> assumes <em>stationarity</em> i.e., the data has a constant, but unknown mean. You might have questioned this assumption, in the context of our dataset.</p>
+<div class="question">
+<p>Do we expect there to be a constant (unknown) mean temperature across the British Isles, for the measured datetime?</p>
+</div>
+<details><summary>
+Answer
+</summary><p><strong>No!</strong> Our <a href="https://weather.metoffice.gov.uk/maps-and-charts/temperature-map#?model=ukmo-ukv&amp;layer=temperature&amp;bbox=%5B%5B47.010225655683485,-32.12402343750001%5D,%5B61.05828537037916,24.125976562500004%5D%5D">automatic monitoring stations</a> span approximately 10 degrees of latitude, from as far south as the Isles of Scilly to as far north as Lerwick on the Shetland Islands. It is highly likely that the mean temperature will vary across this area, so our assumption of a <strong>stationarity</strong> and a constant mean is not easily defensible. Perhaps
+this is why our model performance (RMSE) is only slightly improved compared to IDW?</p>
+</details><p><br></p>
+<p>Rather than use Ordinary Kriging, we could use a method that assumes the data mean is <strong>not</strong> constant, but varies gradually across space according to a
+mathematical function (<em>non-stationarity</em>). We should use this approach whenever we expect non-stationarity i.e., trends in climate, elevation… This is known as <strong>University Kriging</strong>.</p>
+<p>This method begins by substracting a structural trend from the original measured points (e.g., temperature changing with latitude), before a variogram model is fitted to the remaining random errors<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;This is not to imply that the values are randomly distributed, as spatial dependence may still be present. However, we removed the &lt;em&gt;deterministic&lt;/em&gt; trend, leaving the stochastic component to be modelled.&lt;/p&gt;"><sup>72</sup></a>. Predictions are computed from the variogram model, which is used to define spatial dependence and estimate observations weights, and the original structural trend, which is added back in. As per the
+<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html">documentation</a> “<em>Universal kriging should only be used when you know there is a trend in your data and you can give a scientific justification to describe it.</em>” In our case, both requirements are met.</p>
+<center>
+<img src="images/practical-6/universal_krig_example.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Re-open the Geostatistical Wizard, select “Kriging / CoKriging” with <code>sl_temp</code> as the “Data Field”, and then “Universal Kriging” and “Prediction”.</p>
+</blockquote>
+<p>We need to now think carefully about the “Order of Trend Removal”:</p>
+<ul>
+<li>
+<strong>Constant</strong>: removes a constant value, which is not valid given our assumption of non-stationarity.</li>
+<li>
+<strong>First</strong>: removes a linear gradient e.g., temperature decreasing from south to north.</li>
+<li>
+<strong>Second</strong>: removes a quadratic surface (curved gradients)</li>
+<li>
+<strong>Third</strong>: removes a cubic polynomial.</li>
+</ul>
+<p>With model parsimony in mind, a <strong>first order</strong> polynomial is the most appropriate choice here, as we have a clear scientific justification for a linear gradient i.e., temperature decreasing with latitude. There is scope to explore a second order polynomial, which might do a better job of incorporating gradients related to longitude e.g., proximity to the North Atlantic, or distance to the coastline.</p>
+<blockquote>
+<p>Explore the default settings for first, second and third order trend removal. When you’re happy with your understanding, select <strong>First order</strong> and <strong>next</strong>.</p>
+</blockquote>
+<p>On the following tab, we can control the construction of the polynomial, and a key parameter is “Exploratory Trend Surface Analysis” which can range from 0 - 100. When 0, the trend is a global polynomial interpolation i.e., a single smooth function applied to the entire dataset. Values greater than 0 represent local polynomial interpolation, where increasing values equate to more local interpolation.</p>
 <blockquote>
 <p>Explore how changing the “Exploratory Trend Surface Analysis” influences the underlying trend surface, and how this affects the number of contributing points.</p>
 </blockquote>
-<p><em>Note</em> this step of the analysis is also a form of interpolation, and can be run independently using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/trend.html?tabs=dialog">Trend</a> (Spatial Analyst Tools) or via <code>Local Polynomial Interpolation</code> in the Geostatistical Wizard.</p>
+<div class="note">
+<p>It is important to recognise that this stage of the analysis is a form of <strong>deterministic</strong> interpolation, and can be run independently using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/trend.html?tabs=dialog">Trend</a> (Spatial Analyst Tools) or via <code>Local Polynomial Interpolation</code> in the Geostatistical Wizard.</p>
+</div>
+<p>In my view, and again with model parsimony in mind, the simplest form of trend removal is the most appropriate choice i.e., global polynomial interpolation (Exploratory Trend Surface Analysis = 0). While a local polynomial may produce a better fit, there is a danger of <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/understanding-how-to-remove-trends-from-the-data.html">overfitting</a> and a risk that we remove the spatial structure that Kriging is designed to capture.</p>
 <blockquote>
-<p>For model testing, let’s keep the value at 0 for global polynomial interpolation.</p>
+<p>Continue with global polynomial interpolation, Exploratory Trend Surface Analysis = 0.</p>
 </blockquote>
-<p>[22] Variogram calibration</p>
-<p>As before, the next tab presents us with the variogram, with opportunities to calibrate.Note, however, that this is not identical to the variogram for Ordinary Kriging, which was based on the input temperature data only. Here, this the variogram of the residuals (measured - modelled), after the trend surface specified in [21] has been removed.</p>
-<p>For interpretation, we might expect to see:</p>
-<ul>
-<li>A low or moderate nugget at distance zero</li>
-<li>An increase in <span class="math inline">\(γ\)</span> with distance</li>
-<li>A clear sill</li>
-</ul>
+<p>As with Ordinary Kriging, our next step is to define and calibrate our model variogram. However, it is important to remember that the Ordinary Kriging semivariance values <span class="math inline">\(y\)</span> were based on the observed values, whereas here, the semivariance is calculated is based on the values <em>after</em> the trend surface has been removed.</p>
 <blockquote>
-<p>Optimise the model again, using the <code>Stable</code> model for consistency with our Oridinary Kriging approach.</p>
+<p>Explore the variogram model settings. When you are happy with your understanding, I would recommend optimising the <code>Stable</code> model again, for consistency with our Oridinary Kriging approach.</p>
 </blockquote>
-<p>[23] Cross-validation of Universal Kriging</p>
+<p>When complete:</p>
 <blockquote>
 <p>Explore the final tabs to evaluate model performance.</p>
 </blockquote>
 <div class="question">
 <p>How has RMSE changed? Is the model improved compared to Ordinary Kriging?</p>
 </div>
-<p>When evaluating our models, we are looking for:</p>
-<ul>
-<li>Mean Error close to 0, indicating removal of bias. i.e., the average of the residuals (+ or -): <span class="math inline">\(\frac{1}{n}\sum\limits_{i=1}^{n}(z_i−\hat{z}_i)\)</span>
-</li>
-<li>RMSE as small as possible (equation above). It is also important to note that this is <strong>not</strong> the RMSE for the input locations, because as an exact (most of the time) interpolator, Kriging retains the values of the input. Instead, this is how well the model predicts unknown locations (via cross-validation)</li>
-<li>Mean Standardized Error: <span class="math inline">\(\frac{z_i−\hat{z}_i}{σ_i}\)</span> i.e., the difference between observed and prediction, divided by the predicted standard error</li>
-<li>RMS Standardised close to 1:</li>
-<li>RMSE ~ Average Standard Error, indicating uncertainty is appropriately estimated</li>
-<li>In the Cross-validation table, “Predicted” is not the final value, but the prediction when cross-validation is used (when point <em>n</em> is removed)</li>
-</ul>
-<div class="task">
-<p>Move these descriptions earlier.</p>
+<details><summary>
+Answer
+</summary><p>Overall, we can say that Universal Kriging has <strong>slightly</strong> outperformed Ordinary Kriging, although not significantly. This may be because the latter was already capturing
+much of the latitudinal gradient through spatial autocorrelation.</p>
+<p>However, we have a strong <strong>theoretical</strong> justification to use Universal rather Ordinary Kriging, independent of the difference in performance.</p>
+</details><p><br></p>
 </div>
-<p><strong>Overall</strong>, we can say that Universal Kriging has slightly outperformed Ordinary Kriging. This may be because the latter was already capturing much of the latitudinal gradient through spatial autocorrelation.</p>
-<p>However, we have a strong theoretical reason to use Universal &gt; Ordinary Kriging, irrespective of the degree of performance improvement.</p>
+<div id="interpolation_summary" class="section level3" number="6.2.8">
+<h3>
+<span class="header-section-number">6.2.8</span> Summary<a class="anchor" aria-label="anchor" href="#interpolation_summary"><i class="fas fa-link"></i></a>
+</h3>
+<p>In this practical we have introduced a range of interpolation methods, including proximity, inverse distance weighting, and Ordinary and Universal Kriging.</p>
 <div class="question">
-<p>Having produced a number of models (proximty, IDW, OK, UK), what is your overall appraisal of their performance?</p>
+<p>What is your overall appraisal of their performance?</p>
 </div>
 <div class="question">
 <p>What are the strengths and limitations of the various models?</p>
 </div>
-<p><em>Answer</em>: One limitation of Kriging is its sensitivity to mis-specification of the variogram model (directly affecting the interpolation weights).</p>
-<p>To <strong>summarise</strong>, we have introduced some important <em>deterministic</em> and <em>geostatistical</em> interpolation methods, capturing some of the key choices involved and the sensitivity of the outputs to those choices. As you will know from your exploration of the Geostatistical Wizard, we have only really scratched the surface, with lots of Kriging variants developed for different situations, alongside a suite of alternative methods.</p>
-<p>For selecting a interpolation method, we need to think carefully about theory as well as model performance, see <span class="citation">Heusler <em>et al.</em> (<a href="references.html#ref-heusler2025">2025</a>)</span>, <span class="citation">Rufino <em>et al.</em> (<a href="references.html#ref-rufino2021">2021</a>)</span> and <span class="citation">Li and Heap (<a href="references.html#ref-li2011">2011</a>)</span> for some targeted reading.</p>
+<details><summary>
+Suggestion
+</summary><p>A few suggestions, by no-means exhaustive:</p>
+<ul>
+<li>Proximity: A computationally efficient approach but which is probably a poor representation of continuous phenemona which change gradually through space.</li>
+<li>Inverse distance weighting: No consideration of spatial dependence and sensitive to <span class="math inline">\(p\)</span>.</li>
+<li>Ordinary Kriging: Sensitive to mis-specification of the variogram model, directly affecting the interpolation weights.</li>
+<li>Universal Kriging: As above, but also sensitive to the specification and removal of the structural trend.</li>
+</ul></details><p><br></p>
+<p>To <strong>summarise</strong>, we have introduced some important <strong>deterministic</strong> and <strong>geostatistical</strong> interpolation methods, capturing some of the key choices involved and the sensitivity of the interpolated surface to those choices. As you will know from your exploration of the Geostatistical Wizard, we have only really scratched the surface, with lots of Kriging variants developed for different situations and data types, alongside a suite of alternative methods.</p>
+<p>When selecting an interpolation method, we need to think carefully about theory as well as model performance, see <span class="citation">Heusler <em>et al.</em> (<a href="references.html#ref-heusler2025">2025</a>)</span>, <span class="citation">Rufino <em>et al.</em> (<a href="references.html#ref-rufino2021">2021</a>)</span> and <span class="citation">Li and Heap (<a href="references.html#ref-li2011">2011</a>)</span> for some targeted reading.</p>
+<p>…and with that, <strong>congratulations!</strong> You have completed the practical and should now have a strong understanding of interpolation, the geostatistical perspective, and key methods.</p>
+<p><a href="index.html#index"><strong>Finished!</strong></a></p>
 </div>
 </div>
 <div id="extra-3" class="section level2" number="6.3">
 <h2>
 <span class="header-section-number">6.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-3"><i class="fas fa-link"></i></a>
 </h2>
-<p>As an exact interpolator, Universal Kriging has reproduced the temperature values at our input monitoring stations. Via cross-validation, we know that prediction accuracy at unsampled locations is lower (~2°C). What might be causing this?</p>
-<p>A good way to understand the error is to simply plot the residuals. This can be achieved by exporting the cross-validation table (Save Table to Feature Class) and visualising.</p>
+<p>As an <strong>exact</strong> interpolator, Universal Kriging has reproduced the temperature values at our input monitoring stations. Via cross-validation, we know that prediction accuracy at unsampled locations is lower (<span class="math inline">\(\approx2\:\text{°C}\)</span>). What might be causing this?</p>
+<p>A good way to understand the error is to simply plot the residuals. This can be achieved by exporting the cross-validation table (<code>Save Table to Feature Class</code>) and symbolising using the <code>Error</code> field.</p>
 <div class="question">
 <p>Is there any obvious pattern to the residuals?</p>
 </div>
 <div class="question">
-<p>Is there any pattern to absolute error? Use Calculate Field, <code>abs(err)</code></p>
+<p>Is there any pattern to absolute error? Use Calculate Field, <code>abs(!Error!)</code> with “Field Type” = <code>Double</code>.</p>
 </div>
-<p><em>Answer</em>: reduced performance in Scotland, which makes sense, where we have some stark and difficult to explain differences e.g., Bealach Na Ba vs. Aultbea.</p>
+<details><summary>
+Answer
+</summary><p>In general, there appears to be evidence of reduced performance in parts of Scotland, and at higher latitudes (<span class="math inline">\(y\)</span>), as shown here:</p>
+<center>
+<img src="screenshots/practical-6/abs_error.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>This is perhaps unsurprising as there are some stark and difficult to explain differences between the reported temperatures e.g., Bealach Na Ba at 29.1°C (<code>FID</code> = 93) and
+Aultbea at 15.9°C (<code>FID</code> = 94).</p>
+</details><p><br></p>
 <div class="question">
-<p>Is there evidence of spatial autocorrelation?</p>
+<p>Is there evidence of spatial autocorrelation? What weights method did you choose?</p>
 </div>
-<p>Interestingly, we have evidence of of <em>dispersion</em> (Given the z-score of -3.331125, there is a less than 1% likelihood that this dispersed pattern could be the result of random chance.)</p>
-<div class="problem">
-<p>Not a problem <em>per se</em>, but need to develop a satisfactory explanation for why this occurs, or how to address. It is likely because the interpolation is smoothing local temperature extremes.</p>
-</div>
+<details><summary>
+Answer
+</summary><p>There is statistically significant <strong>clustering</strong> (<span class="math inline">\(I&gt;0\)</span>) of the <em>absolute</em> errors, with local positive spatial autocorrelation in parts of Scotland and England, as identified by local Moran’s <span class="math inline">\(I_{i}\)</span>.</p>
+<p>If you assess the spatial autocorrelation of the actual model residuals (<code>Error</code>), you may see evidence of negative spatial autocorrelation i.e., <strong>dispersion</strong>. This could arise due to smoothing which is inherent to Kriging predictions, particularly during cross-validation. This is best understood by considering <strong>one-dimensional</strong> Kriging, which is illustrated below. Unlike the Kriging variants we focused on, which interpolate in two-dimensions <span class="math inline">\(x,y\)</span>, 1D Kriging can be used for interpolation within a vector of values e.g., a time-series:</p>
+<center>
+<img src="images/practical-6/1D_kriging.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>During LOOCV, each value is removed from the model and its value predicted using the remaining observations. As Kriging predictions are smoothed towards neighbouring values, this could produce a a pattern in which neighbouring points are alternately under- and overpredicted:</p>
+<center>
+<img src="images/practical-6/1d_loocv.png" style="width:100.0%">
+</center>
+<p><br></p>
+</details><p><br></p>
+<p>If you’re interested in exploring geostatistics further, the R package <a href="https://r-spatial.github.io/gstat/"><code>gstat</code></a> and the Python package <a href="https://scikit-gstat.readthedocs.io/en/latest/"><code>SciKit-Gstat</code></a> are excellent resources, as are the geostatistical walthroughs from <a href="https://www.paulamoraga.com/book-spatial/geostatistical-data-1.html#geostatistical-data-1">Paula Moraga</a> and <a href="https://r-spatial.org/book/12-Interpolation.html">Edzer Pebesma and Roger Bivand</a>.</p>
 </div>
 <div id="resources-3" class="section level2" number="6.4">
 <h2>
@@ -762,6 +1156,7 @@ species. Ecological Modelling[MT3.1], 449, p.109501.</li>
 </ul>
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="point_patterns.html"><span class="header-section-number">5</span> Point Patterns</a></div>
 <div class="next"><a href="spatial_regression.html"><span class="header-section-number">7</span> Spatial Regression</a></div>
@@ -779,12 +1174,14 @@ species. Ecological Modelling[MT3.1], 449, p.109501.</li>
 </li>
 <li>
 <a class="nav-link" href="#practical-4"><span class="header-section-number">6.2</span> Practical</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#pre-processing-3"><span class="header-section-number">6.2.1</span> Pre-processing</a></li>
-<li><a class="nav-link" href="#interpolation-types"><span class="header-section-number">6.2.2</span> Interpolation types</a></li>
-<li><a class="nav-link" href="#deterministic-interpolation-proximity"><span class="header-section-number">6.2.3</span> Deterministic interpolation: proximity</a></li>
-<li><a class="nav-link" href="#deterministic-interpolation-idw"><span class="header-section-number">6.2.4</span> Deterministic interpolation: IDW</a></li>
-<li><a class="nav-link" href="#geostatistical-interpolation-ordinary-kriging"><span class="header-section-number">6.2.5</span> Geostatistical interpolation: Ordinary Kriging</a></li>
-<li><a class="nav-link" href="#geostatistical-interpolation-universal-kriging"><span class="header-section-number">6.2.6</span> Geostatistical interpolation: Universal Kriging</a></li>
+<li><a class="nav-link" href="#introduction-6"><span class="header-section-number">6.2.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#pre-processing-3"><span class="header-section-number">6.2.2</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#interpolation-types"><span class="header-section-number">6.2.3</span> Interpolation types</a></li>
+<li><a class="nav-link" href="#deterministic-interpolation-proximity"><span class="header-section-number">6.2.4</span> Deterministic interpolation: proximity</a></li>
+<li><a class="nav-link" href="#deterministic-interpolation-idw"><span class="header-section-number">6.2.5</span> Deterministic interpolation: IDW</a></li>
+<li><a class="nav-link" href="#geostatistical-interpolation-ordinary-kriging"><span class="header-section-number">6.2.6</span> Geostatistical interpolation: Ordinary Kriging</a></li>
+<li><a class="nav-link" href="#geostatistical-interpolation-universal-kriging"><span class="header-section-number">6.2.7</span> Geostatistical interpolation: Universal Kriging</a></li>
+<li><a class="nav-link" href="#interpolation_summary"><span class="header-section-number">6.2.8</span> Summary</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#extra-3"><span class="header-section-number">6.3</span> Extra</a></li>

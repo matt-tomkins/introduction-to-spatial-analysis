@@ -167,11 +167,11 @@
 <div class="question">
 <p>For the highlighted country, how would you define neighbours?</p>
 </div>
-<p>In the field of spatial <strong>econometrics</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; we’ll discuss the history and conceptual approaches of the fields of &lt;strong&gt;econometrics&lt;/strong&gt; and &lt;strong&gt;geostatistics&lt;/strong&gt; in later weeks, but as brief introduction - The field of &lt;em&gt;econometrics&lt;/em&gt; focuses on analysis of &lt;strong&gt;discretised space&lt;/strong&gt; (i.e., “areal data”), where continuous space is broken down into discrete zones (e.g., counties, countries), often represented by Polygons or Points, see &lt;span class="citation"&gt;Anselin (&lt;a href="references.html#ref-anselin1988"&gt;1988&lt;/a&gt;)&lt;/span&gt;. While closely related, &lt;em&gt;geostatistics&lt;/em&gt; focuses on processes operating over &lt;strong&gt;continuous space&lt;/strong&gt;, where spatial interpolation is a key method, see &lt;span class="citation"&gt;Diggle and Ribeiro (&lt;a href="references.html#ref-diggle2007"&gt;2007&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>8</sup></a>, which we’ll discuss more fully later in the unit, spatial relationships between objects are defined using <strong>spatial weights</strong>.</p>
+<p>In the field of spatial <strong>econometrics</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; we’ll discuss the history and conceptual approaches of the fields of &lt;strong&gt;econometrics&lt;/strong&gt; and &lt;strong&gt;geostatistics&lt;/strong&gt; in later weeks, but as brief introduction - The field of &lt;em&gt;econometrics&lt;/em&gt; focuses on analysis of &lt;strong&gt;discretised space&lt;/strong&gt; (i.e., “areal data”), where continuous space is broken down into discrete zones (e.g., counties, countries), often represented by Polygons or Points, see &lt;span class="citation"&gt;Anselin (&lt;a href="references.html#ref-anselin1988"&gt;1988a&lt;/a&gt;)&lt;/span&gt;. While closely related, &lt;em&gt;geostatistics&lt;/em&gt; focuses on processes operating over &lt;strong&gt;continuous space&lt;/strong&gt;, where spatial interpolation is a key method, see &lt;span class="citation"&gt;Diggle and Ribeiro (&lt;a href="references.html#ref-diggle2007"&gt;2007&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>8</sup></a>, which we’ll discuss more fully later in the unit, spatial relationships between objects are defined using <strong>spatial weights</strong>.</p>
 </div>
-<div id="defining-spatial-weights" class="section level3" number="2.2.2">
+<div id="define_sw" class="section level3" number="2.2.2">
 <h3>
-<span class="header-section-number">2.2.2</span> Defining spatial weights<a class="anchor" aria-label="anchor" href="#defining-spatial-weights"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.2.2</span> Defining spatial weights<a class="anchor" aria-label="anchor" href="#define_sw"><i class="fas fa-link"></i></a>
 </h3>
 <p>Spatial weights (<span class="math inline">\(w\)</span>) are used to represent the presence and/or strength of the spatial relationship between two objects. In the example above, we could define neighbours based on whether countries share a common border<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; this is just an example, and we’ll discuss the various methods for calculating spatial weights as we progress through the practical.&lt;/p&gt;"><sup>9</sup></a>, in which case:</p>
 <ul>
@@ -582,7 +582,7 @@ Answer
 </h2>
 <p>In the practical we’ve worked exclusively with Polygons. How would we define neighbours for a Point dataset?</p>
 <blockquote>
-<p>Open the <code>world_cities_5m</code> layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Fixed distances and <span class="math inline">\(K\)</span> nearest neighbours are common approaches.</p>
+<p>Open the <code>world_cities_5m</code> layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Inverse distance, fixed distances and <span class="math inline">\(K\)</span> nearest neighbours are common approaches.</p>
 </blockquote>
 <p align="center">
 <a name=""></a><img src="screenshots/practical-2/points-fixed-distance.png" style="width:50.0%"></p>
@@ -633,7 +633,7 @@ Answer
 <li>
 <a class="nav-link" href="#practical-1"><span class="header-section-number">2.2</span> Practical</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#conceptual-approach"><span class="header-section-number">2.2.1</span> Conceptual approach</a></li>
-<li><a class="nav-link" href="#defining-spatial-weights"><span class="header-section-number">2.2.2</span> Defining spatial weights</a></li>
+<li><a class="nav-link" href="#define_sw"><span class="header-section-number">2.2.2</span> Defining spatial weights</a></li>
 <li><a class="nav-link" href="#weights-in-practice"><span class="header-section-number">2.2.3</span> Spatial weights in practice</a></li>
 <li><a class="nav-link" href="#contig-swm"><span class="header-section-number">2.2.4</span> Contiguity weights</a></li>
 <li><a class="nav-link" href="#dist-swm"><span class="header-section-number">2.2.5</span> Distance based weights</a></li>

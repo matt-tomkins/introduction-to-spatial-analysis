@@ -375,5 +375,5 @@ Remove gradient search for simplicity?
 ## Resources
 
 -   Brunsdon, C., Fotheringham, A.S. and Charlton, M.E. ([1996](https://doi.org/10.1111/j.1538-4632.1996.tb00936.x)), Geographically Weighted Regression: A Method for Exploring Spatial Nonstationarity. Geographical Analysis, 28: 281-298.
--   Fotheringham, A. S., Yang, W., & Kang, W. ([2017](https://doi.org/10.1080/24694452.2017.135248)). Multiscale Geographically Weighted Regression (MGWR). Annals of the American Association of Geographers, 107(6), 1247–1265.
+-   Fotheringham, A. S., Yang, W., & Kang, W. ([2017](https://doi.org/10.1080/24694452.2017.1352480)). Multiscale Geographically Weighted Regression (MGWR). Annals of the American Association of Geographers, 107(6), 1247–1265.
 -   Comber, A., Brunsdon, C., Charlton, M., Dong, G., Harris, R., Lu, B., Lü, Y., Murakami, D., Nakaya, T., Wang, Y. and Harris, P. ([2023](https://doi.org/10.1111/gean.12316)). A route map for successful applications of geographically weighted regression. Geographical Analysis, 55(1), pp.155-178.

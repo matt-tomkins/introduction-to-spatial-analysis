@@ -534,7 +534,7 @@ Finally, one key concept we haven't considered is **uncertainty**. In our analys
 
 There is a smorgasbord of extra content this week, allowing you to explore another clustering algorithm (Ripley's $K$) and test the sensitivity of our analysis to the observation window. For those of you want to use species observations in your own work, I have also included instructions on how to download these from GBIF.
 
-### Ripley's alphabet of clustering functions
+### Ripley's alphabet of clustering functions {.unnumbered}
 
 "*Statistical Inference for Spatial Processes*" by @ripley_statistical_1988 is a highly influential work which provided an "alphabet" of functions for analysing points patterns, named $G, F, K$ and $L$. Unfortunately, not all of these are implemented in ArcGIS, hence their exclusion from the main part of the practical. They are available in the Python package [`pointpats`](https://pysal.org/pointpats/user-guide/ripley.html), and the R package [`spatstat`](https://doi.org/10.18637/jss.v012.i06), and elsewhere, with a good walkthrough of $G$ and $F$ in ["Geographic Data Science with Python"](https://geographicdata.science/book/notebooks/08_point_pattern_analysis.html#ripleys-alphabet-of-functions). 
 
