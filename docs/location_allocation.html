@@ -117,7 +117,6 @@
 <h3>Application<a class="anchor" aria-label="anchor" href="#application-8"><i class="fas fa-link"></i></a>
 </h3>
 <p>To that end, we’ll use location allocation models to optimise locations for new <a href="https://thecircuit.uk/Home/About?_gl=1*1ub1w4x*_up*MQ..*_ga*MTc0ODE0ODI2NS4xNzgzMDc1Mzk4*_ga_3WNW2WCQD1*czE3ODMwNzUzOTckbzEkZzAkdDE3ODMwNzUzOTckajYwJGwwJGgw#about">defibrillators</a>, using population demand and the transport network as inputs.</p>
-<p>Our analysis is focused on the Western Isles of Scotland, given links between socioeconomic deprivation, urban-ruralness and defibrillator access <span class="citation">(<a href="references.html#ref-burgoine_automated_2024">Burgoine <em>et al.</em>, 2024</a>)</span>. For every minute that someone’s in cardiac arrest without receiving <a href="https://www.nhs.uk/tests-and-treatments/first-aid/cpr/">CPR</a> and having a defibrillator used on them, their chance of survival <a href="https://www.nwas.nhs.uk/news/were-appealing-to-the-north-west-public-learn-how-to-save-a-life-today/">decreases by 10%</a>. Optimising defibrillator locations to minimise response times or maximise coverage could save lives.</p>
 </div>
 <div id="data-6" class="section level3 unnumbered">
 <h3>Data<a class="anchor" aria-label="anchor" href="#data-6"><i class="fas fa-link"></i></a>
@@ -140,245 +139,406 @@
 <h2>
 <span class="header-section-number">9.2</span> Practical<a class="anchor" aria-label="anchor" href="#practical-7"><i class="fas fa-link"></i></a>
 </h2>
+<p><strong>Location allocation</strong> methods are used to determine the optimum location for a facility relative to a measure of spatial demand. Typically these methods are designed to increase benefits e.g., finding a location for a new hospital that <strong>maximises</strong> the number of people within a time or distance threshold <span class="citation">(<a href="references.html#ref-church1974">Church and ReVelle, 1974</a>)</span>, or relocating a fire station to <strong>minimise</strong> the average travel time to all households <span class="citation">(<a href="references.html#ref-hakimi1965">Hakimi, 1965</a>)</span>. Location allocation methods can also be used to reduce costs, for example if the facility in question is “obnoxious” <span class="citation">(<a href="references.html#ref-church2022">Church and Drezner, 2022</a>)</span> and would be expected to have a negative impact on its surroundings e.g., a hazardous waste disposal facility.</p>
+<p>Location allocation is therefore an <a href="https://en.wikipedia.org/wiki/Optimization_problem"><strong>optimisation problem</strong></a>, which seeks to find the best solution from all feasible solutions within the search space. Taking our example above, location allocation methods could be used to evaluate a set of <em>candidate</em> locations for a new hospital, based on the land that is available, planning regulations, or access restrictions.</p>
+<p>Thus, location allocation is often used alongside a <strong>constraints analysis</strong>, which excludes locations based on a set of user-specified constraints<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;This should be very familiar to you from &lt;strong&gt;GEOG62411&lt;/strong&gt; &lt;em&gt;Data Acquisition for GI Scientists&lt;/em&gt;, and our evaluation of solar installation suitability at Woodland Valley Farm.&lt;/p&gt;"><sup>77</sup></a>.</p>
+<p>Our analysis is focused on location allocation of defibrillators, using the Western Isles of Scotland as a case study, given links between socioeconomic deprivation, urban-ruralness and defibrillator access <span class="citation">(<a href="references.html#ref-burgoine_automated_2024">Burgoine <em>et al.</em>, 2024</a>)</span>. For every minute that someone’s in cardiac arrest without receiving <a href="https://www.nhs.uk/tests-and-treatments/first-aid/cpr/">CPR</a> and having a defibrillator used on them, their chance of survival <a href="https://www.nwas.nhs.uk/news/were-appealing-to-the-north-west-public-learn-how-to-save-a-life-today/">decreases by 10%</a>. Optimising defibrillator locations to minimise response times or maximise coverage could therefore save lives.</p>
 <div id="pre-processing-6" class="section level3" number="9.2.1">
 <h3>
 <span class="header-section-number">9.2.1</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-6"><i class="fas fa-link"></i></a>
 </h3>
-<p>[1] Load road network [<code>road_link_westcoast.shp</code>], population grid [<code>uk_population_2021_1km.tif</code>] and islands [<code>west-coast-islands.shp</code>] shapefile: all BNG, subset to Western Isles.</p>
-<p>[2] Load defibrillator location (<code>defibrillator_data.csv</code>), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table to Points</a> using lat-long (WGS_1984), and then <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a> to BNG</p>
-<p>[3] Clean defibrillator dataset, keeping valid entries and spatially aligning to network):</p>
-<ul>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> to add distance from the defibrillators to the road network (modifies input)</li>
-<li>Visualise Statistics</li>
-<li>Select by Attributes (<code>NEAR_DIST</code> &gt; 100) and delete selected rows (n=15) - recording errors?</li>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a> to snap points to the network (100 m tolerance, modifies input):
-<ul>
-<li>Type = Edge</li>
-<li>Distance = 100</li>
-</ul>
-</li>
-<li>Check for validity</li>
-</ul>
-<div class="task">
-<p><em>Option</em> Subset to defibrillators with 24 hour access?</p>
+<p>To begin:</p>
+<blockquote>
+<p>Open ArcGIS Pro and create a new project <code>practical-9</code> in the correct directory, establish a connection to <code>data</code>, and then load the road network vector [<code>road_link_westcoast.shp</code>], population raster [<code>uk_population_2021_1km.tif</code>] and island vector [<code>west-coast-islands.shp</code>]. All these layers utilise EPSG: <a href="https://epsg.io/27700">27700</a>, and are subset to the Western Isles of Scotland.</p>
+</blockquote>
+<p>These layers are essential for our location allocation analysis, representing the potential demand for defibrillators (i.e., population), and the routes by which those defibrillators can be accessed (i.e., the road network).</p>
+<center>
+<img src="screenshots/practical-9/input_data.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Load the defibrillator table (<code>.csv</code>), which contains data extracted from the National Defibrillator Network (<a href="https://www.bhf.org.uk/defibdata">The Circuit</a>), and use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog">XY Table to Points</a> to utilise the geometry information that is present (<code>lat</code>, <code>long</code>, EPSG: <a href="https://epsg.io/4326">4326</a>). Finally, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a> to the British National Grid (EPSG: <a href="https://epsg.io/27700">27700</a>).</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/defib_points.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>How would you characterise the spatial distribution of defibrillators? Remember the key measures of <a href="point_patterns.html#point_centro"><strong>Centrography</strong></a>, <a href="point_patterns.html#p5_randomness"><strong>Randomness</strong></a> and <a href="point_patterns.html#p5_clustering"><strong>Clustering</strong></a> from Practical 5.</p>
 </div>
-<p>[4] Clean Demand points</p>
-<ul>
-<li>
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-point.html?tabs=dialog">Raster to Point</a> (<code>population</code>) to convert raster to Points at cell centroids</li>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> to add distance from the centroids to the road network (modifies input)</li>
-<li>A reasonable distance cutoff would be 700 m due to Pythagoras: sqrt(0.5^2 + 0.5^2) = 0.7071 km</li>
-<li>Use Select by Attributes to remove Points where distance &gt; 700 m</li>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a>, with distance = 700 i.e., raster generalized to 1 km, so we “know” that the population is within a ~700 m radius</li>
-</ul>
-<p>An <em>alternative approach</em> would be to use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/round-up.html?tabs=dialog">Round Up</a> on the raster, convert to integer via truncation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/int.html?tabs=dialog">Int</a>, use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-point.html?tabs=dialog">Raster to Point</a> to produce centroids, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/buffer.html?tabs=dialog">Buffer</a> by 500 m and then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog">Minimum Bounding Geometry</a>. This would produce a polygon grid where the cell value [<code>grid_code</code>] contains the number of people per 1 km cell.</p>
-<p>This seems unnecessarily complicated, given that <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-polygon.html?tabs=dialog">Raster to Polygon</a> (Conversion Tools) exists, but this produces an inferior output, as neighbouring cells with identical values are merged.</p>
-<p>Based on the output above, <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> could be used on a polygon-by-polygon basis, which could then be adjusted to the network using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a>. This approach reproduces the correct number of people within each 1 km grid square, and perhaps a more realistic situation than relying on centroid locations only. However, it is much more complicated, and given the aims of the practical, the former is preferred.</p>
-<p>[5] For efficiency, we are going to focus on a single island, so use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a> to subset all datasets to Isle of Mull (<code>Name</code> = <code>Mull</code>). This includes:</p>
-<ul>
-<li>the road network,</li>
-<li>population points produced in [4] which represent the “demand” locations</li>
-<li>current defibrillator locations (n=38)</li>
-</ul>
-<p>[6] To run Location Allocation in ArcGIS, we can’t use a simple features layer, we need to use a <strong>Feature Dataset</strong>, which has stricter rules regarding projection - all layers <em>must</em> share a common coordinate system, unlike a <code>gdb</code> (although it can be stored within a <code>gdb</code>). This can be produced using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog">Create Feature Dataset</a> (output = empty)</p>
-<div class="task">
-<p>Discuss Feature Dataset fully, compare to <code>gdb</code> and <code>shp</code></p>
+<div class="question">
+<p>Which <strong>key concept</strong> do we need to consider when interpreting the point pattern?</p>
 </div>
-<p>[7] We can then import features to the Feature Dataset:</p>
-<ul>
-<li>Right click in Catalog Pane</li>
-<li>Import to open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/feature-class-to-geodatabase.html?tabs=dialog">Feature Class to Geodatabase</a>
-</li>
-<li>Add Road network and run</li>
-</ul>
+<details><summary>
+Suggestion
+</summary><p>One important concept is the <strong>Observation Window</strong>, the region within which point patterns are observed and analysed. This can have a significant impact on our statistical appraisal of randomness e.g., via Clark-Evans <span class="math inline">\(R\)</span>. For example, you will get different results if you analysed the point pattern for the whole study region compared to a single island.</p>
+</details><p><br></p>
+<p>Our next step is to clean the defibrillator dataset, keeping valid entries and ensuring the points are spatially aligned to the road network.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> to calculate the planar distance between each defibrillator (“Input Features”) and the nearest vertex or edge on the road vector (“Near Features”). When complete, inspect the distances (<code>NEAR_DIST</code>), for example via “Explore Statistics” and “Visualise Statistics”.</p>
+</blockquote>
+<div class="question">
+<p>What can we infer from the distance values?</p>
+</div>
+<details><summary>
+Suggestion
+</summary><p>One observation is that most defibrillator points are within <span class="math inline">\(\approx100 \:\text{m}\)</span> of the nearest road However, there are a small number <span class="math inline">\(&gt;100\:\text{m}\)</span> away (n=15). This could represent recording errors (e.g., <code>FID=206</code>), or perhaps additional access routes which are not present in the OS Open Roads dataset, but which could be present in data generated at a larger scale e.g., <a href="https://www.ordnancesurvey.co.uk/products/os-transport-network">OS Transport Network</a>. Either way, we can be justified in “snapping” most of the defibrillator points to the nearest road, and removing “inaccessible” defibrillators (<span class="math inline">\(&gt;100\:\text{m}\)</span>) from the subsequent analysis.</p>
+</details><p><br></p>
+<blockquote>
+<p>Use Select by Attributes to select the “inaccessible” defibrillators (<code>NEAR_DIST &gt; 100</code>) and delete the selected rows (n=15).</p>
+</blockquote>
+<p>When complete:</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a>, which modifies the input features, to snap points to the closest edge in the road vector, using a 100 m tolerance (“Features” = <code>road_link_westcoast</code>, “Type” = <code>Edge</code>, “Distance” = <code>100</code>). Check the output for validity.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/snap_output.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="note">
+<p>We could subset our dataset further, for example by restricting our analysis to those with 24-hour access, but for now we’ll continue with the full dataset.</p>
+</div>
+<p>We have cleaned the defibrillator dataset, but we also need to clean and prepare our population <strong>demand points</strong>. Currently this is in a raster format, where the raster values represent the modelled population within each 1 km grid cell:</p>
+<center>
+<img src="images/practical-9/pop_raster.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>While we could use this for analysis, this would require a more complex approach than that introduced here, for example modelling movement across the raster surface<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For example, this could be achieved using a &lt;strong&gt;least-cost-path&lt;/strong&gt; algorithm, as introduced in &lt;strong&gt;GEOG62411&lt;/strong&gt; &lt;em&gt;Data Acquisition for GI Scientists&lt;/em&gt;, or alternative routing algorithms, such as A-star &lt;span class="citation"&gt;(&lt;a href="references.html#ref-hart1968"&gt;Hart &lt;em&gt;et al.&lt;/em&gt;, 1968&lt;/a&gt;)&lt;/span&gt; or Dijkstra &lt;span class="citation"&gt;(&lt;a href="references.html#ref-dijkstra1959"&gt;Dijkstra, 1959&lt;/a&gt;)&lt;/span&gt;, as introduced in &lt;strong&gt;GEOG71551&lt;/strong&gt; &lt;em&gt;Understanding GIS&lt;/em&gt;.&lt;/p&gt;'><sup>78</sup></a>. Instead, we will use our population raster to generate <em>representative</em> demand points.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/raster-to-point.html?tabs=dialog">Raster to Point</a> to convert the <code>population</code> raster to a point dataset (e.g., <code>pop_points</code>), where points are generated at cell centroids.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/cell_centroids.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Next use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/near.html?tabs=dialog">Near</a> to calculate the planar distance between each population point (“Input Features”) and the nearest vertex or edge on the road vector (“Near Features”), and then inspect the distances (<code>NEAR_DIST</code>).</p>
+</blockquote>
+<p>Many of the calculated distances are extremely large, which has resulted in a highly skewed distribution (Mean = <span class="math inline">\(\approx10\:\text{km}\)</span>, Median = <span class="math inline">\(\approx1.6\:\text{km}\)</span>). This reflects the differing extents of the datasets, with the road vector restricted to the islands, while the population raster covers a much larger region.</p>
+<p>Discounting the measurements outside of our study region, there are still many population points far from the road vector, and many “offshore”, as shown below.</p>
+<center>
+<img src="screenshots/practical-9/population_points.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>Why has this occurred?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>This is because of the <strong>generalisation</strong> of the population raster, which aggregates population within a 1 km<sup>2</sup> area. This differs from the actual spatial distribution of people i.e., the location of individual households.</p>
+</details><p><br></p>
+<p>Our next step is to align the population points to the road vector. Given the spatial resolution of the raster (1 km), we can be confident that the population are <em>within</em> <span class="math inline">\(\approx700\:\text{m}\)</span> of each cell centroid due to the Pythagorean theorem i.e., <span class="math inline">\(\sqrt{0.5\:\text{km}^2+0.5\:\text{km}^2}=0.7071\:\text{km}\)</span>, as illustrated below:</p>
+<center>
+<img src="images/practical-9/centroid_dist.png" style="width:40.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Use Select by Attributes to remove population points where <code>NEAR_DIST &gt; 700</code>, and then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/editing/snap.html?tabs=dialog">Snap</a> to snap population points to the closest edge on the road vector, using a 700 m tolerance (“Features” = <code>road_link_westcoast</code>, “Type” = <code>Edge</code>, “Distance” = <code>700</code>). Check the output for validity.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/snap_pop.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="note">
+<p>It is recognised that this is at best an approximation of the population demand. While we have used a reasonable approach, ensuring the population total (<code>grid_code</code> field) is snapped to the closest edge of the road vector, discounting points greater than half of the cell diagonal from the centroid (<span class="math inline">\(&gt;700\:\text{m}\)</span>), the actual distribution of population would look very different.</p>
+</div>
+<div class="note">
+<p>In the absence of household-level population estimates, an alternative approach would be to <strong>simulate</strong> more realistic spatial distributions, generating random points within each 1 km<sup>2</sup> area, and constraining those points to building geometries, perhaps obtained from the <a href="https://www.ordnancesurvey.co.uk/products/os-mastermap-topography-layer">OS MasterMap Topography Layer</a> or <a href="https://www.openstreetmap.org/#map=5/54.91/-3.43">OpenStreetMap</a>. While this would represent an improvement on our approach, which uses a single population demand point per 1 km<sup>2</sup> area, it would be much more complex to implement, and would require some sensitivity testing, evaluating the location allocation outputs based on many different randomly generated population distributions.</p>
+</div>
+<p>For efficiency, we are going to focus on a single island, the <a href="https://en.wikipedia.org/wiki/Isle_of_Mull"><strong>Isle of Mull</strong></a>.</p>
+<blockquote>
+<p>Use Select by Attributes to select Mull in the <code>west-coast-island</code> layer (“Name” = <code>Mull</code>) and then use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/clip.html?tabs=dialog">Clip</a> to clip the following datasets to the geometry of the <strong>selected</strong> feature (Use the <code>_mull</code> suffix to denote clipped layers). This includes the road vector as well as the defibrillator points and the population demands points, both of which should have been snapped to the nearest road.</p>
+</blockquote>
+<p>Location Allocation methods are often built upon a road or path layer, which is used to model distance or travel time. This is represented by our OS Open Roads layer, subset to the Isle of Mull. However, the ArcGIS implementation of location allocation will not work with a standard feature layer e.g., <code>road_link_mull</code>, but requires data to be stored in a <a href="https://doc.esri.com/en/arcgis-pro/latest/help/data/feature-datasets/feature-datasets-in-arcgis-pro.html"><strong>Feature Dataset</strong></a> which has stricter rules regarding the CRS: all layers <strong>must</strong> share a common coordinate system, unlike a geodatabase <code>gdb</code> or a collection of files in your project directory.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-feature-dataset.html?tabs=dialog">Create Feature Dataset</a>, setting the “Output Geodatabase” to <code>practical-9.gdb</code>, choosing EPSG: 27700 for the “Coordiante System” and with a suitable name e.g., <code>mull_features</code>. An empty Feature Dataset will be initialised, and data can be imported using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/conversion/feature-class-to-geodatabase.html?tabs=dialog">Feature Class to Geodatabase</a>, with <code>road_link_mull</code> as the “Input Features”, taking care to the select the Feature Dataset <code>mull_features</code> for the “Output Geodatabase”, rather than the project geodatabase.</p>
+</blockquote>
 </div>
 <div id="network-building" class="section level3" number="9.2.2">
 <h3>
 <span class="header-section-number">9.2.2</span> Network building<a class="anchor" aria-label="anchor" href="#network-building"><i class="fas fa-link"></i></a>
 </h3>
-<p>[8] Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/create-network-dataset.html?tabs=dialog">Create Network Dataset</a> to defines the rules and sources of the network, using a suitable name output e.g., <code>road_model</code> and selecting the Source Feature Class imported in [7]</p>
-<p>[9] Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/build-network.html?tabs=dialog">Build Network</a>, which is processing action that enforces the rules defined in [8], maps connectivity, and generates the data structure needed for routing.</p>
-<p>[10] Visual inspection of output. We can now use this network dataset for lots of tasks via New Network Analysis Layer e.g., Service Area, Route, Closest Facility, …</p>
-<p><em>Note</em> it is possible to use network datasets provided by ESRI, which allows for quicker calculation of travel time for different modes of travel. However, this does require credits to be used, and is “black-box” for us.</p>
+<p>To perform location allocation in ArcGIS, we need to create a <strong>network dataset</strong> from our OS Open Roads layer. Unlike <code>road_link_mull</code>, which is simply a line vector consisting of edges and vertices, a network dataset can include additional information, for example classified junctions (connections between edges), topological connectivity, and if present, relevant network information, such as speed limits or access restrictions.</p>
+<p>We can achieve this by:</p>
+<blockquote>
+<p>First creating an inital default network dataset using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/create-network-dataset.html?tabs=dialog">Create Network Dataset</a>, choosing our Feature Dataset <code>mull_features</code> as the “Target Feature Dataset”, selecting <code>road_link_mull</code> as the “Source Feature Class”, and choosing a suitable output name e.g., <code>road_model</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We can leave the “Elevation Model” as the default, although this is quite important if the network elements span different elevations, see &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/understanding-connectivity.html#2F2"&gt;here&lt;/a&gt;.&lt;/p&gt;'><sup>79</sup></a>.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/create_network_output.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>If we have additional rules to apply (e.g., speed limits), those can be defined at this stage, as described <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/how-to-create-a-usable-network-dataset.html">here</a>, otherwise we can build our network, which defines the topological connectivity (e.g., junctions).</p>
+<blockquote>
+<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/build-network.html?tabs=dialog">Build Network</a> to generate the network structure needed for routing, using <code>road_model</code> as the input.</p>
+</blockquote>
+<p>When complete, the only difference should be the removal of the <a href="https://doc.esri.com/en/arcgis-pro/latest/help/data/utility-network/dirty-areas-in-a-utility-network.html">“Dirty Areas”</a> polygon, which is an esri term to flag areas of the network dataset which have not been built, or have changed since the last build.</p>
+<center>
+<img src="screenshots/practical-9/build_network_output.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>We have now processed our input data to produce a <strong>network dataset</strong> that could be used for routing, calculating the distance or travel time between population demand points and current and candidate defibrillator locations, as well as a whole <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/what-is-network-analyst-.html">range</a> of other tasks.</p>
 </div>
-<div id="location-allocation-p-median" class="section level3" number="9.2.3">
+<div id="optimality_section" class="section level3" number="9.2.3">
 <h3>
-<span class="header-section-number">9.2.3</span> Location Allocation: P-median<a class="anchor" aria-label="anchor" href="#location-allocation-p-median"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.2.3</span> Optimality<a class="anchor" aria-label="anchor" href="#optimality_section"><i class="fas fa-link"></i></a>
 </h3>
-<p>i.e., minimize the total distance or time traveled by users to their nearest facility, weighted by the amount of demand <em>or</em> “How do we minimise average distance for everyone?”</p>
-<p>[11] <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a> (~5 mins)</p>
-<ul>
-<li>Network Data Source = <code>road_model</code>
-</li>
-<li>Name = <code>la_pmedian_mull</code>
-</li>
-<li>Problem Type = “Minimize impedance” (P-median)</li>
-</ul>
-<p>[12] Location-Allocation Layer tab: Load current defibrillator locations</p>
-<ul>
-<li>Input Data group</li>
-<li>Import Facilities (<code>defib</code>)</li>
-<li>Property <code>FacilityType</code> = <code>Required</code> i.e., sites always included in the solution</li>
-</ul>
-<p>[13] Location-Allocation Layer tab: Add demand points</p>
-<ul>
-<li>Input Data group</li>
-<li>Import Demand Points (<code>population</code>)</li>
-<li>Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</li>
-</ul>
-<p>[14] First run using current configuration, setting the number of facilities to match the number of features in <code>defib</code> (for Mull, n = 38)</p>
-<p><em>Output</em>:</p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 3685274.462097.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 0.000000</li>
-<li>Succeeded at 30 June 2026 14:08:32 (Elapsed Time: 3.30 seconds)</li>
-</ul>
-<p><em>Interpretation</em>:</p>
-<ul>
-<li>Sum of allocated amd unallocated weights not particularly meaningful, as we are using ‘P-median’ where all demand points are allocated to a facility</li>
-<li>Sum of allocated weighted impedance is the key <strong>analysis metric</strong> i.e., the total population-weighted travel cost across all demand points to their assigned nearest facility).</li>
-<li>This is our baseline for comparison</li>
-</ul>
-<p>[15] Second run with some new candidate locations</p>
-<ul>
-<li>
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">Dissolve</a> road network, otherwise we will generate points for every feature, not the entire network</li>
-<li>
-<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a>, n=100, <code>random_mull_n100</code>, constrain to dissolved network</li>
-<li>Add to Location Allocation Layer (<code>FacilityType</code> = Candidate)</li>
-<li>Solve again where number of facilities = 50 i.e., 38 existing facilities in <code>defib</code> + 12 new locations</li>
-</ul>
-<p><em>Output</em>:</p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 2720895.446077.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 0.000000</li>
-</ul>
-<p><em>Interpretation</em>:</p>
-<ul>
-<li>Sum of allocated and unallocated weights identical to previous situation [correct]</li>
-<li>Sum of allocated weighted impedance has dropped “significantly”</li>
-<li>Absolute change = -964,379, Percentage reduction = 26.2%</li>
-<li>Relative change is more meaningful here, as absolute change is measured in “person-meters” (when impedance is metres and weights are population)</li>
-</ul>
-<p>[16] Test with an idealised scenario (i.e., no existing defibrillators)</p>
-<ul>
-<li>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to create 1000 random points, constrained to the network. An alternative approach would be regular spacing to ensure full coverage.</li>
-<li>Open <code>Facilities</code> Attribute Table and delete all rows</li>
-<li>Add random locations, all as <code>Candidate</code>
-</li>
-<li>Set number of facilities = number of features in <code>defib</code> (n = 38) i.e., we are now evaluating the optimum locations (based on the p-median approach) for our 38 defibrillators, of the 1000 possible candidates (not all possible locations).</li>
-</ul>
-<p><em>Alternatively</em> we could use Facilities = 50, to facilitate comparison with [15]</p>
-<p><em>Output</em>:</p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 2430836.519422.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 0.000000.</li>
-</ul>
-<p><em>Interpretation</em>:</p>
-<ul>
-<li>Sum of allocated weighted impedance (~2430836) is comparable (and better than) to [15, n=50] and significantly less than [14, n=38]</li>
-<li>Absolute difference = 1,254,438, Percentage reduction = 34%</li>
-<li>In turn, we can improve access to defibrillators with location optimisation and without increasing the total number!</li>
-</ul>
-<p>Average distances are also lower, which can be demonstrated Explore Statistics (although should be weighted by population):</p>
-<ul>
-<li>Current mean = 2227.343557515982</li>
-<li>“Optimum” mean = 1815.0352018341623</li>
-</ul>
-<div class="task">
-<p>To finish this section, ensure full understanding of how p-median works. What is it actually evaluating?</p>
+<p>When evaluating a set of candidate locations, the analyst has to make a decision on what criteria are being used to define <strong>optimality</strong>. Changing these criteria can produce different optimum locations, even with the same inputs for supply (e.g., defibrillator locations) and demand (e.g., population). One commonly used criterion is to select the <span class="math inline">\(p\)</span> facilities which minimise the demand-weighted average (or total) distance between demand points and the nearest of the selected facilities. This is known as the <span class="math inline">\(p\)</span>-median problem<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;strong&gt;Problem&lt;/strong&gt; here denotes a mathematical problem i.e., a task to be solved.&lt;/p&gt;"><sup>80</sup></a> <span class="citation">(<a href="references.html#ref-hakimi1965">Hakimi, 1965</a>; <a href="references.html#ref-daskin2015">Daskin and Maass, 2015a</a>)</span>, as illustrated below:</p>
+<center>
+<img src="images/practical-9/p-median-schematic-unweighted.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>In short, <span class="math inline">\(p\)</span>-median places facilities to minimise the total travel distance (or cost or time) to the nearest demand point. Sub-optimal locations would increase the total travel distance, as illustrated here:</p>
+<center>
+<img src="images/practical-9/pmedian_example.png" style="width:70.0%">
+</center>
+<p><br></p>
+<p>Demand points can also be weighted, as illustrated below. For example, <span class="citation">Leung <em>et al.</em> (<a href="references.html#ref-leung2021">2021</a>)</span> used weighted demand points to produce socioeconomically equitable defibrillator access, incorporating population deprivation, rather than the total population alone.</p>
+<center>
+<img src="images/practical-9/p-median-schematic-weighted.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>Another commonly used criterion for location allocation is to place facilities to maximise the total amount of demand covered within a cutoff (e.g., a distance or time threshold). This is known as the <strong>Maximise Coverage</strong> problem <span class="citation">(<a href="references.html#ref-church1974">Church and ReVelle, 1974</a>)</span>.</p>
+<center>
+<img src="images/practical-9/maximise-coverage.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>In the example above, four of the six demand points are covered (i.e., accessible within the threshold distance), giving a coverage of <span class="math inline">\(\approx66\text{%}\)</span> when <span class="math inline">\(p=1\)</span>. Moving the facility might provide coverage for the other demand points, but this would be sub-optimal, as the total coverage would be reduced.</p>
+<p>In summary, <strong>optimality</strong> can be defined and evaluated using many different approaches, including <span class="math inline">\(p\)</span>-median, Maximise Coverage, or <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/location-allocation-analysis-layer.html">other</a> criteria, which you read about more fully in <span class="citation">Laporte <em>et al.</em> (<a href="references.html#ref-location2015">2015</a>)</span>. None of these is “correct”, but your choice will depend on the location allocation problem you are addressing.</p>
 </div>
-</div>
-<div id="location-allocation-maximise-coverage" class="section level3" number="9.2.4">
+<div id="hueristics" class="section level3" number="9.2.4">
 <h3>
-<span class="header-section-number">9.2.4</span> Location Allocation: Maximise coverage<a class="anchor" aria-label="anchor" href="#location-allocation-maximise-coverage"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.2.4</span> Hueristics<a class="anchor" aria-label="anchor" href="#hueristics"><i class="fas fa-link"></i></a>
 </h3>
-<p>i.e., maximize the total amount of demand (or population) covered within a cutoff (e.g., distance threshold)</p>
-<p>[17] Make Location-Allocation Analysis layer (~5 mins):</p>
-<ul>
-<li>Network Data Source = <code>road_model</code>
-</li>
-<li>Name = <code>la_maximise_mull</code>
-</li>
-<li>Cutoff = 1000 (1 km)</li>
-<li>This can be justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA)</li>
-<li>Problem Type = “Maximise Coverage”</li>
-</ul>
+<p>Having selected a criterion (e.g., <span class="math inline">\(p\)</span>-median), the next step is to evaluate the candidate locations.</p>
+<p>When <span class="math inline">\(p=1\)</span> and/or when there is only a small set of <span class="math inline">\(n\)</span> candidate facilities, this can be completed <strong>deterministically</strong> i.e., evaluate each candidate, calculate it’s score (e.g., total travel distance for <span class="math inline">\(p\)</span>-median, or coverage % for Maximise Coverage), and return the optimum.</p>
+<p>For most location allocation problems, this is impossible, because the number of evaluations increases dramatically as both <span class="math inline">\(p\)</span> and <span class="math inline">\(n\)</span> increase. For example, let’s say we have just five candidates <span class="math inline">\(n\)</span> (<span class="math inline">\(A,B,C,D,E\)</span>) and set <span class="math inline">\(p=2\)</span> i.e., we want to return the two candidates which <em>in combination</em> return the highest score. We could calculate the total number of combinations to be evaluated as:</p>
+<p><span class="math display">\[\frac{n!}{p!(n-p)!}=\frac{5!}{2!(5-2)!}=\frac{120}{12}=10\:\text{combinations}\]</span></p>
+<p>This is a very simple location allocation problem<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Here are the combinations, if you want to confirm: &lt;span class="math inline"&gt;\(AB,AC,AD,AE, BC, BD,BE,CD,CE,DE\)&lt;/span&gt;.&lt;/p&gt;'><sup>81</sup></a>. However, if the task was to identify the optimium 25 facilities <span class="math inline">\(p\)</span> from 10,000 candidate facilities <span class="math inline">\(n\)</span> e.g., candidates spaced every 100 m in a 10 km<sup>2</sup> area, the total number of combinations<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;span class="math inline"&gt;\(\frac{n}{p!(n-p)!}\)&lt;/span&gt; is used to calculate the number of combinations, excluding repetitions (i.e., a candidate facility cannot be included twice in a specific solution), and where order does not matter i.e., &lt;span class="math inline"&gt;\(ABC=ACB\)&lt;/span&gt;.&lt;/p&gt;'><sup>82</sup></a> would be:</p>
+<p><span class="math display">\[\frac{n!}{p!(n-p)!}=\frac{10000!}{25!(10000-25)!}=6.26 × 10^{74}\: \text{combinations}\]</span></p>
+<p><br></p>
+<p><strong>This is an extremely large number.</strong></p>
+<p>As a result, a deterministic approach to find the optimum solution is often impossible and instead location allocation methods typically use a <strong>heuristic approach</strong> to guide the search for a near-optimal (“good enough”) solution<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This will be familiar to those of you taking &lt;strong&gt;GEOG71551&lt;/strong&gt; &lt;em&gt;Understanding GIS&lt;/em&gt;, and the differences between the A-star &lt;span class="citation"&gt;(&lt;a href="references.html#ref-hart1968"&gt;Hart &lt;em&gt;et al.&lt;/em&gt;, 1968&lt;/a&gt;)&lt;/span&gt; and Dijkstra &lt;span class="citation"&gt;(&lt;a href="references.html#ref-dijkstra1959"&gt;Dijkstra, 1959&lt;/a&gt;)&lt;/span&gt; routing algorithms. Can you remember what the heuristic was for A-star?&lt;/p&gt;'><sup>83</sup></a>.</p>
+<div class="note">
+<p><em>A heuristic is a strategy that ignores part of the information, with the goal of making decisions more quickly, frugally, and/or accurately than more complex methods.</em> <br><span class="citation">Gigerenzer and Gaissmaier (<a href="references.html#ref-gigerenzer2011">2011</a>)</span></p>
+</div>
+<p>It is outside the scope of this unit to delve into these heuristic approaches in detail but if you are interested you may want to explore <span class="citation">Cooper (<a href="references.html#ref-cooper1964">1964</a>)</span>, <span class="citation">Reese (<a href="references.html#ref-reese2006">2006</a>)</span>, <span class="citation">Daskin and Maass (<a href="references.html#ref-daskin2015a">2015b</a>)</span>, <span class="citation">Mladenović <em>et al.</em> (<a href="references.html#ref-mladenovic2007">2007</a>)</span> and <span class="citation">Gwalani <em>et al.</em> (<a href="references.html#ref-gwalani2021">2021</a>)</span>. The key thing to <strong>remember</strong> is that for higher values of <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>, the modelled solution may not be the <strong>globally optimal solution</strong> but instead is more accurately described as the <strong>heuristic solution</strong>.</p>
+</div>
+<div id="p-median" class="section level3" number="9.2.5">
+<h3>
+<span class="header-section-number">9.2.5</span> P-median<a class="anchor" aria-label="anchor" href="#p-median"><i class="fas fa-link"></i></a>
+</h3>
+<p>In the remaining sections, we are going to run some allocation location models, using the <span class="math inline">\(p\)</span>-median and Maximise Coverage approaches, where the former minimises the demand-weighted average (or total) distance between demand points and the nearest of the selected facilities.</p>
+<blockquote>
+<p>Use the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a>, with “Network Data Source” = <code>road_model</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;It is possible to use an esri created network dataset here, which includes more detailed network rules e.g., speed limits. However, this consumes ArcGIS credits, and would be a &lt;a href="https://en.wikipedia.org/wiki/Black_box"&gt;“black box”&lt;/a&gt; approach, as we don’t know how it was created!&lt;/p&gt;'><sup>84</sup></a>, “Name” = <code>la_pmedian_mull</code> and “Problem Type” = <code>Minimize impedance</code> (<em>P</em>-median). Leave all other settings as the default. This may take ~5 minutes to complete…</p>
+</blockquote>
+<p>When complete, the location allocation layer should be loaded to the Contents Pane, with groups for facilities and demand points (currently empty) and other network rules that the user might want to specify (e.g., barriers to movement).</p>
+<p>Our next task is to add the current defibrillator locations and the demand points to the location allocation layer:</p>
+<blockquote>
+<p>With the location allocation layer selected in the Contents Pane, use the Location-Allocation Layer tab → Input Data → Import Facilities. On the following input screen, use <code>defib_points_mull</code> for “Input Locations”. For “Property” → “FacilityType”, set “Default Value” to <code>Required</code>. As these are current defibrillators, we are <strong>requiring</strong> that they are included in the location allocation solution.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/required_locations.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Repeat the above process, but this time use Input Data → Import Demand Points, selecting <code>pop_points_mull</code> for “Input Locations”. For “Property” and “Weight”, use “Field Name” = <code>grid_code</code>. As discussed <a href="location_allocation.html#optimality_section">above</a>, here we are using a <strong>weighted</strong> approach, incorporating the modelled population for each point (stored in the <code>grid_code</code> field).</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/demand_points.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>Before we begin to allocate <strong>new</strong> facilities, a good first analysis would be to evaluate the <strong>current</strong> distribution of defibrillators relative to the weighted-demand points, using the <span class="math inline">\(p\)</span>-median criterion:</p>
+<blockquote>
+<p>To run the location allocation analysis, first navigate to “Travel Settings” in the Location-Allocation Layer tab and specify the number of facilities to allocate. You should use <span class="math inline">\(p=38\)</span> to match the current number of defibrillators on the Isle of Mull. When complete, press Analysis → <strong>Run</strong>.</p>
+</blockquote>
+<p>When complete, we should be able to inspect the allocation of demand points to the nearest facility.</p>
+<center>
+<img src="screenshots/practical-9/pmedian_nearest.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Inspect the output messages for “Solve”, which you can access via History → Geoprocessing.</p>
+</blockquote>
+<div class="question">
+<p>How should we interpret the “Sum of <strong>allocated</strong> weight” and the “Sum of valid <strong>unallocated</strong> weight” statistics?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The sum of <strong>allocated</strong> weight in “Demand Points” is 3050.685136, which is the total weight of valid demand points that <strong>were</strong> assigned to a facility.</p>
+<p>The sum of valid <strong>unallocated weight</strong> in “Demand Points” is 0, which is the total weight of valid demand points that were <strong>not</strong> assigned to a facility.</p>
+<p>For the <span class="math inline">\(p\)</span>-median criterion, neither of these statistics are particularly useful, because this criterion assigns all demand points to the nearest facility. In turn, and assuming that all demand points are “accessible” (e.g., aligned to the network), the sum of allocated weights should equal the total modelled population across all of the demand points. You can check this via the Attribute Table → Explore Statistics → <code>grid_code</code>.</p>
+</details><p><br></p>
+<div class="question">
+<p>What is the sum of <strong>allocated weighted impedance</strong> in “Demand Points” and how do we interpret it?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The sum of <strong>allocated weighted impedance</strong> (3685274.499361) is the key <strong>analysis metric</strong> i.e., the total population-weighted travel cost across all demand points to their assigned nearest facility. This is calculated by multiplying each demand points weight (i.e., population) by the travel impedance to the assigned facility (i.e., distance). The total weighted impedance is the sum of these values, where the optimal solution, as assessed using <span class="math inline">\(p\)</span>-median, is the set of facilities with the lowest total weighted impedance, as illustrated <a href="location_allocation.html#optimality_section">above</a>.</p>
+</details><p><br></p>
+<p>We will use this first model as our baseline for comparison. Our next step is to generate a set of candidate defibrillator locations across the island, aligned to the road network, before assessing the optimum configuration using <span class="math inline">\(p\)</span>-median.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/dissolve.html?tabs=dialog">Dissolve</a> for <code>road_link_mull</code>, choosing a suitable output name (e.g., <code>road_link_mull_dissolve</code>) and leaving all other settings as default. Next, use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to generate 100 random points (<code>random_mull_n100</code>), using the <strong>dissolved</strong> road vector as the “Constraining Feature Class”. If we <em>don’t</em> use the dissolved output, we would generate <span class="math inline">\(n\)</span> points <strong>per feature</strong>.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/random_points.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Return to the Location-Allocation Layer tab → Import Facilities, using the random points as the “Input Locations” and setting “Property” → “FacilityType” as <code>Candidate</code>.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/candidates.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>To evaluate these facilities, we need to set the desired number of facilities under “Travel Settings”. If we leave the value as it was before (<span class="math inline">\(p=38\)</span>), then the output would be identical, because we have required the current defibrillator facilities to be included in the solution. The Scottish Government has recently announced <a href="https://www.gov.scot/news/improving-cardiac-arrest-survival-rates/">additional investment</a> for new defibrillators, so let’s set <span class="math inline">\(p=50\)</span> i.e., there is funding for 12 more defibrillators on the island. When complete, press Analysis → <strong>Run</strong>.</p>
+</blockquote>
+<p>This time there are some more interesting visual outputs to investigate, with some of the candidate facilities now reassigned as “Chosen” i.e., these are the optimum 12 candidate facilities, based on the <span class="math inline">\(p\)</span>-median criterion.</p>
+<div class="note">
+<p>Remember that we generated our candidate locations using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a>, so your candidates, chosen candidates, and location allocation statistics will differ from mine.</p>
+</div>
+<center>
+<img src="screenshots/practical-9/first-optimisation.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>Why haven’t the “Sum of <strong>allocated</strong> weight” and the “Sum of valid <strong>unallocated</strong> weight” statistics changed?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>These statistics quantify the total weight of valid demand points that <strong>were</strong> or were <strong>not</strong> assigned to a facility. <span class="math inline">\(p\)</span>-median assigns all demand points to a facility, and assuming that all demand points are “accessible” and assuming that we haven’t changed the network, these statistics should remain the same across different optimisation models.</p>
+</details><p><br></p>
+<div class="question">
+<p>How has the sum of <strong>allocated weighted impedance</strong> changed and what is your interpretation?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The sum of <strong>allocated weighted impedance</strong> is 2720895.446077 for <span class="math inline">\(p=50\)</span>, compared to 3685274.499361 for <span class="math inline">\(p=38\)</span>. This is a significant reduction, equivalent to <span class="math inline">\(-964,379\)</span> “person meters” of impedance (i.e., weights are population, distances are meters) and a <span class="math inline">\(\approx26.2\%\)</span> reduction in the total population-weighted travel cost.</p>
+</details><p><br></p>
+<p>As a final test of the <span class="math inline">\(p\)</span>-median criterion, we could evaluate an idealised scenario i.e., the island with no existing defibrillators.</p>
+<blockquote>
+<p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/create-random-points.html?tabs=dialog">Create Random Points</a> to generate <strong>1000</strong> random points (<code>random_mull_n1000</code>), using the <strong>dissolved</strong> road vector as the “Constraining Feature Class”. An alternative approach would be to use regular spacing to ensure full coverage.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/n1000_random.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Next open the Attribute Table for the <code>Facilities</code> group in <code>la_pmedian_mull</code> and <strong>delete all rows</strong>, thereby removing all previous required, candidate, and chosen facilities. Return to the Location-Allocation Layer tab → Import Facilities, using the <strong>1000</strong> random points as the “Input Locations” and setting “Property” → “FacilityType” as <code>Candidate</code>.</p>
+</blockquote>
+<blockquote>
+<p>To facilitate comparison with the current distribution of defibrillators, set <span class="math inline">\(p=38\)</span> under “Travel Settings”, and then press Analysis → <strong>Run</strong> i.e., we are now evaluating the optimum locations (based on the <span class="math inline">\(p\)</span>-median criterion) for our existing 38 defibrillators, of the 1000 candidate facilities (not all possible locations).</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/optimum_pmedian38.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>It is worth reiterating here that the solution is not necessarily the <strong>globally optimal solution</strong> but instead is the <strong>heuristic solution</strong>. The ArCGIS heuristic is described <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/algorithms-used-by-network-analyst.html#A92">here</a>, with the original formulation in <span class="citation">Teitz and Bart (<a href="references.html#ref-teitz1968">1968</a>)</span>. For <span class="math inline">\(k=1000\)</span> and <span class="math inline">\(p=38\)</span>, the total number of combinations to evaluate is:</p>
+<p><span class="math display">\[\frac{n!}{p!(n-p)!}=\frac{1000!}{38!(1000-38)!}=9.38 × 10^{68}\: \text{combinations}\]</span></p>
+<p><br></p>
+<p>While this is smaller than the example provided above (<span class="math inline">\(p=25, k=10000\)</span>), it is still an extremely large number, therefore requiring a heuristic approach, rather than a deterministic one.</p>
+<div class="question">
+<p>How does the sum of <strong>allocated weighted impedance</strong> compare to the original distribution of defibrillators (<span class="math inline">\(p_{\text{original}}\)</span>), and the model with <span class="math inline">\(p=50\)</span>?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>For my location allocation model, the <strong>allocated weighted impedance</strong> is 2430836.519422 for <span class="math inline">\(p=38\)</span>, compared to 2720895.446077 for <span class="math inline">\(p=50\)</span> and 3685274.499361 for <span class="math inline">\(p_{\text{original}}=38\)</span>. The absolute difference in impedance compared to <span class="math inline">\(p_{\text{original}}\)</span> is <span class="math inline">\(-1,254,438\)</span> “person meters”, equivalent to a <span class="math inline">\(\approx34\%\)</span> reduction in the total population-weighted travel cost.</p>
+<p>One interpretation of this result is that we can improve access to defibrillators, defined as the total demand-weighted impedance between demand points and the nearest of facility (i.e., <span class="math inline">\(p\)</span>-median), simply through location optimisation, without having to increase the total number!</p>
+</details><p><br></p>
+<div class="note">
+<p>Before we move on, make sure you understand what <span class="math inline">\(p\)</span>-median is evaluating. While we have not investigated the underlying heuristics, you should have an understanding of the criterion, and the key choices involved (e.g., selection of <span class="math inline">\(p\)</span>, weighting).</p>
+</div>
+</div>
+<div id="maximise-coverage" class="section level3" number="9.2.6">
+<h3>
+<span class="header-section-number">9.2.6</span> Maximise coverage<a class="anchor" aria-label="anchor" href="#maximise-coverage"><i class="fas fa-link"></i></a>
+</h3>
+<p>Next we are going to evaluate the <strong>Maximise Coverage</strong> criterion, which maximises the total amount of demand (e.g., population) covered within a cutoff (e.g., a distance threshold).</p>
+<blockquote>
+<p>Use the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/network-analyst/make-location-allocation-analysis-layer.html?tabs=dialog">Make Location-Allocation Analysis Layer</a>, with “Network Data Source” = <code>road_model</code>, “Name” = <code>la_maximise_mull</code> and “Problem Type” = <code>Maximise Coverage</code>. This time, set “Cutoff” to <code>1000 m</code> i.e., defibrillators should be located within 1 km of demand points, which is justified based on the rapid-response required in cases of Out-of-Hospital Cardiac Arrest (OHCA). Leave all other settings as the default. This may take ~5 minutes to complete…</p>
+</blockquote>
 <div class="problem">
 <p>In ArcGIS, there is the option to switch the problem type for an existing Location-Allocation Analysis Layer i.e., from P-Median to Maximise Coverage. From my testing, this doesn’t work, hence why we’re creating a separate layer. <strong>James</strong> can you reproduce?</p>
 </div>
-<p>[18] Location-Allocation Layer tab: Load current defibrillator locations:</p>
-<ul>
-<li>Input Data group</li>
-<li>Import Facilities (<code>defib</code>)</li>
-<li>Property <code>FacilityType</code> = <code>Required</code> i.e., current sites always included in the solution</li>
-</ul>
-<p>[19] Location-Allocation Layer tab: Add demand points</p>
-<ul>
-<li>Input Data group</li>
-<li>Import Demand Points (<code>population</code>)</li>
-<li>Property <code>Weight</code> = <code>grid_code</code> (the population value from the raster)</li>
-</ul>
-<p>[20] First run using current configuration, setting the number of facilities to match the number of features in <code>defib</code> (for Mull, n = 38), this time using <strong>maximise coverage</strong>.</p>
-<p><em>Output</em>:</p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 2008.805185.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 981885.557754.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 1041.879952.</li>
-</ul>
-<p><em>Interpretation</em>:</p>
-<ul>
-<li>In this case we are interested in the ratio of allocated-unallocated weights</li>
-<li>Given the selected distance threshold (1 km) and the current distribution of facilities and demands, 1041 people are not served by current distribution</li>
-<li>Coverage is therefore ~62%</li>
-</ul>
-<p>[21] Test with an idealised scenario (i.e., no existing defibrillators)</p>
-<ul>
-<li>Open <code>Facilities</code> Attribute Table and delete all rows</li>
-<li>Add random locations created in [16], all as <code>Candidate</code>
-</li>
-<li>Set number of facilities to match the number of features in <code>defib</code> (n = 38) i.e., we are now evaluating the optimum locations (based on the <strong>maximise coverage</strong> approach) for our 38 defibrillators out of the 1000 possible candidates</li>
-</ul>
-<p><em>Output</em>:</p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 2541.885593.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 1222049.489314.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 508.799543.</li>
-</ul>
-<p><em>Interpretation</em>:</p>
-<ul>
-<li>With the same number of facilities, the same method (maximise coverage) and cutoff (1 km), we have increased the population coverage to ~83%</li>
-<li>Optimisation is valuable!</li>
-</ul>
-<p>[22] Evaluate changing cutoff</p>
-<p><em>Cutoff = 5000 m</em></p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 3050.685136.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 2794852.161580.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 0.000000.</li>
-<li>Coverage = 100%</li>
-</ul>
-<p>i.e., when the cutoff is large, all demand points can be connected</p>
-<p><em>Cutoff = 500 m</em> i.e., run for 2.5 minutes to get defib, run back</p>
-<ul>
-<li>Sum of allocated weight in “Demand Points”: 1957.550792.</li>
-<li>Sum of allocated weighted impedance in “Demand Points”: 363134.112470.</li>
-<li>Sum of valid unallocated weight in “Demand Points”: 1093.134344.</li>
-<li>Coverage = 64%</li>
-</ul>
-<p>i.e., reducing the cutoff reduces coverage, but this is still comparable to the baseline, even with a more restrictive cutoff (500 m vs. 1 km)</p>
-<div class="task">
-<p>To finish reiterate differences between p-median and maximise coverage approaches.</p>
+<p>We now need to load our current defibrillator locations and population demand points to the location allocation layer:</p>
+<blockquote>
+<p>Use the Location-Allocation Layer tab → Input Data → Import Facilities. On the following input screen, use <code>defib_points_mull</code> for “Input Locations”. For “Property” → “FacilityType”, set “Default Value” to <code>Required</code>. Repeat this process for the demand points, but this time use Input Data → Import Demand Points, selecting <code>pop_points_mull</code> for “Input Locations”. For “Property” and “Weight”, use “Field Name” = <code>grid_code</code>.</p>
+</blockquote>
+<p>As before, lets first evaluate the <strong>current</strong> distribution of defibrillators relative to the weighted-demand points, but this time using the <strong>Maximise Coverage</strong> criterion:</p>
+<blockquote>
+<p>Set <span class="math inline">\(p=38\)</span> for “Travel Settings” and then Analysis → <strong>Run</strong>.</p>
+</blockquote>
+<p>Unlike <span class="math inline">\(p\)</span>-median, which allocates all demand points to a facility, Maximise Coverage prioritises the overall demand coverage given the <span class="math inline">\(p\)</span> facilities and the selected threshold distance, which can result in unallocated demand:</p>
+<center>
+<img src="screenshots/practical-9/unallocated_maximise.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>What is your interpretation of the “Sum of <strong>allocated</strong> weight” and the “Sum of valid <strong>unallocated</strong> weight” statistics?</p>
 </div>
 <div class="question">
-<p>What are P-Median and Maximise coverage modelling and how does this influence interpretation and action?</p>
+<p>What is your interpretation of the sum of allocated weighted impedance?</p>
 </div>
-<div class="task">
-<p>Introduce other problem types here.</p>
+<details><summary>
+Interpretation
+</summary><p>Unlike <span class="math inline">\(p\)</span>-median, which allocates all demand points to the nearest facility, thereby ensuring that the sum of <strong>allocated</strong> weight equals the total weight of the demand, the <strong>Maximise Coverage</strong> criterion maximises the total amount of demand (e.g., population) covered within a cutoff (e.g., a distance threshold). As a result, some of the demand weights can be unallocated, if they are greater than the threshold distance from the nearest facility.</p>
+<p>For the 38 required defibrillator facilities, the sum of <strong>allocated</strong> weight is 2008.805185, with an <strong>unallocated</strong> weight of 1041.879952. Here we are interested in the ratio of allocated to unallocated weights. Given the selected distance threshold (1 km) and the current distribution of facilities and demand, we can conclude that 1041 people are not served by current distribution of defibrillators. This equates to coverage of <span class="math inline">\(\approx62\%\)</span>.</p>
+<p>The sum of allocated weighted impedance is 981885.557754, which is simply the distance between each <strong>allocated</strong> demand point and its assigned facility (<code>Total_Length</code> field in the “Facilities” Attribute Table), multiplied by its weighting (<code>DemandWeight</code>). You can check this value by using “Explore Statistics” on the <code>TotalWeighted_Length</code> field.</p>
+<p>It is worth iterating that while this is a representation of the distance to facilities, this is not the criterion by which <strong>Maximise Coverage</strong> is evaluating and optimising location allocation.</p>
+</details><p><br></p>
+<p>Now let’s evaluate the idealised scenario again i.e., the island with no existing defibrillators.</p>
+<blockquote>
+<p>Next open the Attribute Table for the <code>Facilities</code> group in <code>la_maximise_mull</code> and <strong>delete all rows</strong>, thereby removing all previous required, candidate, or chosen facilities. Return to the Location-Allocation Layer tab → Import Facilities, using the <strong>1000</strong> random points we generated earlier as the “Input Locations” and setting “Property” → “FacilityType” as <code>Candidate</code>.</p>
+</blockquote>
+<blockquote>
+<p>To facilitate comparison with the current distribution of defibrillators, set <span class="math inline">\(p=38\)</span> under “Travel Settings”, and then press Analysis → <strong>Run</strong> i.e., we are now evaluating the optimum locations (based on the Maximise Coverage criterion) for our existing 38 defibrillators from a set of 1000 candidate facilities.</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-9/maximise_optimum.png" style="width:100.0%">
+</center>
+<p><br></p>
+<div class="question">
+<p>How has the sum of allocated weighted impedance changed? Does this matter?</p>
 </div>
+<details><summary>
+Interpretation
+</summary><p>For this new scenario, and for my set of random candidate locations, the sum of allocated weighted impedance is 1222049.489314, which has increased compared to <span class="math inline">\(p_{\text{original}}\)</span>. If we were evaluating using the <span class="math inline">\(p\)</span>-median criterion, this would be a problem, as we have increased the demand-weighted total distance!</p>
+<p>However, Maximise Coverage is optimising for coverage, so the ratio of allocated to unallocated weights is more important. In turn, the increase in the total allocated weighted impedance is simply a reflection of the fact that more demand points have now been allocated i.e., more people can access a defibrillator within the 1 km cutoff.</p>
+</details><p><br></p>
+<div class="question">
+<p>What is your interpretation of the “Sum of <strong>allocated</strong> weight” and the “Sum of valid <strong>unallocated</strong> weight” statistics?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>For this new scenario, the sum of <strong>allocated</strong> weights has increased to 2541.885593, compared to 2008.805185 for <span class="math inline">\(p_{\text{original}}\)</span>. As a result, the sum of <strong>unallocated</strong> weight has fallen by the same amount.</p>
+<p>In turn, optimising the location of defibrillators has meant that an additional <span class="math inline">\(\approx500\:\text{people}\)</span> can now access a defibrillator within the 1 km threshold distance, and population coverage is now <span class="math inline">\(\approx83\%\)</span>.</p>
+</details><p><br></p>
+<p>To finish:</p>
+<blockquote>
+<p>Modify the “Cost Cutoff” under “Travel Settings”, for example comparing the coverage % when the distance threshold is 500 m or 5000 m.</p>
+</blockquote>
+<div class="question">
+<p>How do the results change and which threshold do you think is most appropriate for our topic?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>When the threshold distance is large (5000 m), all demand points can be connected to defibrillator facilities (Coverage = <span class="math inline">\(100\%\)</span>), so the sum of allocated weight equals the total population weight (3050.685136).</p>
+<p>When the threshold distance is reduced to 500 m, some demand points are unallocated and there is a reduction in coverage (<span class="math inline">\(\approx64\%\)</span>). However, this coverage is still comparable to the baseline model, when the threshold distance was 1 km. This is a good illustration of the value of optimisation.</p>
+<p>Considering our focus on defibrillators, and the importance of rapid <a href="https://www.nhs.uk/tests-and-treatments/first-aid/cpr/">CPR</a> and <a href="https://www.nwas.nhs.uk/news/were-appealing-to-the-north-west-public-learn-how-to-save-a-life-today/">defibrillator use</a>, we would be justified in using a small a threshold as possible, balanced against the costs of purchasing and maintaining a defibrillator network.</p>
+</details><p><br></p>
+<p>To confirm your understanding:</p>
+<div class="question">
+<p>What are the key differences between the <span class="math inline">\(p\)</span><strong>-median</strong> and <strong>Maximise Coverage</strong> criteria?</p>
+</div>
+<div class="question">
+<p>Which do you think is most appropriate for our topic?</p>
+</div>
+<div class="question">
+<p>Why is a heuristic approach necessary?</p>
+</div>
+<p><br></p>
+<p>If you’re happy with your understanding… <strong>congratulations!</strong> You have completed the practical and should now have an understanding of the key problem types in Location Allocation models, and be able to produce the typical inputs (e.g., demand points, networks) and implement a Location Allocation analysis in ArcGIS.</p>
+<p><a href="index.html#index"><strong>Finished!</strong></a></p>
 </div>
 </div>
 <div id="extra-5" class="section level2" number="9.3">
@@ -386,25 +546,33 @@
 <span class="header-section-number">9.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-5"><i class="fas fa-link"></i></a>
 </h2>
 <div class="question">
-<p>Using the <strong>maximum coverage</strong> approach, how many facilities do we need to ensure 95% of the population are within 1 km of an AED?</p>
+<p>Using the <strong>Maximum Coverage</strong> approach, how many facilities do we need to ensure 95% of the population are within 1 km of a defibrillator?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>Compared to a baseline coverage (<span class="math inline">\(p_{\text{original}}\)</span>) of <span class="math inline">\(\approx62\%\)</span>, and an optimised coverage of <span class="math inline">\(\approx83\%\)</span>, we would need approximately 100 defibrillators to ensure 95% coverage within 1 km (Sum of allocated weight in “Demand Points” = 2937.332799 of 3050.685136, <span class="math inline">\(\approx96\%\)</span>).</p>
+</details><p><br></p>
+<div class="question">
+<p>How does defibrillator accessiblity compare to other islands? Repeat the analysis for <a href="https://en.wikipedia.org/wiki/Jura,_Scotland">Jura</a>…</p>
+</div>
+<div class="question">
+<p>Which key population metric are we not including?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>The non-resident population i.e., tourists! The actual demand for defibrillators might be significantly higher at certain points of the year, while the spatial distribution of the non-resident population may differ from the resident population e.g., at <a href="https://visitmullandiona.co.uk/guides/beaches-on-mull-and-iona/north-west-mull-beaches/calgary-bay/">beauty spots</a>.</p>
+</details><p><br></p>
+<div class="question">
+<p>What are some of the limitations of our approach?</p>
+</div>
+<details><summary>
+Suggestions
+</summary><p>A few suggestions, by no-means exhaustive:</p>
 <ul>
-<li>Baseline = 62%</li>
-<li>N=38 (optimised) = 83%</li>
-<li>N=50: Sum of allocated weight in “Demand Points”: 2672.349411 = 87% …</li>
-<li>N=100: Sum of allocated weight in “Demand Points”: 2937.332799 = 96%</li>
-</ul>
-<div class="question">
-<p>How do our results compare to other islands? Repeat the analysis for Jura…</p>
-</div>
-<div class="question">
-<p>What key population metric are we not including?</p>
-</div>
-<p><em>Answer</em>: non-resident population i.e., tourists!</p>
-<div class="question">
-<p>What are some weaknesses of our approach?</p>
-</div>
-<p><em>Answers</em>: population generalisation. Using distance as a metric, rather than travel time. Not a full constraints analysis i.e., which locations are actually suitable for AEDs?</p>
+<li>Population <strong>generalisation</strong>: How representative are our demand points of the “true” spatial distribution of population?</li>
+<li>Use of <strong>distance</strong> as an impedance measure: While this is a reasonable approach, would travel time be more effective?</li>
+<li>Absence of <strong>constraints</strong>: Our analysis has evaluated the optimum locations for defibrillators without consideration of feasibility i.e., is defibrillator installation possible at our candidate locations?</li>
+</ul></details><p><br></p>
 </div>
 <div id="resources-6" class="section level2" number="9.4">
 <h2>
@@ -412,13 +580,14 @@
 </h2>
 <ul>
 <li>Hakimi, S.L. (<a href="https://doi.org/10.1287/opre.13.3.462">1965</a>). Optimum distribution of switching centers in a communication network and some related graph theoretic problems. Operations research, 13(3), pp.462-475.</li>
-<li>Church, R.L., and ReVelle, C. (<a href="https://people.geog.ucsb.edu/~forest/G294download/MAX_COVER_RLC_CSR.pdf">1974</a>). The maximal covering location problem. In Papers of the regional science association (Vol. 32, No. 1, pp. 101-118). Berlin/Heidelberg: Springer-Verlag.</li>
+<li>Church, R.L., and ReVelle, C. (<a href="https://doi.org/10.1007/BF01942293">1974</a>). The maximal covering location problem. In Papers of the regional science association (Vol. 32, No. 1, pp. 101-118). Berlin/Heidelberg: Springer-Verlag.</li>
 <li>Church, R.L. (<a href="https://doi.org/10.1016/S0305-0548(99)00104-5">2002</a>). Geographical information systems and location science. Computers &amp; Operations Research, 29(6), 541–562.</li>
 <li>Church, R.L., &amp; Murray, A. (<a href="https://doi.org/10.1007/978-3-319-99846-6">2018</a>). Location covering models: History, applications and advancements (Advances in Spatial Science). Springer.</li>
 <li>Church, R.L., &amp; Drezner, Z. (<a href="https://doi.org/10.1016/j.cor.2021.105468">2022</a>). Review of obnoxious facilities location problems. Computers &amp; Operations Research, 138, 105468.</li>
 </ul>
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="gwr.html"><span class="header-section-number">8</span> Geographically Weighted Regression</a></div>
 <div class="next"><a href="spatial_interaction.html"><span class="header-section-number">10</span> Spatial Interaction Modelling</a></div>
@@ -438,8 +607,10 @@
 <a class="nav-link" href="#practical-7"><span class="header-section-number">9.2</span> Practical</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#pre-processing-6"><span class="header-section-number">9.2.1</span> Pre-processing</a></li>
 <li><a class="nav-link" href="#network-building"><span class="header-section-number">9.2.2</span> Network building</a></li>
-<li><a class="nav-link" href="#location-allocation-p-median"><span class="header-section-number">9.2.3</span> Location Allocation: P-median</a></li>
-<li><a class="nav-link" href="#location-allocation-maximise-coverage"><span class="header-section-number">9.2.4</span> Location Allocation: Maximise coverage</a></li>
+<li><a class="nav-link" href="#optimality_section"><span class="header-section-number">9.2.3</span> Optimality</a></li>
+<li><a class="nav-link" href="#hueristics"><span class="header-section-number">9.2.4</span> Hueristics</a></li>
+<li><a class="nav-link" href="#p-median"><span class="header-section-number">9.2.5</span> P-median</a></li>
+<li><a class="nav-link" href="#maximise-coverage"><span class="header-section-number">9.2.6</span> Maximise coverage</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#extra-5"><span class="header-section-number">9.3</span> Extra</a></li>

@@ -426,7 +426,7 @@ This interpretation is backed up the `.html` report, which sums it up nicely: "*
 How has changing $a$ influenced $\bar{r}_E$ and the corresponding z-score? Has this changed your interpretations?
 :::
 
-### Cluster analysis
+### Cluster analysis {#p5_clustering}
 
 While our appraisal of randomness is sensitive to the observation window, we can be reasonably confident here that the point pattern is not random, and instead is highly **clustered**. In this final section, we are going to investigate the existence and location of individual clusters.
 

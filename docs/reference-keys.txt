@@ -78,7 +78,7 @@ point_vis
 point_centro
 p5_randomness
 observation-window
-cluster-analysis
+p5_clustering
 summary
 extra-2
 resources-2
@@ -129,8 +129,10 @@ introduction-9
 practical-7
 pre-processing-6
 network-building
-location-allocation-p-median
-location-allocation-maximise-coverage
+optimality_section
+hueristics
+p-median
+maximise-coverage
 extra-5
 resources-6
 spatial_interaction
