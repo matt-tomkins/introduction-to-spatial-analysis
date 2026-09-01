@@ -291,7 +291,7 @@ The *spatial lag* variable is a key component of Moran's $I$ [@moran1948], one o
 
 $$I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}{\sum_{i}z_{i}^{2}}$$ where $n$ is the number of observations, $w_{ij}$ is the cell corresponding to the row $i$ and column $j$ of the spatial weights matrix $\mathbf{W}$, and $z_{i}$ and $z_{j}$ are the standardised values of a variable of interest at locations $i$ and $j$ respectively. These are calculated as the difference between each value and the mean of all the values ($z_{i}-\overline{z}$).
 
-#### Moran Plot
+#### Moran Plot {#moran_plot}
 
 At first glance this function seem quite complicated, so before we jump into the maths, we'll begin by exploring visually:
 

@@ -43,7 +43,7 @@ the-contiguous-united-states
 election_results
 spatial_lag
 global-spatial-autocorrelation
-moran-plot
+moran_plot
 calc_moran_i
 interpreting-morans-i
 local-spatial-autocorrelation
@@ -93,7 +93,7 @@ pre-processing-3
 interpolation-types
 deterministic-interpolation-proximity
 deterministic-interpolation-idw
-cross-validation-of-idw
+cross-valid
 geostatistical-interpolation-ordinary-kriging
 variogram-construction
 variogram-calibration
@@ -105,11 +105,15 @@ resources-3
 spatial_regression
 introduction-7
 practical-5
+justify_spatial_reg
 pre-processing-4
 data-exploration
 ols
 spat_reg_details
+sem
+slm
 spatial_model_selection
+regression_summary
 prac_7_extra
 resources-4
 gwr

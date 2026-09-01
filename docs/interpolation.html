@@ -689,9 +689,9 @@ Answer
 <blockquote>
 <p>When you are happy with your chosen settings, or you have returned to the default settings, click <strong>next</strong>.</p>
 </blockquote>
-<div id="cross-validation-of-idw" class="section level4" number="6.2.5.1">
+<div id="cross-valid" class="section level4" number="6.2.5.1">
 <h4>
-<span class="header-section-number">6.2.5.1</span> Cross-validation of IDW<a class="anchor" aria-label="anchor" href="#cross-validation-of-idw"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2.5.1</span> Cross-validation of IDW<a class="anchor" aria-label="anchor" href="#cross-valid"><i class="fas fa-link"></i></a>
 </h4>
 <p>On the next tab in the Geostatistical Wizard, we are presented with <em>predicted</em> values, <em>errors</em>, and the <em>distribution</em> of the predicted values.</p>
 <p>These are derived from <a href="https://doc.esri.com/en/arcgis-pro/latest/help/analysis/geostatistical-analyst/performing-cross-validation-and-validation.html">leave-one-out-cross-validation</a>, which involves removing a single point from the input dataset, re-running interpolation, and then evaluating the deviation of the predicted value from the input value <em>at that location</em>. This is repeated for all points in the input dataset.</p>

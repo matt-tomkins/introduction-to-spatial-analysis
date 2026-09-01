@@ -88,3 +88,16 @@ main blockquote p {
   border: none !important;
   box-shadow: none !important;
 }
+
+/* Custom class for quotes */
+.quote {
+    border-left: 0px solid #5252FF;
+    background: #C9FFE5;
+    padding: 1em;
+    margin: 1em -8px;
+}
+
+/* Adapt paragraph spacing */
+.quote p {
+  margin: 0;
+}

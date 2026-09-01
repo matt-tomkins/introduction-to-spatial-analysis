@@ -339,9 +339,9 @@ This is because the <strong>maps</strong> coordinate reference system is still u
 </h3>
 <p>The <em>spatial lag</em> variable is a key component of Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span>, one of the most commonly used statistics for global autocorrelation, defined as:</p>
 <p><span class="math display">\[I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}{\sum_{i}z_{i}^{2}}\]</span> where <span class="math inline">\(n\)</span> is the number of observations, <span class="math inline">\(w_{ij}\)</span> is the cell corresponding to the row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> of the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>, and <span class="math inline">\(z_{i}\)</span> and <span class="math inline">\(z_{j}\)</span> are the standardised values of a variable of interest at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> respectively. These are calculated as the difference between each value and the mean of all the values (<span class="math inline">\(z_{i}-\overline{z}\)</span>).</p>
-<div id="moran-plot" class="section level4" number="3.2.4.1">
+<div id="moran_plot" class="section level4" number="3.2.4.1">
 <h4>
-<span class="header-section-number">3.2.4.1</span> Moran Plot<a class="anchor" aria-label="anchor" href="#moran-plot"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.2.4.1</span> Moran Plot<a class="anchor" aria-label="anchor" href="#moran_plot"><i class="fas fa-link"></i></a>
 </h4>
 <p>At first glance this function seem quite complicated, so before we jump into the maths, we’ll begin by exploring visually:</p>
 <blockquote>

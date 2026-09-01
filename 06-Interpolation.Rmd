@@ -657,7 +657,7 @@ The power coefficient $p$ can also be optimised via *cross validation* which we'
 
 > When you are happy with your chosen settings, or you have returned to the default settings, click **next**. 
 
-#### Cross-validation of IDW
+#### Cross-validation of IDW {#cross-valid}
 
 On the next tab in the Geostatistical Wizard, we are presented with *predicted* values, *errors*, and the *distribution* of the predicted values.
 
