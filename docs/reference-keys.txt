@@ -106,7 +106,7 @@ spatial_regression
 introduction-7
 practical-5
 justify_spatial_reg
-pre-processing-4
+prac_7_process
 data-exploration
 ols
 spat_reg_details
@@ -119,7 +119,8 @@ resources-4
 gwr
 introduction-8
 practical-6
-pre-processing-5
+why-geographically-weighted-regression
+pre-processing-4
 gwr_intro
 calibration-fixed-kernel
 calibration-adaptive-kernel
@@ -131,7 +132,7 @@ resources-5
 location_allocation
 introduction-9
 practical-7
-pre-processing-6
+pre-processing-5
 network-building
 optimality_section
 hueristics
@@ -143,7 +144,7 @@ spatial_interaction
 introduction-10
 practical-8
 understanding-spatial-interaction-models
-pre-processing-7
+pre-processing-6
 data-exploration-1
 model-description
 unconstrained_total

@@ -116,7 +116,7 @@
 <div id="application-6" class="section level3 unnumbered">
 <h3>Application<a class="anchor" aria-label="anchor" href="#application-6"><i class="fas fa-link"></i></a>
 </h3>
-<p>To that end, we’ll apply aspatial and spatial regression to predict life expectancy at the MSOA-level (<a href="https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies">Middle Layer Super Output Area</a>) in the North West of the UK.</p>
+<p>To that end, we’ll apply aspatial and spatial regression to predict life expectancy at the MSOA-level (<a href="https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies">Middle Layer Super Output Area</a>) in the North West of England.</p>
 </div>
 <div id="sr_data" class="section level3 unnumbered">
 <h3>Data<a class="anchor" aria-label="anchor" href="#sr_data"><i class="fas fa-link"></i></a>
@@ -159,7 +159,7 @@
 <div id="tools-6" class="section level3 unnumbered">
 <h3>Tools<a class="anchor" aria-label="anchor" href="#tools-6"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/ordinary-least-squares.html?tabs=dialog">Ordinary Least Squares (OLS)</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/predict-using-spatial-statistics-model-file.html?tabs=dialog">Predict Using Spatial Statistics Model File</a> (Spatial Statistics Tools)</p>
+<p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/ordinary-least-squares.html?tabs=dialog">Ordinary Least Squares (OLS)</a> (Spatial Statistics), <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> (Spatial Statistics)</p>
 <hr>
 </div>
 </div>
@@ -177,7 +177,7 @@
 </div>
 <p>This question is foundational, found in the fields of epidemiology<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For example, is there a relationship between smoking and the risk of lung cancer? See &lt;span class="citation"&gt;Doll and Hill (&lt;a href="references.html#ref-doll1950"&gt;1950&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>80</sup></a>, ecology<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For example, is there a relationship between the location of beaver dams and channel gradient? See &lt;span class="citation"&gt;Dennis &lt;em&gt;et al.&lt;/em&gt; (&lt;a href="references.html#ref-dennis2024"&gt;2024&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>81</sup></a>, and earth science<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For example, is there a relationship between climate and landslide occurrence? See &lt;span class="citation"&gt;Gariano and Guzzetti (&lt;a href="references.html#ref-gariano2016"&gt;2016&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>82</sup></a>, and everything in between. By answering these questions, we can better understand the mechanisms which link the variables of interest, make predictions about the future, and inform decision-making.</p>
 <p>In <a href="spatial_correlation.html#justify_spatial_corr">Practical 4</a>, we introduced a measure of association, Pearson’s <span class="math inline">\(r\)</span> <span class="citation">(<a href="references.html#ref-pearson1895">Pearson, 1895</a>)</span>, with values ranging from <span class="math inline">\(-1\)</span> (perfect <em>negative</em> correlation) to <span class="math inline">\(+1\)</span> (perfect <em>positive</em> correlation). As a refresher, <strong>association</strong> refers to any form of dependency between variables, whereas <strong>correlation</strong> is a specific form of association, focusing on the degree of <em>linearity</em>.</p>
-<p>While measures of association are useful, they primarily provide information on the <strong>strength</strong> and <strong>direction</strong> of the correlation, but little about the <strong>nature</strong> of the relationship between the variables i.e., how much does <span class="math inline">\(Y\)</span> change as <span class="math inline">\(X\)</span> changes? We can address this by modelling the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and producing an equation which describes this relationship. In doing so, we can develop a deeper understanding of how the variables are related, moving beyond just strength and direction, and can use our equation to make predictions i.e., what would happen to <span class="math inline">\(Y\)</span> if we doubled <span class="math inline">\(X\)</span>?</p>
+<p>While measures of association are useful, they primarily provide information on the <strong>strength</strong> and <strong>direction</strong> of the correlation, but little about the <strong>nature</strong> of the relationship between the variables i.e., how much does <span class="math inline">\(Y\)</span> change as <span class="math inline">\(X\)</span> changes? We can address this by modelling the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and producing an equation which represents this relationship. In doing so, we can develop a deeper understanding of how the variables are related, moving beyond just strength and direction, and can use our equation to make predictions i.e., what would happen to <span class="math inline">\(Y\)</span> if we doubled <span class="math inline">\(X\)</span>?</p>
 <p>This is known as <strong>regression</strong>.</p>
 <p>There are many types of regression methods, and perhaps the best known and most commonly used is <strong>ordinary least squares</strong> (OLS) regression. This approach is used to model the linear relationship between a dependent variable <span class="math inline">\(Y\)</span> and an independent variable (or variables) <span class="math inline">\(X\)</span>, where the outcome is a best-fit regression line, as shown below.</p>
 <center>
@@ -191,8 +191,8 @@
 <p><br></p>
 <p>The regression line itself can be defined as follows:</p>
 <p><span class="math display">\[Y=\beta_{0}+\beta_{1}X_{1}+\beta_{2}X_{2}+\cdots+\beta_{i}X_{i}+\epsilon\]</span></p>
-<p>where <span class="math inline">\(Y\)</span> is the dependent variable of interest, <span class="math inline">\(X_{i}\)</span> is an independent variable where <span class="math inline">\(\beta_{i}\)</span> is the corresponding slope coefficient, <span class="math inline">\(\beta_{0}\)</span> is where the regression line intercepts the Y-axis, and <span class="math inline">\(\epsilon\)</span> is the random error (residual) between the observed dependent variable <span class="math inline">\(Y\)</span> and the regression equation.</p>
-<p>Let’s use a simple example to illustrate, using the ecological data from <span class="citation">Getzin <em>et al.</em> (<a href="references.html#ref-getzin2012">2012</a>)</span> from <a href="spatial_correlation.html#justify_spatial_corr">Practical 4</a>, which consists of paired measurements of the median gap shape complexity index (GSCI) <span class="math inline">\(X\)</span> and species richness (SR) <span class="math inline">\(Y\)</span> for a forest patch (Hainich) in central Germany. Here we have a single dependent variable we want to predict (SR) and a single independent variable (GSCI).</p>
+<p>where <span class="math inline">\(Y\)</span> is the dependent variable of interest, <span class="math inline">\(X_{i}\)</span> is an independent variable where <span class="math inline">\(\beta_{i}\)</span> is the corresponding slope coefficient, <span class="math inline">\(\beta_{0}\)</span> is where the regression line intercepts the Y-axis, and <span class="math inline">\(\epsilon\)</span> is the random error (residual) between the observed dependent variable <span class="math inline">\(Y\)</span> and the regression line.</p>
+<p>Let’s use a simple example to illustrate, using the ecological data from <span class="citation">Getzin <em>et al.</em> (<a href="references.html#ref-getzin2012">2012</a>)</span> from <a href="spatial_correlation.html#justify_spatial_corr">Practical 4</a>, which consists of paired measurements of the median gap shape complexity index (GSCI) <span class="math inline">\(X\)</span> and species richness (SR) <span class="math inline">\(Y\)</span> for a forest patch (Hainich) in central Germany. Here we have a single dependent variable we want to predict (SR) and a single independent variable (GSCI) which we believe to be related to SR in some way.</p>
 <p>Here is a plot of the paired measurements, redrawn from <span class="citation">Getzin <em>et al.</em> (<a href="references.html#ref-getzin2012">2012</a>)</span>:</p>
 <center>
 <img src="images/practical-4/getzin.png" id="species-richness" style="width:50.0%">
@@ -201,15 +201,18 @@
 <div class="question">
 <p>What species richness would we expect for a median GSCI value of <span class="math inline">\(2.3\)</span>?</p>
 </div>
-<p>This could be addressed via OLS regression, which for this dataset would produce the following:</p>
+<p>This could be addressed via OLS regression, which for this dataset would produce the following best-fit regression line:</p>
 <center>
 <img src="images/practical-7/getzin_regress.png" style="width:50.0%">
 </center>
 <p>With only a single independent variable, the regression line is defined as:</p>
-<p><span class="math display">\[Y=\beta_{0}+\beta_{1}X_{1}\]</span> with a calculated slope coefficient <span class="math inline">\(\beta_{1}\)</span> of 14.150 and an intercept <span class="math inline">\(\beta_{0}\)</span> of 5.595:</p>
-<p><span class="math display">\[\text{SR} = 5.595 + 14.150\cdot\text{GSCI}\]</span> Prediction is now possible, as we can substitute in our median GSCI value of interest:</p>
-<p><span class="math display">\[\text{SR} = 5.595 + 14.150\cdot2.3 = 38.14\]</span> Alongside the regression equation, it is also typical to calculate the <strong>coefficient of determination</strong> <span class="math inline">\(R^2\)</span>, which measures the proportion of variance in the dependent variable that can be explained by the independent variables in the model. This typically ranges from <span class="math inline">\(0\)</span> i.e., <strong>none</strong> of the variance in the dependent variable is explained by the independent variables, to <span class="math inline">\(1\)</span> i.e., the variance in the dependent variable is <strong>perfectly</strong> explained by the independent variables.</p>
-<p>For this dataset <span class="math inline">\(R^2=0.74\)</span>, which indicates that 74% of the variance in species richness can be explained by median GSCI<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;You can check Figure 3 in &lt;span class="citation"&gt;Getzin &lt;em&gt;et al.&lt;/em&gt; (&lt;a href="references.html#ref-getzin2012"&gt;2012&lt;/a&gt;)&lt;/span&gt; to confirm this. You could also run your own OLS regression using the data &lt;a href="spatial_correlation.html#justify_spatial_corr"&gt;here&lt;/a&gt;, via &lt;a href="https://support.microsoft.com/en-us/excel/functions/linest-function"&gt;Excel&lt;/a&gt;, &lt;a href="https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html"&gt;Python&lt;/a&gt; or &lt;a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm"&gt;R&lt;/a&gt; if familiar.&lt;/p&gt;'><sup>84</sup></a>.</p>
+<p><span class="math display">\[Y=\beta_{0}+\beta_{1}X_{1}+\epsilon\]</span></p>
+<p>Based on the minimising the sum of the squares of the residuals, the best-fit regression line is defined by a slope coefficient <span class="math inline">\(\beta_{1}\)</span> of 14.150 and an intercept <span class="math inline">\(\beta_{0}\)</span> of 5.595:</p>
+<p><span class="math display">\[\text{SR} = 5.595 + 14.150\cdot\text{GSCI}\]</span></p>
+<p>Prediction is now possible, as we can substitute in our median GSCI value of interest<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;You’ll notice that the error term &lt;span class="math inline"&gt;\(\epsilon\)&lt;/span&gt; is not included here, which as a reminder represents the residual between the observed dependent variable &lt;span class="math inline"&gt;\(Y\)&lt;/span&gt; and predicted &lt;span class="math inline"&gt;\(Y\)&lt;/span&gt;. For example, if the “true” species richness was 35 but the predicted species richness was 28, &lt;span class="math inline"&gt;\(\epsilon=7\)&lt;/span&gt;. This is the unexplained residual for each observation.&lt;/p&gt;'><sup>84</sup></a>:</p>
+<p><span class="math display">\[\text{SR} = 5.595 + 14.150\cdot2.3 = 38.14\]</span></p>
+<p>Alongside the regression equation, it is also typical to calculate the <strong>coefficient of determination</strong> <span class="math inline">\(\text{R}^2\)</span>, which measures the proportion of variance in the dependent variable that can be explained by the independent variables in the model. This typically ranges from <span class="math inline">\(0\)</span> i.e., <strong>none</strong> of the variance in the dependent variable is explained by the independent variables, to <span class="math inline">\(1\)</span> i.e., the variance in the dependent variable is <strong>perfectly</strong> explained by the independent variables.</p>
+<p>For this dataset <span class="math inline">\(\text{R}R^2=0.74\)</span>, which indicates that 74% of the variance in species richness can be explained by median GSCI<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;You can check Figure 3 in &lt;span class="citation"&gt;Getzin &lt;em&gt;et al.&lt;/em&gt; (&lt;a href="references.html#ref-getzin2012"&gt;2012&lt;/a&gt;)&lt;/span&gt; to confirm this. You could also run your own OLS regression using the data &lt;a href="spatial_correlation.html#justify_spatial_corr"&gt;here&lt;/a&gt;, via &lt;a href="https://support.microsoft.com/en-us/excel/functions/linest-function"&gt;Excel&lt;/a&gt;, &lt;a href="https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html"&gt;Python&lt;/a&gt; or &lt;a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm"&gt;R&lt;/a&gt; if familiar.&lt;/p&gt;'><sup>85</sup></a>.</p>
 <p><em>However</em>, there is a <strong>problem</strong>.</p>
 <div class="question">
 <p>What property of the data are we <strong>not</strong> including in our regression?</p>
@@ -231,29 +234,38 @@ Discussion
 <img src="images/practical-7/residual_skew.png" style="width:100.0%">
 </center>
 <p><br></p>
-<p>While this provides important information on the whether the model is systematically under- or over-predicting <span class="math inline">\(Y\)</span>, it provides no information on <strong>where</strong> that systematic error is located. For example, perhaps our model systematically over-predicts life expectancy in certain regions, and under-predicts life expectancy elsewhere, indicating <strong>clustering</strong> of the model residuals i.e., positive spatial autocorrelation. By accounting for the spatial structure of the residuals (if present), we can produce models which minimise error.</p>
+<p>While this provides important information on the whether the model is systematically underpredicting <span class="math inline">\(Y\)</span> (distribution <span class="math inline">\(A\)</span>) or over-predicting <span class="math inline">\(Y\)</span> (distribution <span class="math inline">\(C\)</span>), it provides no information on <strong>where</strong> that systematic error is located. For example, perhaps our model systematically over-predicts life expectancy in certain regions, and under-predicts life expectancy elsewhere, indicating <strong>clustering</strong> of the model residuals i.e., positive spatial autocorrelation, as illustrated below (e.g., over-prediction in parts of southern Europe, under-prediction in northern Europe). Spatial structure of the errors might indicate the exclusion of important spatial variables. Moreover, if we can model and account for spatial clustering of the residuals (if present), we can produce models which minimise error.</p>
+<center>
+<img src="images/practical-7/europe-residuals.png" style="width:60.0%">
+</center>
+<p><br></p>
 <p>Finally, and from a statistical perspective, one of the key assumptions of many tests, including OLS, is the <strong>independence of observations</strong> assumption. This states that each observation in your dataset (e.g., a species richness value) should not be influenced by or be related to any other observation in the dataset. Given Tobler’s Law <span class="citation">(<a href="references.html#ref-tobler1970">Tobler, 1970</a>)</span>, and the evidence of spatial clustering and dispersion in many datasets, as revealed using Moran’s <span class="math inline">\(I\)</span> and <span class="math inline">\(I_{i}\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>; <a href="references.html#ref-anselin1995">Anselin, 1995a</a>)</span>, we know that observations are often spatially <em>dependent</em> e.g., the Republican vote share in a particular US county is related to the vote share of its neighbours. In these situations, the independence of observations assumption is violated, and the OLS regression coefficients and errors may be biased.</p>
 </details><p><br></p>
 <hr>
 <p>Based on the above reasoning, <strong>spatial regression</strong> methods are <em>often</em> more appropriate than OLS and similar aspatial regression methods when applied to spatial data, in that they incorporate the spatial structure and spatial dependence of the data, are a better representation of the spatial processes which produce the variables of interest, and can often minimise model error.</p>
 </div>
-<div id="pre-processing-4" class="section level3" number="7.2.2">
+<div id="prac_7_process" class="section level3" number="7.2.2">
 <h3>
-<span class="header-section-number">7.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing-4"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#prac_7_process"><i class="fas fa-link"></i></a>
 </h3>
 <p>To begin:</p>
 <blockquote>
 <p>Open ArcGIS, initialise a new project in the <code>practical-7</code> directory, establish a connection to <code>data</code> and then load the MSOA geometries for England and Wales, stored in <code>MSOA_2021_EW_BGC_V3.shp</code>.</p>
 </blockquote>
-<div class="question">
-<p>What is the data CRS?</p>
-</div>
+<center>
+<img src="screenshots/practical-7/msoa.png" style="width:100.0%">
+</center>
+<p><br></p>
 <blockquote>
 <p>Next, load and inspect the MSOA lookup table <code>MSOA_2021_lookup_table.csv</code> which contains additional attributes of interest e.g., region name [<code>RGN22NM</code>].</p>
 </blockquote>
-<p>For our analysis, we are going to focus on the North West of England, which includes the counties of Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside.</p>
+<center>
+<img src="screenshots/practical-7/lookup_table.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>For our analysis, we are going to focus on the <a href="https://en.wikipedia.org/wiki/North_West_England">North West of England</a>, which includes the counties of Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside.</p>
 <blockquote>
-<p>Use a dynamic table join to link the geometries and lookup table via the <code>MSOA21CD</code> attribute. When complete, use Select by Attributes to filter to the North West (<code>RGN22NM = 'North West'</code>, <span class="math inline">\(n=932\)</span>), and then export the selection to your project directory with a suitable name e.g., <code>MSOA_2021_nw</code>. To simplify the export, remove all the joined fields (Export Features → Fields → Field Map → Remove all below <code>GlobalID</code>).</p>
+<p>Use a dynamic table join via Joins and Relatives → Add Join to link the geometries and lookup table via the <code>MSOA21CD</code> attribute. When complete, use Select by Attributes to filter to the North West (<code>RGN22NM = 'North West'</code>, <span class="math inline">\(n=932\)</span>), and then export the selection to your project directory with a suitable name e.g., <code>MSOA_2021_nw</code>. To simplify the export, remove all the joined fields (Export Features → Fields → Field Map → Remove all below <code>GlobalID</code>).</p>
 </blockquote>
 <blockquote>
 <p>When complete, remove the national MSOA geometries and lookup table.</p>
@@ -286,9 +298,9 @@ Discussion
 </li>
 </ul>
 </blockquote>
-<p>As MSOAs have varying populations, ranging from approximately 5,000 to 15,000 residents, we should take care to use proportional variables (e.g., <code>disabled_perc</code>, <code>fuel_poverty_perc</code>) or those that are not population-dependent (e.g., <code>imd_decile</code>, <code>total_annual_income</code>). For the economic activity status and qualification datasets, we can calculate proportional variables using the total number of individuals with an economic or qualification status (<code>economic_status_total</code>, <code>qualification_total</code>), focusing on the end-member classes i.e., unemployed <em>vs</em>. employed, no qualifications <em>vs</em>. level-four qualifications.</p>
+<p>As MSOAs have varying populations, ranging from approximately 5,000 to 15,000 residents, we should take care to use <strong>proportional variables</strong> (e.g., <code>disabled_perc</code>, <code>fuel_poverty_perc</code>) or those that are not population-dependent (e.g., <code>imd_decile</code>, <code>total_annual_income</code>). For the economic activity status and qualification datasets, we can calculate proportional variables using the total number of individuals with an economic or qualification status (<code>economic_status_total</code>, <code>qualification_total</code>), focusing on the end-member classes i.e., economically active <em>vs</em>. inactive, no qualifications <em>vs</em>. level-four qualifications.</p>
 <blockquote>
-<p>Use Calculate Field to produce proportional variables (“Field Type” = <code>Double</code>) representing the proportion of the population employed (<code>employed_not_ftstudent_perc</code>) and not employed (<code>economically_inactive_not_ftstudent_perc</code>), and the proportion with no qualifications (<code>no_qualifications_perc</code>) and level-four qualifications (<code>level_four_perc</code>) e.g., <code>employed_not_ftstudent_perc</code> = <code>(!employed_not_ftstudent! / !economic_status_total!) * 100</code></p>
+<p>Use Calculate Field to produce proportional variables (“Field Type” = <code>Double</code>) representing the proportion of the population employed (<code>employed_not_ftstudent_perc</code>) and not economically active (<code>economically_inactive_not_ftstudent_perc</code>), and the proportion with no qualifications (<code>no_qualifications_perc</code>) and level-four qualifications (<code>level_four_perc</code>) e.g., <code>employed_not_ftstudent_perc</code> = <code>(!employed_not_ftstudent! / !economic_status_total!) * 100</code></p>
 </blockquote>
 <p>As we have permanently joined these attributes to our geometry layer:</p>
 <blockquote>
@@ -320,7 +332,7 @@ Discussion
 </center>
 <p><br></p>
 <div class="note">
-<p>It is worth <strong>emphasising</strong> that the plots and statistics (<span class="math inline">\(R^2\)</span>, coefficients <span class="math inline">\(B_{0}\)</span> and <span class="math inline">\(B_{1}\)</span>) are produced using OLS i.e., they are not taking geography into account. As we know from earlier weeks of the unit, including <a href="spatial_correlation.html#spatial_correlation">spatial correlation</a>, there are often alternative methods that are more appropriate e.g., Lee’s <span class="math inline">\(L\)</span>.</p>
+<p>It is worth <strong>emphasising</strong> that the plots and statistics (<span class="math inline">\(\text{R}^2\)</span>, coefficients <span class="math inline">\(B_{0}\)</span> and <span class="math inline">\(B_{1}\)</span>) are produced using OLS i.e., they are not taking geography into account. As we know from earlier weeks of the unit, including <a href="spatial_correlation.html#spatial_correlation">spatial correlation</a>, there are often alternative methods that are more appropriate e.g., Lee’s <span class="math inline">\(L\)</span>.</p>
 <p><br></p>
 <p>The regressions are also <strong>bivariate</strong>, in that they are assessing the relationship between the dependent variable <span class="math inline">\(Y\)</span> and a single independent variable <span class="math inline">\(X\)</span>. As life expectancy is likely influenced by a wide range of factors, a <strong>mutlivariate</strong> analysis, incorporating multiple independent variables, would typically produce the best model.</p>
 </div>
@@ -335,12 +347,12 @@ Discussion
 Interpretation
 </summary><p>When selecting a spatial weights method, we need to consider both <strong>theory</strong> and the resulting spatial weights <strong>structure</strong>. The latter is relatively straightforward. For example, we would typically want to avoid any isolated spatial units i.e., those with no neighbours. We could also use <a href="spatial_weights.html#row_standard">row standardisation</a> to account for uneven spatial data, where there may be significant differences in the number of neighbours between spatial units. An alternative approach would be to used a fixed number of neighbours <span class="math inline">\(K\)</span> for each spatial unit.</p>
 <p>These practical considerations are important, but more so is the theory of the <strong>nature of the interaction</strong> between spatial units for the <strong>specific</strong> geographic process.</p>
-<p>For example, if we were focused on a geographic process which was dependent on <strong>contact</strong> between individuals e.g., the spread of disease, or the expansion of a species, then a contiguity-based approach would be most appropriate, as this is a representation of the nature of the interaction i.e., spatial units must be contiguous for disease to spread<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is of course an oversimplification for the spread of disease in humans, given national and international movement, but is highly relevant in other settings e.g., &lt;span class="citation"&gt;Flood &lt;em&gt;et al.&lt;/em&gt; (&lt;a href="references.html#ref-flood2013"&gt;2013&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>85</sup></a>, or for a species to move from one spatial unit to another.</p>
+<p>For example, if we were focused on a geographic process which was dependent on <strong>contact</strong> between individuals e.g., the spread of disease, or the expansion of a species, then a contiguity-based approach would be most appropriate, as this is a representation of the nature of the interaction i.e., spatial units must be contiguous for disease to spread<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is of course an oversimplification for the spread of disease in humans, given national and international movement, but is highly relevant in other settings e.g., &lt;span class="citation"&gt;Flood &lt;em&gt;et al.&lt;/em&gt; (&lt;a href="references.html#ref-flood2013"&gt;2013&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>86</sup></a>, or for a species to move from one spatial unit to another.</p>
 <p>Alternatively, if the geographic process is dependent on <strong>accessibility</strong>, then a distance-based approach might be more appropriate. In the context of life expectancy, we might expect this to be influenced by the characteristics of nearby areas, such as the provision of hospitals, the proximity of sources of pollution, or the availability of high paying jobs within a certain commutable distance. These characteristics would affect life expectancy even if the spatial units were non-contiguous.</p>
-<p>The geographic process could also be dependent on <strong>structural differences</strong> across the study area. Continuing with our life expectancy example, which we are analysing at the MSOA-level, there might be differences in how the health service is funded and managed at a higher spatial level i.e., Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside, resulting in a different quality of care for different counties. In this situation, we might want to use <em>block weights</em>, which define neighbours based on the higher spatial level i.e., all MSOAs within Greater Manchester would be defined as neighbours, and so on<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;strong&gt;Block Weights&lt;/strong&gt; are not easily implemented in ArcGIS, but are available elsewhere e.g., &lt;a href="https://pysal.org/libpysal/stable/generated/libpysal.weights.block_weights.html"&gt;&lt;code&gt;pysal&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;'><sup>86</sup></a>.</p>
+<p>The geographic process could also be dependent on <strong>structural differences</strong> across the study area. Continuing with our life expectancy example, which we are analysing at the MSOA-level, there might be differences in how the health service is funded and managed at a higher spatial level i.e., Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside, resulting in a different quality of care for different counties. In this situation, we might want to use <em>block weights</em>, which define neighbours based on the higher spatial level i.e., all MSOAs within Greater Manchester would be defined as neighbours, and so on.</p>
 <p>To summarise, the choice of spatial weights method is critical and should be dependent on the <strong>nature of the interaction</strong> between spatial units for a <strong>specific</strong> geographic process. Different geographic processes necessitate different methods, even when the same spatial units are used (e.g., MSOA).</p>
 </details><blockquote>
-<p>Assess for global and local spatial autocorrelation for some of the attributes (e.g., <code>life_expectancy_male</code> and <code>life_expectancy_female</code>) using Moran’s <span class="math inline">\(I\)</span> (<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a>) and local Moran’s <span class="math inline">\(I_i\)</span> <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s I)</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;You will likely encounter WARNING &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00826-00850-000848.html"&gt;000848&lt;/a&gt;: &lt;code&gt;Features with bad records&lt;/code&gt;, which arises due to missing life expectancy values in the DSHC data.&lt;/p&gt;'><sup>87</sup></a>.</p>
+<p>Assess for global and local spatial autocorrelation for some of the attributes (e.g., <code>life_expectancy_male</code> and <code>life_expectancy_female</code>) using Moran’s <span class="math inline">\(I\)</span> (<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a>) and local Moran’s <span class="math inline">\(I_i\)</span> (<a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s I)</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;You will likely encounter WARNING &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00826-00850-000848.html"&gt;000848&lt;/a&gt;: &lt;code&gt;Features with bad records&lt;/code&gt;, which arises due to missing life expectancy values in the DSHC data.&lt;/p&gt;'><sup>87</sup></a>.</p>
 </blockquote>
 <div class="question">
 <p>Is there evidence of spatial autocorrelation?</p>
@@ -361,7 +373,11 @@ Interpretation
 <p>Before we jump to interpretation, it is important to assess any warnings that appear, which in this case is as follows:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="spatial_regression.html#cb4-1" tabindex="-1"></a>WARNING <span class="dv">000851</span><span class="sc">:</span> Use the Spatial <span class="fu">Autocorrelation</span> (Morans I) Tool to ensure residuals are not spatially autocorrelated.</span></code></pre></div>
 <p>This is very good advice and is described more fully <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00851-00875-000851.html">here</a>.</p>
-<p><em>For now</em> we’ll ignore this and inspect the results under “Messages”, which reveals <span class="math inline">\(R^2=0.62\)</span> (<code>Multiple R-Squared</code>), matching the Scatter Chart presented above, as well as coefficients <span class="math inline">\(\beta_0\approx62.86\)</span> and <span class="math inline">\(\beta_1\approx0.0003\)</span>, and <em>p</em>-values for the independent variable, alongside a wealth of information in the PDF.</p>
+<p><em>For now</em> we’ll ignore this and inspect the results under “Messages”, which reveals <span class="math inline">\(\text{R}^2=0.62\)</span> (<code>Multiple R-Squared</code>), matching the Scatter Chart presented above, as well as coefficients <span class="math inline">\(\beta_0\approx62.86\)</span> and <span class="math inline">\(\beta_1\approx0.0003\)</span>, and <em>p</em>-values for the independent variable, alongside a wealth of information in the PDF.</p>
+<center>
+<img src="screenshots/practical-7/ols_residual_hist.png" style="width:100.0%">
+</center>
+<p><br></p>
 <div class="question">
 <p>What is the numeric distribution of the model residuals?</p>
 </div>
@@ -400,15 +416,24 @@ Interpretation
 <div class="question">
 <p>How much additional variability in life expectancy can be explained with our new model?</p>
 </div>
-<p>There are lots of tools available to diagnose multicollinearity, one of which is the Variance Inflation Factor (VIF), which can be found in the “Summary of OLS Results” table. As a rule-of-thumb, multicollinearity is present when the VIF is higher than 5 to 10 <span class="citation">(<a href="references.html#ref-kim2019">Kim, 2019</a>)</span>.</p>
+<details><summary>
+Answer
+</summary><p>When modelling <code>life_expectancy_male</code>, and including the full range of independent variables, <span class="math inline">\(R^2\approx0.82\)</span>, indicating 82% of variability in life expectancy can be explained.</p>
+</details><p>There are lots of tools available to diagnose multicollinearity, one of which is the Variance Inflation Factor (VIF), which can be found in the “Summary of OLS Results” table. As a rule-of-thumb, multicollinearity is present when the VIF is higher than 5 to 10 <span class="citation">(<a href="references.html#ref-kim2019">Kim, 2019</a>)</span>.</p>
 <div class="question">
 <p>Is there evidence of multicollinearity?</p>
 </div>
-<p>If multicollinearity is present, a typical strategy is to remove highly correlated variables.</p>
+<details><summary>
+Answer
+</summary><p>There is evidence of multicollinearity, as <code>imd_decile</code> and <code>no_qualifications_perc</code> have <span class="math inline">\(\text{VIF}&gt;10\)</span>. This is not to suggest that these variables are <em>unimportant</em>, but it may be that their effects are being captured by other variables.</p>
+</details><p>If multicollinearity is present, a typical strategy is to remove highly correlated variables.</p>
 <div class="question">
 <p>Are all the independent variables significant in the model? i.e., <span class="math inline">\(p&lt;0.05\)</span>.</p>
 </div>
-<div class="note">
+<details><summary>
+Answer
+</summary><p>Fuel poverty is classed as not statistically significant, with <span class="math inline">\(p\approx0.68\)</span>. As above, this does indicate that fuel poverty is unimportant, see <span class="citation">Robinson <em>et al.</em> (<a href="references.html#ref-robinson2018">2018</a>)</span> and <span class="citation">Robinson <em>et al.</em> (<a href="references.html#ref-robinson2019">2019</a>)</span>, but that its effects is being captured by other variables e.g., deprivation.</p>
+</details><div class="note">
 <p>In <strong>summary</strong>, OLS is inappropriate for our analysis of life expectancy, as statistically significant spatial autocorrelation of the regression residuals indicates misspecification of the OLS model, violation of OLS assumptions, or that additional important spatial factors are missing from the model. More fundamentally, variability in life expectancy likely represents the outcome of <strong>spatial processes</strong>. Incorporating geography into our modelling approach may produce better predictions and minimise error.</p>
 <p><br></p>
 <p>However, it is worth <strong>emphasising</strong> that OLS isn’t <em>necessarily</em> inappropriate for analysis of spatial data. For example, if the observations are independent, there is no clear spatial pattern to the model residuals, as evidenced using Moran’s <span class="math inline">\(I\)</span> and <span class="math inline">\(I_i\)</span>, and no evidence of spatial non-stationarity… use OLS! However, the results of OLS should always be evaluated critically. In many cases, alternative techniques are more appropriate.</p>
@@ -433,7 +458,7 @@ Answer
 <p><span class="math display">\[Y=\rho WY+X\beta+\epsilon\]</span></p>
 <p>This is very similar to a standard OLS formulation, which could be written simply as <span class="math inline">\(Y=X\beta+\epsilon\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As a reminder, &lt;span class="math inline"&gt;\(Y\)&lt;/span&gt; is the dependent variable of interest, &lt;span class="math inline"&gt;\(X\)&lt;/span&gt; is a variable with a corresponding coefficient &lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; and &lt;span class="math inline"&gt;\(\epsilon\)&lt;/span&gt; is the random error (residual) between the observed dependent variable &lt;span class="math inline"&gt;\(Y\)&lt;/span&gt; and the regression equation. Note that the intercept term &lt;span class="math inline"&gt;\(\beta_{0}\)&lt;/span&gt; is implicitly included in &lt;span class="math inline"&gt;\(X\beta\)&lt;/span&gt;.&lt;/p&gt;'><sup>90</sup></a>, but with an additional component <span class="math inline">\(\rho WY\)</span>, which is a spatially lagged <span class="math inline">\(Y\)</span> variable i.e., we are including the average neighbourhood value for each observation as an additional explanatory variable.</p>
 <p>The spatial lag model therefore includes the spatial lag of the dependent variable, with the calculation approach defined in <a href="spatial_autocorrelation.html#spatial_lag">Practical 3</a>. In this case, the spatial lag is of life expectancy where the coefficient <span class="math inline">\(\rho\)</span> is a single value which represents the strength and direction of the spatial lag influence, much like a coefficient <span class="math inline">\(\beta\)</span>. As <span class="math inline">\(\rho\)</span> increases, neighbourhood effects become increasingly important.</p>
-<p>This approach therefore accounts for <strong>spillover effects</strong>, in that the dependent variable at a specific location <span class="math inline">\(Y_i\)</span> may be <strong>influenced</strong> by the corresponding dependent variable of its neighbours <span class="math inline">\(Y_j\)</span>, which we define based on the spatial weights matrix <span class="math inline">\(W\)</span> i.e., life expectancy for an MSOA is influenced by life expectancy in neighbouring MSOAs.</p>
+<p>This approach therefore accounts for <strong>spillover effects</strong>, in that the dependent variable at a specific location <span class="math inline">\(Y_i\)</span> may be <strong>influenced</strong> by the corresponding dependent variable of its neighbours <span class="math inline">\(Y_j\)</span>, which we define based on the spatial weights matrix <span class="math inline">\(W\)</span> i.e., life expectancy for an MSOA is influenced by life expectancy in neighbouring MSOAs, which in turn, influences life expectancy at other MSOAs, and so on.</p>
 <p>The following example outlines a situation in which <em>diffusion of behaviour</em> could lead to spatial dependence:</p>
 <div class="quote">
 <p>“<em>… the behaviour is likely to be highly social in nature, and understanding the interactions between interdependent units is critical to understanding the behaviour in question. For example, citizens may discuss politics across adjoining neighbours such that an increase in support for a candidate in one neighbourhood directly leads to an increase in support for the candidate in adjoining neighbourhoods</em>”<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;This could partly explain the spatial dependence of the Republican vote share, which we assessed in &lt;strong&gt;Practical 3&lt;/strong&gt;: &lt;em&gt;Spatial Autocorrelation&lt;/em&gt;.&lt;/p&gt;"><sup>91</sup></a></p>
@@ -482,11 +507,19 @@ Answer
 </center>
 <p><br></p>
 <div class="question">
-<p>What is the model <span class="math inline">\(R^2\)</span> and <em>p</em>-value?</p>
+<p>What is the model <span class="math inline">\(\text{R}^2\)</span>?</p>
 </div>
-<div class="question">
+<details><summary>
+Answer
+</summary><p>The coefficient of determination for this model is <span class="math inline">\(\text{R}^2\approx0.62\)</span>. Being more precise, the reported value is actually a <code>Pseudo R2</code>, which is described <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#E3F">here</a>. We won’t go into the mathematics of how this is calculated, but the important thing to note is that unlike an OLS <span class="math inline">\(\text{R}^2\)</span>, which can be interpreted quite simply: “The proportion of the total variation in <span class="math inline">\(Y\)</span> that is explained by the independent variables <span class="math inline">\(X\)</span>”, we need to be more cautious with the pseudo <span class="math inline">\(\text{R}^2\)</span> values reported for spatial regressions.</p>
+<p>While pseudo <span class="math inline">\(\text{R}^2\)</span> is a measure of model fit, the actual interpretation is more complex, <em>something like</em>: “The variation in <span class="math inline">\(Y\)</span> that can be explained by both the independent variables <span class="math inline">\(X\)</span> <strong>and</strong> the spatial dependence of the errors”. In turn, we <strong>can’t</strong> say that approximately 62% of variability in life expectancy is explained by income, because this is ignoring the modelling of the spatial dependence of the errors via <span class="math inline">\(u=\lambda Wu+\epsilon\)</span>.</p>
+</details><div class="question">
 <p>Is income positively or negatively correlated with life expectancy?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>Life expectancy is still positively correlated with total annual income, with <span class="math inline">\(\beta\approx0.0003\)</span>.</p>
+</details><p><br></p>
 <p>The lag residual coefficient (<span class="math inline">\(\lambda\)</span>) for my model is <span class="math inline">\(\approx0.48\)</span>. This can range from <span class="math inline">\(-1\)</span> to <span class="math inline">\(+1\)</span> and represents the strength of the correlation between an observations error and that of its neighbours.</p>
 <div class="question">
 <p>Are errors for each observation positively or negatively correlated with that of its neighbours?</p>
@@ -500,7 +533,7 @@ Answer
 <img src="screenshots/practical-7/sem_moran.png" style="width:50.0%">
 </center>
 <p><br></p>
-<p>We can test for this directly using Moran’s <span class="math inline">\(I\)</span> and <span class="math inline">\(I_i\)</span>.</p>
+<p>We can test for this directly using Moran’s <span class="math inline">\(I\)</span>.</p>
 <blockquote>
 <p>Evaluate the spatial patterning of the SEM residuals using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">global spatial autocorrelation tool</a>.</p>
 </blockquote>
@@ -518,7 +551,7 @@ Answer
 </details><p><br></p>
 <p>We can evaluate how the spatial patterning of the SEM residuals changes with different spatial weights:</p>
 <blockquote>
-<p>Re-run an SEM using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> tool, but this time using <code>K nearest neighbours</code> as the neighbourhood type (<span class="math inline">\(K=10\)</span>). When complete, assess for autocorrelation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Global Moran’s I</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Local Moran’s I</a>, making sure to use <span class="math inline">\(K=10\)</span> for consistency.</p>
+<p>Re-run a SEM using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> tool, but this time using <code>K nearest neighbours</code> as the neighbourhood type (<span class="math inline">\(K=10\)</span>). When complete, assess for autocorrelation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Global Moran’s I</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Local Moran’s I</a>, making sure to use <span class="math inline">\(K=10\)</span> for consistency.</p>
 </blockquote>
 <center>
 <img src="screenshots/practical-7/sem_k10_anselin.png" style="width:50.0%">
@@ -569,7 +602,7 @@ Interpretation
 <p><br></p>
 <p>As we discussed above, the spatial lag model assumes that spatial dependence arises because of diffusion across spatial units, in which the outcome (dependent) variable is influenced by the outcome of its neighbours. This is addressed by including a spatially lagged <em>outcome</em> variable <span class="math inline">\(\rho\)</span>, which is included above as <code>Lag Y (rho)</code>.</p>
 <p>As with the lag residual coefficient (<span class="math inline">\(\lambda\)</span>) for the SEM model, this can range from <span class="math inline">\(-1\)</span> to <span class="math inline">\(+1\)</span> and represents the strength of the correlation between an observed dependent variable and that of its neighbours.</p>
-<p>Here, the value is negative at <span class="math inline">\(\rho\approx-0.1\)</span>. This is indicative of <strong>weak negative</strong> spatial dependence i.e., when observed life expectancy is low, neighbourhood life expectancy is slightly higher, when <em>we have controlled for the independent variables in the model</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For example, Moran’s &lt;span class="math inline"&gt;\(I\)&lt;/span&gt; on life expectancy exhibits positive spatial autocorrelation i.e., clustering (&lt;span class="math inline"&gt;\(I&amp;gt;0\)&lt;/span&gt;). This spatial dependence could arise from a spatial relationship with the dependent variable (e.g., income) and/or spatial dependence of the observations, as represented by &lt;span class="math inline"&gt;\(\rho WY\)&lt;/span&gt;. If the former explains a large proportion of the spatial dependence, then we might see only weak spatial dependence remaining.&lt;/p&gt;'><sup>97</sup></a>. This weak spatial dependence is evidenced by the probability value of <span class="math inline">\(p\approx0.117\)</span>, which we would classify as <strong>not</strong> statistically significant. Based on this data, we might already begin to be cautious about the use of the spatial lag model, given only weak evidence for spatial dependence of the observations.</p>
+<p>Here, the value is negative at <span class="math inline">\(\rho\approx-0.1\)</span>. This is indicative of <strong>weak negative</strong> spatial dependence i.e., when observed life expectancy is low, neighbourhood life expectancy is slightly higher, when <em>we have controlled for the independent variables in the model</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For clarity, Moran’s &lt;span class="math inline"&gt;\(I\)&lt;/span&gt; on life expectancy might exhibit positive spatial autocorrelation i.e., clustering (&lt;span class="math inline"&gt;\(I&amp;gt;0\)&lt;/span&gt;). This spatial dependence could arise from a spatial relationship with the dependent variable (i.e., attribute similarity between &lt;code&gt;income&lt;/code&gt; and &lt;code&gt;life_expectancy&lt;/code&gt;) and/or spatial dependence of the observations (i.e., diffusion of behaviour), as represented by &lt;span class="math inline"&gt;\(\rho WY\)&lt;/span&gt;. If the former explains a large proportion of the spatial dependence, and this is accounted for by the inclusion of &lt;code&gt;income&lt;/code&gt; in the model, then we might see only weak spatial dependence remaining.&lt;/p&gt;'><sup>97</sup></a>. This weak spatial dependence is also evidenced by the probability value of <span class="math inline">\(p\approx0.117\)</span>, which we would classify as <strong>not</strong> statistically significant. Based on this data, we might already begin to be cautious about the use of the spatial lag model, given only weak evidence for spatial dependence of the observations.</p>
 <p>We also need to be cautious when interpreting the coefficients of the spatial lag model. While these are included in the table above, they are not directly comparable to those produced by OLS or SEM, which can be interpreted quite simply: “How much does the dependent variable change for a one unit change in the independent variable, <em>when all other independent variables are held constant</em>?” This is not possible for SLM because of <strong>spatial spillover</strong> effects, and the fact that our dependent variable <span class="math inline">\(Y\)</span> is influenced by the surrounding neighbourhood values.</p>
 <p>For example, let’s imagine a spatial unit <span class="math inline">\(A\)</span>. With OLS, the dependent variable at that location <span class="math inline">\(Y_A\)</span> is simply a function of the independent variable at that location <span class="math inline">\(X_A\)</span> e.g., life expectancy at <span class="math inline">\(A\)</span> is predicted by total annual income at <span class="math inline">\(A\)</span>:</p>
 <center>
@@ -588,12 +621,12 @@ Interpretation
 <li>
 <strong>indirect</strong> i.e., the average neighbourhood effect.</li>
 </ul>
-<p>The value listed in the coefficient table above (<span class="math inline">\(\approx0.0003\)</span>) is the direct effect only, and we can find the indirect and the total effects (i.e., direct + indirect) in the coefficients summary at the bottom:</p>
+<p>The value listed in the coefficient table above (<span class="math inline">\(\beta\approx0.0003\)</span>) is the direct effect only, and we can find the indirect and the total effects (i.e., direct + indirect) in the coefficients summary at the bottom:</p>
 <center>
 <img src="screenshots/practical-7/slm_effects.png" style="width:100.0%">
 </center>
 <p><br></p>
-<p>In this example, the indirect effects are very small at <span class="math inline">\(-0.000032\)</span>, even within the context of the small direct effect of <span class="math inline">\(0.000335\)</span>. Based on this reasoning, we can conclude that spatial spillover effects seem relatively unimportant for the current model setup, but this is not always the case, with a more striking example in the esri <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#8A0">documentation</a>.</p>
+<p>In this example, the indirect effects are very small at <span class="math inline">\(-0.000032\)</span>, even within the context of the small direct effect of <span class="math inline">\(0.000335\)</span>. Based on this interpretation, we can conclude that spatial spillover effects seem relatively unimportant for the current model setup, but this is not always the case, with a more striking example in the esri <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#8A0">documentation</a>, where the magnitude of the indirect effects exceeds the direct effects.</p>
 <p>As a final consideration, it is worth evaluating the spatial patterning of the SLM residuals:</p>
 <blockquote>
 <p>Assess for autocorrelation using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Global Moran’s I</a>, making sure to use <span class="math inline">\(K=10\)</span> for consistency with the SLM model.</p>
@@ -622,14 +655,14 @@ Interpretation
 <div class="question">
 <p>Which model should we select?</p>
 </div>
-<p>Model selection should be based on both <strong>theory</strong> and <strong>statistical reasoning</strong>.</p>
-<p>For the latter, we can be quite critical of the spatial lag model for this dataset and model specification, given the spatial autocorrelation of the model residuals. This is one of the key limitations of the OLS model which we were trying to address! Moreover, the spatial lag coefficient <span class="math inline">\(\rho\)</span> was weak, negative and not statistically significant (<span class="math inline">\(p\approx0.117\)</span>). By comparison, the spatial error model exhibited spatially random model residuals (<span class="math inline">\(I\approx-0.005\)</span>, <span class="math inline">\(p\approx0.79\)</span>), and a highly significant <span class="math inline">\(\lambda\approx0.48\)</span>, indicating spatial clustering of errors.</p>
+<p>Model selection should always be based on both <strong>theory</strong> and <strong>statistical reasoning</strong>.</p>
+<p>For the latter, we can be quite critical of the spatial lag model for this dataset and for this model specification, given the spatial autocorrelation of the model residuals. This is one of the key limitations of the OLS model which we were trying to address! Moreover, the spatial lag coefficient <span class="math inline">\(\rho\)</span> was weak, negative and not statistically significant (<span class="math inline">\(p\approx0.117\)</span>). By comparison, the spatial error model exhibited spatially random model residuals (<span class="math inline">\(I\approx-0.005\)</span>, <span class="math inline">\(p\approx0.79\)</span>), and a highly significant <span class="math inline">\(\lambda\approx0.48\)</span>, indicating spatial clustering of errors.</p>
 <p>From a theoretical perspective, we can also be cautious about whether the observed spatial dependence is a result of <em>diffusion of behaviour</em>, as assumed in the spatial lag model. In the political example presented by <span class="citation">Darmofal (<a href="references.html#ref-thesoci2015">2015b</a>)</span> above, there is a clear spatial process by which political opinion and voting intention in one spatial unit might be influenced by political opinion in a neighbouring spatial unit i.e., interactions and discussion between people from different spatial units. This is less clear for our analysis of life expectancy, where it is difficult to envisage how my life expectancy is <strong>directly</strong> influenced by the life expectancy of my neighbours. Instead, spatial dependence in life expectancy is more easily explained by attribute similarity, and the co-patterning of income, education, employment, deprivation, and so on.</p>
 <p>We also have other tools at our disposal to select the best model, one of which is the <strong>Lagrange Multiplier</strong> (LM), developed by <span class="citation">Bera and Yoon (<a href="references.html#ref-bera1993">1993</a>)</span>, and applied to spatial regression by <span class="citation">Anselin <em>et al.</em> (<a href="references.html#ref-anselin1996">1996a</a>)</span>, with the process outlined well in the esri <a href="https://pro.arcgis.com/en/pro-app/3.5/tool-reference/spatial-statistics/how-spatial-autoregression-works.htm#ESRI_SECTION1_DFC61ED3F77040FEBB168A2CFC74D0CC">documentation</a>.</p>
 <p>We won’t go into the mathematics of the LM tests here, which you are welcome to explore in <span class="citation">Anselin <em>et al.</em> (<a href="references.html#ref-anselin1996a">1996b</a>)</span>. As a simple overview, the LM test begins with an OLS model and then evaluates whether incorporating the spatial lag of the outcome (SLM) or incorporating the spatial lag of the error (SEM) improves the model performance. These are known as the <span class="math inline">\(\text{LM}_{\text{lag}}\)</span> and <span class="math inline">\(\text{LM}_{\text{error}}\)</span> tests respectively. These circumstances are not mutually exclusive, so <em>robust</em> versions of these tests evaluate whether including the spatial lag of the outcome improves the model <em>when the spatial lag of the error has already been accounted for</em> (<span class="math inline">\(\text{Robust}\ \text{LM}_{\text{lag}}\)</span>) and vice versa (<span class="math inline">\(\text{Robust}\ \text{LM}_{\text{error}}\)</span>).</p>
 <p>Based on the results of these four tests, and following the process described by <span class="citation">Anselin and Rey (<a href="references.html#ref-anselin2014">2014</a>)</span>:</p>
 <ul>
-<li>If both <span class="math inline">\(LM_{lag}\)</span> and <span class="math inline">\(LM_{error}\)</span> are not significant, then we can simply use OLS i.e., incorporating spatial dependence does not improve the model.</li>
+<li>If both <span class="math inline">\(LM_{lag}\)</span> and <span class="math inline">\(LM_{error}\)</span> are not significant (e.g., <span class="math inline">\(p&gt;0.05\)</span>), then we can simply use OLS i.e., incorporating spatial dependence does not improve the model.</li>
 <li>If only one is significant, that is the model of choice.</li>
 <li>If both are significant, then more robust test statistics are calculated as described above (<span class="math inline">\(\text{Robust}\ \text{LM}_{\text{lag}}\)</span>, <span class="math inline">\(\text{Robust}\ \text{LM}_{\text{error}}\)</span>) and the process is repeated. If only one of the robust tests is significant, that is the model of choice.</li>
 </ul>
@@ -641,12 +674,12 @@ Interpretation
 </center>
 <p><br></p>
 <div class="question">
-<p>Based on the results above and the workflow of <span class="citation">Anselin and Rey (<a href="references.html#ref-anselin2014">2014</a>)</span>, which is our preferred model?</p>
+<p>Based on the results above and the workflow of <span class="citation">Anselin and Rey (<a href="references.html#ref-anselin2014">2014</a>)</span>, what is your preferred model?</p>
 </div>
 <details><summary>
 Interpretation
-</summary><p>Here, <span class="math inline">\(\text{LM}_{\text{error}}\)</span> is significant at <span class="math inline">\(p&lt;0.05\)</span> whereas <span class="math inline">\(\text{LM}_{\text{lag}}\)</span> is not statistically significant at <span class="math inline">\(p\approx0.69\)</span>. Based on the Lagrange Multiplier tests, we would reject SLM in favour of SEM, which accords with our theoretical and statistical interpretation above.</p>
-<p>In future, you can allow the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> tool to select the model for you automatically based on the LM test, using “Model Type” = <code>Auto-detect</code>, although this should not take precedence over theoretical reasoning, and your own judgement of the output statistics.</p>
+</summary><p>Here, <span class="math inline">\(\text{LM}_{\text{error}}\)</span> is significant at <span class="math inline">\(p&lt;0.05\)</span> whereas <span class="math inline">\(\text{LM}_{\text{lag}}\)</span> is not statistically significant with <span class="math inline">\(p\approx0.69\)</span>. Based on the Lagrange Multiplier tests, we would reject SLM in favour of SEM, which accords with our theoretical and statistical interpretation above.</p>
+<p>In future, you can allow the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> tool to select the best model for you automatically based on the LM test, using “Model Type” = <code>Auto-detect</code>, although this should not take precedence over theoretical reasoning, and your own judgement of the output statistics.</p>
 </details><p><br></p>
 <p>As a final consideration, we could also run a <strong>combined autoregressive model</strong> (SAC) via the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> tool. This is simply a combination of SEM and SLM, incorporating the spatial dependence of the errors as well as the spatial lag of the dependent variable.</p>
 <div class="question">
@@ -672,7 +705,7 @@ Interpretation
 <h2>
 <span class="header-section-number">7.3</span> Extra<a class="anchor" aria-label="anchor" href="#prac_7_extra"><i class="fas fa-link"></i></a>
 </h2>
-<p>In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and the identified relationships (i.e., coefficients <span class="math inline">\(\beta\)</span>) are specific to these data and the study area i.e., the North West of England.</p>
+<p>In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and the identified relationships (i.e., coefficients <span class="math inline">\(\beta\)</span>) are specific to these data and the study area i.e., the North West of England. This raises the question:</p>
 <div class="question">
 <p>How generalisable are our models to new locations and datasets?</p>
 </div>
@@ -689,7 +722,7 @@ Interpretation
 <blockquote>
 <p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog">Spatial Autoregression</a> using the same dependent and independent variables, model type (e.g., SEM) and spatial weights method (e.g., <span class="math inline">\(K=10\)</span>), but for the North West and London regions separately.</p>
 </blockquote>
-<p>For example, here are the coefficients for a spatial lag model, where deprivation is the sole predictor of life expectancy, for the <strong>North West</strong>:</p>
+<p>For example, here are the coefficients for a spatial error model, where deprivation is the sole predictor of life expectancy, for the <strong>North West</strong>:</p>
 <center>
 <img src="screenshots/practical-7/imd_north_west.png" style="width:100.0%">
 </center>
@@ -700,17 +733,17 @@ Interpretation
 </center>
 <p><br></p>
 <div class="question">
-<p>How well does deprivation explain life expectancy in the two regions?</p>
+<p>How well do the models explain life expectancy in the two regions?</p>
 </div>
 <details><summary>
 Answer
-</summary><p>In the North West, <span class="math inline">\(\approx0.78 \%\)</span> of variability in life expectancy can be explained by deprivation, with <span class="math inline">\(\approx0.58 \%\)</span> explained in London. While these estimates are derived from the same modelling approaches, we should be cautious of comparing them directly, as these are <strong>pseudo</strong> <span class="math inline">\(R^2\)</span> values, which are described <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#E3F">here</a>.</p>
+</summary><p>In the North West, <span class="math inline">\(\approx0.78 \%\)</span> of variability in life expectancy can be explained <em>by the model</em>, as a function of deprivation and the modelling of the spatial dependence of the errors. By comparison, <span class="math inline">\(\approx0.58 \%\)</span> of variability can explained in London. While these estimates are derived from the same modelling approaches, we should be cautious of comparing them directly, as these are <strong>pseudo</strong> <span class="math inline">\(\text{R}^2\)</span> values, which are described <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#E3F">here</a> and discussed <a href="spatial_regression.html#sem">above</a>.</p>
 </details><div class="question">
 <p>How different is the baseline life expectancy between the two regions?</p>
 </div>
 <details><summary>
 Answer
-</summary><p>This is expressed by the intercept term <span class="math inline">\(B_0\)</span>, which is <span class="math inline">\(\approx82.9\)</span> in the North West and <span class="math inline">\(\approx84.4\)</span> years in London. Note that this is the intercept term when deprivation is the only predictor, and this will vary as additional predictors are added.</p>
+</summary><p>This is expressed by the intercept term <span class="math inline">\(B_0\)</span>, which is <span class="math inline">\(\approx82.9\)</span> years in the North West and <span class="math inline">\(\approx84.4\)</span> years in London. Note that this is the intercept term when deprivation is the only predictor, and this will vary as additional predictors are added.</p>
 </details><div class="question">
 <p>How different is the new model? Does this change your interpretation of the links between MSOA-level attributes and life expectancy?</p>
 </div>
@@ -750,7 +783,7 @@ Answer
 <li>
 <a class="nav-link" href="#practical-5"><span class="header-section-number">7.2</span> Practical</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#justify_spatial_reg"><span class="header-section-number">7.2.1</span> Why spatial regression?</a></li>
-<li><a class="nav-link" href="#pre-processing-4"><span class="header-section-number">7.2.2</span> Pre-processing</a></li>
+<li><a class="nav-link" href="#prac_7_process"><span class="header-section-number">7.2.2</span> Pre-processing</a></li>
 <li><a class="nav-link" href="#data-exploration"><span class="header-section-number">7.2.3</span> Data exploration</a></li>
 <li><a class="nav-link" href="#ols"><span class="header-section-number">7.2.4</span> Ordinary least squares</a></li>
 <li><a class="nav-link" href="#spat_reg_details"><span class="header-section-number">7.2.5</span> Spatial regression</a></li>

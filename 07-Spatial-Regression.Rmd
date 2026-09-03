@@ -14,7 +14,7 @@ The aims of this practical are to:
 
 ### Application {.unnumbered}
 
-To that end, we'll apply aspatial and spatial regression to predict life expectancy at the MSOA-level ([Middle Layer Super Output Area](https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies)) in the North West of the UK.
+To that end, we'll apply aspatial and spatial regression to predict life expectancy at the MSOA-level ([Middle Layer Super Output Area](https://www.ons.gov.uk/methodology/geography/ukgeographies/statisticalgeographies)) in the North West of England.
 
 ### Data {#sr_data .unnumbered}
 
@@ -68,7 +68,7 @@ The data for this practical are sourced from the Department of Health and Social
 
 ### Tools {.unnumbered}
 
-[Ordinary Least Squares (OLS)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/ordinary-least-squares.html?tabs=dialog) (Spatial Statistics), [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) (Spatial Statistics), [Predict Using Spatial Statistics Model File](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/predict-using-spatial-statistics-model-file.html?tabs=dialog) (Spatial Statistics Tools)
+[Ordinary Least Squares (OLS)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/ordinary-least-squares.html?tabs=dialog) (Spatial Statistics), [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) (Spatial Statistics)
 
 ------------------------------------------------------------------------
 
@@ -92,7 +92,7 @@ This question is foundational, found in the fields of epidemiology[^07-spatial-r
 
 In [Practical 4](#justify_spatial_corr), we introduced a measure of association, Pearson's $r$ [@pearson1895], with values ranging from $-1$ (perfect *negative* correlation) to $+1$ (perfect *positive* correlation). As a refresher, **association** refers to any form of dependency between variables, whereas **correlation** is a specific form of association, focusing on the degree of *linearity*.
 
-While measures of association are useful, they primarily provide information on the **strength** and **direction** of the correlation, but little about the **nature** of the relationship between the variables i.e., how much does $Y$ change as $X$ changes? We can address this by modelling the relationship between $X$ and $Y$ and producing an equation which describes this relationship. In doing so, we can develop a deeper understanding of how the variables are related, moving beyond just strength and direction, and can use our equation to make predictions i.e., what would happen to $Y$ if we doubled $X$?
+While measures of association are useful, they primarily provide information on the **strength** and **direction** of the correlation, but little about the **nature** of the relationship between the variables i.e., how much does $Y$ change as $X$ changes? We can address this by modelling the relationship between $X$ and $Y$ and producing an equation which represents this relationship. In doing so, we can develop a deeper understanding of how the variables are related, moving beyond just strength and direction, and can use our equation to make predictions i.e., what would happen to $Y$ if we doubled $X$?
 
 This is known as **regression**.
 
@@ -114,9 +114,9 @@ The regression line itself can be defined as follows:
 
 $$Y=\beta_{0}+\beta_{1}X_{1}+\beta_{2}X_{2}+\cdots+\beta_{i}X_{i}+\epsilon$$
 
-where $Y$ is the dependent variable of interest, $X_{i}$ is an independent variable where $\beta_{i}$ is the corresponding slope coefficient, $\beta_{0}$ is where the regression line intercepts the Y-axis, and $\epsilon$ is the random error (residual) between the observed dependent variable $Y$ and the regression equation.
+where $Y$ is the dependent variable of interest, $X_{i}$ is an independent variable where $\beta_{i}$ is the corresponding slope coefficient, $\beta_{0}$ is where the regression line intercepts the Y-axis, and $\epsilon$ is the random error (residual) between the observed dependent variable $Y$ and the regression line.
 
-Let's use a simple example to illustrate, using the ecological data from @getzin2012 from [Practical 4](#justify_spatial_corr), which consists of paired measurements of the median gap shape complexity index (GSCI) $X$ and species richness (SR) $Y$ for a forest patch (Hainich) in central Germany. Here we have a single dependent variable we want to predict (SR) and a single independent variable (GSCI).
+Let's use a simple example to illustrate, using the ecological data from @getzin2012 from [Practical 4](#justify_spatial_corr), which consists of paired measurements of the median gap shape complexity index (GSCI) $X$ and species richness (SR) $Y$ for a forest patch (Hainich) in central Germany. Here we have a single dependent variable we want to predict (SR) and a single independent variable (GSCI) which we believe to be related to SR in some way.
 
 Here is a plot of the paired measurements, redrawn from @getzin2012:
 
@@ -128,21 +128,29 @@ You'll remember that Pearson's $r=0.86$. As discussed above, this tells us about
 What species richness would we expect for a median GSCI value of $2.3$?
 :::
 
-This could be addressed via OLS regression, which for this dataset would produce the following:
+This could be addressed via OLS regression, which for this dataset would produce the following best-fit regression line:
 
 <center>![](./images/practical-7/getzin_regress.png){width="50%"}</center>
 
 With only a single independent variable, the regression line is defined as:
 
-$$Y=\beta_{0}+\beta_{1}X_{1}$$ with a calculated slope coefficient $\beta_{1}$ of 14.150 and an intercept $\beta_{0}$ of 5.595:
+$$Y=\beta_{0}+\beta_{1}X_{1}+\epsilon$$
 
-$$\text{SR} = 5.595 + 14.150\cdot\text{GSCI}$$ Prediction is now possible, as we can substitute in our median GSCI value of interest:
+Based on the minimising the sum of the squares of the residuals, the best-fit regression line is defined by a slope coefficient $\beta_{1}$ of 14.150 and an intercept $\beta_{0}$ of 5.595:
 
-$$\text{SR} = 5.595 + 14.150\cdot2.3 = 38.14$$ Alongside the regression equation, it is also typical to calculate the **coefficient of determination** $R^2$, which measures the proportion of variance in the dependent variable that can be explained by the independent variables in the model. This typically ranges from $0$ i.e., **none** of the variance in the dependent variable is explained by the independent variables, to $1$ i.e., the variance in the dependent variable is **perfectly** explained by the independent variables.
+$$\text{SR} = 5.595 + 14.150\cdot\text{GSCI}$$
 
-For this dataset $R^2=0.74$, which indicates that 74% of the variance in species richness can be explained by median GSCI[^07-spatial-regression-12].
+Prediction is now possible, as we can substitute in our median GSCI value of interest[^07-spatial-regression-12]:
 
-[^07-spatial-regression-12]: You can check Figure 3 in @getzin2012 to confirm this. You could also run your own OLS regression using the data [here](#justify_spatial_corr), via [Excel](https://support.microsoft.com/en-us/excel/functions/linest-function), [Python](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html) or [R](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) if familiar.
+[^07-spatial-regression-12]: You'll notice that the error term $\epsilon$ is not included here, which as a reminder represents the residual between the observed dependent variable $Y$ and predicted $Y$. For example, if the "true" species richness was 35 but the predicted species richness was 28, $\epsilon=7$. This is the unexplained residual for each observation.
+
+$$\text{SR} = 5.595 + 14.150\cdot2.3 = 38.14$$
+
+Alongside the regression equation, it is also typical to calculate the **coefficient of determination** $\text{R}^2$, which measures the proportion of variance in the dependent variable that can be explained by the independent variables in the model. This typically ranges from $0$ i.e., **none** of the variance in the dependent variable is explained by the independent variables, to $1$ i.e., the variance in the dependent variable is **perfectly** explained by the independent variables.
+
+For this dataset $\text{R}R^2=0.74$, which indicates that 74% of the variance in species richness can be explained by median GSCI[^07-spatial-regression-13].
+
+[^07-spatial-regression-13]: You can check Figure 3 in @getzin2012 to confirm this. You could also run your own OLS regression using the data [here](#justify_spatial_corr), via [Excel](https://support.microsoft.com/en-us/excel/functions/linest-function), [Python](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html) or [R](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) if familiar.
 
 *However*, there is a **problem**.
 
@@ -176,7 +184,11 @@ Incorporating geography can also be useful to minimise model error. When evaluat
 
 <br>
 
-While this provides important information on the whether the model is systematically under- or over-predicting $Y$, it provides no information on **where** that systematic error is located. For example, perhaps our model systematically over-predicts life expectancy in certain regions, and under-predicts life expectancy elsewhere, indicating **clustering** of the model residuals i.e., positive spatial autocorrelation. By accounting for the spatial structure of the residuals (if present), we can produce models which minimise error.
+While this provides important information on the whether the model is systematically underpredicting $Y$ (distribution $A$) or over-predicting $Y$ (distribution $C$), it provides no information on **where** that systematic error is located. For example, perhaps our model systematically over-predicts life expectancy in certain regions, and under-predicts life expectancy elsewhere, indicating **clustering** of the model residuals i.e., positive spatial autocorrelation, as illustrated below (e.g., over-prediction in parts of southern Europe, under-prediction in northern Europe). Spatial structure of the errors might indicate the exclusion of important spatial variables. Moreover, if we can model and account for spatial clustering of the residuals (if present), we can produce models which minimise error.
+
+<center>![](./images/practical-7/europe-residuals.png){width="60%"}</center>
+
+<br>
 
 Finally, and from a statistical perspective, one of the key assumptions of many tests, including OLS, is the **independence of observations** assumption. This states that each observation in your dataset (e.g., a species richness value) should not be influenced by or be related to any other observation in the dataset. Given Tobler's Law [@tobler1970], and the evidence of spatial clustering and dispersion in many datasets, as revealed using Moran's $I$ and $I_{i}$ [@moran1948; @anselin1995], we know that observations are often spatially *dependent* e.g., the Republican vote share in a particular US county is related to the vote share of its neighbours. In these situations, the independence of observations assumption is violated, and the OLS regression coefficients and errors may be biased.
 
@@ -188,21 +200,25 @@ Finally, and from a statistical perspective, one of the key assumptions of many 
 
 Based on the above reasoning, **spatial regression** methods are *often* more appropriate than OLS and similar aspatial regression methods when applied to spatial data, in that they incorporate the spatial structure and spatial dependence of the data, are a better representation of the spatial processes which produce the variables of interest, and can often minimise model error.
 
-### Pre-processing
+### Pre-processing {#prac_7_process}
 
 To begin:
 
 > Open ArcGIS, initialise a new project in the `practical-7` directory, establish a connection to `data` and then load the MSOA geometries for England and Wales, stored in `MSOA_2021_EW_BGC_V3.shp`.
 
-::: question
-What is the data CRS?
-:::
+<center>![](./screenshots/practical-7/msoa.png){width="100%"}</center>
+
+<br>
 
 > Next, load and inspect the MSOA lookup table `MSOA_2021_lookup_table.csv` which contains additional attributes of interest e.g., region name [`RGN22NM`].
 
-For our analysis, we are going to focus on the North West of England, which includes the counties of Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside.
+<center>![](./screenshots/practical-7/lookup_table.png){width="100%"}</center>
 
-> Use a dynamic table join to link the geometries and lookup table via the `MSOA21CD` attribute. When complete, use Select by Attributes to filter to the North West (`RGN22NM = 'North West'`, $n=932$), and then export the selection to your project directory with a suitable name e.g., `MSOA_2021_nw`. To simplify the export, remove all the joined fields (Export Features → Fields → Field Map → Remove all below `GlobalID`).
+<br>
+
+For our analysis, we are going to focus on the [North West of England](https://en.wikipedia.org/wiki/North_West_England), which includes the counties of Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside.
+
+> Use a dynamic table join via Joins and Relatives → Add Join to link the geometries and lookup table via the `MSOA21CD` attribute. When complete, use Select by Attributes to filter to the North West (`RGN22NM = 'North West'`, $n=932$), and then export the selection to your project directory with a suitable name e.g., `MSOA_2021_nw`. To simplify the export, remove all the joined fields (Export Features → Fields → Field Map → Remove all below `GlobalID`).
 
 > When complete, remove the national MSOA geometries and lookup table.
 
@@ -226,9 +242,9 @@ When complete:
 > -   [`dhsc-imd.csv`] = `imd_decile`
 > -   [`dhsc-fuel-poverty.csv`] = `fuel_poverty_perc`
 
-As MSOAs have varying populations, ranging from approximately 5,000 to 15,000 residents, we should take care to use proportional variables (e.g., `disabled_perc`, `fuel_poverty_perc`) or those that are not population-dependent (e.g., `imd_decile`, `total_annual_income`). For the economic activity status and qualification datasets, we can calculate proportional variables using the total number of individuals with an economic or qualification status (`economic_status_total`, `qualification_total`), focusing on the end-member classes i.e., unemployed *vs*. employed, no qualifications *vs*. level-four qualifications.
+As MSOAs have varying populations, ranging from approximately 5,000 to 15,000 residents, we should take care to use **proportional variables** (e.g., `disabled_perc`, `fuel_poverty_perc`) or those that are not population-dependent (e.g., `imd_decile`, `total_annual_income`). For the economic activity status and qualification datasets, we can calculate proportional variables using the total number of individuals with an economic or qualification status (`economic_status_total`, `qualification_total`), focusing on the end-member classes i.e., economically active *vs*. inactive, no qualifications *vs*. level-four qualifications.
 
-> Use Calculate Field to produce proportional variables ("Field Type" = `Double`) representing the proportion of the population employed (`employed_not_ftstudent_perc`) and not employed (`economically_inactive_not_ftstudent_perc`), and the proportion with no qualifications (`no_qualifications_perc`) and level-four qualifications (`level_four_perc`) e.g., `employed_not_ftstudent_perc` = `(!employed_not_ftstudent! / !economic_status_total!) * 100`
+> Use Calculate Field to produce proportional variables ("Field Type" = `Double`) representing the proportion of the population employed (`employed_not_ftstudent_perc`) and not economically active (`economically_inactive_not_ftstudent_perc`), and the proportion with no qualifications (`no_qualifications_perc`) and level-four qualifications (`level_four_perc`) e.g., `employed_not_ftstudent_perc` = `(!employed_not_ftstudent! / !economic_status_total!) * 100`
 
 As we have permanently joined these attributes to our geometry layer:
 
@@ -261,7 +277,7 @@ You could also use Create Chart → Scatter Plot to investigate the bivariate re
 <br>
 
 ::: note
-It is worth **emphasising** that the plots and statistics ($R^2$, coefficients $B_{0}$ and $B_{1}$) are produced using OLS i.e., they are not taking geography into account. As we know from earlier weeks of the unit, including [spatial correlation](#spatial_correlation), there are often alternative methods that are more appropriate e.g., Lee's $L$.
+It is worth **emphasising** that the plots and statistics ($\text{R}^2$, coefficients $B_{0}$ and $B_{1}$) are produced using OLS i.e., they are not taking geography into account. As we know from earlier weeks of the unit, including [spatial correlation](#spatial_correlation), there are often alternative methods that are more appropriate e.g., Lee's $L$.
 
 <br>
 
@@ -284,21 +300,19 @@ When selecting a spatial weights method, we need to consider both **theory** and
 
 These practical considerations are important, but more so is the theory of the **nature of the interaction** between spatial units for the **specific** geographic process.
 
-For example, if we were focused on a geographic process which was dependent on **contact** between individuals e.g., the spread of disease, or the expansion of a species, then a contiguity-based approach would be most appropriate, as this is a representation of the nature of the interaction i.e., spatial units must be contiguous for disease to spread[^07-spatial-regression-13], or for a species to move from one spatial unit to another.
+For example, if we were focused on a geographic process which was dependent on **contact** between individuals e.g., the spread of disease, or the expansion of a species, then a contiguity-based approach would be most appropriate, as this is a representation of the nature of the interaction i.e., spatial units must be contiguous for disease to spread[^07-spatial-regression-14], or for a species to move from one spatial unit to another.
 
-[^07-spatial-regression-13]: This is of course an oversimplification for the spread of disease in humans, given national and international movement, but is highly relevant in other settings e.g., @flood2013.
+[^07-spatial-regression-14]: This is of course an oversimplification for the spread of disease in humans, given national and international movement, but is highly relevant in other settings e.g., @flood2013.
 
 Alternatively, if the geographic process is dependent on **accessibility**, then a distance-based approach might be more appropriate. In the context of life expectancy, we might expect this to be influenced by the characteristics of nearby areas, such as the provision of hospitals, the proximity of sources of pollution, or the availability of high paying jobs within a certain commutable distance. These characteristics would affect life expectancy even if the spatial units were non-contiguous.
 
-The geographic process could also be dependent on **structural differences** across the study area. Continuing with our life expectancy example, which we are analysing at the MSOA-level, there might be differences in how the health service is funded and managed at a higher spatial level i.e., Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside, resulting in a different quality of care for different counties. In this situation, we might want to use *block weights*, which define neighbours based on the higher spatial level i.e., all MSOAs within Greater Manchester would be defined as neighbours, and so on[^07-spatial-regression-14].
-
-[^07-spatial-regression-14]: **Block Weights** are not easily implemented in ArcGIS, but are available elsewhere e.g., [`pysal`](https://pysal.org/libpysal/stable/generated/libpysal.weights.block_weights.html).
+The geographic process could also be dependent on **structural differences** across the study area. Continuing with our life expectancy example, which we are analysing at the MSOA-level, there might be differences in how the health service is funded and managed at a higher spatial level i.e., Cheshire, Cumbria, Greater Manchester, Lancashire, and Merseyside, resulting in a different quality of care for different counties. In this situation, we might want to use *block weights*, which define neighbours based on the higher spatial level i.e., all MSOAs within Greater Manchester would be defined as neighbours, and so on.
 
 To summarise, the choice of spatial weights method is critical and should be dependent on the **nature of the interaction** between spatial units for a **specific** geographic process. Different geographic processes necessitate different methods, even when the same spatial units are used (e.g., MSOA).
 
 </details>
 
-> Assess for global and local spatial autocorrelation for some of the attributes (e.g., `life_expectancy_male` and `life_expectancy_female`) using Moran's $I$ ([Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog)) and local Moran's $I_i$ [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog)[^07-spatial-regression-15].
+> Assess for global and local spatial autocorrelation for some of the attributes (e.g., `life_expectancy_male` and `life_expectancy_female`) using Moran's $I$ ([Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog)) and local Moran's $I_i$ ([Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog)[^07-spatial-regression-15].
 
 [^07-spatial-regression-15]: You will likely encounter WARNING [000848](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00826-00850-000848.html): `Features with bad records`, which arises due to missing life expectancy values in the DSHC data.
 
@@ -324,7 +338,11 @@ WARNING 000851: Use the Spatial Autocorrelation (Morans I) Tool to ensure residu
 
 This is very good advice and is described more fully [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00851-00875-000851.html).
 
-*For now* we'll ignore this and inspect the results under "Messages", which reveals $R^2=0.62$ (`Multiple R-Squared`), matching the Scatter Chart presented above, as well as coefficients $\beta_0\approx62.86$ and $\beta_1\approx0.0003$, and *p*-values for the independent variable, alongside a wealth of information in the PDF.
+*For now* we'll ignore this and inspect the results under "Messages", which reveals $\text{R}^2=0.62$ (`Multiple R-Squared`), matching the Scatter Chart presented above, as well as coefficients $\beta_0\approx62.86$ and $\beta_1\approx0.0003$, and *p*-values for the independent variable, alongside a wealth of information in the PDF.
+
+<center>![](./screenshots/practical-7/ols_residual_hist.png){width="100%"}</center>
+
+<br>
 
 ::: question
 What is the numeric distribution of the model residuals?
@@ -382,17 +400,41 @@ In our first model, we have used a single independent variable (`total_annual_in
 How much additional variability in life expectancy can be explained with our new model?
 :::
 
+<details>
+
+<summary>Answer</summary>
+
+When modelling `life_expectancy_male`, and including the full range of independent variables, $R^2\approx0.82$, indicating 82% of variability in life expectancy can be explained.
+
+</details>
+
 There are lots of tools available to diagnose multicollinearity, one of which is the Variance Inflation Factor (VIF), which can be found in the "Summary of OLS Results" table. As a rule-of-thumb, multicollinearity is present when the VIF is higher than 5 to 10 [@kim2019].
 
 ::: question
 Is there evidence of multicollinearity?
 :::
 
+<details>
+
+<summary>Answer</summary>
+
+There is evidence of multicollinearity, as `imd_decile` and `no_qualifications_perc` have $\text{VIF}>10$. This is not to suggest that these variables are *unimportant*, but it may be that their effects are being captured by other variables.
+
+</details>
+
 If multicollinearity is present, a typical strategy is to remove highly correlated variables.
 
 ::: question
 Are all the independent variables significant in the model? i.e., $p<0.05$.
 :::
+
+<details>
+
+<summary>Answer</summary>
+
+Fuel poverty is classed as not statistically significant, with $p\approx0.68$. As above, this does indicate that fuel poverty is unimportant, see @robinson2018 and @robinson2019, but that its effects is being captured by other variables e.g., deprivation. 
+
+</details>
 
 ::: note
 In **summary**, OLS is inappropriate for our analysis of life expectancy, as statistically significant spatial autocorrelation of the regression residuals indicates misspecification of the OLS model, violation of OLS assumptions, or that additional important spatial factors are missing from the model. More fundamentally, variability in life expectancy likely represents the outcome of **spatial processes**. Incorporating geography into our modelling approach may produce better predictions and minimise error.
@@ -436,7 +478,7 @@ This is very similar to a standard OLS formulation, which could be written simpl
 
 The spatial lag model therefore includes the spatial lag of the dependent variable, with the calculation approach defined in [Practical 3](#spatial_lag). In this case, the spatial lag is of life expectancy where the coefficient $\rho$ is a single value which represents the strength and direction of the spatial lag influence, much like a coefficient $\beta$. As $\rho$ increases, neighbourhood effects become increasingly important.
 
-This approach therefore accounts for **spillover effects**, in that the dependent variable at a specific location $Y_i$ may be **influenced** by the corresponding dependent variable of its neighbours $Y_j$, which we define based on the spatial weights matrix $W$ i.e., life expectancy for an MSOA is influenced by life expectancy in neighbouring MSOAs.
+This approach therefore accounts for **spillover effects**, in that the dependent variable at a specific location $Y_i$ may be **influenced** by the corresponding dependent variable of its neighbours $Y_j$, which we define based on the spatial weights matrix $W$ i.e., life expectancy for an MSOA is influenced by life expectancy in neighbouring MSOAs, which in turn, influences life expectancy at other MSOAs, and so on. 
 
 The following example outlines a situation in which *diffusion of behaviour* could lead to spatial dependence:
 
@@ -513,12 +555,32 @@ We'll focus on a few key statistics to start, including those in the "Summary of
 <br>
 
 ::: question
-What is the model $R^2$ and *p*-value?
+What is the model $\text{R}^2$?
 :::
+
+<details>
+
+<summary>Answer</summary>
+
+The coefficient of determination for this model is $\text{R}^2\approx0.62$. Being more precise, the reported value is actually a `Pseudo R2`, which is described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#E3F). We won't go into the mathematics of how this is calculated, but the important thing to note is that unlike an OLS $\text{R}^2$, which can be interpreted quite simply: "The proportion of the total variation in $Y$ that is explained by the independent variables $X$", we need to be more cautious with the pseudo $\text{R}^2$ values reported for spatial regressions. 
+
+While pseudo $\text{R}^2$ is a measure of model fit, the actual interpretation is more complex, *something like*: "The variation in $Y$ that can be explained by both the independent variables $X$ **and** the spatial dependence of the errors". In turn, we **can't** say that approximately 62% of variability in life expectancy is explained by income, because this is ignoring the modelling of the spatial dependence of the errors via $u=\lambda Wu+\epsilon$. 
+
+</details>
 
 ::: question
 Is income positively or negatively correlated with life expectancy?
 :::
+
+<details>
+
+<summary>Answer</summary>
+
+Life expectancy is still positively correlated with total annual income, with $\beta\approx0.0003$. 
+
+</details>
+
+<br>
 
 The lag residual coefficient ($\lambda$) for my model is $\approx0.48$. This can range from $-1$ to $+1$ and represents the strength of the correlation between an observations error and that of its neighbours.
 
@@ -542,7 +604,7 @@ The tool also produces a Moran's Scatter Plot of Residuals, described [here](htt
 
 <br>
 
-We can test for this directly using Moran's $I$ and $I_i$.
+We can test for this directly using Moran's $I$.
 
 > Evaluate the spatial patterning of the SEM residuals using the [global spatial autocorrelation tool](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog).
 
@@ -568,7 +630,7 @@ It is worth noting that the *p*-value for Moran's $I$ is $>0.05$, as shown below
 
 We can evaluate how the spatial patterning of the SEM residuals changes with different spatial weights:
 
-> Re-run an SEM using the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool, but this time using `K nearest neighbours` as the neighbourhood type ($K=10$). When complete, assess for autocorrelation using [Global Moran's I](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) and [Local Moran's I](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog), making sure to use $K=10$ for consistency.
+> Re-run a SEM using the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool, but this time using `K nearest neighbours` as the neighbourhood type ($K=10$). When complete, assess for autocorrelation using [Global Moran's I](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) and [Local Moran's I](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog), making sure to use $K=10$ for consistency.
 
 <center>![](./screenshots/practical-7/sem_k10_anselin.png){width="50%"}</center>
 
@@ -636,9 +698,9 @@ As we discussed above, the spatial lag model assumes that spatial dependence ari
 
 As with the lag residual coefficient ($\lambda$) for the SEM model, this can range from $-1$ to $+1$ and represents the strength of the correlation between an observed dependent variable and that of its neighbours.
 
-Here, the value is negative at $\rho\approx-0.1$. This is indicative of **weak negative** spatial dependence i.e., when observed life expectancy is low, neighbourhood life expectancy is slightly higher, when *we have controlled for the independent variables in the model*[^07-spatial-regression-25]. This weak spatial dependence is evidenced by the probability value of $p\approx0.117$, which we would classify as **not** statistically significant. Based on this data, we might already begin to be cautious about the use of the spatial lag model, given only weak evidence for spatial dependence of the observations.
+Here, the value is negative at $\rho\approx-0.1$. This is indicative of **weak negative** spatial dependence i.e., when observed life expectancy is low, neighbourhood life expectancy is slightly higher, when *we have controlled for the independent variables in the model*[^07-spatial-regression-25]. This weak spatial dependence is also evidenced by the probability value of $p\approx0.117$, which we would classify as **not** statistically significant. Based on this data, we might already begin to be cautious about the use of the spatial lag model, given only weak evidence for spatial dependence of the observations.
 
-[^07-spatial-regression-25]: For example, Moran's $I$ on life expectancy exhibits positive spatial autocorrelation i.e., clustering ($I>0$). This spatial dependence could arise from a spatial relationship with the dependent variable (e.g., income) and/or spatial dependence of the observations, as represented by $\rho WY$. If the former explains a large proportion of the spatial dependence, then we might see only weak spatial dependence remaining.
+[^07-spatial-regression-25]: For clarity, Moran's $I$ on life expectancy might exhibit positive spatial autocorrelation i.e., clustering ($I>0$). This spatial dependence could arise from a spatial relationship with the dependent variable (i.e., attribute similarity between `income` and `life_expectancy`) and/or spatial dependence of the observations (i.e., diffusion of behaviour), as represented by $\rho WY$. If the former explains a large proportion of the spatial dependence, and this is accounted for by the inclusion of `income` in the model, then we might see only weak spatial dependence remaining.
 
 We also need to be cautious when interpreting the coefficients of the spatial lag model. While these are included in the table above, they are not directly comparable to those produced by OLS or SEM, which can be interpreted quite simply: "How much does the dependent variable change for a one unit change in the independent variable, *when all other independent variables are held constant*?" This is not possible for SLM because of **spatial spillover** effects, and the fact that our dependent variable $Y$ is influenced by the surrounding neighbourhood values.
 
@@ -659,13 +721,13 @@ This allows us to distinguish two effects of an independent variable:
 -   **direct** i.e., the local effect for that spatial unit.
 -   **indirect** i.e., the average neighbourhood effect.
 
-The value listed in the coefficient table above ($\approx0.0003$) is the direct effect only, and we can find the indirect and the total effects (i.e., direct + indirect) in the coefficients summary at the bottom:
+The value listed in the coefficient table above ($\beta\approx0.0003$) is the direct effect only, and we can find the indirect and the total effects (i.e., direct + indirect) in the coefficients summary at the bottom:
 
 <center>![](./screenshots/practical-7/slm_effects.png){width="100%"}</center>
 
 <br>
 
-In this example, the indirect effects are very small at $-0.000032$, even within the context of the small direct effect of $0.000335$. Based on this reasoning, we can conclude that spatial spillover effects seem relatively unimportant for the current model setup, but this is not always the case, with a more striking example in the esri [documentation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#8A0).
+In this example, the indirect effects are very small at $-0.000032$, even within the context of the small direct effect of $0.000335$. Based on this interpretation, we can conclude that spatial spillover effects seem relatively unimportant for the current model setup, but this is not always the case, with a more striking example in the esri [documentation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#8A0), where the magnitude of the indirect effects exceeds the direct effects. 
 
 As a final consideration, it is worth evaluating the spatial patterning of the SLM residuals:
 
@@ -701,45 +763,45 @@ You should now have a good understanding of both the **spatial error** and the *
 Which model should we select?
 :::
 
-Model selection should be based on both **theory** and **statistical reasoning**.
+Model selection should always be based on both **theory** and **statistical reasoning**.
 
-For the latter, we can be quite critical of the spatial lag model for this dataset and model specification, given the spatial autocorrelation of the model residuals. This is one of the key limitations of the OLS model which we were trying to address! Moreover, the spatial lag coefficient $\rho$ was weak, negative and not statistically significant ($p\approx0.117$). By comparison, the spatial error model exhibited spatially random model residuals ($I\approx-0.005$, $p\approx0.79$), and a highly significant $\lambda\approx0.48$, indicating spatial clustering of errors.
+For the latter, we can be quite critical of the spatial lag model for this dataset and for this model specification, given the spatial autocorrelation of the model residuals. This is one of the key limitations of the OLS model which we were trying to address! Moreover, the spatial lag coefficient $\rho$ was weak, negative and not statistically significant ($p\approx0.117$). By comparison, the spatial error model exhibited spatially random model residuals ($I\approx-0.005$, $p\approx0.79$), and a highly significant $\lambda\approx0.48$, indicating spatial clustering of errors.
 
 From a theoretical perspective, we can also be cautious about whether the observed spatial dependence is a result of *diffusion of behaviour*, as assumed in the spatial lag model. In the political example presented by @thesoci2015 above, there is a clear spatial process by which political opinion and voting intention in one spatial unit might be influenced by political opinion in a neighbouring spatial unit i.e., interactions and discussion between people from different spatial units. This is less clear for our analysis of life expectancy, where it is difficult to envisage how my life expectancy is **directly** influenced by the life expectancy of my neighbours. Instead, spatial dependence in life expectancy is more easily explained by attribute similarity, and the co-patterning of income, education, employment, deprivation, and so on.
 
-We also have other tools at our disposal to select the best model, one of which is the **Lagrange Multiplier** (LM), developed by @bera1993, and applied to spatial regression by @anselin1996, with the process outlined well in the esri [documentation](https://pro.arcgis.com/en/pro-app/3.5/tool-reference/spatial-statistics/how-spatial-autoregression-works.htm#ESRI_SECTION1_DFC61ED3F77040FEBB168A2CFC74D0CC). 
+We also have other tools at our disposal to select the best model, one of which is the **Lagrange Multiplier** (LM), developed by @bera1993, and applied to spatial regression by @anselin1996, with the process outlined well in the esri [documentation](https://pro.arcgis.com/en/pro-app/3.5/tool-reference/spatial-statistics/how-spatial-autoregression-works.htm#ESRI_SECTION1_DFC61ED3F77040FEBB168A2CFC74D0CC).
 
-We won't go into the mathematics of the LM tests here, which you are welcome to explore in @anselin1996a. As a simple overview, the LM test begins with an OLS model and then evaluates whether incorporating the spatial lag of the outcome (SLM) or incorporating the spatial lag of the error (SEM) improves the model performance. These are known as the $\text{LM}_{\text{lag}}$ and $\text{LM}_{\text{error}}$ tests respectively. These circumstances are not mutually exclusive, so *robust* versions of these tests evaluate whether including the spatial lag of the outcome improves the model *when the spatial lag of the error has already been accounted for* ($\text{Robust}\ \text{LM}_{\text{lag}}$) and vice versa ($\text{Robust}\ \text{LM}_{\text{error}}$). 
+We won't go into the mathematics of the LM tests here, which you are welcome to explore in @anselin1996a. As a simple overview, the LM test begins with an OLS model and then evaluates whether incorporating the spatial lag of the outcome (SLM) or incorporating the spatial lag of the error (SEM) improves the model performance. These are known as the $\text{LM}_{\text{lag}}$ and $\text{LM}_{\text{error}}$ tests respectively. These circumstances are not mutually exclusive, so *robust* versions of these tests evaluate whether including the spatial lag of the outcome improves the model *when the spatial lag of the error has already been accounted for* ($\text{Robust}\ \text{LM}_{\text{lag}}$) and vice versa ($\text{Robust}\ \text{LM}_{\text{error}}$).
 
 Based on the results of these four tests, and following the process described by @anselin2014:
 
--   If both $LM_{lag}$ and $LM_{error}$ are not significant, then we can simply use OLS i.e., incorporating spatial dependence does not improve the model. 
+-   If both $LM_{lag}$ and $LM_{error}$ are not significant (e.g., $p>0.05$), then we can simply use OLS i.e., incorporating spatial dependence does not improve the model.
 -   If only one is significant, that is the model of choice.
 -   If both are significant, then more robust test statistics are calculated as described above ($\text{Robust}\ \text{LM}_{\text{lag}}$, $\text{Robust}\ \text{LM}_{\text{error}}$) and the process is repeated. If only one of the robust tests is significant, that is the model of choice.
 
-> Inspect the output from the previous [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) model, focusing on the `LM Test Results` section. 
+> Inspect the output from the previous [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) model, focusing on the `LM Test Results` section.
 
 <center>![](./screenshots/practical-7/lm_tests.png){width="80%"}</center>
 
 <br>
 
 ::: question
-Based on the results above and the workflow of @anselin2014, which is our preferred model?
+Based on the results above and the workflow of @anselin2014, what is your preferred model?
 :::
 
 <details>
 
 <summary>Interpretation</summary>
 
-Here, $\text{LM}_{\text{error}}$ is significant at $p<0.05$ whereas $\text{LM}_{\text{lag}}$ is not statistically significant at $p\approx0.69$. Based on the Lagrange Multiplier tests, we would reject SLM in favour of SEM, which accords with our theoretical and statistical interpretation above.
+Here, $\text{LM}_{\text{error}}$ is significant at $p<0.05$ whereas $\text{LM}_{\text{lag}}$ is not statistically significant with $p\approx0.69$. Based on the Lagrange Multiplier tests, we would reject SLM in favour of SEM, which accords with our theoretical and statistical interpretation above.
 
-In future, you can allow the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool to select the model for you automatically based on the LM test, using "Model Type" = `Auto-detect`, although this should not take precedence over theoretical reasoning, and your own judgement of the output statistics. 
+In future, you can allow the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool to select the best model for you automatically based on the LM test, using "Model Type" = `Auto-detect`, although this should not take precedence over theoretical reasoning, and your own judgement of the output statistics.
 
 </details>
 
 <br>
 
-As a final consideration, we could also run a **combined autoregressive model** (SAC) via the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool. This is simply a combination of SEM and SLM, incorporating the spatial dependence of the errors as well as the spatial lag of the dependent variable. 
+As a final consideration, we could also run a **combined autoregressive model** (SAC) via the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool. This is simply a combination of SEM and SLM, incorporating the spatial dependence of the errors as well as the spatial lag of the dependent variable.
 
 ::: question
 Why might this *not* be a suitable choice in our situation?
@@ -749,7 +811,7 @@ Why might this *not* be a suitable choice in our situation?
 
 <summary>Interpretation</summary>
 
-Our theoretical interpretation above, and the results of the Lagrange Multiplier test, indicate that a spatial lag model is not a significant improvement compared to a standard OLS. As such, and with [model parsimony](https://en.wikipedia.org/wiki/Occam%27s_razor) in mind, there is no clear benefit to including SLM in a combined approach, when SEM is a marked improvement on its own. 
+Our theoretical interpretation above, and the results of the Lagrange Multiplier test, indicate that a spatial lag model is not a significant improvement compared to a standard OLS. As such, and with [model parsimony](https://en.wikipedia.org/wiki/Occam%27s_razor) in mind, there is no clear benefit to including SLM in a combined approach, when SEM is a marked improvement on its own.
 
 </details>
 
@@ -757,19 +819,19 @@ Our theoretical interpretation above, and the results of the Lagrange Multiplier
 
 ### Summary {#regression_summary}
 
-In today's practical, we have discussed the problems with aspatial regression methods when applied to spatial data. Mathematically these methods don't account for the spatial processes which often influence the dependent variable of interest, and don't account for spatial dependence. This is important because the resulting OLS models are often misspecified or invalid when key assumptions are not met (e.g., independence of observations, independence of error). More fundamentally, as GI Scientists we are working with **spatial data**. Aspatial methods ignore a key component of that data i.e., their **geography**. Incorporating this information into the regression framework can result in unbiased coefficients, can minimise errors, and can allow us to make more accurate predictions. 
+In today's practical, we have discussed the problems with aspatial regression methods when applied to spatial data. Mathematically these methods don't account for the spatial processes which often influence the dependent variable of interest, and don't account for spatial dependence. This is important because the resulting OLS models are often misspecified or invalid when key assumptions are not met (e.g., independence of observations, independence of error). More fundamentally, as GI Scientists we are working with **spatial data**. Aspatial methods ignore a key component of that data i.e., their **geography**. Incorporating this information into the regression framework can result in unbiased coefficients, can minimise errors, and can allow us to make more accurate predictions.
 
-We introduced two common approaches to incorporate **spatial dependence**, namely the **spatial error model** (SEM) and the **spatial lag model** (SLM). These differ mathematically and theoretically, and should be selected based on the topic (e.g., is spatial dependence due to diffusion of behaviour or attribute similarity?) and the resulting model performance (e.g., statistical significance and the Lagrange Multiplier). 
+We introduced two common approaches to incorporate **spatial dependence**, namely the **spatial error model** (SEM) and the **spatial lag model** (SLM). These differ mathematically and theoretically, and should be selected based on the topic (e.g., is spatial dependence due to diffusion of behaviour or attribute similarity?) and the resulting model performance (e.g., statistical significance and the Lagrange Multiplier).
 
 While these are the most commonly used spatial regression models, and are easily run in ArcGIS via the [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) tool, it is worth noting that there are alternatives. Examples include the **SLX** model, which includes spatially-lagged *independent* variables (unlike SLM, which includes a spatially-lagged *dependent* variable), and the **Spatial Durbin** and **Spatial Durbin Error** models, which combine the SLX model with SLM and SEM respectively.
 
-...and with that, **congratulations!** You have completed the practical and should now be cautious about using OLS and similar aspatial methods for spatial data analysis, and should be able to implement and evaluate spatial regression methods in ArcGIS. 
+...and with that, **congratulations!** You have completed the practical and should now be cautious about using OLS and similar aspatial methods for spatial data analysis, and should be able to implement and evaluate spatial regression methods in ArcGIS.
 
 [**Finished!**](#index)
 
 ## Extra {#prac_7_extra}
 
-In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and the identified relationships (i.e., coefficients $\beta$) are specific to these data and the study area i.e., the North West of England.
+In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and the identified relationships (i.e., coefficients $\beta$) are specific to these data and the study area i.e., the North West of England. This raises the question:
 
 ::: question
 How generalisable are our models to new locations and datasets?
@@ -777,17 +839,17 @@ How generalisable are our models to new locations and datasets?
 
 To test this, we can generate new spatial regression models for a different regions of England and Wales e.g., London, and assess how model performance varies. The instructions above provide further information and context, but as a brief refresher:
 
-> Load the England and Wales MSOA geometries [`MSOA_2021_EW_BGC_V3.shp`] and lookup table [`MSOA_2021_lookup_table.csv`] and join via `MSOA21CD`. When complete, Select by Attributes using `RGN22NM = 'London'` ($n=1002$). Export the Selection to `MSOA_2021_london`, saving to `practical-7.gdb` to facilitate use of full field names. 
+> Load the England and Wales MSOA geometries [`MSOA_2021_EW_BGC_V3.shp`] and lookup table [`MSOA_2021_lookup_table.csv`] and join via `MSOA21CD`. When complete, Select by Attributes using `RGN22NM = 'London'` ($n=1002$). Export the Selection to `MSOA_2021_london`, saving to `practical-7.gdb` to facilitate use of full field names.
 
-> Next, load the datasets containing the dependent and independent variables from [`data/dhsc`] and [`data/ons/msoa`], and join the important attributes to the London MSOA geometries (listed above). *Note* if you wish to include education, economic activity or disability status variables, these data would need to be obtained from the [ONS](https://www.ons.gov.uk/datasets/create). By comparison, the DHSC life expectancy, fuel poverty and IMD datasets contain values for all MSOAs in England and Wales, so no data wrangling required! 
+> Next, load the datasets containing the dependent and independent variables from [`data/dhsc`] and [`data/ons/msoa`], and join the important attributes to the London MSOA geometries (listed above). *Note* if you wish to include education, economic activity or disability status variables, these data would need to be obtained from the [ONS](https://www.ons.gov.uk/datasets/create). By comparison, the DHSC life expectancy, fuel poverty and IMD datasets contain values for all MSOAs in England and Wales, so no data wrangling required!
 
 ::: note
-To simplify the regional comparison, you may wish to use a single independent variable e.g., the effects of deprivation (`imd_decile`) on life expectancy. 
+To simplify the regional comparison, you may wish to use a single independent variable e.g., the effects of deprivation (`imd_decile`) on life expectancy.
 :::
 
-> Run [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) using the same dependent and independent variables, model type (e.g., SEM) and spatial weights method (e.g., $K=10$), but for the North West and London regions separately.  
+> Run [Spatial Autoregression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autoregression.html?tabs=dialog) using the same dependent and independent variables, model type (e.g., SEM) and spatial weights method (e.g., $K=10$), but for the North West and London regions separately.
 
-For example, here are the coefficients for a spatial lag model, where deprivation is the sole predictor of life expectancy, for the **North West**:
+For example, here are the coefficients for a spatial error model, where deprivation is the sole predictor of life expectancy, for the **North West**:
 
 <center>![](./screenshots/practical-7/imd_north_west.png){width="100%"}</center>
 
@@ -800,14 +862,14 @@ and for **London**:
 <br>
 
 ::: question
-How well does deprivation explain life expectancy in the two regions?
+How well do the models explain life expectancy in the two regions?
 :::
 
 <details>
 
 <summary>Answer</summary>
 
-In the North West, $\approx0.78 \%$ of variability in life expectancy can be explained by deprivation, with $\approx0.58 \%$ explained in London. While these estimates are derived from the same modelling approaches, we should be cautious of comparing them directly, as these are **pseudo** $R^2$ values, which are described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#E3F). 
+In the North West, $\approx0.78 \%$ of variability in life expectancy can be explained *by the model*, as a function of deprivation and the modelling of the spatial dependence of the errors. By comparison, $\approx0.58 \%$ of variability can explained in London. While these estimates are derived from the same modelling approaches, we should be cautious of comparing them directly, as these are **pseudo** $\text{R}^2$ values, which are described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-spatial-autoregression-works.html#E3F) and discussed [above](#sem).
 
 </details>
 
@@ -819,7 +881,7 @@ How different is the baseline life expectancy between the two regions?
 
 <summary>Answer</summary>
 
-This is expressed by the intercept term $B_0$, which is $\approx82.9$ in the North West and $\approx84.4$ years in London. Note that this is the intercept term when deprivation is the only predictor, and this will vary as additional predictors are added. 
+This is expressed by the intercept term $B_0$, which is $\approx82.9$ years in the North West and $\approx84.4$ years in London. Note that this is the intercept term when deprivation is the only predictor, and this will vary as additional predictors are added.
 
 </details>
 
@@ -831,7 +893,7 @@ How different is the new model? Does this change your interpretation of the link
 
 <summary>Answer</summary>
 
-Both models show that life expectancy is negatively correlated with deprivation. The estimated coefficient is slightly larger in London at $\approx-0.23$ compared to $\approx-0.19$ in the North West, *potentially* revealing a larger effect of deprivation in London. Either way, deprivation shows a similar negative effect in both regions, which lends support to the **generalisability** of our model. 
+Both models show that life expectancy is negatively correlated with deprivation. The estimated coefficient is slightly larger in London at $\approx-0.23$ compared to $\approx-0.19$ in the North West, *potentially* revealing a larger effect of deprivation in London. Either way, deprivation shows a similar negative effect in both regions, which lends support to the **generalisability** of our model.
 
 </details>
 
