@@ -169,7 +169,9 @@ Mathematica</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-
 Philosophy&lt;/p&gt;"><sup>114</sup></a>, arguably the most important
 scientific work in history:</p>
 <p align="center">
-<a name=""></a><img src="images/practical-10/Newtons_Principia_title_page.png" style="width:20.0%"></p>
+</p>
+<p><a name=""></a><img src="images/practical-10/Newtons_Principia_title_page.png" style="width:20.0%"></p>
+
 <p>Alongside the laws of motion, the <em>Principia</em> included Newton’s law of
 universal gravitation, which describes the force of <strong>gravity</strong> acting
 between objects. It was later formalised as follows:</p>
@@ -286,7 +288,9 @@ which contains the geometries for Local Authortiy districts in Great
 Britain.</p>
 </blockquote>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/ladistricts.png" style="width:30.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/ladistricts.png" style="width:30.0%"></p>
+
 <p>One of the key components of the gravity model is <span class="math inline">\(d_{ij}\)</span>, which
 represents the costs between origins and destinations. In our case, we
 will use the Euclidean (straight-line) distance between local authority
@@ -338,7 +342,8 @@ an alternative method.&lt;/p&gt;'><sup>116</sup></a> and given we are using the 
 Points to calculate an <em>approximate</em> distance between local authorities,
 rather than actual travel paths (for example), we can be justified in
 using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To
-Point</a> output <code>LAD_point</code>.</p>
+Point</a>
+output <code>LAD_point</code>.</p>
 <p>To finalise this choice:</p>
 <blockquote>
 <p>Use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog">Calculate Geometry
@@ -501,7 +506,9 @@ understanding e.g., modifying line size by <code>flow</code>.</p>
 </blockquote>
 <div class="inline-figure"><img src="screenshots/practical-10/flows.png" style="width:100.0%"></div>
 <blockquote>
-<p>When you’ve finishing exploring, remove this dataset from ArcGIS. You may also want to visualise flows to and from a specific local authority e.g., Manchester = <code>E08000003</code>.</p>
+<p>When you’ve finishing exploring, remove this dataset from ArcGIS. You
+may also want to visualise flows to and from a specific local
+authority e.g., Manchester = <code>E08000003</code>.</p>
 </blockquote>
 <p>Finally, it is worth investigating the relationships between the local
 authority attributes.</p>
@@ -515,7 +522,8 @@ authority attributes.</p>
 <p>To finish:</p>
 <blockquote>
 <p>Remove all the original data tables: <code>ons-la-gdp</code>,
-<code>ons-authority-population.csv</code>, <code>ons-internal-migration</code> to avoid confusion.</p>
+<code>ons-authority-population.csv</code>, <code>ons-internal-migration</code> to avoid
+confusion.</p>
 </blockquote>
 </div>
 <div id="model-description" class="section level3" number="10.2.4">
@@ -602,7 +610,9 @@ comparing the sums of <code>flow</code> and <code>gm1_scale</code> using “Expl
 <p>Create a Scatter Plot for <code>flow</code> and <code>gm1_scale</code>.</p>
 </blockquote>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/gm1_performance.png" style="width:60.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/gm1_performance.png" style="width:60.0%"></p>
+
 <div class="question">
 <p>What is your appraisal of model performance?</p>
 </div>
@@ -612,7 +622,9 @@ comparing the sums of <code>flow</code> and <code>gm1_scale</code> using “Expl
 <details><summary>
 Answer
 </summary><p>I think you’ll agree, the performance is <strong>pretty absymal</strong> here
-(<span class="math inline">\(R^2=0.07\)</span>). Our model is capturing less than 10% of the variability in empirical flows. One reason for this is we haven’t tuned our parameters <span class="math inline">\(k, μ, α\)</span> or <span class="math inline">\(\beta\)</span>.</p>
+(<span class="math inline">\(R^2=0.07\)</span>). Our model is capturing less than 10% of the variability in
+empirical flows. One reason for this is we haven’t tuned our parameters
+<span class="math inline">\(k, μ, α\)</span> or <span class="math inline">\(\beta\)</span>.</p>
 </details>
 </div>
 <div id="tuning-parameters" class="section level3" number="10.2.6">
@@ -713,14 +725,18 @@ therefore:</p>
 different average values <span class="math inline">\(λ\)</span> across a range of probabilities <span class="math inline">\(n\)</span>, as
 shown here:</p>
 <p align="center">
-<a name=""></a><img src="images/practical-10/poisson.png" style="width:100.0%"></p>
+</p>
+<p><a name=""></a><img src="images/practical-10/poisson.png" style="width:100.0%"></p>
+
 <p>The <strong>important</strong> thing to note with a Poisson distribution is when the
 average rate of occurrence <span class="math inline">\(λ\)</span> changes (e.g., <span class="math inline">\(λ = 1, 5, 20\)</span>), this is
 reflected in the distribution, with increasing right skew with smaller
 values of <span class="math inline">\(λ\)</span>. This is unlike a normal distribution, which would look
 the same if the mean of the distribution was 10, 100, or 1000:</p>
 <p align="center">
-<a name=""></a><img src="images/practical-10/normal.png" style="width:100.0%"></p>
+</p>
+<p><a name=""></a><img src="images/practical-10/normal.png" style="width:100.0%"></p>
+
 <p>So that’s some background on Poisson distributions, which are more
 representative of our right-skewed flow data. How do we actually utilise
 this for our modelling?</p>
@@ -743,16 +759,16 @@ is it that we observe 100 people (<span class="math inline">\(n\)</span>)?”</p
 substituting in our values for <span class="math inline">\(λ\)</span> and <span class="math inline">\(n\)</span> i.e., based on our model, we
 are expecting 80 people, how likely is the true value of 100 people?</p>
 <p><span class="math display">\[P(n = 100 \; \text{when} \; λ = 80)=\frac{λ^{n}e^{-λ}}{n!} = \frac{80^{100}e^{-80}}{100!}\approx0.003939\]</span></p>
-<p>In this case, the numeric probability is very small. For <span class="math inline">\(λ=80\)</span>, the probability
-is spread over many possible outcomes, with the highest probability at
-the the centre of the distribution:</p>
+<p>In this case, the numeric probability is very small. For <span class="math inline">\(λ=80\)</span>, the
+probability is spread over many possible outcomes, with the highest
+probability at the the centre of the distribution:</p>
 <div class="inline-figure"><img src="images/practical-10/poisson_likelihood.png" style="width:100.0%"></div>
-<p>To assess the probability, as demonstrated above, we need some predictions
-of flow <span class="math inline">\(λ\)</span>, and these can be produced using <strong>Poisson regression</strong>.
-This is mathematically similar to the log-normal approach introduced
-earlier, but here we are not predicting flow directly, but are
-predicting the the mean of our Poisson distribution <span class="math inline">\(λ_{ij}\)</span>, using the
-same set of independent variables introduced above, and the
+<p>To assess the probability, as demonstrated above, we need some
+predictions of flow <span class="math inline">\(λ\)</span>, and these can be produced using <strong>Poisson
+regression</strong>. This is mathematically similar to the log-normal approach
+introduced earlier, but here we are not predicting flow directly, but
+are predicting the the mean of our Poisson distribution <span class="math inline">\(λ_{ij}\)</span>, using
+the same set of independent variables introduced above, and the
 corresponding model parameters <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>:</p>
 <p><span class="math display">\[\log(λ_{ij}) = \log(k) + μ\log(V_i) + α\log(W_j) - \beta\log(d_{ij})\]</span>
 If we take the exponent of both sides of the equation, we can model
@@ -765,8 +781,8 @@ difference between predicted and observed flows, but are seeing to
 likelihood</strong></a>
 approach.</p>
 <p>For example, let’s say we have the following observed flow values <span class="math inline">\(n\)</span>
-and some expected (modelled) flow values <span class="math inline">\(λ\)</span>, with the latter produced with some
-initial model parameters for <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>:</p>
+and some expected (modelled) flow values <span class="math inline">\(λ\)</span>, with the latter produced
+with some initial model parameters for <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>:</p>
 <p><span class="math display">\[n = \begin{bmatrix} 100 &amp; 50 &amp; 70 &amp; 80 &amp; 60\end{bmatrix}\]</span>
 <span class="math display">\[λ = \begin{bmatrix} 95 &amp; 70 &amp; 82 &amp; 75 &amp; 61\end{bmatrix}\]</span> The
 probability of observing <span class="math inline">\(n\)</span> for each modelled value of <span class="math inline">\(λ\)</span> is
@@ -780,9 +796,9 @@ product of the individual probabilities i.e.,
 obtain the same result by taking the logarithm of both sides, which
 can solve numerical problems i.e.,
 &lt;span class="math inline"&gt;\(\log(L)=\log(P_{1}) + \log(P_{2})+ \cdots + \log(P_{n})\)&lt;/span&gt;.&lt;/p&gt;'><sup>117</sup></a>… <span class="math inline">\(L=0.00000000161903\)</span>.</p>
-<p>Now let’s say we have created a new model with a <strong>different</strong> set of values for
-<span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>, which will therefore produce a different set of
-modelled flow values <span class="math inline">\(λ\)</span>:</p>
+<p>Now let’s say we have created a new model with a <strong>different</strong> set of
+values for <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>, which will therefore produce a
+different set of modelled flow values <span class="math inline">\(λ\)</span>:</p>
 <p><span class="math display">\[λ = \begin{bmatrix} 98 &amp; 52 &amp; 71 &amp; 82 &amp; 60\end{bmatrix}\]</span></p>
 <p>The probabilities of observing <span class="math inline">\(n\)</span> for each modelled value of <span class="math inline">\(λ\)</span> is now
 higher, because they are closer to the (unchanged) observed values:</p>
@@ -834,7 +850,9 @@ uses &lt;code&gt;e&lt;/code&gt; as the default, which is consistent with the log
 in
 &lt;a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/log"&gt;R&lt;/a&gt;.
 For those more familiar with Excel, the function log() defaults to
-base10. For any future analysis, be aware of this difference! In Excel, the same result can be obtained using log(val, EXP(1)) or the LN() function.&lt;/p&gt;'><sup>119</sup></a>
+base10. For any future analysis, be aware of this difference! In
+Excel, the same result can be obtained using log(val, EXP(1)) or the
+LN() function.&lt;/p&gt;'><sup>119</sup></a>
 origin population, destination GDP and distance variables e.g.,
 <code>log_orig_pop</code> (<code>Double</code>) = <code>math.log(!orig_pop!)</code>. To simplify the
 calculations for distance, you may also want to covert to kilometers
@@ -856,11 +874,11 @@ follows:</p>
 <blockquote>
 <p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog">Generalized Linear
 Regression</a>.
-<strong>Note</strong> we must use the <em>GeoAnalytics Desktop Tools</em> version rather than
-the version in <em>Spatial Statistics Tools</em>, as the former allows us to
-use a standalone table as an input. Use <code>LAD_point_neartable</code> as the
-“Input Features”, with <code>flow_int</code> as the “Dependent Variable” i.e.,
-our observed data. For “Model Type”, use <code>Poisson</code> and for
+<strong>Note</strong> we must use the <em>GeoAnalytics Desktop Tools</em> version rather
+than the version in <em>Spatial Statistics Tools</em>, as the former allows
+us to use a standalone table as an input. Use <code>LAD_point_neartable</code> as
+the “Input Features”, with <code>flow_int</code> as the “Dependent Variable”
+i.e., our observed data. For “Model Type”, use <code>Poisson</code> and for
 “Explanatory Variable(s)”, use logged origin population, logged
 destination GDP, and logged distance. Store the “Output Features” in
 the project directory with a suitable name and Run.</p>
@@ -881,15 +899,15 @@ a measure of model performance, calculated using:</p>
 <p><span class="math display">\[AIC = 2k-2\log(L)\]</span> This incorporates the model likelihood <span class="math inline">\(L\)</span> which
 we introduced above and the number of parameters in our model <span class="math inline">\(k\)</span>, which
 in our case is four i.e., <code>log_orig_pop</code>, <code>log_dest_gdp</code>, <code>log_dist</code> and
-the model <code>intercept</code>. While the tool doesn’t allow us to investigate <span class="math inline">\(L\)</span> directly,
-either for the final model or those evaluated during parameter testing,
-it is a key component of model evaluation.</p>
+the model <code>intercept</code>. While the tool doesn’t allow us to investigate
+<span class="math inline">\(L\)</span> directly, either for the final model or those evaluated during
+parameter testing, it is a key component of model evaluation.</p>
 <p>To use our coefficients, we are going to use the equation defined above:</p>
 <p><span class="math display">\[λ_{ij} = \exp(\log(k) + μ\log(V_i) + α\log(W_j) - \beta\log(d_{ij}))\]</span></p>
 <div class="note">
-<p>As we produced logged variables in advance (e.g.,
-<code>log_orig_pop</code>) and used these in our Poisson regression, rather than
-the raw data, we don’t need to log them again.</p>
+<p>As we produced logged variables in advance (e.g., <code>log_orig_pop</code>) and
+used these in our Poisson regression, rather than the raw data, we don’t
+need to log them again.</p>
 </div>
 <p>Our previous expression for an <strong>unconstrained model</strong> was
 <code>pow(!orig_pop!, 1) * pow(!dest_gdp!, 1) * pow(!NEAR_DIST! / 1000, -2)</code>,
@@ -906,9 +924,8 @@ need to be used.</p>
 </blockquote>
 <details><summary>
 Expression Solution
-</summary>
-Here is the expected expression:
-<code>math.exp(-5.105+(1.0089 * !orig_pop_log!)+(0.2867 * !dest_gdp_log!)-(abs(-1.2451) * !near_dist_log!))</code>
+</summary><p>Here is the expected expression:
+<code>math.exp(-5.105+(1.0089 * !orig_pop_log!)+(0.2867 * !dest_gdp_log!)-(abs(-1.2451) * !near_dist_log!))</code></p>
 </details><p><br></p>
 <p>When complete, predicted flows based upon our tuned gravity model <code>gm2</code>
 should be available in the Attribute Table.</p>
@@ -916,21 +933,22 @@ should be available in the Attribute Table.</p>
 <p>Create a Scatter Plot for <code>flow_int</code> and <code>gm2</code>.</p>
 </blockquote>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/gm2_performance.png" style="width:60.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/gm2_performance.png" style="width:60.0%"></p>
+
 <div class="question">
 <p>What is your appraisal of model performance, now that we have tuned our
 parameters <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>?</p>
 </div>
 <details><summary>
 Answer
-</summary>
-Our model performance is now much improved, with <span class="math inline">\(R^2=0.45\)</span> for the
+</summary><p>Our model performance is now much improved, with <span class="math inline">\(R^2=0.45\)</span> for the
 tuned model, compared to <span class="math inline">\(R^2=0.07\)</span> for the initial total constrained
-model. In my view this is quite impressive: our model is capturing <strong>45%</strong> of
-the variability in internal migration flows across England and Wales
-based on just three variables i.e., the distance between origins and
-destinations, and their corresponding emissiveness (population) and
-attractiveness (GDP).
+model. In my view this is quite impressive: our model is capturing
+<strong>45%</strong> of the variability in internal migration flows across England
+and Wales based on just three variables i.e., the distance between
+origins and destinations, and their corresponding emissiveness
+(population) and attractiveness (GDP).</p>
 </details><p><br></p>
 </div>
 </div>
@@ -978,11 +996,10 @@ decimal <code>flow</code>, as the former was used for model building.</p>
 </div>
 <details><summary>
 Answer
-</summary>
-Our model is neither origin-constrained or destination-constrained.
+</summary><p>Our model is neither origin-constrained or destination-constrained.
 While our model has been tuned (for example using <span class="math inline">\(k\)</span>) to make the
 observed data as likely as possible, the modelled totals for each origin
-or destination do not match the empirical totals.
+or destination do not match the empirical totals.</p>
 </details><p><br></p>
 <p>There are lots of situations where <em>origin-constrained</em>,
 <em>destination-constrained</em> and <em>doubly-constrained</em> models can be useful.
@@ -1029,24 +1046,39 @@ total-constrained model, is used to scale the modelled values to ensure
 the modelled total flow for each origin equals the known total flow
 <span class="math inline">\(O_{i}\)</span>:</p>
 <p><span class="math display">\[A_{i} = \frac{1}{\sum_{j}W_j^αd_{ij}^{-\beta}}\]</span></p>
-<p>Let’s illustrate this with a very simple example where there is a single origin <span class="math inline">\(M\)</span> and three possible destinations <span class="math inline">\(X, Y, Z\)</span>. We know from government data that there are 1,000 people leaving origin <span class="math inline">\(M\)</span>, so <span class="math inline">\(O_{i}=1000\)</span>. Using our gravity model, we could estimate the relative pull to <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span>, incorporating both destination attractiveness <span class="math inline">\(W_j^α\)</span> and distance <span class="math inline">\(d_{ij}^{-\beta}\)</span>. Let’s say this produces the following numeric values <span class="math inline">\(X=100,Y=50, Z=150\)</span>. At the moment, the sum of these values is <span class="math inline">\(300\)</span> which does not equal our <strong>known</strong> flow from the origin <span class="math inline">\(O_{i}=1000\)</span>, so our model is not yet constrained to <span class="math inline">\(O_{i}\)</span>. Instead, these values represent the <strong>relative pull</strong> of each destination rather than than final predicted number of flows. To convert these to proportions, the denominator for <span class="math inline">\(A_{i}\)</span> above calculates the sum for all destinations:</p>
+<p>Let’s illustrate this with a very simple example where there is a single
+origin <span class="math inline">\(M\)</span> and three possible destinations <span class="math inline">\(X, Y, Z\)</span>. We know from
+government data that there are 1,000 people leaving origin <span class="math inline">\(M\)</span>, so
+<span class="math inline">\(O_{i}=1000\)</span>. Using our gravity model, we could estimate the relative
+pull to <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span>, incorporating both destination
+attractiveness <span class="math inline">\(W_j^α\)</span> and distance <span class="math inline">\(d_{ij}^{-\beta}\)</span>. Let’s say this
+produces the following numeric values <span class="math inline">\(X=100,Y=50, Z=150\)</span>. At the
+moment, the sum of these values is <span class="math inline">\(300\)</span> which does not equal our
+<strong>known</strong> flow from the origin <span class="math inline">\(O_{i}=1000\)</span>, so our model is not yet
+constrained to <span class="math inline">\(O_{i}\)</span>. Instead, these values represent the <strong>relative
+pull</strong> of each destination rather than than final predicted number of
+flows. To convert these to proportions, the denominator for <span class="math inline">\(A_{i}\)</span>
+above calculates the sum for all destinations:</p>
 <p><span class="math display">\[\sum_{j}W_j^αd_{ij}^{-\beta}=100+50+150=300\]</span></p>
 <p>This enables us to the calculate the balancing factor:</p>
 <p><span class="math display">\[A_{i}=\frac{1}{\sum_{j}W_j^αd_{ij}^{-\beta}}=\frac{1}{300}=0.00333\]</span></p>
-<p>Putting this together, multiplying the balancing factor <span class="math inline">\(A_{i}\)</span> by each modelled pull value <span class="math inline">\(W_j^αd_{ij}^{-\beta}\)</span> is used to generate proportions e.g.,</p>
-<p><span class="math display">\[X=0.00333  \times 100 = 0.333\]</span>
-<span class="math display">\[Y=0.00333  \times 50 = 0.167\]</span>
+<p>Putting this together, multiplying the balancing factor <span class="math inline">\(A_{i}\)</span> by each
+modelled pull value <span class="math inline">\(W_j^αd_{ij}^{-\beta}\)</span> is used to generate
+proportions e.g.,</p>
+<p><span class="math display">\[X=0.00333  \times 100 = 0.333\]</span> <span class="math display">\[Y=0.00333  \times 50 = 0.167\]</span>
 <span class="math display">\[Z=0.00333  \times 150 = 0.500\]</span></p>
-<p>These proportions can be multiplied by the known total <span class="math inline">\(O_{i}=1000\)</span> to obtain the predicted flows:</p>
-<p><span class="math display">\[T_{iX} =1000 \times 0.333 = 333\]</span>
-<span class="math display">\[T_{iY} =1000 \times 0.167 = 167\]</span>
+<p>These proportions can be multiplied by the known total <span class="math inline">\(O_{i}=1000\)</span> to
+obtain the predicted flows:</p>
+<p><span class="math display">\[T_{iX} =1000 \times 0.333 = 333\]</span> <span class="math display">\[T_{iY} =1000 \times 0.167 = 167\]</span>
 <span class="math display">\[T_{iZ} =1000 \times 0.500 = 500\]</span></p>
 <p>Therefore:</p>
 <p><span class="math display">\[333 + 167 + 500 = 1000 = O_i\]</span></p>
-<p>This conceptual approach is reflected in our Poisson regression, which is described by the following model equation:</p>
+<p>This conceptual approach is reflected in our Poisson regression, which
+is described by the following model equation:</p>
 <p><span class="math display">\[λ_{ij} = \exp(μ_{i}+ α\log(W_j) - \beta\log(d_{ij}))\]</span></p>
-<p>We do not include a separate origin-emissiveness term <span class="math inline">\(μ\log(V_i)\)</span> in the model, because
-in an origin-constrained model, the origin total<span class="math inline">\(O_{i}\)</span> are fixed in advance.</p>
+<p>We do not include a separate origin-emissiveness term <span class="math inline">\(μ\log(V_i)\)</span> in
+the model, because in an origin-constrained model, the origin
+total<span class="math inline">\(O_{i}\)</span> are fixed in advance.</p>
 <p>The variable <span class="math inline">\(μ_{i}\)</span> is a vector of origin-specific intercepts, which
 are represented in our model using <strong>categorical</strong> or <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)"><strong>dummy
 variables</strong></a>,
@@ -1069,8 +1101,9 @@ which is also not as flexible as other implementations, which can result
 in <strong>multicollinearity</strong> issue with this number of variables.</p>
 <p>Instead, we are going to use a <a href="https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html"><strong>Python
 notebook</strong></a>,
-which gives us access to Python functionality, all of the ArcGIS tools, many of which you will be familiar with e.g., <a href="https://numpy.org/"><code>numpy</code></a>.
-via
+which gives us access to Python functionality, all of the ArcGIS tools,
+many of which you will be familiar with e.g.,
+<a href="https://numpy.org/"><code>numpy</code></a>. via
 <a href="https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-arcpy-.html">Arcpy</a>,
 and some common third-party libraries.</p>
 <blockquote>
@@ -1084,8 +1117,8 @@ turn so you understanding what is happening.</p>
 </div>
 <blockquote>
 <p>Once you are happy with your understanding, paste each code chunk into
-your Python notebook and run using the “play” button. If there are any errors, read the error
-messages and ask for help!</p>
+your Python notebook and run using the “play” button. If there are any
+errors, read the error messages and ask for help!</p>
 </blockquote>
 <p>The first part imports the required libraries, which includes
 <a href="https://numpy.org/"><code>numpy</code></a>, <a href="https://pandas.pydata.org/"><code>pandas</code></a>
@@ -1105,13 +1138,13 @@ We should now have access to the map layers:</p>
 <span id="cb8-2"><a href="spatial_interaction.html#cb8-2" tabindex="-1"></a>aprx <span class="op">=</span> arcpy.mp.ArcGISProject(<span class="st">"CURRENT"</span>)</span>
 <span id="cb8-3"><a href="spatial_interaction.html#cb8-3" tabindex="-1"></a>m <span class="op">=</span> aprx.listMaps()[<span class="dv">0</span>]</span></code></pre></div>
 <p>You can run the code using the “play” button, and if successful, the
-code blocks will switch from <code>[*]</code> to <code>[#]</code> to denote completion, without
-errors or warnings:</p>
+code blocks will switch from <code>[*]</code> to <code>[#]</code> to denote completion,
+without errors or warnings:</p>
 <div class="inline-figure"><img src="screenshots/practical-10/successful-code.png" style="width:100.0%"></div>
 <p>We can access the map layers available in <code>m</code>, and here we are
-interested in the Near Table <code>LAD_point_neartable</code>, which contains all of the fields we’ve
-been using for modelling. This is converted to a Pandas dataframe for
-easier analysis:</p>
+interested in the Near Table <code>LAD_point_neartable</code>, which contains all
+of the fields we’ve been using for modelling. This is converted to a
+Pandas dataframe for easier analysis:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="spatial_interaction.html#cb9-1" tabindex="-1"></a><span class="co"># Access near table</span></span>
 <span id="cb9-2"><a href="spatial_interaction.html#cb9-2" tabindex="-1"></a>table <span class="op">=</span> m.listTables(<span class="st">"LAD_point_neartable"</span>)[<span class="dv">0</span>]</span>
 <span id="cb9-3"><a href="spatial_interaction.html#cb9-3" tabindex="-1"></a>table_path <span class="op">=</span> table.dataSource</span>
@@ -1125,7 +1158,9 @@ easier analysis:</p>
 <span id="cb9-11"><a href="spatial_interaction.html#cb9-11" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(<span class="bu">list</span>(rows), columns<span class="op">=</span>fields)</span></code></pre></div>
 <p>We can inspect the data using <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>:</p>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/head.png" style="width:60.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/head.png" style="width:60.0%"></p>
+
 <p>Our next step is to define our model formula, including our dependent
 and independent variables. This was managed for us in the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog">Generalized
 Linear
@@ -1133,24 +1168,57 @@ Regression</a>
 tool, but here we specify that manually:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="spatial_interaction.html#cb10-1" tabindex="-1"></a><span class="co"># Poisson formula</span></span>
 <span id="cb10-2"><a href="spatial_interaction.html#cb10-2" tabindex="-1"></a>model_formula <span class="op">=</span> <span class="st">"flow_int ~ C(orig_LAD21CD) + log_dest_gdp + log_dist - 1"</span></span></code></pre></div>
-<p>Here we are specifying that <code>flow_int</code> is our dependent variable, and this
-is modelled (<code>~</code>) as a function of the distance between origins and destinations
-<code>log_dist</code>, the destination GDP <code>log_dest_gdp</code>, and dummy variables for
-the origin name <code>C(orig_LAD21CD)</code>. The <a href="https://www.statsmodels.org/stable/example_formulas.html#categorical-variables"><code>C</code>
+<p>Here we are specifying that <code>flow_int</code> is our dependent variable, and
+this is modelled (<code>~</code>) as a function of the distance between origins and
+destinations <code>log_dist</code>, the destination GDP <code>log_dest_gdp</code>, and dummy
+variables for the origin name <code>C(orig_LAD21CD)</code>. The <a href="https://www.statsmodels.org/stable/example_formulas.html#categorical-variables"><code>C</code>
 operator</a>
 in <code>statsmodels</code> indicates we want to treat that variable as
 “categorical”, thereby creating a dummy variables for each origin.</p>
-<p>The final component is<code>-1</code> which removes the model intercept. When an intercept is included, one category must normally be omitted and treated as a <em>reference category</em>. For example, if there were three origins <span class="math inline">\(A,B,C\)</span>, a typical model would estimate an intercept together with coefficients for <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, which are interpreted <em>relative</em> to <span class="math inline">\(A\)</span>. This is necessary to avoid the <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variable trap</a>, whereby there is perfect multicollinearity between the intercept term in a model and the dummy variables<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We are moving towards some complex mathematics here, including how regression works in &lt;a href="https://en.wikipedia.org/wiki/Linear_regression"&gt;&lt;strong&gt;matrix notation&lt;/strong&gt;&lt;/a&gt;. For example, if we developed a regression using a single independent variable, in matrix form the model inputs would be stored in a matrix as follows e.g., &lt;span class="math inline"&gt;\(x = \begin{bmatrix} 1 &amp;amp; x_1 \\ 1 &amp;amp; x_2 \\ \vdots &amp;amp; \vdots \\ 1 &amp;amp; x_n \end{bmatrix}\)&lt;/span&gt; where &lt;span class="math inline"&gt;\(1\)&lt;/span&gt; denotes the intercept term, and &lt;span class="math inline"&gt;\(x_n\)&lt;/span&gt; denotes the independent variable &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; for each observation &lt;span class="math inline"&gt;\(n\)&lt;/span&gt;. Following regression, the model coefficients would be stored in a separate matrix e.g., &lt;span class="math inline"&gt;\(\beta = \begin{bmatrix} \beta_0 \\ \beta_1 \end{bmatrix}\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(\beta_0\)&lt;/span&gt; is the intercept coefficient and &lt;span class="math inline"&gt;\(\beta_1\)&lt;/span&gt; is the slope coefficient for the single independent variable. &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; is then multiplied by &lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; to obtain the model predictions. Perfect multicollinearity would exist if the intercept term and &lt;strong&gt;all&lt;/strong&gt; the categorical variables were included as dummy variables. As each observation belongs to exactly one category, the row-wise sum of the dummy variables would always equal 1. This would be a perfect duplicate of the intercept column (which also consists entirely of 1’s, as shown above), making one column an exact linear combination of the others.&lt;/p&gt;'><sup>122</sup></a>. To avoid this, we remove the intercept using <code>-1</code>, allowing the model to estimate a separate coefficient for every origin (in <code>orig_LAD21CD</code>), which represent their own baseline effect, rather than measuring relative to an arbitrary baseline category.</p>
-<p>We can now use this formula as an input to a Poisson regression model implemented via the <code>smf.glm</code> function,
-using the following code:</p>
+<p>The final component is<code>-1</code> which removes the model intercept. When an
+intercept is included, one category must normally be omitted and treated
+as a <em>reference category</em>. For example, if there were three origins
+<span class="math inline">\(A,B,C\)</span>, a typical model would estimate an intercept together with
+coefficients for <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, which are interpreted <em>relative</em> to <span class="math inline">\(A\)</span>.
+This is necessary to avoid the <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variable
+trap</a>,
+whereby there is perfect multicollinearity between the intercept term in
+a model and the dummy variables<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We are moving towards some complex
+mathematics here, including how regression works in &lt;a href="https://en.wikipedia.org/wiki/Linear_regression"&gt;&lt;strong&gt;matrix
+notation&lt;/strong&gt;&lt;/a&gt;. For
+example, if we developed a regression using a single independent
+variable, in matrix form the model inputs would be stored in a
+matrix as follows e.g.,
+&lt;span class="math inline"&gt;\(x = \begin{bmatrix} 1 &amp;amp; x_1 \\ 1 &amp;amp; x_2 \\ \vdots &amp;amp; \vdots \\ 1 &amp;amp; x_n \end{bmatrix}\)&lt;/span&gt;
+where &lt;span class="math inline"&gt;\(1\)&lt;/span&gt; denotes the intercept term, and &lt;span class="math inline"&gt;\(x_n\)&lt;/span&gt; denotes the
+independent variable &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; for each observation &lt;span class="math inline"&gt;\(n\)&lt;/span&gt;. Following
+regression, the model coefficients would be stored in a separate
+matrix e.g.,
+&lt;span class="math inline"&gt;\(\beta = \begin{bmatrix} \beta_0 \\ \beta_1 \end{bmatrix}\)&lt;/span&gt;, where
+&lt;span class="math inline"&gt;\(\beta_0\)&lt;/span&gt; is the intercept coefficient and &lt;span class="math inline"&gt;\(\beta_1\)&lt;/span&gt; is the slope
+coefficient for the single independent variable. &lt;span class="math inline"&gt;\(x\)&lt;/span&gt; is then
+multiplied by &lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; to obtain the model predictions. Perfect
+multicollinearity would exist if the intercept term and &lt;strong&gt;all&lt;/strong&gt; the
+categorical variables were included as dummy variables. As each
+observation belongs to exactly one category, the row-wise sum of the
+dummy variables would always equal 1. This would be a perfect
+duplicate of the intercept column (which also consists entirely of
+1’s, as shown above), making one column an exact linear combination
+of the others.&lt;/p&gt;'><sup>122</sup></a>. To avoid
+this, we remove the intercept using <code>-1</code>, allowing the model to estimate
+a separate coefficient for every origin (in <code>orig_LAD21CD</code>), which
+represent their own baseline effect, rather than measuring relative to
+an arbitrary baseline category.</p>
+<p>We can now use this formula as an input to a Poisson regression model
+implemented via the <code>smf.glm</code> function, using the following code:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="spatial_interaction.html#cb11-1" tabindex="-1"></a><span class="co"># Fit a model, using the specified formula and data, and using a Poisson approach</span></span>
 <span id="cb11-2"><a href="spatial_interaction.html#cb11-2" tabindex="-1"></a>model <span class="op">=</span> smf.glm(formula<span class="op">=</span>model_formula, data<span class="op">=</span>df, family<span class="op">=</span>sm.families.Poisson()).fit()</span></code></pre></div>
 <p>If successful, <code>print(model.summary())</code> can be used to evaluate the
 model results:</p>
 <div class="inline-figure"><img src="screenshots/practical-10/glr-output.png" style="width:100.0%"></div>
-<p>Scrolling down also reveals the coefficients <code>coef</code> for each dummy variable
-<span class="math inline">\(μ_{i}\)</span>, which are used to scale the model predictions to match the
-empirical origin flows:</p>
+<p>Scrolling down also reveals the coefficients <code>coef</code> for each dummy
+variable <span class="math inline">\(μ_{i}\)</span>, which are used to scale the model predictions to match
+the empirical origin flows:</p>
 <div class="inline-figure"><img src="screenshots/practical-10/dummy_coefficients.png" style="width:100.0%"></div>
 <p>We can use our model to generate predictions of flow for each row of
 data, as we did for <code>gm1</code> and <code>gm2</code>. This uses the explanatory
@@ -1160,7 +1228,9 @@ data, as we did for <code>gm1</code> and <code>gm2</code>. This uses the explana
 <span id="cb12-2"><a href="spatial_interaction.html#cb12-2" tabindex="-1"></a>df[<span class="st">"gm3"</span>] <span class="op">=</span> model.predict(exog<span class="op">=</span>df)</span></code></pre></div>
 <p>You can inspect some of the predicted values by running <code>df.gm3</code>:</p>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/gm3_predictions.png" style="width:60.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/gm3_predictions.png" style="width:60.0%"></p>
+
 <p>Our final step is to export our dataframe to a <code>.csv</code>, which will allow
 us to investigate the outputs further in ArcGIS. The code below
 specifies our file name, and updates the path to the directory of our
@@ -1182,26 +1252,26 @@ directory:</p>
 </div>
 <details><summary>
 Answer
-</summary>
-As before, this could be achieved using “Summarize”, comparing the sum
+</summary><p>As before, this could be achieved using “Summarize”, comparing the sum
 of <code>flow_int</code> and <code>gm3</code>, using <code>orig_LAD21NM</code> as the case field.
 Unfortunately, this is one of those examples where this functionality is
 unavailable for a standalone table (<code>.csv</code>). To achieve this, we’d need
-to export our table to the project <strong>geodatabase</strong>.
+to export our table to the project <strong>geodatabase</strong>.</p>
 </details><blockquote>
 <p>Next create a Scatter Chart showing the relationship between
 <code>flow_int</code> and <code>gm3</code>.</p>
 </blockquote>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/gm3_performance.png" style="width:60.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/gm3_performance.png" style="width:60.0%"></p>
+
 <div class="question">
 <p>What is your appraisal of the origin-constrained model performance?</p>
 </div>
 <details><summary>
 Answer
-</summary>
-Our model performance has been improved by constraining the model
-estimates to fit the <em>known</em> origin totals (<span class="math inline">\(R^2=0.58\)</span>).
+</summary><p>Our model performance has been improved by constraining the model
+estimates to fit the <em>known</em> origin totals (<span class="math inline">\(R^2=0.58\)</span>).</p>
 </details><p><br></p>
 </div>
 <div id="destination-contrained-models" class="section level3" number="10.2.9">
@@ -1210,10 +1280,11 @@ estimates to fit the <em>known</em> origin totals (<span class="math inline">\(R
 </h3>
 <p>The destination-constrained model is conceptually very similar to the
 origin-constrained model, except this time we are constraining to match
-the total flows <em>to each destination</em>, rather than <em>from each origin</em>. This is achieved by removing
-destination-attractiveness <span class="math inline">\(α\log(W_j)\)</span> from the model, because in a
-destination-constrained model, the destination flows are already
-completely represented by another parameter<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For simplicity I haven’t provided the
+the total flows <em>to each destination</em>, rather than <em>from each origin</em>.
+This is achieved by removing destination-attractiveness <span class="math inline">\(α\log(W_j)\)</span>
+from the model, because in a destination-constrained model, the
+destination flows are already completely represented by another
+parameter<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For simplicity I haven’t provided the
 equations for the destination-constrained model in the main text,
 but for completeness, the model is as follows:
 &lt;span class="math inline"&gt;\(T_{ij} = D_{j}B_{j}V_{i}^{μ}d_{ij}^{-\beta}\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(D_j\)&lt;/span&gt; is the
@@ -1242,7 +1313,9 @@ project directory as <code>LAD_point_neartable_pred_destconst.csv</code>.</p>
 plot.</p>
 </blockquote>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/gm4_performance.png" style="width:60.0%"></p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/gm4_performance.png" style="width:60.0%"></p>
+
 <div class="question">
 <p>How has model performance changed?</p>
 </div>
@@ -1263,53 +1336,88 @@ the total modelled flows for each origin and destination match the total
 known flows.</p>
 <p>This is challenging because <span class="math inline">\(A_{i}\)</span> is defined as:</p>
 <p><span class="math display">\[A_{i} = \frac{1}{\sum_{j}B_jD_jd_{ij}^{-\beta}}\]</span></p>
-<p>i.e., the
-denominator is the sum of the modelled attractiveness for all
+<p>i.e., the denominator is the sum of the modelled attractiveness for all
 destinations <span class="math inline">\(j\)</span> for origin <span class="math inline">\(i\)</span>. This incorporates the distance effect
 <span class="math inline">\(d_{ij}\)</span>, the destination attributes <span class="math inline">\(D_j\)</span> and the destination balancing
 factor <span class="math inline">\(B_j\)</span>.</p>
 <p>However, <span class="math inline">\(B_{j}\)</span> is defined as:</p>
 <p><span class="math display">\[B_{j} = \frac{1}{\sum_{i}A_iO_id_{ij}^{-\beta}}\]</span></p>
-<p>The <strong>challenge</strong> is
-that <span class="math inline">\(A_i\)</span> is needed to calculate <span class="math inline">\(B_j\)</span>, but <span class="math inline">\(B_j\)</span> is needed to
-calculate <span class="math inline">\(A_i\)</span>, and so on. We won’t go into depth about how this
-conundrum is solved, except that it is solved <em>iteratively</em>, beginning
-with a starting value and calculating <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{j}\)</span> in turn until
-the values stabilise<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For more information, Adam Dennett’s
-&lt;a href="https://rpubs.com/adam_dennett/376877"&gt;walkthrough&lt;/a&gt; is a good
-place to start, as is the paper by &lt;span class="citation"&gt;Senior (&lt;a href="references.html#ref-senior1979c"&gt;1979&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>124</sup></a>.</p>
-<p>Our Poisson regression model is similar to the previous models but here we
-have no variables for modelling emissiveness (<span class="math inline">\(V_i^μ\)</span>) or attractiveness
-(<span class="math inline">\(W_j^α\)</span>), as both total origin flows and total destination flows are
-constrained in the model, using the <span class="math inline">\(μ_{i}\)</span> and <span class="math inline">\(α_{i}\)</span> dummy variables:</p>
+<p>The <strong>challenge</strong> is that <span class="math inline">\(A_i\)</span> is needed to calculate <span class="math inline">\(B_j\)</span>, but <span class="math inline">\(B_j\)</span>
+is needed to calculate <span class="math inline">\(A_i\)</span>, and so on. We won’t go into depth about
+how this conundrum is solved, except that it is solved <em>iteratively</em>,
+beginning with a starting value and calculating <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{j}\)</span> in
+turn until the values stabilise<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For more information, Adam Dennett’s
+&lt;a href="https://rpubs.com/adam_dennett/376877"&gt;walkthrough&lt;/a&gt; is a good place
+to start, as is the paper by &lt;span class="citation"&gt;Senior (&lt;a href="references.html#ref-senior1979c"&gt;1979&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>124</sup></a>.</p>
+<p>Our Poisson regression model is similar to the previous models but here
+we have no variables for modelling emissiveness (<span class="math inline">\(V_i^μ\)</span>) or
+attractiveness (<span class="math inline">\(W_j^α\)</span>), as both total origin flows and total
+destination flows are constrained in the model, using the <span class="math inline">\(μ_{i}\)</span> and
+<span class="math inline">\(α_{i}\)</span> dummy variables:</p>
 <p><span class="math display">\[λ_{ij} = \exp(μ_{i}+ α_{i}- \beta\log(d_{ij}))\]</span></p>
 <blockquote>
-<p>The formula for a <em>doubly-constrained</em> model is as follows: <code>model_formula = "flow_int ~ C(orig_LAD21CD) + C(dest_LAD21CD) + log_dist"</code>. Re-run the code to produce a new set of predictions for our <strong>fifth</strong> (and final) gravity model <code>gm5</code>, storing in your project directory as <code>LAD_point_neartable_pred_doublyconst.csv</code>.</p>
+<p>The formula for a <em>doubly-constrained</em> model is as follows:
+<code>model_formula = "flow_int ~ C(orig_LAD21CD) + C(dest_LAD21CD) + log_dist"</code>.
+Re-run the code to produce a new set of predictions for our <strong>fifth</strong>
+(and final) gravity model <code>gm5</code>, storing in your project directory as
+<code>LAD_point_neartable_pred_doublyconst.csv</code>.</p>
 </blockquote>
 <blockquote>
-<p>Load the file to ArcGIS, and evalute the predictions using a scatter plot.</p>
+<p>Load the file to ArcGIS, and evalute the predictions using a scatter
+plot.</p>
 </blockquote>
 <p align="center">
-<a name=""></a><img src="screenshots/practical-10/gm5_performance.png" style="width:60.0%"></p>
-<p>Constraining our modelled origin and destination flows has improved model performance further (<span class="math inline">\(R^2=0.78\)</span>), indicating that the model has captured nearly 80% of the variability in internal migrations, when <em>total</em> origin-destination flows are constrained.</p>
-<p>There is clearly some uncaptured variability (~22%), and evidence of under- and over-prediction of flow. However, this approach provides a baseline for further analysis i.e., what additional factors could we incorporate to capture that additional variability?</p>
-<p>We could use our model as a basis for <strong>prediction</strong> e.g., modifying the local authority populations or GDPs to investigate how flows might change in future.</p>
+</p>
+<p><a name=""></a><img src="screenshots/practical-10/gm5_performance.png" style="width:60.0%"></p>
+
+<p>Constraining our modelled origin and destination flows has improved
+model performance further (<span class="math inline">\(R^2=0.78\)</span>), indicating that the model has
+captured nearly 80% of the variability in internal migrations, when
+<em>total</em> origin-destination flows are constrained.</p>
+<p>There is clearly some uncaptured variability (~22%), and evidence of
+under- and over-prediction of flow. However, this approach provides a
+baseline for further analysis i.e., what additional factors could we
+incorporate to capture that additional variability?</p>
+<p>We could use our model as a basis for <strong>prediction</strong> e.g., modifying the
+local authority populations or GDPs to investigate how flows might
+change in future.</p>
 <p>To finish:</p>
 <blockquote>
-<p>Export the <code>.csv</code> to the project <strong>geodatabase</strong> (to enable editing), use Select by Attributes to select rows where the <em>destination</em> is a local authority of your choice (e.g., Manchester = <code>E08000003</code>), and use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY to Line</a> to generate lines connecting the origin and destination centroids, selecting the appropriate CRS and making sure to “Preserve attributes”.</p>
+<p>Export the <code>.csv</code> to the project <strong>geodatabase</strong> (to enable editing),
+use Select by Attributes to select rows where the <em>destination</em> is a
+local authority of your choice (e.g., Manchester = <code>E08000003</code>), and
+use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-to-line.html?tabs=dialog">XY to
+Line</a>
+to generate lines connecting the origin and destination centroids,
+selecting the appropriate CRS and making sure to “Preserve
+attributes”.</p>
 </blockquote>
 <div class="float">
-<img src="screenshots/practical-10/manchester_modelled_flow.png" style="width:100.0%" alt="Modelled flow to the Manchester local authority, using a doubly-constrained spatial interaction model gm5"><div class="figcaption"><em>Modelled flow to the Manchester local authority, using a doubly-constrained spatial interaction model <code>gm5</code></em></div>
+<img src="screenshots/practical-10/manchester_modelled_flow.png" style="width:100.0%" alt="Modelled flow to the Manchester local authority, using a doubly-constrained spatial interaction model gm5"><div class="figcaption"><em>Modelled flow to the Manchester local authority, using a
+doubly-constrained spatial interaction model
+<code>gm5</code></em></div>
 </div>
 <p><br></p>
 <div class="question">
-<p>How well does the modelled flow to Manchester match your understanding of actual internal migration?</p>
+<p>How well does the modelled flow to Manchester match your understanding
+of actual internal migration?</p>
 </div>
-<p>Our models are also based on a simple set of predictors, but you could of course include a much wider range e.g., median earnings rather than GDP per capita, unemployment rate, housing affordability, or the share of working-age population. There are also a host of individual-level factors that drive migration e.g., family connections.</p>
-<p>If applying this model to international migration, we might include a completely different set of predictors e.g., cultural similarity, as covered in <a href="spatial_weights.html#spatial_weights">Practical 2</a>, whether countries share a common language, or the degree of conflict within or between countries.</p>
+<p>Our models are also based on a simple set of predictors, but you could
+of course include a much wider range e.g., median earnings rather than
+GDP per capita, unemployment rate, housing affordability, or the share
+of working-age population. There are also a host of individual-level
+factors that drive migration e.g., family connections.</p>
+<p>If applying this model to international migration, we might include a
+completely different set of predictors e.g., cultural similarity, as
+covered in <a href="spatial_weights.html#spatial_weights">Practical 2</a>, whether countries share a
+common language, or the degree of conflict within or between countries.
+If you’re interested in the topic, I would recommend reading
+<span class="citation">Dennett and Wilson (<a href="references.html#ref-dennett2013">2013</a>)</span>, <span class="citation">Rowe <em>et al.</em> (<a href="references.html#ref-rowe2024">2024</a>)</span>, <span class="citation">Cohen <em>et al.</em> (<a href="references.html#ref-cohen2008">2008</a>)</span> and <span class="citation">Beyer <em>et al.</em> (<a href="references.html#ref-beyer2022">2022</a>)</span>.</p>
 <p><br></p>
 <hr>
-<p><strong>Congratulations!</strong> You have completed the practical and should now be familiar with the conceptual and mathematical background to spatial interaction modelling, and be able to implement them in ArcGIS.</p>
+<p><strong>Congratulations!</strong> You have completed the practical and should now be
+familiar with the conceptual and mathematical background to spatial
+interaction modelling, and be able to implement them in ArcGIS.</p>
 <p><a href="point_patterns.html#summary"><strong>Finished!</strong></a></p>
 </div>
 </div>
@@ -1317,7 +1425,9 @@ constrained in the model, using the <span class="math inline">\(μ_{i}\)</span> 
 <h2>
 <span class="header-section-number">10.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-6"><i class="fas fa-link"></i></a>
 </h2>
-<p>There is no <strong>extra</strong> content this week. This is the end of challenging but hopefully rewarding semester, so use your time to focus on the assessments or take a well earned break!</p>
+<p>There is no <strong>extra</strong> content this week. This is the end of challenging
+but hopefully rewarding semester, so use your time to focus on the
+assessments or take a well earned break!</p>
 </div>
 <div id="resources-7" class="section level2" number="10.4">
 <h2>
