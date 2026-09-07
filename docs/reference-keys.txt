@@ -7,7 +7,7 @@ loading-data
 exploring-data
 symbolising-data
 filtering-data
-working-with-rasters
+work_raster
 geoprocessing
 poly-raster
 data-integration-point-raster

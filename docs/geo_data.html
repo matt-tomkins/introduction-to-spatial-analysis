@@ -193,7 +193,7 @@
 <blockquote>
 <p>Back in the ‘Add Data’ window, navigate to [<code>natural-earth/ne_10m_admin_0_countries.shp</code>] and press ‘OK’ to load into ArcGIS.</p>
 </blockquote>
-<p>This spatial layer should now be visible, both in the Contents Pane and the Map View:</p>
+<p>This spatial layer<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For those of you enrolled on &lt;strong&gt;GEOG71551&lt;/strong&gt;: &lt;em&gt;Understanding GIS&lt;/em&gt;, this is the same dataset used in Week 1. This is &lt;em&gt;by design&lt;/em&gt;, as the initial aim of both units is for you to become familiar with spatial data and to gain experience in map production. By the end of this week, you should be able to produce appropriate map outputs of a familiar dataset (e.g., including a scale bar, north arrow, and legend, with good use of colour and clarity) using GIS software &lt;em&gt;and&lt;/em&gt; using a programming language.&lt;/p&gt;"><sup>1</sup></a> should now be visible, both in the Contents Pane and the Map View:</p>
 <div class="float">
 <img src="screenshots/practical-1/first-data-natural-earth.png" style="width:100.0%" alt="Our first dataset"><div class="figcaption"><em>Our first dataset</em></div>
 </div>
@@ -254,7 +254,7 @@
 <h3>
 <span class="header-section-number">1.2.5</span> Symbolising data<a class="anchor" aria-label="anchor" href="#symbolising-data"><i class="fas fa-link"></i></a>
 </h3>
-<p>In the Map View, our <code>natural-earth</code> geometries is presented with a basic symbology i.e., for all features, <code>fill</code> = blue, <code>edgecolour</code> = black<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;, your colours may differ from mine, but don’t worry!&lt;/p&gt;"><sup>1</sup></a>. As the user, we have a lot of flexibility to edit this.</p>
+<p>In the Map View, our <code>natural-earth</code> geometries is presented with a basic symbology i.e., for all features, <code>fill</code> = blue, <code>edgecolour</code> = black<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;, your colours may differ from mine, but don’t worry!&lt;/p&gt;"><sup>2</sup></a>. As the user, we have a lot of flexibility to edit this.</p>
 <blockquote>
 <p>Right click the <code>ne_10m_admin_0_countries</code> layer in the Contents Pane → Symbology.</p>
 </blockquote>
@@ -320,9 +320,9 @@
 <p>To avoid any confusion, remove the full <code>World_Cities</code> layer (n=2,540).</p>
 </blockquote>
 </div>
-<div id="working-with-rasters" class="section level3" number="1.2.7">
+<div id="work_raster" class="section level3" number="1.2.7">
 <h3>
-<span class="header-section-number">1.2.7</span> Working with Rasters<a class="anchor" aria-label="anchor" href="#working-with-rasters"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.2.7</span> Working with Rasters<a class="anchor" aria-label="anchor" href="#work_raster"><i class="fas fa-link"></i></a>
 </h3>
 <p>So far in this practical we’ve been working with <strong>vector</strong> data (Points, Line, Polygons):</p>
 <p align="center">
@@ -351,7 +351,7 @@
 <p>What do you notice above the size of the cells? How well do these match the vector representation of the country?</p>
 </div>
 <p>We are touching on some important concepts here: <strong>scale</strong> and <strong>generalisation</strong>. All spatial data is created and defined at a specific scale and all spatial data is generalised (or simplified) compared to the real world.</p>
-<p>In our case, our <code>WorldClim</code> data is characterised by a spatial resolution of <a href="https://www.worldclim.org/data/worldclim21.html">10 arc-minutes</a> i.e., each cell is approximately 340 km<sup>2</sup> at the equator. By comparison, our <code>Natural Earth</code> data is defined by a scale of 1:10m<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;1:10,000,000&lt;/p&gt;"><sup>2</sup></a> i.e., 1 cm on the map equates to 100 km in reality.</p>
+<p>In our case, our <code>WorldClim</code> data is characterised by a spatial resolution of <a href="https://www.worldclim.org/data/worldclim21.html">10 arc-minutes</a> i.e., each cell is approximately 340 km<sup>2</sup> at the equator. By comparison, our <code>Natural Earth</code> data is defined by a scale of 1:10m<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;1:10,000,000&lt;/p&gt;"><sup>3</sup></a> i.e., 1 cm on the map equates to 100 km in reality.</p>
 <p>The <strong>important</strong> thing to highlight here is that while the <code>Natural Earth</code> data is <em>less</em> generalised than the <code>WorldClim</code> data i.e., more real world information has been retained, such as some of the complexities of the coastline, neither dataset is “correct”. <strong>Both</strong> are a simplification of reality. When working with spatial data, we should remember to:</p>
 <ul>
 <li>use spatial data that has been generated at a scale which is sufficient to represent the process or phenomenon we are studying.</li>
@@ -416,12 +416,12 @@
 </ul>
 <p>For our Polygon data, this can be achieved using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a> (Spatial Analyst Tools):</p>
 <blockquote>
-<p>In the Geoprocessing pane, open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>. For ‘Input Raster or Feature Zone Data’, use the <code>natural-earth</code> layer, with ‘Zone Field’ as ID<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Here we are calculating zonal statistics for each feature of the &lt;code&gt;natural-earth&lt;/code&gt; layer. However, we could use a different zone field here e.g., &lt;code&gt;CONTINENT&lt;/code&gt;, &lt;code&gt;REGION_WB&lt;/code&gt;, to aggregate at a different scale.&lt;/p&gt;"><sup>3</sup></a>. For the ‘Input Value Raster’, use the average temperature raster created previously, and use an appropriate name for the ‘Ouput Table’ e.g., <code>ne-zonal-stats-temp</code>. For simplicity, select <code>Mean</code> for ‘Statistics Type’ and leave all other settings at default.</p>
+<p>In the Geoprocessing pane, open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>. For ‘Input Raster or Feature Zone Data’, use the <code>natural-earth</code> layer, with ‘Zone Field’ as ID<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Here we are calculating zonal statistics for each feature of the &lt;code&gt;natural-earth&lt;/code&gt; layer. However, we could use a different zone field here e.g., &lt;code&gt;CONTINENT&lt;/code&gt;, &lt;code&gt;REGION_WB&lt;/code&gt;, to aggregate at a different scale.&lt;/p&gt;"><sup>4</sup></a>. For the ‘Input Value Raster’, use the average temperature raster created previously, and use an appropriate name for the ‘Ouput Table’ e.g., <code>ne-zonal-stats-temp</code>. For simplicity, select <code>Mean</code> for ‘Statistics Type’ and leave all other settings at default.</p>
 </blockquote>
 <div class="note">
 <p>You may be presented with the following: <code>WARNING</code> <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/010001-020000/tool-errors-and-warnings-10551-10575-010566.html">010566</a>: <em>Some zones may not have been rasterized</em>. This has occurred because there are features present in the <code>natural-earth</code> layer but there are no corresponding values in the raster layer (<code>NoData</code>).</p>
 </div>
-<p>If successful, a new ‘Standalone Table’ should be present in the Contents Pane, which if opened contains the IDs used for aggregation (<code>FID</code>), the number of cells per feature, and the statistics we requested (<code>MEAN</code>)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;An &lt;code&gt;AREA&lt;/code&gt; field is also present, but treat this value cautiously, as it is measured in the units of the Coordinate Reference System (degrees). Don’t worry about this too much now - we’ll discuss more fully later in the unit.&lt;/p&gt;"><sup>4</sup></a>.</p>
+<p>If successful, a new ‘Standalone Table’ should be present in the Contents Pane, which if opened contains the IDs used for aggregation (<code>FID</code>), the number of cells per feature, and the statistics we requested (<code>MEAN</code>)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;An &lt;code&gt;AREA&lt;/code&gt; field is also present, but treat this value cautiously, as it is measured in the units of the Coordinate Reference System (degrees). Don’t worry about this too much now - we’ll discuss more fully later in the unit.&lt;/p&gt;"><sup>5</sup></a>.</p>
 <blockquote>
 <p>Repeat this process for precipitation, using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>, but making sure to return the total precipitation (not the average).</p>
 </blockquote>
@@ -615,7 +615,7 @@
 <li><a class="nav-link" href="#exploring-data"><span class="header-section-number">1.2.4</span> Exploring data</a></li>
 <li><a class="nav-link" href="#symbolising-data"><span class="header-section-number">1.2.5</span> Symbolising data</a></li>
 <li><a class="nav-link" href="#filtering-data"><span class="header-section-number">1.2.6</span> Filtering data</a></li>
-<li><a class="nav-link" href="#working-with-rasters"><span class="header-section-number">1.2.7</span> Working with Rasters</a></li>
+<li><a class="nav-link" href="#work_raster"><span class="header-section-number">1.2.7</span> Working with Rasters</a></li>
 <li><a class="nav-link" href="#geoprocessing"><span class="header-section-number">1.2.8</span> Geoprocessing</a></li>
 <li><a class="nav-link" href="#poly-raster"><span class="header-section-number">1.2.9</span> Data integration: Polygon + Raster</a></li>
 <li><a class="nav-link" href="#data-integration-point-raster"><span class="header-section-number">1.2.10</span> Data integration: Point + Raster</a></li>

@@ -620,7 +620,7 @@ provide the best fit with the empirical flow data.
 
 #### A Poisson approach
 
-**Unfortunately**, there are a number of issues with a log-normal
+There are, however, a number of issues with a log-normal
 approach, which are outlined in detail by @flowerdew1982. For example,
 this approach will only work with positive flows, since $\log(0)$ is
 undefined. The approach also produces predictions of $\log(T_{ij})$,
@@ -1144,20 +1144,15 @@ tool, for example creating dummy variables for `orig_LAD21CD`. In turn,
 we could include those variables in our input for [Generalized Linear
 Regression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog).
 
-**Unfortunately**, this only works effectively with a small number of
-categories. In our case, there are 314 local authorities in our dataset
+While this works effectively with a small number of
+categories, in our case there are 314 local authorities in the dataset
 (Explore Statistics, `Unique`), thus requiring 314 dummy variables. It
 would be impractical for us to load these manually to the GLR tool,
 which is also not as flexible as other implementations, which can result
 in **multicollinearity** issue with this number of variables.
 
 Instead, we are going to use a [**Python
-notebook**](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html),
-which gives us access to Python functionality, all of the ArcGIS tools,
-many of which you will be familiar with e.g.,
-[`numpy`](https://numpy.org/). via
-[Arcpy](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-arcpy-.html),
-and some common third-party libraries.
+notebook**](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html), which let's us programmatically access all of the ArcGIS tools, as well as some additional ones from open-source libraries. Here, the one of particular interest is [`statsmodels`](https://www.statsmodels.org/stable/index.html), which contains a range of additional functionality for statistical modelling, and will enable us to run a generalised linear regression without manually encoding our dummy variables. 
 
 > In Analysis → Geoprocessing, open a Python Notebook.
 
@@ -1165,7 +1160,7 @@ and some common third-party libraries.
 
 ::: note
 You will be not be writing any Python from scratch here (unlike
-Understanding GIS), but I will talk through each part of the code in
+**GEOG71551** *Understanding GIS*), but I will talk through each part of the code in
 turn so you understanding what is happening.
 :::
 
@@ -1173,11 +1168,13 @@ turn so you understanding what is happening.
 > your Python notebook and run using the "play" button. If there are any
 > errors, read the error messages and ask for help!
 
-The first part imports the required libraries, which includes
-[`numpy`](https://numpy.org/), [`pandas`](https://pandas.pydata.org/)
-and [`statsmodels`](https://www.statsmodels.org/stable/index.html), as
-well as `os` for interacting with the operating system and accessing
-directories and files:
+The first part imports the required libraries, which includes:
+
+- [`Arcpy`](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-arcpy-.html), for access to ArcGIS functions.
+- [`numpy`](https://numpy.org/), for mathematical analysis.
+- [`pandas`](https://pandas.pydata.org/), for data analysis and manipulation.
+- [`statsmodels`](https://www.statsmodels.org/stable/index.html), for statistical modelling. 
+- [`os`](https://docs.python.org/3/library/os.html), for interacting with the operating system and accessing directories and files.
 
 ```{python, eval=FALSE}
 import os
@@ -1199,10 +1196,12 @@ m = aprx.listMaps()[0]
 ```
 
 You can run the code using the "play" button, and if successful, the
-code blocks will switch from `[*]` to `[#]` to denote completion,
+code cells will switch from `[*]` to `[#]` to denote completion,
 without errors or warnings:
 
 ![](./screenshots/practical-10/successful-code.png){width="100%"}
+
+In the above image, we have two code cells, marked by `[1]` and `[2]`. If you make any edits to a particular cell, for example adding or removing a library in `[1]`, then subsequent cells would need to be re-run using the "play" button, as their behaviour is dependent on the previous cells. 
 
 We can access the map layers available in `m`, and here we are
 interested in the Near Table `LAD_point_neartable`, which contains all

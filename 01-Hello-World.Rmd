@@ -82,11 +82,13 @@ Under 'Folders', you should see connections to `Practical-1` (this is the direct
 
 > Back in the 'Add Data' window, navigate to [`natural-earth/ne_10m_admin_0_countries.shp`] and press 'OK' to load into ArcGIS. 
 
-This spatial layer should now be visible, both in the Contents Pane and the Map View:
+This spatial layer[^natural_earth_link] should now be visible, both in the Contents Pane and the Map View:
 
 ![*Our first dataset*](./screenshots/practical-1/first-data-natural-earth.png){width=100%}
 
 <br>
+
+[^natural_earth_link]: For those of you enrolled on **GEOG71551**: *Understanding GIS*, this is the same dataset used in Week 1. This is *by design*, as the initial aim of both units is for you to become familiar with spatial data and to gain experience in map production. By the end of this week, you should be able to produce appropriate map outputs of a familiar dataset (e.g., including a scale bar, north arrow, and legend, with good use of colour and clarity) using GIS software *and* using a programming language. 
 
 ::: question
 Based on the lecture materials, what type of spatial data is this? 
@@ -209,7 +211,7 @@ If successful, the new data layer should have been loaded to the Contents Pane a
 
 > To avoid any confusion, remove the full `World_Cities` layer (n=2,540). 
 
-### Working with Rasters
+### Working with Rasters {#work_raster}
 
 So far in this practical we've been working with **vector** data (Points, Line, Polygons):
 

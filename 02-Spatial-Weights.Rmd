@@ -90,21 +90,29 @@ Spatial weights ($w$) are used to represent the presence and/or strength of the 
 - For neighbouring objects, $w=1$.
 - For non-neigbouring objects, $w=0$. 
 
+Using Germany as an example (orange shading), bordering countries are assigned $w=1$ (dark grey shading) and non-bordering countries are assigned $w=0$ (light grey shading):
+
 <p align="center">
 <a name=""></a>![](./images/practical-2/europe-example-weights.png){width=50%}
 </p>
 
 [^weight-example]: *Note* this is just an example, and we'll discuss the various methods for calculating spatial weights as we progress through the practical.
 
-We would typically calculate the spatial weight ($w$) for every pair of objects in a dataset ($ij$), and store this in a **spatial weights matrix** ($\mathbf{W}$), which conceptually looks like this: 
+We would typically calculate the spatial weight ($w$) for every pair of objects in a dataset ($ij$), and store this in a table known as a **spatial weights matrix** ($\mathbf{W}$). For our European example above, $\mathbf{W}$ would resemble the following, where cells representing bordering countries (e.g., Germany and Belgium) contain $w=1$, and those representing non-bordering countries (e.g., Germany and Iceland) contain $w=0$[^simple_matrix]:
+
+<center>![](./images/practical-2/europe_weights_matrix.png){width="100%"}</center>
+
+[^simple_matrix]: There are $\approx36$ countries in our European example, so the full version of $\mathbf{W}$ would include $36$ rows and $36$ columns, one for each country, storing $1296$ values for $w$ (i.e., $36^2$). I have presented a simplified version here, to aid interpretation. 
+
+Conceptually, $\mathbf{W}$ looks like this: 
 
 $$\mathbf{W}=\begin{bmatrix} w_{11} & w_{12} & ... & w_{1n} \\ w_{21} & w_{22} & ... & w_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ w_{n1} & w_{n2} & ... & w_{nn} \end{bmatrix}$$
 
 $\mathbf{W}$ contains the spatial weights for every pair of objects ($w_{ij}$). In this example, the top row contains the spatial weight associated with Object 1 and itself ($w_{11}$[^self]), the spatial weight for Object 1 and Object 2 ($w_{12}$), up to the number of objects ($n$) in the dataset ($w_{1n}$). The second row contains all the spatial weights associated with Object 2 and every other object in the dataset ($w_{2n}$), and so on. 
 
-[^self]: Self-neighbor relations are typically excluded so $W=0$.
+[^self]: Self-neighbor relations are typically excluded so $w=0$.
 
-Let's illustrate with a simple example, focusing on six European countries: *Netherlands ($n$), Belgium ($b$), Luxembourg ($l$), Germany ($g$), Austria ($a$), and Czechia ($c$)*:
+Let's illustrate further with another simple example, focusing on six European countries: *Netherlands ($n$), Belgium ($b$), Luxembourg ($l$), Germany ($g$), Austria ($a$), and Czechia ($c$)*:
 
 <p align="center">
 <a name=""></a>![](./images/practical-2/central-europe.png){width=50%}
@@ -127,6 +135,15 @@ $$\mathbf{W}=\begin{bmatrix} 0 & 1 & 0 & 1 & 0 & 0 \\ 1 & 0 & 1 & 1 & 0 & 0 \\ 0
 Which country has the highest number of neighbours? What do you notice about the spatial pattern of the values?
 :::
 
+<details>
+
+<summary>Interpretation</summary>
+
+Germany has the highest number of neighbours, representing its central and highly connected position in our example. You may have noticed that the matrix is **symmetric**, with values reflected across the line $y=x$ or $\text{row}=\text{col}$ column. This occurs when the spatial relationship between locations is *reciprocal* i.e., Belgium ($b$) is a neighbour of the Netherlands ($n$) so $w_{nb}=1$, but the Netherlands is also a neighbour of Belgium, so $w_{bn}=1$. 
+
+</details>
+
+<br>
 
 Graphically, $\mathbf{W}$ would resemble the following, where lines are connecting each neighbouring country ($w=1$), and are absent for non-neighbouring countries ($w=0$):
 
@@ -153,9 +170,9 @@ This layer is the National Grid for Great Britain, comprising grid squares each 
 <a name=""></a>![](./screenshots/practical-2/os_grid.png){width=50%}
 </p>
 
-The Coordinate Reference System (CRS) for this dataset is [EPSG:27700](https://epsg.io/27700), which is designed to minimise **distortion** in the area of interest (i.e., Great Britain)[^distortion].
+The Coordinate Reference System (CRS) for this dataset is [EPSG:27700](https://epsg.io/27700), which is designed for our study area (i.e., Great Britain)[^crs].
 
-[^distortion]: Distortion is discussed more fully in *Understanding GIS* (Weeks 2 and 5)
+[^crs]: Coordinate reference systems and map **distortion** are discussed more fully in **GEOG71551** *Understanding GIS* (Weeks 2 and 5)
 
 ::: question
 Can you remember how to check the CRS for a map layer?
@@ -252,7 +269,7 @@ When using a "Distance Band" of 50 km, no neighbours are returned for any of the
 
 The "Fixed Distance" approach is also **binary** and we can confirm this by returning to the Neighbourhood Explorer, where the table at the bottom lists the IDs of all the neighbours for the selected focal feature and the corresponding weight $w$. The 'Statistics' tab also includes important information about the number of features in the layer and neighbour counts. 
 
-#### K Nearest Neighbours {.unnumbered .unlisted}
+#### K Nearest Neighbours {#k_neighbours .unnumbered .unlisted}
 
 Another distance based approach returns the "$K$ Nearest Neighbours" for each feature, with the value of $K$ selected by the user.
 
@@ -274,7 +291,7 @@ What method do you think ArcGIS has used to select the cells to the south and we
 
 This might be an issue for our simple regularly-spaced dataset, but is unlikely to be a significant problem for more typical spatial datasets, where multiple equidistant features are unlikely. 
 
-#### Inverse Distance {.unnumbered .unlisted}
+#### Inverse Distance {#inv_weights .unnumbered .unlisted}
 
 The final distance based approach to consider is *Inverse Distance*, which marks a shift away from a **binary** classification of $w$ to a **continuous** classification. Rather than $w = 0|1$, $w$ can be continuous, where "nearer" objects have larger weights than "distant" objects, in accordance with Tobler's Law [@tobler1970].
 
@@ -335,7 +352,7 @@ This is very different to the Map View from Practical 1. Can you think why this 
 
 <details>
   <summary>Answer</summary>
-  This is because our Map View is using [EPSG:27700](https://epsg.io/27700) as the coordinate reference system (CRS). This does a good job of minimising **distortion** for Great Britain, but at the cost of enhancing distortion elsewhere. As a result, we should really change our Map CRS to that of the Natural Earth data ([EPSG:4326](https://epsg.io/4326)), or a similar CRS designed for global data. 
+  This is because our Map View is using [EPSG:27700](https://epsg.io/27700) as the coordinate reference system (CRS), matching the first dataset we loaded [`osbng_grid_100km.shp`]. While this is suitable for analysis and representing of Great Britain, we should really change our Map CRS to that of the Natural Earth data ([EPSG:4326](https://epsg.io/4326)), or a similar CRS designed for global data. 
 </details>
 
 > Right click on "Map" in the Contents Pane &rarr; Properties &rarr; Coordinate Systems, and choose a suitable `Projected Coordinate System` for the World e.g., Equal Earth, Natural Earth, Robinson, or use `Geographic Coordinate System` &rarr; World &rarr; WGS 1984. 
@@ -345,12 +362,6 @@ Our new Map CRS will make it much easier to see our spatial relationships:
 ![*Natural Earth data, visualised using the Natural Earth CRS (EPSG:54077)*](./screenshots/practical-2/natural-earth-crs.png){width=100%}
 
 <br>
-
-If we change our Map View back to Great Britain, we can see the local distortion quite clearly:
-
-<p align="center">
-<a name=""></a>![](./screenshots/practical-2/distortion-os-grid.png){width=50%}
-</p>
 
 > Use the Neighbourhood Explorer to investigate different *conceptualisations of spatial relationships*, using "Unique ID" = `NE_ID`[^id_note]. This is a stable and unique ID provided in the Natural Earth dataset.
 
@@ -363,10 +374,6 @@ What do you think is the most appropriate method for this dataset? e.g., *Contig
 
 ::: question
 Is there a "correct" neighbourhood for each country?
-:::
-
-::: question
-Do you notice any interesting or unexpected behaviour? *Hint*: France is a useful country to explore...
 :::
 
 #### Generating the spatial weights matrix
@@ -478,9 +485,77 @@ Here is our output, visualising all the neighbourhood connections in $\mathbf{W}
 Which parts of the world have many / few connections? 
 :::
 
+<details>
+  <summary>Interpretation</summary>
+  When using contiguity weights, parts of Europe, Africa, Asia, and South America show high degrees of topological connectivity. By comparison (and perhaps unsurprisingly), island nations exhibit no neighbour connections e.g., Australia, New Zealand, and Japan. 
+</details>
+
 ::: question
-What are the limitations of using feature centroids to represent our topological connections? 
+What are the limitations of using feature centroids to represent our topological connections? *Hint*: France is a useful country to explore...
 :::
+
+::: question
+What other limitations can you spot? 
+:::
+
+<details>
+  <summary>Interpretation</summary>
+  
+  While this is an interesting visualisation, it does reveal some limitations. These stem from the use of the `Natural-Earth` data and the representation of countries as **MultiPolygons**. You will be familiar with **polygons** from [Practical 1](#work_raster) i.e., a closed shape defined by a connected sequence of $x,y$ coordinate pairs:
+  
+  <center>![](./images/practical-2/polygon.png){width="15%"}</center>
+  
+  <br>
+  
+In a typical dataset, we might have many different polygons (e.g., countries in `Natural-Earth`), each with their own geometries ($x,y$ coordinates) and attributes: 
+
+<center>![](./images/practical-2/three_polygon.png){width="40%"}</center>
+
+<br>
+
+By comparison, a **MultiPolygon** is a geometric data type that contains two or more polygons with a single set of attributes. In our example below, there has been no change to the polygon geometries, but here they have been grouped (MultiPolygon), rather being treated as separate features (Polygon):
+
+<center>![](./images/practical-2/multipolygon.png){width="40%"}</center>
+
+<br>
+
+This is useful for `Natural-Earth` and other similar datasets, where geographic entities may be comprised of many separate geometries. For example, there are [thousands of islands](https://docs.os.uk/more-than-maps/geographic-data-visualisation/geodataviz-assets/how-did-i-make-that/great-britains-islands) which make up the United Kingdom of Great Britain and Northern Ireland. By storing these as the MultiPolygons, these separate geometries can be grouped and described by a single set of attributes (e.g., `ADMIN`, `ISO_A3`, `CONTINENT`), thereby significantly reducing the size of the attribute table. 
+
+However, this format can influence our interpretation our **centrality**. For example, we might want to calculate the **centroid** of our polygon geometries i.e.,  the centre of mass. For a *polygon* dataset, this is easy to calculate and interpret i.e., the centre of mass for each separate polygon. By comparison, the centroid of a MultiPolygon is the centre of mass of *all* the grouped polygons: 
+
+<center>![](./images/practical-2/centroids.png){width="80%"}</center>
+
+<br>
+
+For our `Natural-Earth` dataset, the centroid for France ("NE_ID" = `1159320637`) actually lies **outside** of [mainland France](https://en.wikipedia.org/wiki/Metropolitan_France). This is due to the overseas departments of France in South America, the Caribbean and the Indian Ocean e.g., [French Guiana](https://en.wikipedia.org/wiki/French_Guiana), and the grouping of these geometries as a MultiPolygon, rather than as separate polygons:
+
+<center>![](./screenshots/practical-2/france_centroid.png){width="100%"}</center>
+
+<br>
+
+In turn, this can influence our interpretation of **topological connectivity**. When contiguity-weights are used, France is considered a neighbour of Brazil, as shown below, but this is due to the contiguity of *French Guiana* and Brazil, rather than contiguity with *mainland* France. Importantly, this is not necessarily *incorrect*, as it depends on your appraisal of what constitutes "France" and "Brazil". It is **important**, however, to recognise that the way we store and represent the world as spatial objects (e.g., polygon vs. MultiPolygon), can have a significant impact on how they are modelled and interpreted. 
+
+<center>![](./screenshots/practical-2/france_connections.png){width="100%"}</center>
+
+<br>
+
+In this situation, we could convert our `Natural-Earth` data from **multi-part** to **single-part**, which involves separating disparate geometries into individual features, keeping their original attributes:
+
+<center>![](./images/practical-2/multi_to_single.png){width="80%"}</center>
+
+<br>
+
+To achieve this:
+
+> Use [Multipart To Singlepart](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/multipart-to-singlepart.html?tabs=dialog), with `ne_10m_admin_0_countries.shp` as the "Input Features". 
+
+When complete, the Neighborhood Explorer can be used to investigate contiguity weights for mainland France, which should utilise a centroid *within* the geometry of the mainland, and should show neighbourhood connections for Europe-only: 
+
+<center>![](./screenshots/practical-2/mainland_france_topo.png){width="100%"}</center>
+
+</details>
+
+<br>
 
 ### Cultural Distance
 
@@ -513,7 +588,7 @@ In our case, every neighbour relationship is represented *twice* in `natural_ear
 
 > Open [Delete Identical](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/delete-identical.html?tabs=dialog) with `natural_earth_swm_lines` as the input. For "Fields" select `Shape` i.e., we want to remove rows which have identical geometries. This modifies the input layer, so press Run. 
 
-[^isomorphic]: Here we are referring to dataset structures that share identical structural connectivity.
+[^isomorphic]: Here we are referring to dataset structures that share identical structural connectivity i.e., the **reflected** pattern below.  
 
 To link this dataset to our table of cultural distance, we are going to use a table join, linking to the `join_key` in the latter (e.g., `Algeria-Andorra`). To achieve this, we need to create a comparable field in our XY to Line dataset:
 
@@ -583,7 +658,7 @@ What are the limitations of this approach?
 
 ## Extra {#weights-extra}
 
-In the practical we've worked exclusively with Polygons. How would we define neighbours for a Point dataset?
+In the practical we've worked exclusively with Polygons. How would we define neighbours for a **Point** dataset?
 
 > Open the `world_cities_5m` layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Inverse distance, fixed distances and $K$ nearest neighbours are common approaches.
 
@@ -591,25 +666,27 @@ In the practical we've worked exclusively with Polygons. How would we define nei
 <a name=""></a>![](./screenshots/practical-2/points-fixed-distance.png){width=50%}
 </p>
 
-Another approach is to use "Trimmed Delaunay Triangulation", which can be run much like the other conceptualisations. To really understand how this works:
+Another approach is to use "Trimmed Delaunay Triangulation", which can be run much like the other conceptualisations. To understand how this works:
 
 > Open the Geoprocessing tool [Create Thiessen Polygons](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog) and run with the `world_cities` layer as input, and preserve all "Output Fields". 
 
-This tool creates **Thiessen** or **Voronoi** Polygons around a set of Points, where the area within each Polygon is closer to the focal point than any other point in the dataset, as shown here:
+This tool creates **Thiessen** or **Voronoi** Polygons around a set of Points, where the area within each Polygon is closer to the focal point than any other point in the dataset[^Thiessen_link], as shown here:
 
 <p align="center">
 <a name=""></a>![](./screenshots/practical-2/thiessen.png){width=80%}
 </p>
+
+[^Thiessen_link]: We'll explore this approach more thoroughly in **Practical 6**: *Interpolation*
 
 > Return to the Neighbourhood Explorer but use the output of [Create Thiessen Polygons](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog) as the input, and using `Contiguity Edges Corners` as the conceptualisation.
 
 ![](./images/practical-2/point-neighbours.png){width=100%}
 <br>
 
-While Trimmed Delaunay Triangulation and Thiessen Polygons are **not** identical approaches (the former creates a mesh of non-overlapping triangles connecting the Points), they are *conceptually* similiar: both methods convert our Point data to areal data before contiguity weights are applied. A Thiessen approach is one I've used in my own research, see @tomkins2021.
+While Trimmed Delaunay Triangulation and Thiessen Polygons are **not** identical approaches (the former creates a mesh of non-overlapping triangles connecting the Points), they are *conceptually* similar: both methods convert our Point data to areal data before contiguity weights are applied. A Thiessen approach is one I've used in my own research, see @tomkins2021.
 
 ::: task
-**Remember** - we can define neighbours for all types of spatial data (e.g., Points, Lines, Polygons), so keep this in mind for later tasks in the unit. 
+**A key point to remember** - we can define neighbours for all types of spatial data (e.g., Points, Lines, Polygons), so keep this in mind for later tasks in the unit, particularly those involving analysis of points.  
 :::
 
 ## Resources {#sw_resources}

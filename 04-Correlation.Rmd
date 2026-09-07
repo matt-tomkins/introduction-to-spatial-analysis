@@ -67,7 +67,29 @@ Pearson's $r$ is strictly a measure of the **linear** correlation between two va
 
 [^04-correlation-3]: For non-linear relationships, [Spearman's rank correlation coefficient](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient) is a better choice.
 
-<center>![](./images/practical-4/non-linear.png){width="80%"}</center>
+<center>![](./images/practical-4/non-linear-edit.png){width="80%"}</center>
+
+<br>
+
+::: question
+What $r$ values do you think would be calculated for $A,B,C$ and $D$?
+:::
+
+<details>
+
+<summary>Answer</summary>
+
+For $A$, $r=0.05$, indicative of a slight negative correlation between $x$ and $y$.
+
+For $B,C$ and $D$, $r=0.84$. Without inspecting the plots, we would conclude that this is indicative of strong positive correlations between $x$ and $y$. However, visual inspection of the data indicates that the actual relationship is quite different for $B,C$ and $D$. The relationship for $B$ is perfectly linear, albeit with a single outlier, whereas the relationship is much less strong for $D$. By comparison, the relationship between $x$ and $y$ for $B$ (as for $A$) is clearly non-linear, and the relationship would be better explained by a non-linear function.
+
+The key point to **remember** is that measures of association should be interpreted critically, and in light of visual inspection of the data. The seminal work by @anscombe1973 is worth a read here[^data_viz].
+
+[^data_viz]: ["Anscombe's quartet"](https://en.wikipedia.org/wiki/Anscombe%27s_quartet), and the more recent ["Datasaurus dozen"](https://en.wikipedia.org/wiki/Datasaurus_dozen), are great illustrations of the importance of data visualisation. 
+
+</details>
+
+<br>
 
 There are multiple ways to define Pearson's $r$, for example depending on whether we are assessing the correlation for an entire *population* of data i.e., the entire group you are looking to analyse[^04-correlation-4], or assessing the correlation for a *sample* i.e., a subset of the population.
 
@@ -85,7 +107,7 @@ $$r=\frac{\text{Cov}(XY)}{\sigma_{X}\sigma_{Y}}$$
 
 The numerator is the **covariance**, a measure of the joint variability between the variables $X$ and $Y$, while the denominator is the product of the **standard deviations** of the two variables. The standard deviations $\sigma_{X}$ and $\sigma_{Y}$ measure the dispersion of the observations around their respective means. As the covariance value is influenced by the measurement units, dividing by the product of the standard deviations normalises the output to between $-1$ and $+1$.
 
-Let's use an example to illustrate, using ecological data from @getzin2012, which consists of paired measurements of the median gap shape complexity index (GSCI) $x$ and species richness (SR) $y$ for a forest patch (Hainich) in central Germany[^04-correlation-5]. 
+Let's use an example to illustrate, using ecological data from @getzin2012, which consists of paired measurements of the median gap shape complexity index (GSCI) $x$ and species richness (SR) $y$ for a forest patch (Hainich) in central Germany[^04-correlation-5].
 
 [^04-correlation-5]: You'll also use this dataset in **GEOG62411** *Data Acquisition for GI Scientists*. Values generated using [PlotDigitizer](https://plotdigitizer.com/), and rounded here for ease of calculation.
 
@@ -116,9 +138,7 @@ $$\begin{array}{cc}
 
 Here is a plot of the paired measurements, redrawn from @getzin2012:
 
-<center>
-![](./images/practical-4/getzin.png){#species-richness width="50%"}
-</center>
+<center>![](./images/practical-4/getzin.png){#species-richness width="50%"}</center>
 
 Plugging these paired observations into our full equation above, the numerator calculates the differences between each value and their respective means $\bar{x}\approx2.10$ and $\bar{y}\approx35.36$. The summed product of these paired differences is $\approx90.88$.
 
@@ -134,7 +154,7 @@ What is your interpretation of the correlation coefficient?
 
 <summary>Answer</summary>
 
-$r=0.86$ is indicative of strong **positive** correlation between median gap shape complexity index (GSCI) $x$ and species richness (SR) $y$. 
+$r=0.86$ is indicative of strong **positive** correlation between median gap shape complexity index (GSCI) $x$ and species richness (SR) $y$.
 
 </details>
 
@@ -142,12 +162,12 @@ $r=0.86$ is indicative of strong **positive** correlation between median gap sha
 
 Here is the data, if you want to do the calculations yourself[^04-correlation-6], for example in Excel:
 
-[^04-correlation-6]: I've rounded the numerator and denominator and the resulting $r$ value to simplify presentation, so if you do decide to do the calculations yourself, the values may differ very slightly. 
+[^04-correlation-6]: I've rounded the numerator and denominator and the resulting $r$ value to simplify presentation, so if you do decide to do the calculations yourself, the values may differ very slightly.
 
 ```{python, eval=FALSE}
-# Data from Getzin et al. (2012)
-gsci = [1.42, 1.53, 1.34, 1.69, 1.45, 1.55, 1.63, 1.87, 1.87, 1.94, 1.95, 2.17, 2.18, 2.29, 2.52, 2.90, 2.70, 2.95, 3.08, 3.04]
-sr = [15.86, 20.79, 22.82, 26.82, 33.86, 33.95, 33.86, 29.79, 36.84, 37.86, 33.86, 38.79, 33.86, 31.83, 38.87, 40.83, 44.82, 52.89, 50.93, 48.05]
+# Data from Getzin et al. (2012), tab-delimited
+GSCI	1.42	1.53	1.34	1.69	1.45	1.55	1.63	1.87	1.87	1.94	1.95	2.17	2.18	2.29	2.52	2.9	2.7	2.95	3.08	3.04
+SR	15.86	20.79	22.82	26.82	33.86	33.95	33.86	29.79	36.84	37.86	33.86	38.79	33.86	31.83	38.87	40.83	44.82	52.89	50.93	48.05
 ```
 
 We now know how to calculate Pearson's $r$ and could begin to measure the association between election results (the topic of the previous practical) and other variables of interest, such as the average income, education levels, or ethnic diversity of the US counties, as described in the [data section](#correlaton_data).
@@ -174,7 +194,7 @@ The figure shows three different spatial distributions $A,B,C$, where the colour
 Based on the visual patterns and Moran's $I$, how would you describe the pattern of spatial autocorrelation for each dataset?
 :::
 
-The Pearson's correlation coefficient for each dataset pair ($A-B$, $B-C$, $A-C$) is also identical, with $r=0.422$ i.e., a moderate positive correlation. This occurs because Pearson's $r$ is calculated using deviations from the mean e.g., $(x_{i}-\bar{x})^2$, and for estimating the covariance, the product of those deviations for each **pair of observations** i.e., $(x_{i}-\bar{x})(y_{i}-\bar{y})$. It does take spatial structure into account.
+The Pearson's correlation coefficient for each dataset pair ($A-B$, $B-C$, $A-C$) is also identical, with $r=0.422$ i.e., a moderate positive correlation. This occurs because Pearson's $r$ is calculated using deviations from the mean e.g., $(x_{i}-\bar{x})^2$, and for estimating the covariance, the product of those deviations for each **pair of observations** i.e., $(x_{i}-\bar{x})(y_{i}-\bar{y})$. It does not take spatial structure into account.
 
 To illustrate why that matters, below are the distributions $B$ and $C$ from @lee2001, where I've labelled some of the cells $b_1,b_2,\cdots,b_n$ and $c_1,c_2,\cdots,c_n$. For calculating Pearson's $r$, the calculations use the paired observations i.e., $b_n + c_n$.
 
@@ -200,7 +220,9 @@ The overall correlation coefficient $r$ would be unchanged, because the dataset 
 
 This is the key message of the original figure from @lee2001. While the global correlation $r$ is identical for each dataset pair ($A-B$, $B-C$, $A-C$), $A-B$ appears (qualitatively) to show a higher level of spatial co-patterning, with higher values of $A$ and $B$ found in similar locations on the map. By comparison, $B-C$ and $A-C$ do not seem to show clear spatial co-patterning. This possible difference between the datasets is masked by Pearson's $r$.
 
-In this practical, we are going to introduce a measure of **bivariate spatial association** developed by @lee2001, which "*captures the relationship between two variables, taking the topological relationship among observations into account*".
+This is also the first time we are going to **spatialise** a standard statistical approach. This is important, because standard statistical approaches, such as Pearson's $r$, typically overinflate associations and relationships when **applied to spatial data**. This can occur because these approaches only consider the numeric similarity of the paired observations, and with no consideration of geography. This is illustrated well by the examples of @lee2001, where there is a relatively strong degree of correlation for each dataset pair (i.e., $r=0.422$), even when co-pattering seems to be absent, or at least very weak (e.g., $A-C$). 
+
+Based on the above reasoning, we are going to introduce a measure of **bivariate spatial association** developed by @lee2001, which "*captures the relationship between two variables, taking the topological relationship among observations into account*". 
 
 ### Pre-processing
 
@@ -529,7 +551,7 @@ The tool has produced a striking map of local $L$, but before we explore it, we 
 What is your interpretation of the global level results, including $L$ and it's associated $p$ value, and Pearson's $r$ (`Pearson Correlation - raw`).
 :::
 
-The ArcGIS implementation also returns the **spatial smoothing scalar** for both variables. We haven't defined this yet, as it doesn't feature directly in the main $L$ equation, but you'll notice it's very similar to $L$: 
+The ArcGIS implementation also returns the **spatial smoothing scalar** for both variables. We haven't defined this yet, as it doesn't feature directly in the main $L$ equation, but you'll notice it's very similar to $L$:
 
 $$SSS_X=\frac{n}{\sum_{i}(\sum_{j} w_{ij})^2}\frac{\sum_{i}(\sum_{j}w_{ij}(x_{j}-\bar{x}))^2}{\sum_{i}(x_{i}-\bar{x})^2}$$
 
@@ -665,7 +687,7 @@ There are a few obvious limitations to our approach:
 -   As ever, the results are sensitive to our designation of the spatial weights matrix.
 -   We're also using the same spatial weights matrix for both variables. There might be circumstances where we'd want to use different neighbourhood definitions, see @illanas2025.
 -   We're also only dealing with **bivariate** associations, rather than a combination of factors, which might ultimately be needed to **explain** spatial variability in Republican vote share. We'll explore this in [Practical 7](#spatial_regression) and [Practical 8](#gwr).
-- We can also engage critically with the ArcGIS implementation of $L$, given it is doesn't allow us to investigate the *normalised* (mean-centered) spatial lags for each variable, and seems to enforce the inclusion of the focal feature in the calculations. 
+-   We can also engage critically with the ArcGIS implementation of $L$, given it is doesn't allow us to investigate the *normalised* (mean-centered) spatial lags for each variable, and seems to enforce the inclusion of the focal feature in the calculations.
 
 </details>
 
@@ -679,7 +701,6 @@ For those of you interested in exploring further, there are lots of other county
 -   Lee, S.I. ([2017](https://doi.org/10.1007/978-3-319-17885-1_1524)). Correlation and Spatial Autocorrelation. In: Shekhar, S., Xiong, H., Zhou, X. (eds) Encyclopedia of GIS. Springer, Cham.
 -   Illanas, S., Gómez-Rubio, V., Vicente, J. and Acevedo, P. ([2025](https://doi.org/10.1016/j.ecolind.2025.113551)). Assessment of bivariate relationships between spatial patterns: Revisiting the global and local L bivariate indices for wildlife management and conservation[MT1.1]. Ecological Indicators, 175, p.113551.
 -   Wolf, L.J. ([2024](https://doi.org/10.1080/24694452.2024.2326541)). Confounded Local Inference: Extending Local Moran Statistics to Handle Confounding. Annals of the American Association of Geographers, 114(6), 1216–1231.
-
 
 ```{r, eval=FALSE, echo=FALSE}
 

@@ -257,7 +257,9 @@ $$\frac{n!}{p!(n-p)!}=\frac{10000!}{25!(10000-25)!}=6.26 × 10^{74}\: \text{comb
 
 <br>
 
-**This is an extremely large number.**
+**This is an extremely large number**[^large_number].
+
+[^large_number]: It begins with the digits 626 and is followed by **74**! 626,000,000,000,000,000... and so on. 
 
 As a result, a deterministic approach to find the optimum solution is often impossible and instead location allocation methods typically use a **heuristic approach** to guide the search for a near-optimal ("good enough") solution[^09-location-allocation-7].
 
@@ -407,7 +409,7 @@ As a final test of the $p$-median criterion, we could evaluate an idealised scen
 
 <br>
 
-It is worth reiterating here that the solution is not necessarily the **globally optimal solution** but instead is the **heuristic solution**. The ArCGIS heuristic is described [here](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/algorithms-used-by-network-analyst.html#A92), with the original formulation in @teitz1968. For $k=1000$ and $p=38$, the total number of combinations to evaluate is:
+It is worth reiterating here that the solution is not necessarily the **globally optimal solution** but instead is the **heuristic solution**. The ArcGIS heuristic is described [here](https://doc.esri.com/en/arcgis-pro/latest/help/analysis/networks/algorithms-used-by-network-analyst.html#A92), with the original formulation in @teitz1968. For $k=1000$ and $p=38$, the total number of combinations to evaluate is:
 
 $$\frac{n!}{p!(n-p)!}=\frac{1000!}{38!(1000-38)!}=9.38 × 10^{68}\: \text{combinations}$$
 

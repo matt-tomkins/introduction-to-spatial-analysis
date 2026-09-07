@@ -169,46 +169,33 @@ semi-variograms, which we'll introduce today.
 
 Spatial interpolation is a key component of geostatistics, and is used
 to predict unknown **values** at new locations based on known
-measurements from surrounding sample points. We could use our
-observations points of *Panthera tigris* from [Practical
-5](#point_patterns) to demonstrate this, but it's not an ideal example,
-for a few reasons:
+measurements from surrounding sample points. 
 
-1.  Our points don't have corresponding **values** that could be easily
-    used for spatial interpolation e.g., animal height, age, or mass.
+::: question
+Why might we **not** want to apply interpolation to our observation points of *Panthera tigris* from [Practical 5](#point_patterns)?
+:::
 
-2.  As demonstrated in [Practical 5](#point_patterns), the distribution
-    of *Panthera tigris* observations is highly clustered and
-    **non-continuous**, with observations primarily in designated nature
-    reserves. Most interpolation techniques will struggle to capture
-    this spatial pattern, and instead we'd probably want to use a
-    species distribution model in this situation. You can learn about
-    these in [Spatial
-    Ecology](https://www.manchester.ac.uk/study/masters/courses/list/07053/msc-geographical-information-science/)
-    in Semester 2.
+<details>
 
-3.  Our species observations are *presence-only* data (i.e., recorded
-    observations of *Panthera tigris*), and we have no access to
-    corresponding *absence-data*, which you can read about more fully in
-    @grattarola2023 and @kent2011. As a result, we do not know whether
-    the "gaps" in our [point pattern](#p5_randomness) reflect true
-    absence, or simply sampling bias [@hughes2021].
+<summary>Interpretation</summary>
 
-4.  As a final consideration, and linking back to the introductory
-    [discussion](#why_interpolate), one of the key assumptions in our
-    analysis of *Panthera tigris* was that the observed point patterns
-    were a reflection of point processes. Most traditional
-    geostatistical approaches to interpolation, including those
-    introduced today, assume (often implicitly) that the sampling
-    approach (and by definition, the point pattern) is non-preferential
-    i.e., sampling locations were not determined or influenced by the
-    underlying process. This is unlikely to be the case for *Panthera
-    tigris*, as sampling intensity and locations are likely influenced
-    by the knowledge that tiger populations are higher in protected
-    areas. While this is not a "deal breaker" for a geostatistical
-    approach, it does require alternative methods [@diggle2010].
+There are a number of theoretical and practical reasons why we might we prefer to use an alternative dataset:
 
-Instead, we are going to apply interpolation to a **continuous** entity
+1. First, we need to think carefully about what point datasets **represent**. Here we can make an important distinction between **events** and **continuous phenomena**, as introduced above. Our observations of *Panthera tigris* can be seen as **events** that *could* take place anywhere within the study area, but have only occurred at certain locations. Our focus therefore should be on characterising the observed point pattern, with a view to revealing the underlying point processes, rather than predicting values at unsampled locations. In contrast, point datasets which represent **continuous phenomenon** are more suitable for interpolation. Here, the point pattern is often secondary (e.g., a reflection of sampling strategy), and our interest lies in predicting values at unsampled locations to a continuous *representation* of the phenomenon.  
+
+2. Many traditional geostatistical approaches to interpolation, including those introduced today, assume (often implicitly) that the sampling approach (and by definition, the point pattern) is **non-preferential** i.e., sampling locations were not determined or influenced by the underlying process. This is unlikely to be the case for *Panthera tigris*, as sampling intensity and locations are likely influenced by the knowledge that tiger populations are higher in protected areas. While this is not a "deal breaker" for a geostatistical approach, it does require alternative methods [@diggle2010].
+
+3. From a practical perspective, our points don't have corresponding **values** that could be easily used for spatial interpolation e.g., animal height, age, or mass. Point datasets with corresponding attributes would be described as *marked*, or *unmarked* if the only available information is the point coordinates. 
+
+4. As demonstrated in [Practical 5](#point_patterns), the distribution of *Panthera tigris* observations is highly clustered and **non-continuous**, with observations primarily in designated nature reserves. Most interpolation techniques will struggle to capture this spatial pattern, and instead we'd probably want to use a species distribution model in this situation. You can learn about these in [Spatial Ecology](https://www.manchester.ac.uk/study/masters/courses/list/07053/msc-geographical-information-science/) in Semester 2.
+
+5. Finally, our species observations are *presence-only* data (i.e., recorded observations of *Panthera tigris*), and we have no access to corresponding *absence-data*, which you can read about more fully in @grattarola2023 and @kent2011. As a result, we do not know whether the "gaps" in our point pattern reflect true absence, or simply sampling bias [@hughes2021].
+
+</details>
+
+<br>
+ 
+Based on the above interpretation, we are going to apply interpolation to a **continuous** entity
 that *could* be measured anywhere within our study area (air
 temperature), but which is represented by a finite number of discrete
 sampling locations ([Met
@@ -872,9 +859,9 @@ There are various techniques that can be used for selecting the lag size and the
 
 A rule-of-thumb for the number of lags is half of the largest distance between any two points, divided by the lag size. 
 
-Another approach is to use **cross-validation** i.e., for a given model type (i.e., Stable, Gaussian, Circular, Exponential, ...), adjust the lag size and the sample variogram parameters (nugget, sill, range) and then assess performance via cross-validation, returning the combination with the lowest RMSE. Some of the ArcGIS model types are described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html#DC0). A better visualisation of model types is from the R `gstat` package, although not all are available in ArcGIS: 
+Another approach is to use **cross-validation** i.e., for a given model type (i.e., Stable, Gaussian, Circular, Exponential, ...), adjust the lag size and the sample variogram parameters (nugget, sill, range) and then assess performance via cross-validation, returning the combination with the lowest RMSE. Some of the ArcGIS model types are described [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/3d-analyst/how-kriging-works.html#DC0), with some model examples below:
 
-<center>![](./images/practical-6/model_types.png){width="80%"}</center>
+<center>![](./images/practical-6/variogram_models.png){width="80%"}</center>
 
 <br>
 

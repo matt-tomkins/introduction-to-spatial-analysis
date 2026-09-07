@@ -70,9 +70,9 @@ However, many geographic processes display spatial **non-stationarity**, a situa
 
 Global regression methods cannot be used to model or capture non-stationarity, as they assume spatial (or temporal) stationarity, and produce a **single** coefficient for each independent variable, representing the relationship with the dependent variable.
 
-By comparison, **local** regression methods produce spatially varying coefficients to capture spatial non-stationarity in the relationships between independent and dependent variables. For example, rather a single global coefficient representing the relationship between deprivation and life expectancy for the entire study area i.e., $\beta\approx-0.19$, local regression methods would produce a local coefficient for each feature in the study area.
+By comparison, **local** regression methods produce spatially varying coefficients to capture spatial non-stationarity in the relationships between independent and dependent variables. For example, rather a single global coefficient representing the relationship between deprivation and life expectancy for the entire study area i.e., $\beta\approx-0.19$, local regression methods would produce a local coefficient for each feature in the study area. These models are therefore known as **Spatially Varying Coefficient** (SVC) models.
 
-Examples of these local regression methods include geographically weighted regression (GWR), see @brunsdon1996a, and multiscale geographically weighted regression (MGWR), see @fotheringham2017a, which we will explore today.
+Examples of SVCs include geographically weighted regression (GWR), see @brunsdon1996a, and multiscale geographically weighted regression (MGWR), see @fotheringham2017a, which we will explore today.
 
 ### Pre-processing
 
@@ -549,6 +549,12 @@ $$
 
 <br> 
 
+Here is a spatial representation of the Gaussian and bisquare weighting schemes, using the same bandwidth $h$ for each method:
+
+<center>![](./images/practical-8/weighting_combined.png){width="100%"}</center>
+
+<br>
+
 We've been using the bisquare approach so far, so:
 
 > Re-run [Geographically Weighted Regression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/geographically-weighted-regression.html?tabs=dialog), using the same settings as before (i.e., dependent and independent variables, scaling data, adaptive kernel, `Golden Search` method), but now set the "Local Weighting Scheme" to `Gaussian`, which can be found under `Additional Options`.
@@ -735,7 +741,13 @@ Spatial autocorrelation, as estimated using Moran's $I$ and Queen's contiguity, 
 
 <br>
 
-**Overall**, the MGWR results provide fascinating (in my view) insights into the spatially varying processes that govern life expectancy, as summarised below. Deprivation and income are consistently statistically significant predictors, but their relationship with life expectancy varies spatially within the study area. Evidence of spatially varying relationships could have implications for healthcare management and policy i.e., a single, uniform policy may not be equally effective in all locations. In some areas, tackling deprivation could conceivably have the greatest impact on improving health outcomes, whereas in other areas, focusing on wealth inequality might be more effective[^caveat_intervention].
+**Overall**, the MGWR results provide fascinating (in my view) insights into the spatially varying processes that govern life expectancy, as summarised below. However, we should recognise that geographically weighted regression is an **exploratory** method. Much like tests for [autcorrelation](#autocorrelation_summary), the results of SVC models are dependent on the choice of parameters e.g., the selection of the kernel and local weighting scheme. In turn, while these techniques provide insight into how variable importance changes over space, they are not **objective truth**. As switching parameters will change the regression coefficients, and perhaps may fundamentally change your interpretations, care is needed to:
+
+1. Select parameters which are appropriate for the geographic process you are studying e.g., choice of $\mathbf{W}$. 
+2. Evaluate the sensitivity of your results to those parameters.
+3. Present the results and interpretation cautiously. 
+
+Within that context, deprivation and income are consistently statistically significant predictors, but their relationship with life expectancy varies spatially within the study area. Evidence of spatially varying relationships could have implications for healthcare management and policy i.e., a single, uniform policy may not be equally effective in all locations. In some areas, tackling deprivation could conceivably have the greatest impact on improving health outcomes, whereas in other areas, focusing on wealth inequality might be more effective[^caveat_intervention].
 
 [^caveat_intervention]: Of course these are not mutually exclusive, and tackling both deprivation *and* wealth inequality would probably be best! 
 
@@ -835,6 +847,7 @@ There are some fascinating patterns... lots to explore!
 ```{r, eval=FALSE, echo=FALSE}
 # Import library
 library(ggplot2)
+library(patchwork)
 
 #------------ Code to generate plot of Gaussian and Bisquare weighting functions
 
@@ -849,7 +862,6 @@ fb <- function(d, h) {
   (1 - (d / h)^2)^2, 
   NA)
 }
-
 
 # Weights to evaluate
 h <- seq(1, 10, 1)
@@ -880,6 +892,7 @@ g <- ggplot(plot_data, aes(x = d, y = f, colour = factor(h))) +
     colour = "Bandwidth (h)"
   ) +
   theme_classic() +
+  scale_x_continuous(limits=c(0,25)) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
@@ -903,7 +916,7 @@ b <- ggplot(plot_data, aes(x = d, y = fb, colour = factor(h))) +
     y = "Bisquare weight",
     colour = "Bandwidth (h)"
   ) +
-  scale_x_continuous(limits=c(0,15)) +
+  scale_x_continuous(limits=c(0,25)) +
   theme_classic() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
@@ -912,6 +925,80 @@ b <- ggplot(plot_data, aes(x = d, y = fb, colour = factor(h))) +
 ggsave(
   plot = b,
   "./images/practical-8/bisquare_weighting.png",
+  height = 3,
+  width = 6,
+  units = "in",
+  dpi = 300
+)
+
+# Create a spatial grid
+grid <- expand.grid(
+  x = seq(-10, 10, by = 0.1),
+  y = seq(-10, 10, by = 0.1)
+)
+
+# Focal location
+x0 <- 0
+y0 <- 0
+
+# Calculate distance from focal location
+grid$d <- sqrt(
+  (grid$x - x0)^2 +
+  (grid$y - y0)^2
+)
+
+# Calculate spatial weights
+grid$gaussian <- f(grid$d, 5)
+grid$bisquare <- fb(grid$d, 5)
+
+# Gaussian spatial weighting
+s <- ggplot(grid, aes(x = x, y = y, fill = gaussian)) +
+  geom_raster() +
+  coord_equal() +
+  scale_fill_viridis_c(name = "Weight") +
+  labs(
+    x = "X",
+    y = "Y",
+    title = "Gaussian weighting") +
+  theme_classic()
+
+# Save
+ggsave(
+  plot = s,
+  "./images/practical-8/gaussian_spatial.png",
+  height = 3,
+  width = 4,
+  units = "in",
+  dpi = 300
+)
+
+# Bisquare spatial weighting
+e <- ggplot(grid, aes(x = x, y = y, fill = bisquare)) +
+  geom_raster() +
+  coord_equal() +
+  scale_fill_viridis_c(name = "Weight") +
+  labs(
+    x = "X",
+    y = "Y" +
+      title = "Bisquare weighting") +
+  theme_classic()
+
+# Save
+ggsave(
+  plot = e,
+  "./images/practical-8/bisquare_spatial.png",
+  height = 3,
+  width = 4,
+  units = "in",
+  dpi = 300
+)
+
+combi_plot <- s + e + guide_area() +
+  plot_layout(guides = 'collect', widths = c(1,1,0.4), axis_titles = 'collect_y')
+
+ggsave(
+  plot = combi_plot,
+  "./images/practical-8/weighting_combined.png",
   height = 3,
   width = 6,
   units = "in",

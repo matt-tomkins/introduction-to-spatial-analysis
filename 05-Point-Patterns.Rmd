@@ -27,7 +27,7 @@ The data for this practical are available in [`data/gbif`] as follows:
 
 *Point Patterns*
 
-[Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog) (Spatial Analyst Tools), [Mean Center](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog) (Spatial Statistics Tools), [Median Center](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog) (Spatial Statistics Tools), [Standard Distance](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog) (Spatial Statistics Tools), [Directional Distribution (Standard Deviational Ellipse)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/directional-distribution.html?tabs=dialog) (Spatial Statistics Tools), [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog) (Spatial Statistics), [Multi-Distance Spatial Cluster Analysis (Ripley's K Function)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog) (Spatial Statistics), [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog) (GeoAnalytics Server Tools)
+[Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog) (Spatial Analyst Tools), [Mean Center](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/mean-center.html?tabs=dialog) (Spatial Statistics Tools), [Median Center](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/median-center.html?tabs=dialog) (Spatial Statistics Tools), [Standard Distance](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/standard-distance.html?tabs=dialog) (Spatial Statistics Tools), [Directional Distribution (Standard Deviational Ellipse)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/directional-distribution.html?tabs=dialog) (Spatial Statistics Tools), [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog) (Spatial Statistics), [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog) (GeoAnalytics Server Tools)
 
 *Data Management*
 
@@ -65,7 +65,9 @@ For example, here are some [iNaturalist](https://www.inaturalist.org/observation
 
 *iNaturalist observations of Canis lupus, which you can also explore [here](https://www.gbif.org/occurrence/search?taxonKey=QLXL&view=map&datasetName=iNaturalist+research-grade+observations). I'd recommend ["Lone Wolf"](https://www.penguin.co.uk/books/448173/lone-wolf-by-weymouth-adam/9781529158335) by Adam Weymouth for your next read...*
 
-At this scale, the distribution of *Canis lupus* observations appears to be spatially structured, perhaps reflecting differences in climate, habitat availability, topography, human influence, or environmental protection.
+At this scale, the distribution of *Canis lupus* observations appears to be spatially structured, perhaps reflecting differences in climate, habitat availability, topography, human influence, or environmental protection[^05-point-patterns-1].
+
+[^05-point-patterns-1]: The spatial distribution is also undoubtedly influenced by human behavior, given that observations can only be recorded where humans are present. As a result, we could argue that the above distribution is a measure of where wolves interact with humans, rather than wolves *per se*.
 
 This example reveals an important distinction between **point processes**, which generate point patterns, and **point-patterns**, which are the realisations of those processes. In turn, while point pattern analysis is primarily **descriptive** (e.g., are the points clustered, dispersed or random?), this is a necessary step to **understand** the processes which give rise to those patterns.
 
@@ -89,9 +91,9 @@ To begin:
 
 ![](./screenshots/practical-5/gbif_example.png){width="100%"}
 
-> Use [XY Table To Point](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog) to create a point feature layer based on the `decimalLatitude` and `decimalLongitude` fields, using EPSG [4326](https://epsg.io/4326) and saving in the project **geodatabase**[^05-point-patterns-1] as `tiger_points`.
+> Use [XY Table To Point](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog) to create a point feature layer based on the `decimalLatitude` and `decimalLongitude` fields, using EPSG [4326](https://epsg.io/4326) and saving in the project **geodatabase**[^05-point-patterns-2] as `tiger_points`.
 
-[^05-point-patterns-1]: This is necessary because the `gbifID` field has a "Data Type" of `Big Integer`, which is a 64-bit data type. The shapefile format can't handle this, and if you try to save in your project directory as a shapefile, you'll encounter [`ERROR 000308`](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00301-00325-000308.html): *Invalid field type*. This is not an issue when saving as a feature class in the geodatabase.
+[^05-point-patterns-2]: This is necessary because the `gbifID` field has a "Data Type" of `Big Integer`, which is a 64-bit data type. The shapefile format can't handle this, and if you try to save in your project directory as a shapefile, you'll encounter [`ERROR 000308`](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/001001-010000/tool-errors-and-warnings-00301-00325-000308.html): *Invalid field type*. This is not an issue when saving as a feature class in the geodatabase.
 
 ![](./screenshots/practical-5/tiger_points.png){width="100%"}
 
@@ -147,40 +149,23 @@ In this practical, we are in the realm of **geometry**. Accurate measurements of
 How then do we select a suitable CRS?
 :::
 
-In general, I would recommend the following approach[^05-point-patterns-2]:
+In general, I would recommend the following approach[^05-point-patterns-3]:
 
-[^05-point-patterns-2]: This should be familiar to those of you taking GEOG71551: *Understanding GIS*
+[^05-point-patterns-3]: This should be familiar to those of you taking GEOG71551: *Understanding GIS*
 
 -   For global analysis, or if in doubt, use ellipsoidal (geodesic) measurement, taking the shape of the Earth into account.
 -   For smaller areas, and for computational efficiency, it would be appropriate to use a suitable projected CRS, selecting a distortion property to minimise (i.e., shape, area, or distance).
 
 For individual countries, we would typically use a national grid designed for this purpose, such as the British National Grid (EPSG [27700](https://epsg.io/27700)). This is a *conformal* example, so is designed to minimise shape distortion, but is sufficiently accurate for most area and distance calculations.
 
-Our study area is much larger, so doesn't fit neatly into a national grid e.g., EPSG [6207](https://epsg.io/6207). As a result, our options are to either (i) select from a list of published CRS', which can be found [here](https://epsg.io/), or (ii) we can define our own. For the latter, there are a couple of straightforward ways to achieve this.
-
-Our **first** approach is via the [Projection Wizard](https://projectionwizard.org/) which allows you to select the geographic extent of interest and distortion property e.g.,
-
-![](./screenshots/practical-5/proj_wizard_map.png){width="100%"}
-
-Based on these choices, the Projection Wizard defines a CRS which minimises distortion of the selected property:
-
-<center>![](./screenshots/practical-5/proj_wizard_suggestion.png){width="70%"}</center>
-
-To use this CRS, we can:
-
--   Select `WKT`[^05-point-patterns-3], copy the information to a text file (e.g., in Notepad), and save with the extension `.prj`, denoting a projection (CRS) file.
--   In ArcGIS, we can apply this to our map by right clicking the Map in the Contents Pane → Coordinate Systems → Add, then "Import Coordinate System" and "Apply".
-
-[^05-point-patterns-3]: WKT (Well-Known Text) and PROJ are both formats used to define coordinate reference systems.
-
-Our **second** approach is very similar, but in this case the CRS definition is done via ArcGIS. This can be achieved by:
+Our study area is much larger, so doesn't fit neatly into a national grid e.g., EPSG [6207](https://epsg.io/6207). As a result, our options are to either (i) select from a list of published CRS', which can be found [here](https://epsg.io/), or (ii) we can define our own. For the latter, ArcGIS provides functionality to achieve this, which we can utilise by:
 
 -   Navigating to Coordinate Systems → New suggested projected coordinate system.
 -   Providing a name and selecting a geographic coordinate system. `WGS 1984` is a common choice here, as it provides a good *overall* fit between the ellipsoid (a mathematical approximation of the Earth's overall shape) and the [geoid](https://doc.esri.com/en/arcgis-pro/latest/help/mapping/properties/geoid.html).
 -   Defining our geographic extent, which can be the extent of an individual layer (e.g., `indian_subcontinent_dissolve`), all the map layers, or the current visible extent.
 -   Selecting a distortion property to minimise (e.g., conformal, equal-area, equidistant).
 
-> Use either method to select a suitable **conformal** projection for our area of interest.
+> Use the above method to select a suitable **conformal** projection for our area of interest.
 
 As discussed previously, we have updated the **map** CRS, but this doesn't change the CRS of the features, which are being reprojected "on-the-fly".
 
@@ -328,7 +313,9 @@ So far we've explored how to [visualise](#point_vis) our point patterns to maxim
 Are the **objects** randomly distributed or is there evidence of spatial structure?
 :::
 
-One way to achieve this is via **quadrat statistics**, as introduced above, in which the *observed* number of points per quadrat is compared with an even distribution, and with statistical significance assessed using $χ^2$, for example. While we cannot assess statistical significance in ArcGIS without [additional Python packages](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-conda.html), we can assess the distribution qualitatively, by summarising and visualising the `Count of Points` field in the grid Attribute Table.
+One way to achieve this is via **quadrat statistics**, as introduced above, in which the *observed* number of points per quadrat is compared with an even distribution, and with statistical significance assessed using $χ^2$ (chi-squared)[^05-point-patterns-8], for example. If we wished to assess statistical significance, we could use [additional Python libraries](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-conda.html), such as [`scipy`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html) or [`pointpats`](https://pysal.org/pointpats/generated/pointpats.QStatistic.html). While we won't explore Python integration until later in the unit, it is worth recognising as a key strength of the software i.e., we can expand the functionality of ArcGIS via open-source Python libraries. For now, we can assess the distribution qualitatively, by summarising and visualising the `Count of Points` field in the grid Attribute Table.
+
+[^05-point-patterns-8]: While we won't use a [chi-squared](https://en.wikipedia.org/wiki/Chi-squared_test) ($χ^2$) test today [@pearson1900], this is used to evaluate whether a dataset of observations matches a dataset of expectations. In our case, our expectation, assuming *complete spatial randomness*, would be equal number of *Panthera tigris* observations per quadrat. A statistically significant $χ^2$ result (e.g., $p<0.05$) would indicate a significant difference between the observed and expected data i.e., the observations do not match the expected pattern that would arise from spatial randomness. 
 
 ::: question
 What is the mean and median of the number of observations per quadrat? How would you characterise the distribution?
@@ -350,9 +337,9 @@ $$\bar{r}_A=\frac{\sum r}{n}$$ where $r$ is a vector of distances between each p
 
 <br>
 
-The expected mean nearest neighbour distance $\bar{r}E$ is calculated using a Poisson point process[^05-point-patterns-8], which can be simplified to:
+The expected mean nearest neighbour distance $\bar{r}E$ is calculated using a Poisson point process[^05-point-patterns-9], which can be simplified to:
 
-[^05-point-patterns-8]: We'll introduce Poisson distributions in **Practical 10**: *Spatial Interaction Modelling*.
+[^05-point-patterns-9]: We'll introduce Poisson distributions in **Practical 10**: *Spatial Interaction Modelling*.
 
 $$\bar{r}E = \frac{1}{2\sqrt{p}}$$
 
@@ -362,9 +349,9 @@ The **z-score** for Clark-Evans $R$ can tell us whether the observed value of $R
 
 $$z=\frac{\bar{r}_A-\bar{r}_E}{SE}$$
 
-where $SE$ is the standard error of the expected mean distance[^05-point-patterns-9] i.e., the amount of variation in the mean due to random chance:
+where $SE$ is the standard error of the expected mean distance[^05-point-patterns-10] i.e., the amount of variation in the mean due to random chance:
 
-[^05-point-patterns-9]: The constant $0.26136$ is derived by @clark1954.
+[^05-point-patterns-10]: The constant $0.26136$ is derived by @clark1954.
 
 $$SE = \frac{0.26136}{\sqrt{n^2/a}}$$
 
@@ -492,9 +479,9 @@ This should produce the following output, which seems a reasonable characterisat
 
 > Explore how the results change with different values for $m$ and $\epsilon$.
 
-Another option in [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog) is **HDBSCAN**, which is a modification of DBSCAN that allows clusters of different densities to be identified, with $\epsilon$ varying across the modelled area, see @campello2013 and @mcinnes2017. HDBSCAN could be more effective if clusters are characterised by different densities, or if there are theoretical grounds for varying the value of $\epsilon$ e.g., tiger species with different home ranges, such as the *Panthera tigris altaica*[^05-point-patterns-10] (the Amur tiger), see @long2021a.
+Another option in [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog) is **HDBSCAN**, which is a modification of DBSCAN that allows clusters of different densities to be identified, with $\epsilon$ varying across the modelled area, see @campello2013 and @mcinnes2017. HDBSCAN could be more effective if clusters are characterised by different densities, or if there are theoretical grounds for varying the value of $\epsilon$ e.g., tiger species with different home ranges, such as the *Panthera tigris altaica*[^05-point-patterns-11] (the Amur tiger), see @long2021a.
 
-[^05-point-patterns-10]: If you're interested in related reading, I'd recommend ["Great Soul of Siberia"]() by Sooyong Park, and ["The Amur River"](https://www.penguin.co.uk/books/439320/the-amur-river-by-thubron-colin/9781529110890) by Colin Thubron.
+[^05-point-patterns-11]: If you're interested in related reading, I'd recommend ["Great Soul of Siberia"]() by Sooyong Park, and ["The Amur River"](https://www.penguin.co.uk/books/439320/the-amur-river-by-thubron-colin/9781529110890) by Colin Thubron.
 
 > Re-run [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog) using `HDBSCAN`.
 
@@ -514,8 +501,6 @@ In my view, DBSCAN has produced the more reasonable and more [parsimonious](http
 
 <br>
 
-
-
 ### Summary
 
 In this practical, we have **visualised** and characterised the **centrography**, **randomness** and **clustering** of *Panthera tigris* observations. A few summary thoughts to finish:
@@ -532,36 +517,7 @@ Finally, one key concept we haven't considered is **uncertainty**. In our analys
 
 ## Extra
 
-There is a smorgasbord of extra content this week, allowing you to explore another clustering algorithm (Ripley's $K$) and test the sensitivity of our analysis to the observation window. For those of you want to use species observations in your own work, I have also included instructions on how to download these from GBIF.
-
-### Ripley's alphabet of clustering functions {.unnumbered}
-
-"*Statistical Inference for Spatial Processes*" by @ripley_statistical_1988 is a highly influential work which provided an "alphabet" of functions for analysing points patterns, named $G, F, K$ and $L$. Unfortunately, not all of these are implemented in ArcGIS, hence their exclusion from the main part of the practical. They are available in the Python package [`pointpats`](https://pysal.org/pointpats/user-guide/ripley.html), and the R package [`spatstat`](https://doi.org/10.18637/jss.v012.i06), and elsewhere, with a good walkthrough of $G$ and $F$ in ["Geographic Data Science with Python"](https://geographicdata.science/book/notebooks/08_point_pattern_analysis.html#ripleys-alphabet-of-functions). 
-
-In ArcGIS, the only available function is Ripley's $K$, via the [Multi-Distance Spatial Cluster Analysis (Ripley's K Function)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog) geoprocessing tool, alongside the following [documetation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog) and [guidance](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-multi-distance-spatial-cluster-analysis-ripl.html). 
-
-It is not within the scope of the practical to discuss the mathematics of $K$ in detail, but as a brief introduction, Ripley's $K$ is similar to Clark-Evans $R$, in that it also evaluates point-neighbour distances. However, unlike $R$, which measures the distance to only the nearest neighbour, $K$ measures the actual distance to all neighbours within a defined distance threshold ($K_{A}$), and compares this to the expected number of neighbours at that defined distance ($K_{E}$) to evaluate the degree of clustering, randomness or dispersion. Importantly, $K$ is **multi-scale**, so rather than testing the degree of clustering for a single distance, $K$ operates over a range of distances, testing each one in turn. In turn, $K$ can be used to detect clustering or disperson across multiple spatial scales. 
-
-Ripley's $K$ can be interpreted visually, with comparison of the expected pattern, produced assuming complete spatial randomness (blue line $±$ confidence envelope), with the observed spatial pattern, as shown below. Significant deviations above the expected pattern ($K_{A}>K_{E}$) indicate **clustering** at that defined distance, and deviations below the expected pattern ($K_{A}<K_{E}$) indicate **dispersion**. Correspondence between the observed and expected pattern ($K_{A}\approx K_{E}$) indicates spatial randomness:
-
-<center>![](./images/practical-5/ripleys_k.png){width="60%"}</center>
-
-> Have a play with [Multi-Distance Spatial Cluster Analysis (Ripley's K Function)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog), which should produce a standalone table of results, containing $K_{A}$ and $K_{E}$ for the tested distances, and the $K$ function chart. The confidence envelope is calculated based on the number of permutations - more is better, but at the cost of computation time...
-
-
-<center>
-
-![](./screenshots/practical-5/ripley_k_result.png){width="60%"}
-
-*Ripley's $K$ chart (no permutations)*
-
-</center>
-
-::: question
-What is your interpretation of the $K$ function chart? 
-:::
-
-As with other metrics, Ripley's $K$ is sensitive to the calculation area, which can be specified with the "Study Area Method" option. Additional processing is also often used to correct points near the boundary of the observation window, as these will have part of their defined neighbourhood outside of the study area, where points cannot be observed, see [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog). This is less of an issue for Clark-Evans $R$, as this is based on the single nearest neighbour. Solutions include using an isotropic correction (i.e., weighting neighbours based on the amount of the search area inside the observation window), or excluding points which are too close to the boundary for a given distance. 
+In the extra content this week, we will test the sensitivity of our analysis to the observation window. For those of you want to use species observations in your own work, I have also included instructions on how to download these from GBIF.
 
 ### Testing the observation window {.unnumbered}
 
@@ -607,9 +563,9 @@ To download species-observation data **manually** from GBIF:
 
 > Navigate to [Get data - Species](https://www.gbif.org/taxon/search) and use "Full text search" to search for the species of interest e.g., *Canis lupus* (Linnaeus, 1758, Gray Wolf)
 
-> Select the species → Occurrences 
+> Select the species → Occurrences
 
-> Apply Filters of interest e.g., Country or area (`United States of America`), Dataset (`iNaturalist Research-grade Observations`), Location (Has coordinates = `Yes`) 
+> Apply Filters of interest e.g., Country or area (`United States of America`), Dataset (`iNaturalist Research-grade Observations`), Location (Has coordinates = `Yes`)
 
 > Download simple occurrence data (`csv`)
 

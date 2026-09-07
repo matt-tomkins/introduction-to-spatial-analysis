@@ -57,9 +57,9 @@ Related concepts include *temporal* autocorrelation i.e., the degree to which a 
 
 #### Randomness and Clustering
 
-When assessing the spatial distribution of objects and their values, we can imagine three potential scenarios: **spatial randomness**, **positive** spatial autocorrelation and **negative** spatial autocorrelation.
+When assessing the spatial distribution of objects and their values, we can imagine three potential scenarios: **complete spatial randomness**, **positive** spatial autocorrelation and **negative** spatial autocorrelation.
 
-**Spatial randomness** relates to situations where there is no distinct spatial pattern. In this case, the location of the object is irrelevant to the phenonemon we are studying.
+**Complete spatial randomness** relates to situations where there is no distinct spatial pattern or structure to the data. In this case, the location of the object is irrelevant to the phenonemon we are studying.
 
 Spatial autocorrelation exists when we *reject* the hypothesis of spatial randomness, in favour of the presence of:
 
@@ -84,7 +84,7 @@ Can you think of any other examples of geographic phenonema which are characteri
 
 #### Global vs. local
 
-When assessing for spatial autocorrelation, this be analysed at a **global** level, which provides information on the degree of clustering, dispersion or randomness for a dataset *as a whole* i.e., on average, are expensive houses found near other expensive houses?
+When assessing for spatial autocorrelation, this can be analysed at a **global** level, which provides information on the degree of clustering, dispersion or randomness for a dataset *as a whole* i.e., on average, are expensive houses found near other expensive houses?
 
 Spatial autcorrelation can also be analysed at a **local** level, which provides more detailed information on the *locations* of areas of clustering, dispersion or randomness e.g., which parts of the map show clusters of **positive** spatial autocorrelation?
 
@@ -112,7 +112,7 @@ To begin:
 
 #### The contiguous United States
 
-For simplicity, we are going to focus on the contiguous United States:
+For simplicity, we are going to focus on the [contiguous United States](https://en.wikipedia.org/wiki/Contiguous_United_States):
 
 > Use "Select by Attributes" to select all rows where the `STATE_NAME` is **not** Alaska, Hawaii, Puerto Rico, Guam, American Samoa, Commonwealth of the Northern Mariana Islands and United States Virgin Islands. "Export Selection" (n = 3,109) with a suitable name (e.g., `us_county_500k_contig`) to the correct directory, and when complete, remove the original file from ArcGIS.
 
@@ -206,6 +206,12 @@ To better understand the spatial variability in the election results:
 ::: question
 While this is an interesting visualisation, what are the limitations of this approach?
 :::
+
+<details>
+  <summary>Interpretation</summary>
+  Land doesn't vote... **people do**. While we have changed the symbology to match the vote share for each county, the counties differ in size, so naturally we assign greater weight to the larger, more visible counties, and less weight to the smaller, less visible counties. The following ArcGIS [StoryMap](https://storymaps.arcgis.com/stories/0e636a652d44484b9457f953994b212b) provides some interesting commentary and alternative visualisations. 
+  
+</details>
 
 There are lots of interesting spatial patterns in this dataset:
 
@@ -315,11 +321,13 @@ We use **standardisation** for both the variable of interest `gop_perc` and the 
 <a name=""></a>![](./screenshots/practical-3/manual-moran-plot.png){width="60%"}
 </p>
 
-The **Moran Plot** is a useful tool for visual exploration of spatial autocorrelation and is simply a scatter plot of the variable of interest compared to the spatially lagged values[^03-autocorrelation-9]. The overall pattern of the data and the slope of the linear regression fitted to the values (Available in Chart Properties: $0.2898637359$) provides us with a great deal of information about the presence of spatial *autocorrelation* (either positive or negative) or spatial *randomness*.
+The **Moran Plot** is a useful tool for visual exploration of spatial autocorrelation and is simply a scatter plot of the variable of interest compared to the spatially lagged values[^03-autocorrelation-9]. The overall pattern of the data provides us with a great deal of information about the presence of spatial *autocorrelation* (either positive or negative) or spatial *randomness*. The plot also includes a **linear regression** fitted to the values (Available in Chart Properties: $0.2898637359$). We will explore regression later in the unit[^regress_link], but as a brief introduction, this provides information on the strength, direction and nature of the relationship between two variables, in this case `gop_std` and `lag_std`. Here the [coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination) $\text{R}^2=0.22$, which indicates that $\approx22\%$ of the variation in `gop_std` can be explained by `lag_std`. 
+
+[^regress_link]: In **Practical 7** *Spatial Regression* and **Practical 8** *Geographically Weighted Regression*.
 
 [^03-autocorrelation-9]: Note that we have created the Moran Plot manually here to facilitate understanding, but of course there are ArcGIS tools which will do this for us, as we'll explore soon.
 
-In our case, the slope of the linear regression is **positive** ($\sim0.29$) i.e., as the standardised Republican vote share for a county increases, so too does the vote share of its neighbouring counties. This is indicative of **positive** spatial autocorrelation i.e., similar values are located nearby, and dissimilar values are distant.
+The slope of the linear regression is **positive** ($\sim0.29$), with the trendline sloping *upwards* i.e., as the standardised Republican vote share for a county increases, so too does the vote share of its neighbouring counties. This is indicative of **positive** spatial autocorrelation i.e., similar values are located nearby, and dissimilar values are distant.
 
 By comparison, if the slope of the linear regression was **negative**, this would indicate that as the Republican vote share for a county *increases*, the vote share of its neighbouring counties would *decrease*. This would be indicative of **negative** spatial autocorrelation i.e., similar values tend be distant from each other, and dissimilar values are located nearby.
 
@@ -411,14 +419,6 @@ Moran's $I$ values range from $-1$ (dispered) to $1$ (clustered), where $0$ deno
 So far, we've done quite a deep dive into Moran's $I$.
 
 Actually running and interpreting Moran's $I$ in ArcGIS is surprisingly simple, and this can be achieved using the [Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog) geoprocessing tool.
-
-::: note
-I'll reiterate this theme across the unit, but being able to run ArcGIS tools is not particularly impressive, especially given the wealth of information online, and generally very detailed ESRI documentation.
-
-<br>
-
-What *is* impressive is really **understanding** what the tools are doing, which requires us to take a look "under-the-hood" to investigate and question the mathematics and assumptions involved. Being able to demonstrate understanding of these tools and their foundations (e.g., spatial weights, the spatial lag operator), will set you apart from other spatial analysts who can click their way through practicals, but don't *really* understand what's going on.
-:::
 
 > Open the Geoprocessing tool [Spatial Autocorrelation (Global Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog), using `us_county_500k_contig_cf` as the input, using Queen's contiguity and row standardisation, and check "Generate Report".
 
@@ -676,6 +676,14 @@ Fundamentally, the indicators of @moran1948 are focused on *similarity* of neigh
 <br>
 
 Overall, while each indicator has specific strengths and use-cases (e.g., straightforward interpretation of "hotspots" and "coldspots" for $G_{i}^{*}$), those of @moran1948 can be used to reveal additional behaviour, including the presence of global **negative** spatial autocorrelation ($I<0$) and local **negative** autocorrelation (i.e., HL and LH outliers identified using $I_{i}$).
+
+However, we also need to recognise that the techniques introduced today are **exploratory** methods, and different results can be generated by simply changing the parameters e.g., switching between [contiguity](#contig-swm) or [distance-based](#dist-swm) weights, increasing or decreasing the number of neighbours when using [$K$ Nearest Neighbours](#k_neighbours), or modifying the *distance decay* effect if [continuous weights](#inv_weights) are used. Thus, while the methods are **deterministic**, in that they will produce the same results, given the same input and model parameters[^stochastic_link], this does not mean that the results are **objective truth**. As switching parameters will change the results, and perhaps may fundamentally change your interpretations, care is needed to:
+
+1. Select parameters which are appropriate for the geographic process you are studying.
+2. Evaluate the sensitivity of your results to those parameters.
+3. Present the results and interpretation cautiously. 
+
+[^stochastic_link]: Unlike **stochastic** methods, which incorporate a *stochastic* or *random* element, which can generate different results, even with the same input and model parameters.
 
 ------------------------------------------------------------------------
 
