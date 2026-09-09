@@ -232,7 +232,7 @@ To begin:
 
 As we previously used a *dynamic* table join to link the geometries to the 2024 election results, the fields of interest (e.g.,`gop_perc`, `dem_perc`) are no longer present in the Attribute Table.
 
-> Load `2024_US_County_Level_Presidential_Results.csv` but this time use a **static** table join to link the election results to our county geometries, joining using the `NAMELSAD` and `county_name` fields, and selecting the `gop_perc` and `dem_perc` "Transfer Fields".
+> Load `2024_US_County_Level_Presidential_Results.csv` but this time use a **static** table join via [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to link the election results to our county geometries, joining using the `NAMELSAD` and `county_name` fields, and selecting the `gop_perc` and `dem_perc` "Transfer Fields".
 
 As discussed above, we want to explore whether the observed patterns in the variable of interest are **associated** or **correlated** with other variables. To investigate this:
 
@@ -246,7 +246,7 @@ As discussed in Practical 3, these are currently in different data formats, whic
 
 With our FIPS code in the correct data format:
 
-> Use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to produce static table joins between `us_county_500k_contig_cf` and the eduction, poverty and demographic tables, joining based on `GEOID_int` and `FIPS_code`.
+> Use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to produce static table joins between `us_county_500k_contig_cf` and the education, poverty and demographic tables, joining based on `GEOID_int` and `FIPS_code`.
 
 > To simplify our analysis, we are only going to transfer some key fields, including:
 >
@@ -274,7 +274,7 @@ To finish the pre-processing:
 
 Before we define and evaluate our measure of bivariate spatial association [@lee2001], we should always undertake some initial exploratory analysis.
 
-> Modify the layer symbology and inspect the Attribute Table to investigate the eduction, poverty and demographic variables.
+> Modify the layer symbology and inspect the Attribute Table to investigate the education, poverty and demographic variables.
 
 ::: question
 What is the average poverty percentage for the US counties?
@@ -314,7 +314,7 @@ Finally, it is worth exploring the **spatial patterns** in our data, for example
 
 <br>
 
-> Create your own visualisations for the eduction, poverty and demographic variables.
+> Create your own visualisations for the education, poverty and demographic variables. For example, "Bivariate Colors" in Primary Symbology settings allows for the symbolising of **two** factors simultaneously.
 
 ::: question
 Can you identify any interesting spatial patterns or clustering? What might explain these?
@@ -324,7 +324,7 @@ This qualitative approach is useful, but as we discussed in the [previous practi
 
 We already know that there is global positive spatial autocorrelation of the Republican vote share, as revealed using Moran's $I$ [@moran1948]. We also have information on the distribution of clusters (HH, LL) and outliers (LH, HL), as identified using local Moran's $I_i$ [@anselin1995]. We also compared these results to those produced by Getis and Ord's $G$, $G_{i}$ and $G_{i}^{*}$ [@getis1992].
 
-> Using tools of your choice, investigate **global** and **local** spatial autcorrelation for the eduction, poverty and demographic variables. I would recommend focusing on the median household income, the percentage of the total population classed as "white", and the percentage of adults with a bachelor's degree or higher.
+> Using tools of your choice, investigate **global** and **local** spatial autcorrelation for the education, poverty and demographic variables. I would recommend focusing on the median household income, the percentage of the total population classed as "white", and the percentage of adults with a bachelor's degree or higher.
 
 ![*An output of local Moran's* $I_{i}$](./screenshots/practical-4/lisa-income.png){width="100%"}
 
@@ -338,9 +338,7 @@ What is your interpretation of spatial autocorrelation for these datasets? Is th
 Which **spatial weights** method did you choose and why?
 :::
 
-As you will have discovered, we can reject the hypothesis of **spatial randomness** for many of the variables of interest. As a result, while we *can* use Pearson's $r$ to assess the strength and direction of the correlation between our variables[^04-correlation-9], this measure is not taking into account the autocorrelation that is present, as we discussed in the [introduction](#justify_spatial_corr). As a result, we should be critical:
-
-[^04-correlation-9]: Although there is no dedicated tool in ArcGIS to achieve this.
+As you will have discovered, we can reject the hypothesis of **spatial randomness** for many of the variables of interest. As a result, while we *can* use Pearson's $r$ to assess the strength and direction of the correlation between our variables, this measure is not taking into account the autocorrelation that is present, as we discussed in the [introduction](#justify_spatial_corr). As a result, we should be critical:
 
 ::: question
 Is Pearson's $r$ capturing the "true" correlation between our spatial variables?
@@ -543,9 +541,9 @@ That's enough theory. Let's play with some data.
 
 [^04-correlation-13]: Unlike regression, the order of the variables is not important here i.e., correlation $\text{correlation}\:A-B=\text{correlation}\:B-A$.
 
-The tool has produced a striking map of local $L$, but before we explore it, we need to investigate the global results, which are shown here:
+The tool has produced a striking map of local $L$, but before we explore it, we need to investigate the global results, which are shown below. These can be found in the tool output &rarr; "Messages":
 
-<center>![](./screenshots/practical-4/gop_poverty_L.png){width="60%"}</center>
+<center>![](./screenshots/practical-4/gop_poverty_L.png){width="80%"}</center>
 
 ::: question
 What is your interpretation of the global level results, including $L$ and it's associated $p$ value, and Pearson's $r$ (`Pearson Correlation - raw`).
@@ -615,26 +613,7 @@ In my view, a more accurate visualisation would be based on the normalised spati
 Which indicators show positive or negative spatial association with the Republican vote share?
 :::
 
-::: problem
-James, some values for your testing. Can you reproduce these?
 
-<br>
-
--   White % [`WA_%`]:
-    -   An example of **positive** association i.e., as White % increases, GOP vote percent increases.
-    -   Lee's L = -0.243755, P-value = 0.002, Pearson Correlation = -0.384821
--   Bachelor degree % [`Bachelors_or_higher_%`]:
-    -   An example of **negative** association i.e., as Bachelor degree % increases, GOP vote percent decreases.
-    -   Lee's L = 0.30255, P-value = 0.002, Pearson Correlation = 0.539114
--   In both cases, Lee's L \< Pearson's R
--   Median income [`MEDHHINC_2023`]:
-    -   A **negative** association, but in this case Lee's L \~ Pearson's R
-    -   Lee's L = -0.209754, P-value = 0.002, Pearson Correlation = -0.215725
-
-<br>
-
-A further observation - all of the reported P-values are **identical** (0.002). Needs evaluating.
-:::
 
 ### Now that's what I call spatial correlation...
 

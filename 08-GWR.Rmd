@@ -74,7 +74,7 @@ By comparison, **local** regression methods produce spatially varying coefficien
 
 Examples of SVCs include geographically weighted regression (GWR), see @brunsdon1996a, and multiscale geographically weighted regression (MGWR), see @fotheringham2017a, which we will explore today.
 
-### Pre-processing
+### Pre-processing {}
 
 To begin:
 
@@ -94,7 +94,7 @@ You will be pleased to learn that no further pre-processing is necessary! We can
 
 A key source for this week is @comber2023, which outlines a route map for successful applications of geographically weighted regression (GWR). While this approach should be considered for future analysis, it is worth noting that that we have deviated from @comber2023 across Practicals 7 and 8, but this is by design, building from **global aspatial** regression ([OLS](#ols)) through to **global spatial** regression ([SEM](#sem), [SLM](#slm)), and in this week on to **local spatial** regression ([GWR](#gwr_intro), [MGWR](#mgwr_intro)).
 
-### Geographically weighted regression {#gwr_intro}
+### Geographically weighted regression {#gwr_intro }
 
 In Practical 7, we demonstrated that there were statistically significant relationships between life expectancy and MSOA-level predictors, as identified by [OLS](#ols). However, model residuals were highly spatially autocorrelated, as identified using Moran's $I$, indicating misspecification of the OLS model, violation of OLS assumptions, and/or that additional important spatial factors were missing from the model.
 
@@ -345,7 +345,7 @@ There is evidence of varying levels of multicollinearity across the study area. 
 
 Before we move on to investigate the calibration of the GWR, including selecting the type and shape of the kernel (e.g., fixed vs. adaptive), it is worth reflecting on the overall model results. Unlike global regressions (e.g., OLS, SEM, SLM), which feature a small set of important model statistics, including a single coefficient for each independent variable, interpretation is much more complex for GWR. For our dataset, which consists of 932 feature, and our model, which features four independent variables, there are 3,728 coefficients, plus corresponding *p*-values and other statistics! While this requires effort to interpret and summarise, this also permits a much deeper understanding of the nature of the spatial phenomenon, including non-stationarity.
 
-### Calibration: Fixed kernel
+### Calibration: Fixed kernel {}
 
 In our first model, we used a **fixed** kernel, where the neighbours of each feature were defined based on a fixed distance (or **bandwidth**), as shown below:
 
@@ -419,7 +419,7 @@ Based on this interpretation, we may want to consider an **adaptive kernel**.
 
 <br>
 
-### Calibration: Adaptive kernel
+### Calibration: Adaptive kernel {}
 
 Rather than utilising a fixed kernel across the study area (i.e., distance-based), an alternative approach is to use an **adaptive** kernel, where the bandwidth varies to ensure an equal number of neighbours per feature.
 
@@ -520,7 +520,7 @@ As a general rule:
 
 For our data, while MSOAs have similar populations, they represent very different spatial areas (e.g., central Manchester vs. Cumbria). When a fixed kernel is used, this results in vastly different neighbourhood settings ($\text{n} = 30 - 848$). 
 
-### Calibration: Local weighting scheme
+### Calibration: Local weighting scheme {}
 
 In addition to selecting the kernel (fixed vs. adaptive), we can also select the **local weighting scheme**, which determines how features and their attributes are weighted in the local regressions. While we could use a *binary* approach i.e., features within the kernel are weighted uniformly, and those outside the kernel are excluded from the local regression, it is more typical to use a weighting scheme, in accordance with Tobler's Law [@tobler1970], where features closer to the focal feature are weighted more heavily than those further away. The local weighting scheme determines how quickly weights decrease as distances increase. There are lots of formulas that could be used here e.g., uniform, exponential, tri-cube, with useful information in @gollini2015. ArcGIS provides two widely used options: **Gaussian** and **Bisquare**.
 
@@ -594,7 +594,7 @@ As distant features make no contribute to the local regression using bisquare we
 
 <br>
 
-### Multiscale geographically weighted regression {#mgwr_intro}
+### Multiscale geographically weighted regression {#mgwr_intro } 
 
 So far, so good. We've developed geographically weighted regressions, taking into account non-stationarity in the relationships between life expectancy and MSOA-level predictors.
 
@@ -773,7 +773,7 @@ Has model performance changed significantly?
 
 <br>
 
-### Model selection {#gwr_selection}
+### Model selection {#gwr_selection }
 
 Over the past two weeks, we have produced a range of models linking life expectancy to MSOA-level variables i.e., [OLS](#ols), [SEM](#sem), [SLM](#slm), [GWR](#gwr_intro), [MGWR](#mgwr_intro). You may be asking yourself the following question:
 
@@ -795,7 +795,7 @@ Finally, it should be recognised that other GWR variants are available e.g., MX-
 
 [**Finished!**](#index)
 
-## Extra
+## Extra {}
 
 While we have developed models to capture the spatially varying relationships between life expectancy and MSOA-level predictors, we should recognise that the model performance and the identified relationships are specific to these data and the study area i.e., the North West of England. 
 
@@ -836,6 +836,7 @@ There are some fascinating patterns... lots to explore!
 <br>
 
 </details>
+
 
 ## Resources
 

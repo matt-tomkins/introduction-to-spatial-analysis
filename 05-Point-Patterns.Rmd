@@ -205,7 +205,7 @@ While we could use a [Spatial Join](https://doc.esri.com/en/arcgis-pro/latest/to
 
 [^05-point-patterns-4]: Or the length of lines or areas of polygons depending on the "Input Summary Features" geometry type.
 
-The Attribute Table should now contain a `Count of Points` field.
+The Contents Pane should now contain a new feature layer, with an Attribute Table containing a `Count of Points` field.
 
 > Modify the grid symbology based on this attribute.
 
@@ -239,7 +239,7 @@ How your interpretation changed when using KDE?
 
 > Explore changing search radius e.g., 20,000 m^2^ to 200,000 m^2^, and the the effect of including barriers i.e., the study area polygon.
 
-The kernel density raster produced by [Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog) is *static*. We can perform create a similar output *dynamically* via Symbology → Heat Map, although this is arguably less robust i.e., the "Radius" setting is in screen units (points), rather than map units (meters, feet, etc).
+The kernel density raster produced by [Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog) is *static*. We can create a similar output *dynamically* via Symbology → Heat Map, although this is arguably less robust i.e., the "Radius" setting is in screen units (points), rather than map units (meters, feet, etc).
 
 > Explore the Heat Map settings (Method, Radius).
 
@@ -385,7 +385,7 @@ These examples illustrate the importance of the observation window - the same po
 
 In the ArcGIS implementation of this technique, which is referred to as [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog), somewhat confusingly without any reference to @clark1954, the default value for $a$ is the area of a minimum enclosing rectangle around the input points, with some examples [here](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/minimum-bounding-geometry.html?tabs=dialog), or the user can specify their own value for $a$.
 
-> Run [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog), using Euclidean (planar) distance measurement. Select "Generate Report" amd for now leave "Area" blank and run. This should produce the following:
+> Run [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog), using Euclidean (planar) distance measurement. Select "Generate Report" and for now leave "Area" blank and run. This should produce the following:
 
 <center>![](./screenshots/practical-5/clark_evans_results.png){width="70%"}</center>
 
@@ -407,7 +407,7 @@ This interpretation is backed up the `.html` report, which sums it up nicely: "*
 
 <br>
 
-> Evaluate the impact of changing the observation window (`area`). For example, you could use the area of the Indian subcontinent polygon. This can be calculated using [Calculate Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog), specifing a "Field" name of your choice and using `Area` for the "Property" option. This will produce a new field in the Attribute Table for the Indian subcontinent layer, which can then be pasted into [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog).
+> Evaluate the impact of changing the observation window (`area`). For example, you could use the area of the Indian subcontinent polygon. This can be calculated using [Calculate Geometry Attributes](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-geometry-attributes.html?tabs=dialog), specifying a "Field" name of your choice and using `Area` for the "Property" option. This will produce a new field in the Attribute Table for the Indian subcontinent layer, which can then be pasted into [Average Nearest Neighbor](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/average-nearest-neighbor.html?tabs=dialog).
 
 ::: question
 How has changing $a$ influenced $\bar{r}_E$ and the corresponding z-score? Has this changed your interpretations?
@@ -467,11 +467,7 @@ Selecting $\epsilon$ is more challenging, but in this case I think we can do so 
 
 <br>
 
-> Run [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog), setting the "Minimum Features per Cluster" $m$ to 45 and "Search Distance" $\epsilon$ to 110. For "Clustering Method", use `DBSCAN`, and save with an informative name e.g., `dbscan_m45_e110`.
-
-::: problem
-James - This was failing with ERROR 001409: Failed to write to the output location (P Drive). The tool seemed to run effectively until then, as the messages lists: Number of Clusters 7, Noise features 52. It worked when saving to C!
-:::
+> Run [Find Point Clusters](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/big-data-analytics/find-point-clusters.html?tabs=dialog), setting the "Minimum Features per Cluster" $m$ to 45 and "Search Distance" $\epsilon$ to 110 km. For "Clustering Method", use `DBSCAN`, and save with an informative name e.g., `dbscan_m45_e110`.
 
 This should produce the following output, which seems a reasonable characterisation of the degree of clustering, with seven main clusters (containing core and border points), plus outliers. It is worth emphasising that there is no "correct" output here, as the results are entirely dependent on our choice of $m$ and $\epsilon$.
 

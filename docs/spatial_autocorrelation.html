@@ -154,8 +154,8 @@
 <p>One aspect of Tobler’s Law we <em>didn’t</em> engage with is the word <strong>related</strong> i.e., the concept of <em>similarity</em>. As a whole, Tobler’s Law relates to the interplay of proximity-adjacency <em>and</em> similarity. In the field of spatial analysis, we refer to this relationship as <strong>spatial autocorrelation</strong>, defined by <span class="citation">Anselin (<a href="references.html#ref-anselin1988">1988a</a>)</span> as a:</p>
 <p>“<em>functional relationship between what happens at one point in space and what happens elsewhere</em>”</p>
 <p>Or more simply:</p>
-<p>“<em>the degree to which an object or value is similar to nearby objects or values.</em>”</p>
-<p>Related concepts include <em>temporal</em> autocorrelation i.e., the degree to which a value at a point in time is similar to those in the past, or <em>correlation</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will explore &lt;strong&gt;spatial correlation&lt;/strong&gt; in Practical 4.&lt;/p&gt;"><sup>20</sup></a> more broadly i.e., a measure of association between two or more variables (but typically excluding a spatial or temporal component). It is also worth noting that we use the term <strong>auto</strong>correlation because we are assessing <strong>self</strong> correlation i.e., the degree of similarity for a single dataset or variable (e.g., house prices), rather than multiple variables (e.g., house prices <em>vs.</em> employment opportunities), even if that single dataset could comprise many different observations.</p>
+<p>“<em>the degree to which an object or value is related to nearby objects or values.</em>”</p>
+<p>Related concepts include <em>temporal</em> autocorrelation i.e., the degree to which a value at a point in time is similar to those in the past, or <em>correlation</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will explore &lt;strong&gt;spatial correlation&lt;/strong&gt; in Practical 4.&lt;/p&gt;"><sup>21</sup></a> more broadly i.e., a measure of association between two or more variables (but typically excluding a spatial or temporal component). It is also worth noting that we use the term <strong>auto</strong>correlation because we are assessing <strong>self</strong> correlation i.e., the degree of similarity for a single dataset or variable (e.g., house prices), rather than multiple variables (e.g., house prices <em>vs.</em> employment opportunities), even if that single dataset could comprise many different observations.</p>
 <div id="randomness-and-clustering" class="section level4" number="3.2.1.1">
 <h4>
 <span class="header-section-number">3.2.1.1</span> Randomness and Clustering<a class="anchor" aria-label="anchor" href="#randomness-and-clustering"><i class="fas fa-link"></i></a>
@@ -191,9 +191,9 @@
 <h4>
 <span class="header-section-number">3.2.1.3</span> Importance<a class="anchor" aria-label="anchor" href="#importance"><i class="fas fa-link"></i></a>
 </h4>
-<p>As discussed in the lecture, spatial autocorrelation is of profound importance for spatial analysis. Understanding the spatial structure of our data is critical if we want to really understand the phenonema of interest. Spatial autocorrelation also dictates the methods that we can use. For example, many traditional statistical approaches<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;e.g., t-tests, ordinary least squares regression.&lt;/p&gt;"><sup>21</sup></a> assume <strong>independence of observations</strong> i.e., all observations in your data are independent from each other. This assumption is <em>met</em> when spatial autocorrelation is absent (i.e., spatial randomness), but is <em>broken</em> when spatial autocorrelation is present, rendering the results and our interpretations invalid.</p>
+<p>As discussed in the lecture, spatial autocorrelation is of profound importance for spatial analysis. Understanding the spatial structure of our data is critical if we want to really understand the phenonema of interest. Spatial autocorrelation also dictates the methods that we can use. For example, many traditional statistical approaches<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;e.g., t-tests, ordinary least squares regression.&lt;/p&gt;"><sup>22</sup></a> assume <strong>independence of observations</strong> i.e., all observations in your data are independent from each other. This assumption is <em>met</em> when spatial autocorrelation is absent (i.e., complete spatial randomness), but is <em>broken</em> when spatial autocorrelation is present, rendering the results and our interpretations invalid.</p>
 <div class="note">
-<p>As expert spatial analysts, we need to use methods which incorporate the spatial structure and autocorrelation present in many geographic datasets<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Alongside &lt;strong&gt;spatial autocorrelation&lt;/strong&gt; (Practical 3), we will also explore spatial &lt;strong&gt;correlation&lt;/strong&gt; (Practical 4) and &lt;strong&gt;regression&lt;/strong&gt; (Practicals 7 - 8).&lt;/p&gt;"><sup>22</sup></a>.</p>
+<p>As expert spatial analysts, we need to use methods which incorporate the spatial structure and autocorrelation present in many geographic datasets<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Alongside &lt;strong&gt;spatial autocorrelation&lt;/strong&gt; (Practical 3), we will also explore spatial &lt;strong&gt;correlation&lt;/strong&gt; (Practical 4) and &lt;strong&gt;regression&lt;/strong&gt; (Practicals 7 - 8).&lt;/p&gt;"><sup>23</sup></a>.</p>
 </div>
 <p>In the next sections, we’ll use county-level data from the <a href="https://www.bbc.co.uk/news/election/2024/us/results">2024 US General election</a> to investigate global and local spatial autocorrelation and introduce the methods we can use to test for it.</p>
 </div>
@@ -204,7 +204,7 @@
 </h3>
 <p>To begin:</p>
 <blockquote>
-<p>Open ArcGIS, initialise a new project in the <code>practical-3</code> directory, establish a connection to <code>data</code> and load <code>cb_2023_us_county_500k.shp</code>, which contains the geometries for US counties<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that for US elections, counties are primarily used for administrative purposes, see &lt;a href="https://www.bbc.co.uk/news/articles/cj4vn0qxy0lo"&gt;here&lt;/a&gt;. For presidential elections, the important voting statistics are at the state-level, which determines the number of &lt;a href="https://www.bbc.co.uk/news/world-us-canada-53558176"&gt;electoral college votes&lt;/a&gt;, where a majority determines the national outcome.&lt;/p&gt;'><sup>23</sup></a>.</p>
+<p>Open ArcGIS, initialise a new project in the <code>practical-3</code> directory, establish a connection to <code>data</code> and load <code>cb_2023_us_county_500k.shp</code>, which contains the geometries for US counties<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that for US elections, counties are primarily used for administrative purposes, see &lt;a href="https://www.bbc.co.uk/news/articles/cj4vn0qxy0lo"&gt;here&lt;/a&gt;. For presidential elections, the important voting statistics are at the state-level, which determines the number of &lt;a href="https://www.bbc.co.uk/news/world-us-canada-53558176"&gt;electoral college votes&lt;/a&gt;, where a majority determines the national outcome.&lt;/p&gt;'><sup>24</sup></a>.</p>
 </blockquote>
 <div id="the-contiguous-united-states" class="section level4" number="3.2.2.1">
 <h4>
@@ -216,8 +216,7 @@
 </blockquote>
 <details><summary>
 SQL expression
-</summary>
-The following expression will select all rows which meet the following conditions (i.e., not equal to (<code>&lt;&gt;</code>) Alaska): <code>STATE_NAME &lt;&gt; 'Alaska' And STATE_NAME &lt;&gt; 'Hawaii' And STATE_NAME &lt;&gt; 'Puerto Rico' And STATE_NAME &lt;&gt; 'Guam' And STATE_NAME &lt;&gt; 'American Samoa' And STATE_NAME &lt;&gt; 'Commonwealth of the Northern Mariana Islands' And STATE_NAME &lt;&gt; 'United States Virgin Islands'</code>
+</summary><p>The following expression will select all rows which meet the following conditions (i.e., not equal to (<code>&lt;&gt;</code>) Alaska): <code>STATE_NAME &lt;&gt; 'Alaska' And STATE_NAME &lt;&gt; 'Hawaii' And STATE_NAME &lt;&gt; 'Puerto Rico' And STATE_NAME &lt;&gt; 'Guam' And STATE_NAME &lt;&gt; 'American Samoa' And STATE_NAME &lt;&gt; 'Commonwealth of the Northern Mariana Islands' And STATE_NAME &lt;&gt; 'United States Virgin Islands'</code></p>
 </details><p><br></p>
 <div class="inline-figure"><img src="screenshots/practical-3/contig_us.png" style="width:100.0%"></div>
 <p><br></p>
@@ -227,7 +226,7 @@ The following expression will select all rows which meet the following condition
 </div>
 <p>In our current Map View, this has resulted in significant distortion (i.e., flattening) of the geometries. We are going to switch to a <strong>conformal</strong> projected CRS to preserve the <em>shape</em> of the US counties:</p>
 <blockquote>
-<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a>. Use <code>us_county_500k_contig</code> as the input and specify a suitable output name (e.g., <code>us_county_500k_contig_cf</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;code&gt;cf&lt;/code&gt; denoting conformal&lt;/p&gt;"><sup>24</sup></a>). For the “Output Coordinate System”, use <code>USA Contiguous Lambert Conformal Conic</code> (EPSG: <a href="https://epsg.io/102004">102004</a>) and Run. When complete, remove any other layers from the Contents Pane.</p>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog">Project</a>. Use <code>us_county_500k_contig</code> as the input and specify a suitable output name (e.g., <code>us_county_500k_contig_cf</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;code&gt;cf&lt;/code&gt; denoting conformal&lt;/p&gt;"><sup>25</sup></a>). For the “Output Coordinate System”, use <code>USA Contiguous Lambert Conformal Conic</code> (EPSG: <a href="https://epsg.io/102004">102004</a>) and Run. When complete, remove any other layers from the Contents Pane.</p>
 </blockquote>
 <p>Your output will resemble the following:</p>
 <div class="inline-figure"><img src="screenshots/practical-3/contig_us_onthefly.png" style="width:100.0%"></div>
@@ -238,8 +237,7 @@ The following expression will select all rows which meet the following condition
 </div>
 <details><summary>
 Answer
-</summary>
-This is because the <strong>maps</strong> coordinate reference system is still using that of the <em>first</em> feature layer added (EPSG: <a href="https://epsg.io/4269">4269</a>). While we have reprojected our county geometries, these are being reprojected again “on-the-fly” to match the map CRS.
+</summary><p>This is because the <strong>maps</strong> coordinate reference system is still using that of the <em>first</em> feature layer added (EPSG: <a href="https://epsg.io/4269">4269</a>). While we have reprojected our county geometries, these are being reprojected again “on-the-fly” to match the map CRS.</p>
 </details><blockquote>
 <p>Update the map CRS to that of the <code>us_county_500k_contig_cf</code> layer, which should now resemble the following:</p>
 </blockquote>
@@ -252,14 +250,14 @@ This is because the <strong>maps</strong> coordinate reference system is still u
 </h4>
 <p>Next we are going to combine our geometries with the county-level election results for 2024.</p>
 <blockquote>
-<p>Load <code>2024_US_County_Level_Presidential_Results.csv</code> and use a dynamic table join to link the election results to our county geometries, joining using the <code>NAMELSAD</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Current legal/statistical area description code&lt;/p&gt;"><sup>25</sup></a> and <code>county_name</code> fields.</p>
+<p>Load <code>2024_US_County_Level_Presidential_Results.csv</code> and use a dynamic table join to link the election results to our county geometries, joining using the <code>NAMELSAD</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Current legal/statistical area description code&lt;/p&gt;"><sup>26</sup></a> and <code>county_name</code> fields.</p>
 </blockquote>
 <div class="note">
-<p>An alternative approach would be to join using the Federal Information Processing Series (<a href="https://www.census.gov/library/reference/code-lists/ansi.html">FIPS</a>) code, stored in <code>GEOID</code> and <code>county_fips</code> respectively. However, these are currently in different data formats (<code>Text</code> and <code>Long</code> i.e., numeric), which you can inspect via the Attribute Table → right click Fields → Data Type. The different data formats would preclude any matches i.e., <span class="math inline">\(01003_{text}\neq01003_{numeric}\)</span>. While we can address this via some data processing<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We’ll explore this in Practical 4, where we’ll use the same US county level data to investigate patterns of spatial &lt;strong&gt;correlation&lt;/strong&gt;.&lt;/p&gt;"><sup>26</sup></a>, for now we’ll just use the county names.</p>
+<p>An alternative approach would be to join using the Federal Information Processing Series (<a href="https://www.census.gov/library/reference/code-lists/ansi.html">FIPS</a>) code, stored in <code>GEOID</code> and <code>county_fips</code> respectively. However, these are currently in different data formats (<code>Text</code> and <code>Long</code> i.e., numeric), which you can inspect via the Attribute Table → right click Fields → Data Type. The different data formats would preclude any matches i.e., <span class="math inline">\(01003_{text}\neq01003_{numeric}\)</span>. While we can address this via some data processing<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We’ll explore this in Practical 4, where we’ll use the same US county level data to investigate patterns of spatial &lt;strong&gt;correlation&lt;/strong&gt;.&lt;/p&gt;"><sup>27</sup></a>, for now we’ll just use the county names.</p>
 </div>
 <p>The Attribute Table should now contain the following key fields:</p>
 <ul>
-<li>the number of votes cast for the Republican (<code>votes_gop</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The Grand Old Party (GOP) is another name for the Republican Party.&lt;/p&gt;"><sup>27</sup></a>) and Democratic parties (<code>votes_dem</code>), the difference between them (<code>diff</code>) and the total votes cast (<code>total_votes</code>).</li>
+<li>the number of votes cast for the Republican (<code>votes_gop</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The Grand Old Party (GOP) is another name for the Republican Party.&lt;/p&gt;"><sup>28</sup></a>) and Democratic parties (<code>votes_dem</code>), the difference between them (<code>diff</code>) and the total votes cast (<code>total_votes</code>).</li>
 <li>the Republican and Democratic vote share (<code>per_gop</code>, <code>per_dem</code>) and the difference between them (<code>per_point_diff</code>).</li>
 </ul>
 <div class="question">
@@ -273,7 +271,7 @@ This is because the <strong>maps</strong> coordinate reference system is still u
 </div>
 <p>To better understand the spatial variability in the election results:</p>
 <blockquote>
-<p>Update the layer symbology based upon <code>gop_perc</code> and use colours and scaling of your choice. For example, using <code>Unclassed Colors</code>, <code>Red-Blue</code> (reversed) and setting the min-max to 0 and 1 will produce the following output, which resembles <a href="https://tonmcg.github.io/US_County_Level_Election_Results_08-24/">typical visualisations</a>, where reds denote Republican vote share, and blues denote Democratic vote share. The use of a 0-1 scale, rather than scaling by the min-max vote %, also produces a natural mid-point value of 0.5, where the vote is shared equally between the two parties.</p>
+<p>Update the layer symbology based upon <code>per_gop</code> and use colours and scaling of your choice. For example, using <code>Unclassed Colors</code>, <code>Red-Blue</code> (reversed) and setting the min-max to 0 and 1 will produce the following output, which resembles <a href="https://tonmcg.github.io/US_County_Level_Election_Results_08-24/">typical visualisations</a>, where reds denote Republican vote share, and blues denote Democratic vote share. The use of a 0-1 scale, rather than scaling by the min-max vote %, also produces a natural mid-point value of 0.5, where the vote is shared equally between the two parties.</p>
 </blockquote>
 <div class="inline-figure"><img src="screenshots/practical-3/contig_us_gop_perc.png" style="width:100.0%"></div>
 <p><br></p>
@@ -283,7 +281,8 @@ This is because the <strong>maps</strong> coordinate reference system is still u
 <details><summary>
 Interpretation
 </summary><p>Land doesn’t vote… <strong>people do</strong>. While we have changed the symbology to match the vote share for each county, the counties differ in size, so naturally we assign greater weight to the larger, more visible counties, and less weight to the smaller, less visible counties. The following ArcGIS <a href="https://storymaps.arcgis.com/stories/0e636a652d44484b9457f953994b212b">StoryMap</a> provides some interesting commentary and alternative visualisations.</p>
-</details><p>There are lots of interesting spatial patterns in this dataset:</p>
+</details><p><br></p>
+<p>There are lots of interesting spatial patterns in this dataset:</p>
 <div class="question">
 <p>Can you see any evidence of spatial autocorrelation?</p>
 </div>
@@ -296,36 +295,39 @@ Interpretation
 </h3>
 <p>Before we begin to explore spatial autocorrelation and start running ArcGIS tools, it is important that we understand the underlying mathematics. In particular, we need to introduce the <strong>spatial lag</strong> operator, which is one of the key use cases for the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>.</p>
 <p>The spatial lag captures the <em>weighted value of a variable for each locations neighbourhood</em>. In our case, this could be the weighted Republican vote share (<code>per_gop</code>) for the neighbourhood surrounding each US county, as illustrated below:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-3/spatial_lag.png" style="width:40.0%"></p>
+<center>
+<img src="images/practical-3/spatial_lag.png" style="width:40.0%">
+</center>
 <p>Mathematically it is defined as follows:</p>
 <p><span class="math display">\[y_{sl-i}=\sum_{j}w_{ij}y_{j}\]</span></p>
 <p>where <span class="math inline">\(y_{sl-i}\)</span> is the spatial lag, representing the weighted neighbourhood value for the focal object, excluding itself (<span class="math inline">\(-i\)</span>). This is calculated as the sum of the spatial weights <span class="math inline">\(w\)</span> for row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> in the spatial weights matrix multiplied by the corresponding value for the neighbourhood location <span class="math inline">\(y_j\)</span>.</p>
 <p>As an example, here is a <em>sparse</em> spatial weights matrix, subset to a single focal object <span class="math inline">\(f\)</span>. As <span class="math inline">\(f\)</span> has seven neighbours and <span class="math inline">\(\mathbf{W}_f\)</span> is row-standardised, <span class="math inline">\(w=1/7\)</span></p>
 <p><span class="math display">\[\mathbf{W}_f=\begin{bmatrix} 1/7 &amp; 1/7 &amp; 1/7 &amp; 1/7 &amp; 1/7 &amp; 1/7 &amp; 1/7 \end{bmatrix}\]</span></p>
-<p>If the values at those locations (e.g., <code>gop_perc</code>) are as follows:</p>
+<p>If the values at those locations (e.g., <code>per_gop</code>) are as follows:</p>
 <p><span class="math display">\[y_{j}=\begin{bmatrix} 0.39 &amp; 0.33 &amp; 0.46 &amp; 0.38 &amp; 0.67 &amp; 0.24 &amp; 0.41 \end{bmatrix}\]</span></p>
 <p>The products of the spatial weight <span class="math inline">\(w\)</span> and the value <span class="math inline">\(y\)</span> would be:</p>
 <p><span class="math display">\[w_{ij}y_{j}=\begin{bmatrix} 0.06 &amp; 0.05 &amp; 0.07 &amp; 0.05 &amp; 0.10 &amp; 0.03 &amp; 0.06 \end{bmatrix}\]</span></p>
 <p>The sum of these products is our <strong>spatial lag</strong> i.e., the weighted value for the neighbourhood:</p>
 <p><span class="math display">\[y_{sl-i} = \sum w_{ij}y_{j}=0.41\]</span></p>
 <p>When row-standardisation is used, the spatial lag is effectively a weighted <strong>average</strong> for the neighbourhood, because the weights will sum to 1. When binary weights are used and row-standardisation is <em>not</em>, the spatial lag would produce the sum of the neighbourhood values.</p>
-<p>You may find it easier to understand this visually, so here is a schematic using the same weights and values, illustrating how the values (<span class="math inline">\(y\)</span>, <code>gop_perc</code>) are multiplied by the corresponding spatial weights (<span class="math inline">\(w\)</span>), where the sum is the <strong>spatial lag</strong> (<span class="math inline">\(y_{sl-i}\)</span>) for the focal feature = <span class="math inline">\(0.41\)</span>.</p>
+<p>You may find it easier to understand this visually, so here is a schematic using the same weights and values, illustrating how the values (<span class="math inline">\(y\)</span>, <code>per_gop</code>) are multiplied by the corresponding spatial weights (<span class="math inline">\(w\)</span>), where the sum is the <strong>spatial lag</strong> (<span class="math inline">\(y_{sl-i}\)</span>) for the focal feature = <span class="math inline">\(0.41\)</span>.</p>
 <p align="center">
-<a name=""></a><img src="images/practical-3/spatial-lag-schematic.png" id="lag_schematic" style="width:100.0%"></p>
+</p>
+<p><a name=""></a><img src="images/practical-3/spatial-lag-schematic.png" id="lag_schematic" style="width:100.0%"></p>
+
 <p>The above matrices and schematics illustrate the process for a <em>single</em> focal feature, and this would be replicated to create a spatially-lagged variable for all features in the dataset.</p>
 <div class="note">
 <p>If you are interested you can check the calculations yourself, as these are based on the election results and weights for Sante Fe County, New Mexico (GEOID: 35049).</p>
 </div>
 <p>To help your understanding further:</p>
 <blockquote>
-<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/neighborhood-summary-statistics.html?tabs=dialog">Neighbourhood Summary Statistics</a>, using the US county data as input, and selecting <code>gop_perc</code> as the “Analysis Field”. For “Neighbourhood Type” using <code>Contiguity Edges Corners</code>, for “Local Summary Statistic” use <code>Mean</code>, and <code>Ignore Focal Feature</code> (because <span class="math inline">\(y_{sl-i}\)</span>). I used the output name <code>us_county_gop_sl</code>, where <code>sl</code> denotes “spatial lag”.</p>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/neighborhood-summary-statistics.html?tabs=dialog">Neighbourhood Summary Statistics</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The default language settings for our ArcGIS install are American English, so the tool names may be slightly different i.e., &lt;strong&gt;Neighborhood&lt;/strong&gt; Summary Statistics.&lt;/p&gt;"><sup>29</sup></a>, using the US county data as input, and selecting <code>per_gop</code> as the “Analysis Field”. For “Neighbourhood Type” using <code>Contiguity Edges Corners</code>, for “Local Summary Statistic” use <code>Mean</code>, and <code>Ignore Focal Feature</code> (because <span class="math inline">\(y_{sl-i}\)</span>). I used the output name <code>us_county_gop_sl</code>, where <code>sl</code> denotes “spatial lag”.</p>
 </blockquote>
-<p>Your output should resemble the following, where the US counties are symbolised using the spatial lag of <code>gop_perc</code>, using Queen’s contiguity. In effect, we have created a <em>smoothed</em> version of the original values.</p>
+<p>Your output should resemble the following, where the US counties are symbolised using the spatial lag of <code>per_gop</code>, using Queen’s contiguity. In effect, we have created a <em>smoothed</em> version of the original values.</p>
 <div class="inline-figure"><img src="screenshots/practical-3/spatial-lag.png" style="width:100.0%"></div>
 <p><br></p>
 <blockquote>
-<p>Inspect the Attribute Table of the new layer, which contains the original <code>gop_perc</code> values and the spatially-lagged variable <code>_Mean</code>, as well as the number of neighbours for each feature (<code>NNBRS</code>).</p>
+<p>Inspect the Attribute Table of the new layer, which contains the original <code>per_gop</code> values and the spatially-lagged variable <code>Mean</code>, as well as the <code>Number of neighbours</code> for each feature.</p>
 </blockquote>
 <div class="question">
 <p>Are there any counties where the GOP vote share is noticeably different from the spatially-lagged variable?</p>
@@ -340,40 +342,76 @@ Interpretation
 <h3>
 <span class="header-section-number">3.2.4</span> Global spatial autocorrelation<a class="anchor" aria-label="anchor" href="#global-spatial-autocorrelation"><i class="fas fa-link"></i></a>
 </h3>
-<p>The <em>spatial lag</em> variable is a key component of Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span>, one of the most commonly used statistics for global autocorrelation, defined as:</p>
-<p><span class="math display">\[I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}{\sum_{i}z_{i}^{2}}\]</span> where <span class="math inline">\(n\)</span> is the number of observations, <span class="math inline">\(w_{ij}\)</span> is the cell corresponding to the row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> of the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>, and <span class="math inline">\(z_{i}\)</span> and <span class="math inline">\(z_{j}\)</span> are the standardised values of a variable of interest at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> respectively. These are calculated as the difference between each value and the mean of all the values (<span class="math inline">\(z_{i}-\overline{z}\)</span>).</p>
+<p>The <em>spatial lag</em> variable is a key component of Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span>, one of the most commonly used statistics for global autocorrelation.</p>
+<p>Before we introduce the mathematics of Moran’s <span class="math inline">\(I\)</span>, we will begin by exploring spatial autocorrelation visually using the <strong>Moran Plot</strong>.</p>
 <div id="moran_plot" class="section level4" number="3.2.4.1">
 <h4>
 <span class="header-section-number">3.2.4.1</span> Moran Plot<a class="anchor" aria-label="anchor" href="#moran_plot"><i class="fas fa-link"></i></a>
 </h4>
-<p>At first glance this function seem quite complicated, so before we jump into the maths, we’ll begin by exploring visually:</p>
+<p>To begin, we are going to <strong>standardise</strong> our values, as explained below:</p>
 <blockquote>
-<p>Find the mean (<span class="math inline">\(\overline{z}\)</span>) of <code>gop_perc</code> and then create a new field in the Attribute Table of <code>us_county_gop_sl</code> using Calculate Field (“Name” = <code>gop_std</code>, “Field Type” = <code>Double</code>). This field should contain the difference between <code>gop_perc</code> for each county and the mean <code>gop_perc</code>.</p>
+<p>Find the mean (<span class="math inline">\(\overline{z}\)</span>) of <code>per_gop</code> and then create a new field in the Attribute Table of <code>us_county_gop_sl</code> using Calculate Field (“Name” = <code>gop_std</code>, “Field Type” = <code>Double</code>). This field should contain the difference between <code>per_gop</code> for each county and the mean <code>per_gop</code>.</p>
 </blockquote>
+<details><summary>
+Answer
+</summary><p>The mean of the Republican vote share is <span class="math inline">\(\approx0.66\%\)</span> (<span class="math inline">\(0.6632597676265708\)</span>) so the Expression to calculate the standardised variable <code>gop_std</code> is as follows: <code>!per_gop! - 0.6632597676265708</code></p>
+</details><p><br></p>
 <blockquote>
-<p>Repeat this process for the spatial lag variable (<code>_Mean</code>, “Name” = <code>lag_std</code>).</p>
+<p>Repeat this process for the spatial lag variable (<code>Mean for per_gop</code>, “Name” = <code>lag_std</code>).</p>
 </blockquote>
+<details><summary>
+Answer
+</summary><p>The mean of the spatially lagged Republican vote share is also <span class="math inline">\(\approx0.66\%\)</span>, although not identical (<span class="math inline">\(0.6636104005899481\)</span>). The Expression to calculate the standardised spatial lag variable <code>lag_std</code> is as follows: <code>!PER_G_Mean! - 0.6636104005899481</code>.</p>
+<p>Note that the visible field name in the “Fields” table is <code>Mean for per_gop</code> but this is just an <strong>alias</strong> i.e., an alternative name which provides a more user-friendly description of the content. The <em>actual</em> field name is <code>PER_G_Mean!</code>, which is populated in the Expression when <code>Mean for per_gop</code> is double clicked. Similarly, <code>Mean for Distance to Neighbors</code> is an alias for <code>DIST_Mean</code>.</p>
+</details><p><br></p>
 <p>Before we can progress further, there are four US counties with no <em>contiguous</em> neighbours (FID = <code>425</code>, <code>533</code>, <code>2017</code>, <code>2615</code>). To simplify our analysis:</p>
 <blockquote>
-<p>Remove these rows from <code>us_county_gop_sl</code> e.g., Select by Attributes (<code>DIST_NNBRS</code> = 0) and then Delete.</p>
+<p>Remove these rows from <code>us_county_gop_sl</code> e.g., Select by Attributes (<code>DIST_NNBRS = 0</code>) and then Delete.</p>
 </blockquote>
 <p>Using our standardised spatial lag variable <code>lag_std</code> and standardised variable of interest <code>gop_std</code>, we can create a <strong>Moran Plot</strong> as follows:</p>
 <blockquote>
 <p>Right click on <code>us_county_gop_sl</code> in the Contents Pane → Create Chart → Scatter Plot, and use the standardised <code>gop_std</code> variable for the x-axis, and the standardised spatial lag variable <code>lag_std</code> for the y-axis.</p>
 </blockquote>
 <div class="note">
-<p>We use <strong>standardisation</strong> for both the variable of interest <code>gop_perc</code> and the spatial lag variable <code>lag_std</code> to facilitate interpretation. By calculating the deviation from the mean (<span class="math inline">\(\overline{z}\)</span>), this centers both datasets at 0, where above average values are <span class="math inline">\(z_{i}&gt;0\)</span> and below average values are <span class="math inline">\(z_{i}&lt;0\)</span>. In turn, we can easily evaluate whether the focal feature and/or the neigbourhood have an above or below average Republican vote share.</p>
+<p>We use <strong>standardisation</strong> for both the variable of interest <code>per_gop</code> and the spatial lag variable <code>lag_std</code> to facilitate interpretation. By calculating the deviation from the mean (<span class="math inline">\(\overline{z}\)</span>), this centers both datasets at 0, where above average values are <span class="math inline">\(z_{i}&gt;0\)</span> and below average values are <span class="math inline">\(z_{i}&lt;0\)</span>. In turn, we can easily evaluate whether the focal feature and/or the neigbourhood have an above or below average Republican vote share.</p>
 </div>
-<p align="center">
-<a name=""></a><img src="screenshots/practical-3/manual-moran-plot.png" style="width:60.0%"></p>
-<p>The <strong>Moran Plot</strong> is a useful tool for visual exploration of spatial autocorrelation and is simply a scatter plot of the variable of interest compared to the spatially lagged values<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note that we have created the Moran Plot manually here to facilitate understanding, but of course there are ArcGIS tools which will do this for us, as we’ll explore soon.&lt;/p&gt;"><sup>28</sup></a>. The overall pattern of the data provides us with a great deal of information about the presence of spatial <em>autocorrelation</em> (either positive or negative) or spatial <em>randomness</em>. The plot also includes a <strong>linear regression</strong> fitted to the values (Available in Chart Properties: <span class="math inline">\(0.2898637359\)</span>). We will explore regression later in the unit<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In &lt;strong&gt;Practical 7&lt;/strong&gt; &lt;em&gt;Spatial Regression&lt;/em&gt; and &lt;strong&gt;Practical 8&lt;/strong&gt; &lt;em&gt;Geographically Weighted Regression&lt;/em&gt;.&lt;/p&gt;"><sup>29</sup></a>, but as a brief introduction, this provides information on the strength, direction and nature of the relationship between two variables, in this case <code>gop_std</code> and <code>lag_std</code>. Here the <a href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a> <span class="math inline">\(\text{R}^2=0.22\)</span>, which indicates that <span class="math inline">\(\approx22\%\)</span> of the variation in <code>gop_std</code> can be explained by <code>lag_std</code>.</p>
-<p>The slope of the linear regression is <strong>positive</strong> (<span class="math inline">\(\sim0.29\)</span>), with the trendline sloping <em>upwards</em> i.e., as the standardised Republican vote share for a county increases, so too does the vote share of its neighbouring counties. This is indicative of <strong>positive</strong> spatial autocorrelation i.e., similar values are located nearby, and dissimilar values are distant.</p>
+<center>
+<img src="screenshots/practical-3/manual-moran-plot.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>The <strong>Moran Plot</strong> is a useful tool for visual exploration of spatial autocorrelation and is simply a scatter plot of the variable of interest compared to the spatially lagged values<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note that we have created the Moran Plot manually here to facilitate understanding, but of course there are ArcGIS tools which will do this for us, as we’ll explore soon.&lt;/p&gt;"><sup>30</sup></a>. The overall pattern of the data provides us with a great deal of information about the presence of spatial <em>autocorrelation</em> (either positive or negative) or spatial <em>randomness</em>.</p>
+<p>The plot also includes a <strong>linear regression</strong> fitted to the values (the black line). We will explore regression later in the unit<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In &lt;strong&gt;Practical 7&lt;/strong&gt; &lt;em&gt;Spatial Regression&lt;/em&gt; and &lt;strong&gt;Practical 8&lt;/strong&gt; &lt;em&gt;Geographically Weighted Regression&lt;/em&gt;.&lt;/p&gt;"><sup>31</sup></a>, but as a brief introduction, this provides information on the strength, direction and nature of the relationship between two variables, in this case <code>gop_std</code> and <code>lag_std</code>. Here the <a href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a> <span class="math inline">\(\text{R}^2\approx0.22\)</span>, which indicates that <span class="math inline">\(\approx22\%\)</span> of the variation in <code>gop_std</code> can be explained by <code>lag_std</code>.</p>
+<p>The slope of the linear regression is also <strong>positive</strong> (<span class="math inline">\(\approx0.29\)</span>, available in Chart Properties), with the trendline sloping <em>upwards</em> i.e., as the standardised Republican vote share for a county increases, so too does the vote share of its neighbouring counties. This is indicative of <strong>positive</strong> spatial autocorrelation i.e., similar values are located nearby, and dissimilar values are distant.</p>
 <p>By comparison, if the slope of the linear regression was <strong>negative</strong>, this would indicate that as the Republican vote share for a county <em>increases</em>, the vote share of its neighbouring counties would <em>decrease</em>. This would be indicative of <strong>negative</strong> spatial autocorrelation i.e., similar values tend be distant from each other, and dissimilar values are located nearby.</p>
-<p>Finally, if there was no significant slope to the linear regression<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will discuss how we can test for significance in a moment.&lt;/p&gt;"><sup>30</sup></a>, this would indicate the presence of spatial <strong>randomness</strong> i.e., the Republican vote share for a county is not meaningfully related to that of its neighbours.</p>
+<p>Finally, if there was no significant slope to the linear regression<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will discuss how we can test for significance in a moment.&lt;/p&gt;"><sup>32</sup></a>, this would indicate the presence of spatial <strong>randomness</strong> i.e., the Republican vote share for a county is not meaningfully related to that of its neighbours.</p>
 <div class="question">
 <p>Would you describe the county-level Republican vote share as clustered or dispersed?</p>
 </div>
-<p>Using the Moran Plot, we can infer that <em>on average</em>, <strong>positive</strong> autocorrelation is present i.e., Republican voting counties tend to be surrounded by other Republican voting counties. However, that doesn’t mean that this applies to every situation e.g., there may be instances where Republican voting counties are surrounded by Democratic voting counties, and vice-versa.</p>
+<details><summary>
+Interpretation
+</summary><p>Using the Moran Plot, we can infer that <em>on average</em>, <strong>positive</strong> autocorrelation is present i.e., Republican voting counties tend to be surrounded by other Republican voting counties. However, that doesn’t mean that this applies to every situation e.g., there may be instances where Republican voting counties are surrounded by Democratic voting counties, and vice-versa.</p>
+</details><p><br></p>
+<blockquote>
+<p>Before moving on, make sure you understand how the <a href="spatial_autocorrelation.html#spatial_lag">spatial lag</a> variable is calculated, how it is normalised (i.e., relative to the mean), and what the Moran Plot represents (i.e., the variable of interest plotted against the weighted neighbourhood values).</p>
+</blockquote>
+<p>To test your understanding:</p>
+<div class="question">
+<p>Which of the following Moran Plots (<span class="math inline">\(A,B,C\)</span>) are characterised by spatial randomness, positive spatial autocorrelation, or negative autocorrelation?</p>
+</div>
+<center>
+<img src="images/practical-3/moran_plot_test.png" style="width:100.0%">
+</center>
+<p><br></p>
+<details><summary>
+Interpretation
+</summary><p><span class="math inline">\(A\)</span> is indicative of complete spatial randomness. Above average values (e.g., Republican vote share on the x-axis) appear just as likely to be associated with <strong>below average</strong> neighbourhood values (i.e., spatial lag of Republican vote share) as they are <strong>above average</strong> neighbourhood values (y-axis).</p>
+<p>By comparison, both <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> reveal spatial autocorrelation.</p>
+<p>For <span class="math inline">\(B\)</span>, this is generally <strong>negative</strong> as <em>above</em> average values are typically associated with <em>below</em> average neighbourhood values, and vice versa (i.e., <em>below</em> average values associated with <em>above</em> average neighbourhood values). Nearby values are therefore often dissimilar in a <strong>dispersed</strong> pattern.</p>
+<p>For <span class="math inline">\(C\)</span> there is strong evidence of <strong>positive</strong> spatial autocorrelation, where above average values are associated with above average neighbourhood values, and vice versa i.e., similar values <strong>cluster</strong>.</p>
+<center>
+<img src="images/practical-3/moran_plot_test_interp.png" style="width:100.0%">
+</center>
+</details><p><br></p>
 </div>
 <div id="calc_moran_i" class="section level4" number="3.2.4.2">
 <h4>
@@ -387,37 +425,177 @@ Interpretation
 <p>How do we know that the observed pattern of spatial autocorrelation is meaningful? i.e., is it significantly different from spatial randomness?</p>
 </div>
 <p>We can answer the former by investigating <strong>local</strong> spatial autocorrelation, which is the topic of the second half of the practical.</p>
-<p>We can answer the latter by calculating the Moran’s <span class="math inline">\(I\)</span> statistic and its significance, rather than relying on the Moran Plot alone. This requires a deeper dive into the Moran’s <span class="math inline">\(I\)</span> formula:</p>
+<p>We can answer the latter by calculating the <strong>Moran’s</strong> <span class="math inline">\(I\)</span> <strong>statistic</strong> and its significance, rather than relying on the visualisation alone. Here <span class="math inline">\(I\)</span> is used to summarise the information in the Moran Plot. Much like Pearson’s <span class="math inline">\(r\)</span>, Moran’s <span class="math inline">\(I\)</span> can range from <span class="math inline">\(-1\)</span> to <span class="math inline">\(+1\)</span>, where <span class="math inline">\(-1\)</span> indicates <strong>negative</strong> spatial autocorrelation (dispersion), <span class="math inline">\(+1\)</span> indicates <strong>positive</strong> spatial autocorrelation (clustering), and <span class="math inline">\(0\)</span> denotes <strong>complete spatial randomness</strong>.</p>
+<p>To understand how <span class="math inline">\(I\)</span> is calculated, we need to take a deeper dive into the Moran’s <span class="math inline">\(I\)</span> formula, which is defined as follow:</p>
 <p><span class="math display">\[I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}{\sum_{i}z_{i}^{2}}\]</span></p>
-<p>Before we describe the key parts of the formula, Moran’s <span class="math inline">\(I\)</span> is assessing:</p>
+<p><strong>Don’t worry</strong> about trying to interpret the equation at the moment, as we’ll run through it step-by-step in a moment, but as a quick summary: <span class="math inline">\(n\)</span> is the number of observations in the dataset, <span class="math inline">\(w_{ij}\)</span> is the cell corresponding to the row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> of the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>, and <span class="math inline">\(z_{i}\)</span> and <span class="math inline">\(z_{j}\)</span> are the standardised values of a variable of interest at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> respectively. These are calculated as the difference between each value and the mean of all the values (<span class="math inline">\(z_{i}-\overline{z}\)</span>).</p>
+<p>Before we explain the key parts of the formula in more detail, Moran’s <span class="math inline">\(I\)</span> is assessing a simple but important question:</p>
+<div class="question">
 <p>“<em>How similar are observations to their neighbours, relative to the overall variation in the dataset?</em>”</p>
-<p>On the right hand side of the function, the <em>denominator</em> <span class="math inline">\(\sum_{i}z_{i}^{2}\)</span> is a measure of the total variation in the data, while the <em>numerator</em> <span class="math inline">\(\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}\)</span> is a measure of the variation between each observation and its neighbours. The left hand side of the function <span class="math inline">\(\frac{n}{\sum_{i}\sum_{j}w_{ij}}\)</span> accounts for the number of observations and their spatial weights. Normalising by these variables allows us to compare the Moran’s <span class="math inline">\(I\)</span> statistic across different datasets, which might vary in size, neighbourhood definition, and the number of neighbours.</p>
-<p>Describing these parts more fully, on the left hand side of the function we have the following:</p>
-<p><span class="math display">\[\frac{n}{\sum_{i}\sum_{j}w_{ij}}\]</span></p>
-<p>which is simply the number of observations (<span class="math inline">\(n\)</span>) in the dataset (i.e., the number of US counties, <span class="math inline">\(n=3105\)</span>) divided by the sum of all the non-zero weights in the spatial weights matrix (<span class="math inline">\(\sum_{i}\sum_{j}w_{ij}\)</span>). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., <span class="math inline">\(n = \sum_{i}\sum_{j}w_{ij}\)</span> (assuming all observations are connected<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We ensured this by removing the four US counties with no &lt;em&gt;contiguous&lt;/em&gt; neighbours (FID = &lt;code&gt;425&lt;/code&gt;, &lt;code&gt;533&lt;/code&gt;, &lt;code&gt;2017&lt;/code&gt;, &lt;code&gt;2615&lt;/code&gt;).&lt;/p&gt;"><sup>31</sup></a>). If so, this part of the function cancels out and can be ignored. If row-standardisation is <em>not</em> used, then this ratio would need to be calculated.</p>
-<div class="note">
-<p>If you are interested you can confirm this by using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog">Generate Spatial Weights Matrix</a> for the <code>us_county_gop_sl</code> layer, using Queen’s contiguity and row-standardisation. If you convert the output to a readable table via <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/convert-spatial-weights-matrix-to-table.html?tabs=dialog">Convert Spatial Weights Matrix to Table</a>, the sum of the <code>WEIGHT</code> field should equal the number of observations (<span class="math inline">\(n=3105\)</span>).</p>
 </div>
-<p>On the right hand side of the function we have the numerator: <span class="math inline">\(\sum_{i}z_{i}^{2}\)</span>, which is the sum of the squared standardised values (<span class="math inline">\(z_{i}-\overline{z}\)</span>). For example, if the Republican vote share is as follows:</p>
-<p><span class="math display">\[z=\begin{bmatrix} 0.78 &amp; 0.73 &amp; 0.57 &amp; 0.29 &amp; 0.74 &amp; 0.80 &amp; 0.64 \end{bmatrix}\]</span> The corresponding mean value is <span class="math inline">\(0.65\)</span>, which would result in standardised values of:</p>
-<p><span class="math display">\[z-\overline{z}=\begin{bmatrix} 0.13 &amp; 0.08 &amp; -0.08 &amp; -0.36 &amp; 0.09 &amp; 0.15 &amp; -0.01 \end{bmatrix}\]</span> The square of these values is as follows:</p>
-<p><span class="math display">\[z_{i}^{2}=\begin{bmatrix} 0.0169 &amp;    0.0064 &amp;    0.0064 &amp;    0.1296 &amp;    0.0081 &amp;    0.0225 &amp;    0.0001\end{bmatrix}\]</span></p>
-<p>resulting in the following sum. This is a measure of the <strong>overall variability of the data</strong>:</p>
-<p><span class="math display">\[\sum_{i}z_{i}^{2}=0.19\]</span></p>
-<p>The final piece of the puzzle is the numerator:</p>
-<p><span class="math display">\[\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}\]</span></p>
-<p>Some of this might be familiar. The <strong>spatial lag</strong> variable is here, albeit with slightly different notation, which you’ll remember is the <em>weighted value of a variable for each locations neighbourhood</em>. This is present as <span class="math inline">\(w_{ij}z_{i}\)</span>, the only difference is we are using standardised values <span class="math inline">\((z_{i}-\overline{z})\)</span> rather than the raw values, to capture the deviation from the global mean. As discussed above, this approach centers the dataset at 0, which allows us to easily identify whether values are above or below the average.</p>
-<p>The spatial lag is multiplied by all other standardised values in the dataset (<span class="math inline">\(z_{j}\)</span>), with the outputs summed. This is measure of the <strong>overall similarity of observations to their neighbours</strong>.</p>
-<p>For example, if on average high values (<span class="math inline">\(z_{i}&gt;0\)</span>) are found near other high values <em>and/or</em> low values (<span class="math inline">\(z_{i}&lt;0\)</span>) are found near other low values, the numerator would be <strong>positive</strong>. By comparison, if on average high values (<span class="math inline">\(z_{i}&gt;0\)</span>) are found near low values (<span class="math inline">\(z_{i}&lt;0\)</span>), or vice versa, the numerator would be <strong>negative</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is because when both values are positive (&lt;span class="math inline"&gt;\(z_{i}&amp;gt;0\)&lt;/span&gt;) or both values are negative (&lt;span class="math inline"&gt;\(z_{i}&amp;lt;0\)&lt;/span&gt;), the cross-product is positive i.e., Positive &lt;span class="math inline"&gt;\(\times\)&lt;/span&gt; Positive = Positive, and Negative &lt;span class="math inline"&gt;\(\times\)&lt;/span&gt; Negative = Positive. By comparison, if the signs of the values differ, the cross-product is negative i.e., Positive &lt;span class="math inline"&gt;\(\times\)&lt;/span&gt; Negative = Negative.&lt;/p&gt;'><sup>32</sup></a>.</p>
-<p>To summarise:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-3/moran-summary.png" style="width:100.0%"></p>
-<p>We can interpret the test statistic <span class="math inline">\(I\)</span> as follows:</p>
+<p>To help your understanding, we are going to work through Moran’s <span class="math inline">\(I\)</span> for a <em>very</em> simple spatial dataset, which is shown below. This is a <span class="math inline">\(4\times4\)</span> grid of cells (<span class="math inline">\(\text{A1}\)</span> to <span class="math inline">\(\text{D4}\)</span>), where the number in each cell is its value.</p>
+<center>
+<img src="images/practical-3/moran_simple_1.png" style="width:40.0%">
+</center>
+<p><br></p>
+<p>Here is a table of the same dataset, which we’ll use for our calculations:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+\text{2} &amp; 2 &amp; 2 &amp; 2 &amp; 2\\
+\text{3} &amp; 3 &amp; 3 &amp; 3 &amp; 3\\
+\text{4} &amp; 4 &amp; 4 &amp; 4 &amp; 4\\
+\end{array}\]</span></p>
+<p>Our first initial step is to <strong>standardise</strong> all the values to produce <span class="math inline">\(z_i\)</span> i.e., the deviation of the value at each location <span class="math inline">\(i\)</span> from the mean. Given the mean of this dataset <span class="math inline">\(\overline{z}=2.5\)</span>, the standardised values are as follows (e.g., <span class="math inline">\(\text{A1}=1\: \text{, so} \: z_i=1-2.5=-1.5\)</span>). As discussed above, this approach centers the dataset at 0, which allows us to easily identify whether values are above or below the average:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; -1.5 &amp; -1.5 &amp; -1.5 &amp; -1.5\\
+\text{2} &amp; -0.5 &amp; -0.5 &amp; -0.5 &amp; -0.5\\
+\text{3} &amp; 0.5 &amp; 0.5 &amp; 0.5 &amp; 0.5\\
+\text{4} &amp; 1.5 &amp; 1.5 &amp; 1.5 &amp; 1.5\\
+\end{array}\]</span></p>
+<p>We can now turn to the right hand side of the function, and the <strong>numerator</strong>:</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\color{Black}{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}}{\sum_{i}z_{i}^{2}}}\]</span></p>
+<p>This is a measure of the similarity of the observations and their neighbours. We can calculate this by first calculating the product of <strong>all</strong> combinations of the normalised values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(z_j\)</span> i.e., <span class="math inline">\(\text{A1}\times\text{A1}, \text{A1}\times\text{A2}, \text{A1}\times\text{A3}, \cdots\)</span>.</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}w_{ij}\color{Black}{z_{i}z_{j}}}{\sum_{i}z_{i}^{2}}}\]</span></p>
+<p>Here is a table containing <em>some</em> of those values<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The full table is &lt;span class="math inline"&gt;\(16\times16\)&lt;/span&gt;, representing all the combinations of &lt;span class="math inline"&gt;\(\text{A1}\)&lt;/span&gt; to &lt;span class="math inline"&gt;\(\text{D4}\)&lt;/span&gt;. This is difficult to render and interpret, so I have included only a few rows and columns, but you should hopefully be able to understand how each value has been calculated.&lt;/p&gt;'><sup>33</sup></a> e.g., <span class="math inline">\(z_{\text{A1}}=-1.5 \: \text{, so} \: z_{\text{A1}} \times z_{\text{A1}}=-1.5\times -1.5=2.25\)</span>:</p>
+<p><span class="math display">\[\begin{array}{c|cccccccccccccccc}
+&amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
+   \text{B1} &amp; \text{B2} &amp; \text{B3} &amp; \cdots\\
+\hline
+\text{A1} &amp; 2.25    &amp;   0.75    &amp;   -0.75   &amp;   -2.25   &amp;   2.25    &amp;   0.75    &amp;   -0.75   &amp;   \cdots\\
+\text{A2} &amp; 0.75    &amp;   0.25    &amp;   -0.25   &amp;   -0.75   &amp;   0.75    &amp;   0.25    &amp;   -0.25   &amp;   \cdots\\
+\text{A3} &amp; -0.75   &amp;   -0.25   &amp;   0.25    &amp;   0.75    &amp;   -0.75   &amp;   -0.25   &amp;   0.25    &amp;   \cdots\\
+\text{A4} &amp; -2.25   &amp;   -0.75   &amp;   0.75    &amp;   2.25    &amp;   -2.25   &amp;   -0.75   &amp;   0.75    &amp;   \cdots\\
+\text{B1} &amp; 2.25    &amp;   0.75    &amp;   -0.75   &amp;   -2.25   &amp;   2.25    &amp;   0.75    &amp;   -0.75   &amp;   \cdots\\
+\text{B2} &amp; 0.75    &amp;   0.25    &amp;   -0.25   &amp;   -0.75   &amp;   0.75    &amp;   0.25    &amp;   -0.25   &amp;   \cdots\\
+\text{B3} &amp; -0.75   &amp;   -0.25   &amp;   0.25    &amp;   0.75    &amp;   -0.75   &amp;   -0.25   &amp;   0.25    &amp;   \cdots\\
+\vdots &amp;    \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \ddots
+\end{array}\]</span></p>
+<p>Another key part of the numerator is the <strong>spatial weight</strong> for all objects <span class="math inline">\(w_{ij}\)</span>:</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}\color{Black}{w_{ij}}z_{i}z_{j}}{\sum_{i}z_{i}^{2}}}\]</span></p>
+<p>For this example, we will use <a href="spatial_weights.html#contig-swm"><strong>contiguity weights</strong></a> and specifically <em>Queen’s contiguity</em> (<code>Contiguity Edges Corners</code>).</p>
+<div class="question">
+<p>Using Queen’s contiguity, which cells are neighbours of <span class="math inline">\(\text{A1}\)</span>?</p>
+</div>
+<details><summary>
+Answer
+</summary><p><a href="spatial_weights.html#queen-swm">Queen’s contiguity</a> identifies neighbouring objects which <strong>share an edge or a point</strong>. In turn, <span class="math inline">\(\text{A1}\)</span> is a neighbour of <span class="math inline">\(\text{A2}\)</span>, <span class="math inline">\(\text{B1}\)</span> and <span class="math inline">\(\text{B2}\)</span>. By comparison, if we used <a href="spatial_weights.html#rook-swm">Rook contiguity</a>, <span class="math inline">\(\text{B2}\)</span> would not be a neighbour, as it shares a point with <span class="math inline">\(\text{A1}\)</span>, but <strong>not</strong> an edge.</p>
+<p>Here are some examples of neighbourhood topologies using Queen’s contiguity:</p>
+<center>
+<img src="images/practical-3/moran_simple_topology.png" style="width:90.0%">
+</center>
+</details><p><br></p>
+<p>The resulting spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span> for our dataset is shown below, where <span class="math inline">\(w=1\)</span> denotes neighbouring objects, and <span class="math inline">\(w=0\)</span> denotes non-neighbouring objects e.g., <span class="math inline">\(\text{A1}\)</span> is a neighbour of <span class="math inline">\(\text{A2}\)</span>, <span class="math inline">\(\text{B1}\)</span> and <span class="math inline">\(\text{B2}\)</span>, but not <span class="math inline">\(\text{A3}\)</span> or <span class="math inline">\(\text{A1}\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As a reminder from &lt;a href="spatial_weights.html#define_sw"&gt;Practical 2&lt;/a&gt;, self-neighbor relations are typically excluded so &lt;span class="math inline"&gt;\(w=0\)&lt;/span&gt; for &lt;span class="math inline"&gt;\(w_{\text{A1,}\text{A1}}\)&lt;/span&gt;.&lt;/p&gt;'><sup>34</sup></a>:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{array}{c|cccccccccccccccc}
+&amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
+   \text{B1} &amp; \text{B2} &amp; \text{B3} &amp; \cdots\\
+\hline
+\text{A1} &amp; 0   &amp;   1   &amp;   0   &amp;   0   &amp;   1   &amp;   1   &amp;   0   &amp; \cdots\\
+\text{A2} &amp; 1   &amp;   0   &amp;   1   &amp;   0   &amp;   1   &amp;   1   &amp;   1   &amp;   \cdots\\
+\text{A3} &amp; 0   &amp;   1   &amp;   0   &amp;   1   &amp;   0   &amp;   1   &amp;   1   &amp;   \cdots\\
+\text{A4} &amp; 0   &amp;   0   &amp;   1   &amp;   0   &amp;   0   &amp;   0   &amp;   1   &amp;   \cdots\\
+\text{B1} &amp; 1   &amp;   1   &amp;   0   &amp;   0   &amp;   0   &amp;   1   &amp;   0   &amp;   \cdots\\
+\text{B2} &amp; 1   &amp;   1   &amp;   1   &amp;   0   &amp;   1   &amp;   0   &amp;   1   &amp;   \cdots\\
+\text{B3} &amp; 0   &amp;   1   &amp;   1   &amp;   1   &amp;   0   &amp;   1   &amp;   0   &amp;   \cdots\\
+\vdots &amp;    \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \ddots
+\end{array}\]</span></p>
+<p>With the spatial weights matrix defined, the binary weights <span class="math inline">\(w\)</span> are then multiplied by the corresponding product of the normalised values:</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}\color{Black}{w_{ij}z_{i}z_{j}}}{\sum_{i}z_{i}^{2}}}\]</span> For example, for <span class="math inline">\(\text{A1}\)</span> and <span class="math inline">\(\text{A2}\)</span>, the spatial weight <span class="math inline">\(w=1\)</span> (they are neighbours!) and the product of their normalised values is <span class="math inline">\(0.75\)</span>. Therefore, <span class="math inline">\(w_{ij}z_{i}z_{j}=1\times0.75=0.75\)</span>. By comparison, the product of <span class="math inline">\(\text{A1}\)</span> and <span class="math inline">\(\text{A3}\)</span> is <span class="math inline">\(-0.75\)</span> but they are <strong>not</strong> neighbours, so <span class="math inline">\(w=0\)</span>. Therefore <span class="math inline">\(w_{ij}z_{i}z_{j}=0\times-0.75=0\)</span>.</p>
+<p>Here is a partial table of the calculated values:</p>
+<p><span class="math display">\[w_{ij}z_{i}z_{j}=\begin{array}{c|cccccccccccccccc}
+&amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
+   \text{B1} &amp; \text{B2} &amp; \text{B3} &amp; \cdots\\
+\hline
+\text{A1} &amp; 0   &amp;   0.75    &amp;   0   &amp;   0   &amp;   2.25    &amp;   0.75    &amp;   0 &amp; \cdots\\
+\text{A2} &amp; 0.75    &amp;   0   &amp;   -0.25   &amp;   0   &amp;   0.75    &amp;   0.25    &amp;   -0.25   &amp;   \cdots\\
+\text{A3} &amp; 0   &amp;   -0.25   &amp;   0   &amp;   0.75    &amp;   0   &amp;   -0.25   &amp;   0.25    &amp;   \cdots\\
+\text{A4} &amp; 0   &amp;   0   &amp;   0.75    &amp;   0   &amp;   0   &amp;   0   &amp;   0.75    &amp;   \cdots\\
+\text{B1} &amp; 2.25    &amp;   0.75    &amp;   0   &amp;   0   &amp;   0   &amp;   0.75    &amp;   0   &amp;   \cdots\\
+\text{B2} &amp; 0.75    &amp;   0.25    &amp;   -0.25   &amp;   0   &amp;   0.75    &amp;   0   &amp;   -0.25   &amp;   \cdots\\
+\text{B3} &amp; 0   &amp;   -0.25   &amp;   0.25    &amp;   0.75    &amp;   0   &amp;   -0.25   &amp;   0   &amp;   \cdots\\
+\vdots &amp;    \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \ddots
+\end{array}\]</span></p>
+<p>The remainder of the numerator is the <strong>sum</strong> (<span class="math inline">\(\sum\)</span>) of the weighted values for all objects (<span class="math inline">\(\sum_i\sum_j\)</span>):</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\color{Black}{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}}{\sum_{i}z_{i}^{2}}}\]</span></p>
+<p>For this example, the sum of the above table is <span class="math inline">\(55\)</span>, so we can substitute this in:</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\color{Black}{55}}{\sum_{i}z_{i}^{2}}}\]</span> Overall the numerator can be interpreted as the <strong>overall similarity of observations to their neighbours</strong>. For example, if on average high values (<span class="math inline">\(z_{i}&gt;0\)</span>) are found near other high values <em>and/or</em> low values (<span class="math inline">\(z_{i}&lt;0\)</span>) are found near other low values, the numerator would be <strong>positive</strong>. By comparison, if on average high values (<span class="math inline">\(z_{i}&gt;0\)</span>) are found near low values (<span class="math inline">\(z_{i}&lt;0\)</span>), or vice versa, the numerator would be <strong>negative</strong><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is because when both values are positive (&lt;span class="math inline"&gt;\(z_{i}&amp;gt;0\)&lt;/span&gt;) or both values are negative (&lt;span class="math inline"&gt;\(z_{i}&amp;lt;0\)&lt;/span&gt;), the cross-product is positive i.e., Positive &lt;span class="math inline"&gt;\(\times\)&lt;/span&gt; Positive = Positive, and Negative &lt;span class="math inline"&gt;\(\times\)&lt;/span&gt; Negative = Positive. By comparison, if the signs of the values differ, the cross-product is negative i.e., Positive &lt;span class="math inline"&gt;\(\times\)&lt;/span&gt; Negative = Negative.&lt;/p&gt;'><sup>35</sup></a>. Let’s use some examples to illustrate:</p>
 <ul>
-<li>If <span class="math inline">\(I\)</span> &gt; 0, observations are <strong>more</strong> similar to their neighbours than would be expected, given the overall variation in the dataset i.e., <strong>positive</strong> spatial autocorrelation.</li>
-<li>If <span class="math inline">\(I\)</span> &lt; 0, observations are <strong>less</strong> similar to their neighbours than would be expected, given the overall variation in the dataset i.e., <strong>negative</strong> spatial autocorrelation.</li>
+<li>the standardised values for <span class="math inline">\(\text{A1}\)</span> and <span class="math inline">\(\text{A2}\)</span> are <strong>both negative</strong> at <span class="math inline">\(-1.5\)</span> and <span class="math inline">\(-0.5\)</span>, respectively, as they are both <em>below</em> the average value <span class="math inline">\(\overline{z}=2.5\)</span>. In turn, the spatially weighted product <span class="math inline">\(w_{ij}z_{i}z_{j}\)</span> of <span class="math inline">\(\text{A1}\)</span> and <span class="math inline">\(\text{A2}\)</span> is positive, at <span class="math inline">\(0.75\)</span>. This reflects <strong>positive</strong> autocorrelation, as similar values are nearby.</li>
+<li>the standardised values for <span class="math inline">\(\text{A4}\)</span> and <span class="math inline">\(\text{B3}\)</span> are <strong>both positive</strong> at <span class="math inline">\(1.5\)</span> and <span class="math inline">\(0.5\)</span>, respectively, as they are both <em>above</em> the average value <span class="math inline">\(\overline{z}=2.5\)</span>. In turn, the spatially weighted product of <span class="math inline">\(\text{A1}\)</span> and <span class="math inline">\(\text{A2}\)</span> is positive, at <span class="math inline">\(0.75\)</span>. Like <span class="math inline">\(\text{A1}\)</span> and <span class="math inline">\(\text{A2}\)</span>, this also reflects <strong>positive</strong> autocorrelation, with similar values nearby.</li>
+<li>the standardised value for <span class="math inline">\(\text{A2}\)</span> is <strong>below</strong> average at <span class="math inline">\(-0.5\)</span> but the standardised value for its neighbour <span class="math inline">\(\text{A3}\)</span> is <strong>above</strong> average at <span class="math inline">\(0.5\)</span>. In turn, the spatially weighted product of <span class="math inline">\(\text{A2}\)</span> and <span class="math inline">\(\text{A3}\)</span> is negative, indicative of <strong>negative</strong> spatial autocorrelation, as nearby values are dissimilar.</li>
 </ul>
-<p>Moran’s <span class="math inline">\(I\)</span> values range from <span class="math inline">\(-1\)</span> (dispered) to <span class="math inline">\(1\)</span> (clustered), where <span class="math inline">\(0\)</span> denotes no spatial pattern.</p>
+<p>By repeating this for all pairs of observations in the dataset, incorporating the spatial weights, the sum of these values can be used to assess whether nearby values are typically similar or dissimilar.</p>
+<div class="question">
+<p>A difficult but important question: <strong>why</strong> do we multiply the cross-products <span class="math inline">\(z_{i}z_{j}\)</span> by the spatial weights <span class="math inline">\(w_{ij}\)</span>?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>We do this to specify which pairs of observations <strong>matter</strong>.</p>
+<p>For example, <span class="math inline">\(\text{A1}\)</span> is a neighbour of <span class="math inline">\(\text{A2}\)</span>, <span class="math inline">\(\text{B1}\)</span> and <span class="math inline">\(\text{B2}\)</span>, when using Queen’s contiguity. When assessing the overall similarity of observations to their neighbours, we therefore only want to incorporate the neighbouring objects. By comparison, the similarity of <span class="math inline">\(\text{A1}\)</span> to <span class="math inline">\(\text{A3}\)</span>, <span class="math inline">\(\text{A4}\)</span>, <span class="math inline">\(\text{B3}\)</span> and so on is <strong>irrelevant</strong>, because they are not neighbouring. Therefore, these pairs should <strong>not</strong> contribute to our assessment of neighbourhood similarity for the dataset as a whole. As the spatial weights for these pairs is zero (i.e., <span class="math inline">\(w_{\text{A1},\text{A3}}=0\)</span>), the weighted cross-product is also zero, so makes no contribution to the numerator.</p>
+<p>For this simple example we have also used <strong>binary</strong> weights i.e., spatial objects are either neighbours and therefore contribute to the numerator for Moran’s <span class="math inline">\(I\)</span> (<span class="math inline">\(w=1\)</span>) or they don’t (<span class="math inline">\(w=0\)</span>). We could, however, have used <strong>continuous</strong> weights, for example using an <a href="spatial_weights.html#inv_weights">inverse distance</a> approach, in which case the weights would represent the <strong>relative importance</strong> of neighbours. If so, nearby objects would typically contribute more significantly to our assessment of similarity than distant objects.</p>
+</details><p><br></p>
+<p>We can now move on to the <strong>denominator</strong>, which is a measure of the <strong>total variation in the dataset</strong>, and which is calculated as the sum of the squared standardised values (<span class="math inline">\(z_{i}^2\)</span>).</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{55}{\color{Black}{\sum_{i}z_{i}^{2}}}}\]</span> We’ve already calculated the standardised values, so the denominator is the sum of the square of those:</p>
+<p><span class="math display">\[z_i=\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; -1.5 &amp; -1.5 &amp; -1.5 &amp; -1.5\\
+\text{2} &amp; -0.5 &amp; -0.5 &amp; -0.5 &amp; -0.5\\
+\text{3} &amp; 0.5 &amp; 0.5 &amp; 0.5 &amp; 0.5\\
+\text{4} &amp; 1.5 &amp; 1.5 &amp; 1.5 &amp; 1.5\\
+\end{array} \quad z_i^2=\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp;  2.25    &amp;   2.25    &amp;   2.25    &amp;   2.25\\
+\text{2} &amp;  0.25    &amp;   0.25    &amp;   0.25    &amp;   0.25\\
+\text{3} &amp;  0.25    &amp;   0.25    &amp;   0.25    &amp;   0.25\\
+\text{4} &amp;  2.25    &amp;   2.25    &amp;   2.25    &amp;   2.25\\
+\end{array}\]</span></p>
+<p><span class="math display">\[\sum_{i}z_{i}^{2}=20\]</span></p>
+<p>We can now substitute that value into our equation:</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{55}{\color{Black}{20}}}\]</span></p>
+<p>As deviations from the average value increase, so too does <span class="math inline">\(\sum_{i}z_{i}^{2}\)</span>. By dividing the overall similarity of observations and their neighbours (<span class="math inline">\(55\)</span>) by the overall variability of the dataset (<span class="math inline">\(20\)</span>), <span class="math inline">\(I\)</span> becomes <strong>scale-independent</strong>. For example, let’s say our values for <span class="math inline">\(\text{A1}\)</span> to <span class="math inline">\(\text{D4}\)</span> were no longer <span class="math inline">\(1,2,3,4\)</span> but were scaled to <span class="math inline">\(1000,2000,3000,4000\)</span>. This is quite a common occurrence, for example shifting between measuring in kilometers compared to metres:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1000 &amp; 1000 &amp; 1000 &amp; 1000\\
+\text{2} &amp; 2000 &amp; 2000 &amp; 2000 &amp; 2000\\
+\text{3} &amp; 3000 &amp; 3000 &amp; 3000 &amp; 3000\\
+\text{4} &amp; 4000 &amp; 4000 &amp; 4000 &amp; 4000\\
+\end{array}\]</span></p>
+<p>Given the new mean value of <span class="math inline">\(2500\)</span>, the standardised values would also now be much larger:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; -1500 &amp; -1500 &amp; -1500 &amp; -1500\\
+\text{2} &amp; -500 &amp; -500 &amp; -500 &amp; -500\\
+\text{3} &amp; 500 &amp; 500 &amp; 500 &amp; 500\\
+\text{4} &amp; 1500 &amp; 1500 &amp; 1500 &amp; 1500\\
+\end{array}\]</span></p>
+<p>If we continued the analysis with this dataset, the overall similarity of observations to their neighbours (<span class="math inline">\(\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}\)</span>) would be much larger simply because of the change of units, even though the <strong>underlying spatial pattern and the relative differences between values would be identical</strong> to our original dataset. In turn, the calculated similarity is only meaningful within the context of the overall variability of the data.</p>
+<p>We can now switch to the left hand side of the Moran’s <span class="math inline">\(I\)</span> equation, which accounts for the number of observations and their spatial weights. Normalising by these variables allows us to compare the Moran’s <span class="math inline">\(I\)</span> statistic across different datasets, which might vary in size, neighbourhood definition, and the number of neighbours. Here <span class="math inline">\(n\)</span> is simply the number of observations (<span class="math inline">\(n\)</span>) in the dataset, which in our case is <span class="math inline">\(16\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We are working with a &lt;span class="math inline"&gt;\(4\times4\)&lt;/span&gt; grid, hence &lt;span class="math inline"&gt;\(16\)&lt;/span&gt; individual objects.&lt;/p&gt;'><sup>36</sup></a>, so we can substitute that in:</p>
+<p><span class="math display">\[\color{Gray}{I = \frac{\color{Black}{16}}{\sum_{i}\sum_{j}w_{ij}}\frac{55}{20}}\]</span> <span class="math inline">\(n\)</span> is then divided by the sum of the weights in the spatial weights matrix (<span class="math inline">\(\sum_{i}\sum_{j}w_{ij}\)</span>). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., <span class="math inline">\(n = \sum_{i}\sum_{j}w_{ij}\)</span> (assuming all observations are connected<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For our analysis of US counties, we ensured this by removing the four US counties with no &lt;em&gt;contiguous&lt;/em&gt; neighbours (FID = &lt;code&gt;425&lt;/code&gt;, &lt;code&gt;533&lt;/code&gt;, &lt;code&gt;2017&lt;/code&gt;, &lt;code&gt;2615&lt;/code&gt;).&lt;/p&gt;"><sup>37</sup></a>). In our simple example, we have <strong>not</strong> used row-standardisation, so this ratio would need to be calculated.</p>
+<p>Here the sum of <span class="math inline">\(w_{ij}\)</span> equals <span class="math inline">\(84\)</span>:</p>
+<p><span class="math display">\[\mathbf{W}=\begin{array}{c|cccccccccccccccc}
+&amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
+   \text{B1} &amp; \text{B2} &amp; \text{B3} &amp; \cdots\\
+\hline
+\text{A1} &amp; 0   &amp;   1   &amp;   0   &amp;   0   &amp;   1   &amp;   1   &amp;   0   &amp; \cdots\\
+\text{A2} &amp; 1   &amp;   0   &amp;   1   &amp;   0   &amp;   1   &amp;   1   &amp;   1   &amp;   \cdots\\
+\text{A3} &amp; 0   &amp;   1   &amp;   0   &amp;   1   &amp;   0   &amp;   1   &amp;   1   &amp;   \cdots\\
+\text{A4} &amp; 0   &amp;   0   &amp;   1   &amp;   0   &amp;   0   &amp;   0   &amp;   1   &amp;   \cdots\\
+\text{B1} &amp; 1   &amp;   1   &amp;   0   &amp;   0   &amp;   0   &amp;   1   &amp;   0   &amp;   \cdots\\
+\text{B2} &amp; 1   &amp;   1   &amp;   1   &amp;   0   &amp;   1   &amp;   0   &amp;   1   &amp;   \cdots\\
+\text{B3} &amp; 0   &amp;   1   &amp;   1   &amp;   1   &amp;   0   &amp;   1   &amp;   0   &amp;   \cdots\\
+\vdots &amp;    \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \ddots
+\end{array} \rightarrow \sum_{i}\sum_{j}w_{ij}=84\]</span></p>
+<p>This value can be substituted into our equation:</p>
+<p><span class="math display">\[I = \frac{16}{84}\frac{55}{20}\]</span> We now have all we need to calculate <span class="math inline">\(I\)</span>! As a reminder, the left hand side of the equation is the number of observations divided by the sum of the spatial weights, whereas the right side is the sum of the spatially weighted cross-product of the standardised values <em>divided</em> by the sum of the squared standardised values:</p>
+<p><span class="math display">\[I = 0.19 \cdot2.75\approx0.52\]</span> For our sample dataset, Moran’s <span class="math inline">\(I\approx0.52\)</span>.</p>
+<p>This is our <strong>measure of spatial autocorrelation</strong>, which we can interpret as follows:</p>
+<ul>
+<li>If <span class="math inline">\(I&gt;0\)</span>, observations are <strong>more</strong> similar to their neighbours than would be expected, given the overall variation in the dataset i.e., <strong>positive</strong> spatial autocorrelation.</li>
+<li>If <span class="math inline">\(I&lt;0\)</span>, observations are <strong>less</strong> similar to their neighbours than would be expected, given the overall variation in the dataset i.e., <strong>negative</strong> spatial autocorrelation.</li>
+</ul>
+<p>To summarise:</p>
+<center>
+<img src="images/practical-3/moran-summary.png" style="width:100.0%">
+</center>
+<p>Before moving on:</p>
+<blockquote>
+<p>Make sure you understand the key components of Moran’s <span class="math inline">\(I\)</span> and ask for help if not!</p>
+</blockquote>
 </div>
 <div id="interpreting-morans-i" class="section level4" number="3.2.4.3">
 <h4>
@@ -426,38 +604,49 @@ Interpretation
 <p>So far, we’ve done quite a deep dive into Moran’s <span class="math inline">\(I\)</span>.</p>
 <p>Actually running and interpreting Moran’s <span class="math inline">\(I\)</span> in ArcGIS is surprisingly simple, and this can be achieved using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a> geoprocessing tool.</p>
 <blockquote>
-<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a>, using <code>us_county_500k_contig_cf</code> as the input, using Queen’s contiguity and row standardisation, and check “Generate Report”.</p>
+<p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/spatial-autocorrelation.html?tabs=dialog">Spatial Autocorrelation (Global Moran’s I)</a>, using <code>us_county_500k_contig_cf</code> as the input, <code>perc_gop</code> as the “Input Field”, using Queen’s contiguity (<code>Contiguity edges corners</code>) and row standardisation, and check “Generate Report”.</p>
 </blockquote>
 <p>We can access the results of Morans <span class="math inline">\(I\)</span> via the <code>.html</code> file, which is linked in the output messages (click “View Details”) and is saved in your project directory. The output table is also important:</p>
-<p align="center">
-<a name=""></a><img src="screenshots/practical-3/moran-results.png" style="width:50.0%"></p>
-<p>The “Moran’s Index” is <span class="math inline">\(I\)</span> and you’ll notice this is identical to the value produced by our Moran Plot earlier: <span class="math inline">\(0.289864\)</span>. The regression line in the Moran Plot will always match the Moran’s <span class="math inline">\(I\)</span> statistic when standardised values are used (i.e., mean centred: <span class="math inline">\(z_{i}-\overline{z}\)</span>) and when the spatial weights matrix is row-standardised.</p>
-<p>Other important values include the expected index <span class="math inline">\(E[I]\)</span>, which is the expected value of Moran’s <span class="math inline">\(I\)</span> under the assumption of spatial <em>randomness</em> i.e., what <span class="math inline">\(I\)</span> value would we expect if there is no spatial autocorrelation? This is calculated as follows:</p>
+<center>
+<img src="screenshots/practical-3/moran-results.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>The “Moran’s Index” is <span class="math inline">\(I\)</span> and you’ll notice this is identical to the <strong>slope</strong> of regression produced by our Moran Plot earlier: <span class="math inline">\(0.289864\)</span>. The regression line in the Moran Plot will always match the Moran’s <span class="math inline">\(I\)</span> statistic when standardised values are used (i.e., mean centred: <span class="math inline">\(z_{i}-\overline{z}\)</span>) and when the spatial weights matrix is row-standardised.</p>
+<p>Other important values include the expected index <span class="math inline">\(E[I]\)</span>, which is the expected value of Moran’s <span class="math inline">\(I\)</span> under the assumption of <em>complete spatial randomness</em> i.e., what <span class="math inline">\(I\)</span> value would we expect if there is no spatial autocorrelation? This is calculated as follows:</p>
 <p><span class="math display">\[E[I]=\frac{-1}{n-1}\]</span> where <span class="math inline">\(n\)</span> is the number of observations. For our dataset, <span class="math inline">\(E[I]=\frac{-1}{3105-1}=-0.000322\)</span>.</p>
-<p>The variance <span class="math inline">\(Var(I)\)</span> is a measure of how much the Moran’s I statistic would be expected to vary assuming spatial randomness<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;There is some ESRI &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-spatial-autocorrelation-moran-s-i-spatial-st.html"&gt;documentation&lt;/a&gt; on how this is calculated, with a more detailed walkthrough from Luc Anselin &lt;a href="https://lanselin.github.io/introbook_vol1/morans-i.html#analytical-inference"&gt;here&lt;/a&gt;.&lt;/p&gt;'><sup>33</sup></a>.</p>
+<p>The variance <span class="math inline">\(Var(I)\)</span> is a measure of how much the Moran’s I statistic would be expected to vary assuming spatial randomness<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;There is some ESRI &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-spatial-autocorrelation-moran-s-i-spatial-st.html"&gt;documentation&lt;/a&gt; on how this is calculated, with a more detailed walkthrough from Luc Anselin &lt;a href="https://lanselin.github.io/introbook_vol1/morans-i.html#analytical-inference"&gt;here&lt;/a&gt;.&lt;/p&gt;'><sup>38</sup></a>.</p>
 <p>A particularly important statistic is the <strong>z-score</strong> which is measure of how far observed <span class="math inline">\(I\)</span> is from <span class="math inline">\(E[I]\)</span>, in units of standard deviation. This is calculated as follows:</p>
 <p><span class="math display">\[z = \frac{I-E[I]}{\sqrt{Var(I)}}\]</span> If we plug our numbers from the output table into the equation:</p>
-<p><span class="math display">\[z = \frac{0.289864-(-0.000322)}{\sqrt{0.000116}}\]</span> we should be able to reproduce the z-score<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;If you do the calculations yourself, the z-score will be slightly different (by &lt;span class="math inline"&gt;\(\sim0.05\%\)&lt;/span&gt;) to that reported in the results table, likely due to rounding.&lt;/p&gt;'><sup>34</sup></a>.</p>
-<p>The final statistic is the <strong>p-value</strong> which is the probability of observing a z-score (26.94) this extreme if the null hypothesis of spatial randomness is true, or more simply, if we randomly shuffled the values across the map (i.e., Republican vote share) and calculated <span class="math inline">\(I\)</span> for each, how many configurations would show a larger Moran’s <span class="math inline">\(I\)</span> than the one we observed? In our case, the probability is tiny, and much lower than typical thresholds for statistical significance e.g., <span class="math inline">\(p&lt;0.05\)</span> or <span class="math inline">\(p&lt;0.01\)</span>. As such, we would reject the null hypothesis of spatial randomness.</p>
+<p><span class="math display">\[z = \frac{0.289864-(-0.000322)}{\sqrt{0.000116}}\approx26.95\]</span> we should be able to reproduce the z-score<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;If you do the calculations yourself, the z-score will be slightly different (by &lt;span class="math inline"&gt;\(\sim0.05\%\)&lt;/span&gt;) to that reported in the results table, likely due to rounding.&lt;/p&gt;'><sup>39</sup></a>.</p>
+<p>The final statistic is the <strong>p-value</strong> which is the probability of observing a z-score (<span class="math inline">\(\approx26.95\)</span>) this extreme if the null hypothesis of spatial randomness is true, or more simply, if we randomly shuffled the values across the map (i.e., Republican vote share) and calculated <span class="math inline">\(I\)</span> for each, how many configurations would show a larger Moran’s <span class="math inline">\(I\)</span> than the one we observed? In our case, the probability is tiny, and much lower than typical thresholds for statistical significance e.g., <span class="math inline">\(p&lt;0.05\)</span> or <span class="math inline">\(p&lt;0.01\)</span>. As such, we would reject the null hypothesis of spatial randomness.</p>
 <blockquote>
 <p>Open the <code>.html</code> output, which summarises these values for you and aids interpretation.</p>
 </blockquote>
-<p align="center">
-<a name=""></a><img src="screenshots/practical-3/moran-html.png" style="width:75.0%"></p>
-<p>Here we can see the normal distribution of <span class="math inline">\(E[I]\)</span> values against which our observed <span class="math inline">\(I\)</span> value is being evaluated. While there is always a chance that our observed <span class="math inline">\(I\)</span> might have arisen from spatial randomness, the probability is extremely low given the calculated z-score and p-value.</p>
+<center>
+<img src="screenshots/practical-3/moran-html.png" style="width:75.0%">
+</center>
+<p>Here we can see the normal distribution of <span class="math inline">\(E[I]\)</span> values against which our observed <span class="math inline">\(I\)</span> value is being evaluated. While there is always a chance that our observed <span class="math inline">\(I\)</span> might have arisen from spatial randomness, the probability is extremely low given the calculated z-score and <span class="math inline">\(p\)</span>-value.</p>
 <div class="question">
 <p>Based on all of the previous discussion and analysis, what is your interpretation of <strong>global</strong> autocorrelation for the county-level Republican vote share?</p>
 </div>
+<details><summary>
+Interpretation
+</summary><p>Based on the analysis so far, we can conclude that statistically significant positive spatial autocorrelation <span class="math inline">\(I=0.29,p&lt;0.5\)</span> is present for the county-level Republican vote share i.e., similar values often <strong>cluster</strong> together.</p>
+</details><p><br></p>
 <div class="question">
 <p>With your knowledge of the analytical approach, what are the key choices for you as the user?</p>
 </div>
+<details><summary>
+Interpretation
+</summary><p>Assuming the spatial objects and their values are fixed in an analysis (e.g., number of observations, their values, and their geometries), the key choices relate to the specification of the <strong>spatial weights matrix</strong> <span class="math inline">\(\mathbf{W}\)</span>. As you change <span class="math inline">\(\mathbf{W}\)</span>, for example switching between <a href="spatial_weights.html#contig-swm">contiguity</a> or <a href="spatial_weights.html#dist-swm">distance-based</a> weights, <span class="math inline">\(I\)</span> will also change, and this may shape your interpretation of whether spatial autocorrelation is present.</p>
+</details><p><br></p>
 </div>
 </div>
 <div id="local-spatial-autocorrelation" class="section level3" number="3.2.5">
 <h3>
 <span class="header-section-number">3.2.5</span> Local spatial autocorrelation<a class="anchor" aria-label="anchor" href="#local-spatial-autocorrelation"><i class="fas fa-link"></i></a>
 </h3>
-<p>Based on the analysis so far, we can conclude that statistically significant positive spatial autocorrelation is present for the county-level Republican vote share. While this is an interesting result, more work is needed to answer the following:</p>
+<p>While the results above are interesting, and tie into a much larger body of literature on <strong>political segregation</strong> <span class="citation">(<a href="references.html#ref-cutts2010">Cutts and Webber, 2010</a>; <a href="references.html#ref-cohn2011">Cohn and Jackman, 2011</a>; <a href="references.html#ref-walker2013">Walker, 2013</a>)</span>, more work is needed to answer the following:</p>
 <div class="question">
 <p>Which <em>parts</em> of the map show clustering, dispersion or randomness?</p>
 </div>
@@ -478,22 +667,80 @@ Interpretation
 </li>
 </ul>
 <p>We can split the Moran Plot neatly into quadrats as follows:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-3/moran-plot-edited.png" style="width:60.0%"></p>
+<center>
+<img src="images/practical-3/moran-plot-edited.png" style="width:60.0%">
+</center>
+<p><br></p>
 <p>This approach assigns all objects to a quadrat. While useful for our understanding, our primary interest is in <strong>statistically significant</strong> clustering or dispersion i.e., if the values are only <em>slightly</em> above or below the average, is that meaningful?</p>
-<p>To test this, we can use <strong>local Moran’s</strong> <span class="math inline">\(I_i\)</span>.</p>
+<p>To test this, we can use <strong>local Moran’s</strong> <span class="math inline">\(I_i\)</span> <span class="citation">(<a href="references.html#ref-anselin1995">Anselin, 1995a</a>)</span>.</p>
 <p>Much like global Moran’s <span class="math inline">\(I\)</span>, local Moran’s <span class="math inline">\(I_{i}\)</span> evaluates the similarities or differences between observations and their neighbours, and whether these are greater than would be expected if the values had arisen from a spatially random process. Unlike Moran’s <span class="math inline">\(I\)</span>, which is applied <em>globally</em> for the entire dataset, local Moran’s <span class="math inline">\(I_i\)</span> is applied to each object in turn, creating an index value (<span class="math inline">\(I_{i}\)</span>) for each location, which we can interpret as the degree of <em>local</em> spatial autocorrelation.</p>
 <p>Local Moran’s <span class="math inline">\(I_{i}\)</span> is defined as:</p>
 <p><span class="math display">\[I_i=\frac{z_{i}}{m_{2}} \sum_{j}w_{ij}z_{j}\quad\mathrm{where}\quad m_{2}=\frac{\sum_{i}z_{i}^{2}}{n}\]</span> Some of the components should be familiar from our exploration of global Moran’s <span class="math inline">\(I\)</span>. For example, <span class="math inline">\(z_{i}\)</span> are the standardised values, <span class="math inline">\(w_{ij}\)</span> represents the spatial weight for locations <span class="math inline">\(ij\)</span> and <span class="math inline">\(n\)</span> is the number of observations.</p>
-<p><span class="math inline">\(m^{2}\)</span> stands for the “second moment” of a distribution<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;“Moments” are values that represent a distribution or dataset: First moment (Mean), Second moment (Variance), Third moment (Skewness), Fourth moment (Kurtosis), see &lt;a href="https://en.wikipedia.org/wiki/Moment_(mathematics)"&gt;here&lt;/a&gt;.&lt;/p&gt;'><sup>35</sup></a>, or more simply, the <strong>variance</strong> of the data, defined here as the <em>average squared deviation from the mean</em> for the entire dataset. This is calculated by standardising the values (<span class="math inline">\(z_{i}\)</span>), squaring them (<span class="math inline">\(z_{i}^{2}\)</span>), calculating the sum (<span class="math inline">\(\sum_{i}z_{i}^{2}\)</span>) and then dividing by the number of observations (<span class="math inline">\(n\)</span>).</p>
-<p>Putting it all together, local Moran’s <span class="math inline">\(I_{i}\)</span> is the cross-product of the standardised value for each location in the dataset <span class="math inline">\(z_{i}\)</span> (i.e., is the location above or below average?) and the sum of the weighted standardised values of its neighbours <span class="math inline">\(\sum_{j}w_{ij}z_{j}\)</span> (i.e., is the neighbourhood above or below average?). The cross-product is then normalised based on the overall variance of the dataset (<span class="math inline">\(m_{2}\)</span>).</p>
-<p>This normalisation is important because it places the observed deviations from the mean <span class="math inline">\(z_{i}\)</span> within the context of the overall variability in the dataset, and makes <span class="math inline">\(I_{I}\)</span> dimensionless, allowing for comparison of <span class="math inline">\(I_{I}\)</span> for different datasets and measurement scales. Take the example below, which shows two different data distributions:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-3/normalisation.png" id="normalisation_figure" style="width:80.0%"></p>
-<p>The datasets have the same mean, but very different levels of variance (<span class="math inline">\(m_{2}\)</span>). If we pick a value at random (denoted by the vertical arrows), the absolute deviation <span class="math inline">\(z_{i}\)</span> will be the same for both distributions, as these are measured relative to the mean. In [A], that value would be considered quite <em>normal</em>, being close to the mean and within the range of typical values. By contrast, that same value in [B] might be considered <em>abnormal</em>, being significantly different from most other values. This example illustrates that we need to interpret the absolute deviation <span class="math inline">\(z_{i}\)</span> within the overall spread of the data, which is what normalising by <span class="math inline">\(m_{2}\)</span> achieves<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This also allows local Moran’s &lt;span class="math inline"&gt;\(I_{i}\)&lt;/span&gt; to be compared for datasets of different scales and units. For example, a dataset with values measured in millions of dollars might have relatively small &lt;span class="math inline"&gt;\(z_{i}\)&lt;/span&gt; values. An example would be the &lt;code&gt;GDP_MD&lt;/code&gt; field in the Natural Earth dataset from Week 1 (i.e., gross domestic product in millions of dollars). If we changed the units to absolute dollars i.e., (&lt;span class="math inline"&gt;\(10\)&lt;/span&gt; M$ becomes &lt;span class="math inline"&gt;\(10,000,000\)&lt;/span&gt; $), our &lt;span class="math inline"&gt;\(z_{i}\)&lt;/span&gt; values would be much larger, even though the spatial pattern hasn’t changed.&lt;/p&gt;'><sup>36</sup></a>.</p>
+<p>To illustrate let’s return to our simple example dataset, and we’ll calculate <span class="math inline">\(I_{i}\)</span> for a single focal feature <span class="math inline">\(\text{B2}\)</span>:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+\text{2} &amp; 2 &amp; 2 &amp; 2 &amp; 2\\
+\text{3} &amp; 3 &amp; 3 &amp; 3 &amp; 3\\
+\text{4} &amp; 4 &amp; 4 &amp; 4 &amp; 4\\
+\end{array}\]</span></p>
+<p>As above, we begin by <strong>standardising</strong> all the values to produce <span class="math inline">\(z_i\)</span> i.e., the deviation of the value at each location <span class="math inline">\(i\)</span> from the mean (<span class="math inline">\(\bar{z}=2.5\)</span>).</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; -1.5 &amp; -1.5 &amp; -1.5 &amp; -1.5\\
+\text{2} &amp; -0.5 &amp; -0.5 &amp; -0.5 &amp; -0.5\\
+\text{3} &amp; 0.5 &amp; 0.5 &amp; 0.5 &amp; 0.5\\
+\text{4} &amp; 1.5 &amp; 1.5 &amp; 1.5 &amp; 1.5\\
+\end{array}\]</span></p>
+<p>We’ll then calculate <span class="math inline">\(m_2\)</span>, which stands for the “second moment” of a distribution<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;“Moments” are values that represent a distribution or dataset: First moment (Mean), Second moment (Variance), Third moment (Skewness), Fourth moment (Kurtosis), see &lt;a href="https://en.wikipedia.org/wiki/Moment_(mathematics)"&gt;here&lt;/a&gt;.&lt;/p&gt;'><sup>40</sup></a>, or more simply, the <strong>variance</strong> of the data, defined here as the <em>average squared deviation from the mean</em> for the <strong>entire dataset</strong>. This is calculated by standardising the values (<span class="math inline">\(z_{i}\)</span>), squaring them (<span class="math inline">\(z_{i}^{2}\)</span>), calculating the sum (<span class="math inline">\(\sum_{i}z_{i}^{2}\)</span>) and then dividing by the number of observations (<span class="math inline">\(n\)</span>).</p>
+<p><span class="math display">\[\color{Gray}{I_i=\frac{z_{i}}{\color{Black}{m_{2}}} \sum_{j}w_{ij}z_{j}\quad\mathrm{where}\color{Black}{\quad m_{2}=\frac{\sum_{i}z_{i}^{2}}{n}}}\]</span> We know from our calculations above how to calculate <span class="math inline">\(\sum_{i}z_{i}^{2}\)</span>, as this is the denominator on right hand side of global Moran’s <span class="math inline">\(I\)</span>:</p>
+<p><span class="math display">\[z_i^2=\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp;  2.25    &amp;   2.25    &amp;   2.25    &amp;   2.25\\
+\text{2} &amp;  0.25    &amp;   0.25    &amp;   0.25    &amp;   0.25\\
+\text{3} &amp;  0.25    &amp;   0.25    &amp;   0.25    &amp;   0.25\\
+\text{4} &amp;  2.25    &amp;   2.25    &amp;   2.25    &amp;   2.25\\
+\end{array}\rightarrow\sum_{i}z_{i}^{2}=20\]</span></p>
+<p>There are <span class="math inline">\(16\)</span> observations in the dataset (<span class="math inline">\(n\)</span>), so we can substitute those values in:</p>
+<p><span class="math display">\[\color{Gray}{I_i=\frac{z_{i}}{\color{Black}{1.25}} \sum_{j}w_{ij}z_{j}\quad\mathrm{where}\color{Black}{\quad m_{2}=\frac{20}{16}=1.25}}\]</span> When calculating Moran’s <span class="math inline">\(I_i\)</span> for a specific dataset, <span class="math inline">\(m_2\)</span> is therefore fixed as it is calculated using <strong>all</strong> the observations in the dataset. The remaining parts of the equation will change for each focal feature, representing the similarities or differences between the feature and its neighbours.</p>
+<p><span class="math inline">\(z_i\)</span> is the standardised value for the focal feature <span class="math inline">\(i\)</span>, which for <span class="math inline">\(\text{B2}\)</span> is <span class="math inline">\(-0.5\)</span>, so we can also add that in.</p>
+<p><span class="math display">\[\color{Gray}{I_i=\frac{\color{Black}{-0.5}}{1.25} \sum_{j}w_{ij}z_{j}\quad\mathrm{where}\quad m_{2}=\frac{20}{16}=1.25}\]</span> Our next step is to find the standardised values of the <strong>neighbours</strong> <span class="math inline">\(z_j\)</span> of our focal object <span class="math inline">\(i\)</span>.</p>
+<p><span class="math display">\[\color{Gray}{I_i=\frac{-0.5}{1.25} \sum_{j}w_{ij}\color{Black}{z_{j}}\quad\mathrm{where}\quad m_{2}=\frac{20}{16}=1.25}\]</span> Using Queen’s contiguity, these are highlighted below, with non-neighbours shaded grey<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As discussed above, self-neighbor relations are excluded here. We are only interested in the neighbours &lt;span class="math inline"&gt;\(z_j\)&lt;/span&gt; and &lt;strong&gt;not&lt;/strong&gt; the value for the focal object &lt;span class="math inline"&gt;\(z_i\)&lt;/span&gt;.&lt;/p&gt;'><sup>41</sup></a>:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; -1.5 &amp; -1.5 &amp; -1.5 &amp; \color{Gray}{-1.5}\\
+\text{2} &amp; -0.5 &amp; \color{Gray}{-0.5} &amp; -0.5 &amp; \color{Gray}{-0.5}\\
+\text{3} &amp; 0.5 &amp; 0.5 &amp; 0.5 &amp; \color{Gray}{0.5}\\
+\text{4} &amp; \color{Gray}{1.5} &amp; \color{Gray}{1.5} &amp; \color{Gray}{1.5} &amp; \color{Gray}{1.5}\\
+\end{array}\]</span></p>
+<p>As with global Moran’s <span class="math inline">\(I\)</span>, standardised values are then multiplied by the corresponding spatial weights, and summed <span class="math inline">\(\sum_j\)</span>:</p>
+<p><span class="math display">\[\color{Gray}{I_i=\frac{-0.5}{1.25} \color{Black}{\sum_{j}w_{ij}z_{j}}\quad\mathrm{where}\quad m_{2}=\frac{20}{16}=1.25}\]</span> Here the calculation is not particularly interesting, because we are using <strong>binary</strong> weights, so the weights for the neighbours of <span class="math inline">\(\text{B2}\)</span> are all <span class="math inline">\(w=1\)</span>. Therefore, <span class="math inline">\(w_{ij}z_{j}=z_{j}\)</span>. However, if we used <strong>continuous</strong> weights, these would vary with distance from the focal feature, with the similarity of nearby objects typically weighted more heavily in the calculations.</p>
+<p><span class="math display">\[w_{ij}z_{j}=\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; -1.5 &amp; -1.5 &amp; -1.5 &amp; \\
+\text{2} &amp; -0.5 &amp; &amp; -0.5 &amp; \\
+\text{3} &amp; 0.5 &amp; 0.5 &amp; 0.5 &amp;\\
+\text{4} &amp; &amp; &amp; &amp;\\
+\end{array}\quad \sum_{j}w_{ij}z_{j}=-4\]</span></p>
+<p>We have now calculated all the components of Moran’s <span class="math inline">\(I_i\)</span>!</p>
+<p><span class="math display">\[I_i=\frac{-0.5}{1.25}(-4)\quad\color{Gray}{\mathrm{where}\quad m_{2}=\frac{20}{16}=1.25}\]</span> If we complete the calculations:</p>
+<p><span class="math display">\[I_i=(-0.4)\times(-4)=1.6\]</span></p>
+<p>Moran’s <span class="math inline">\(I_i\)</span> for the <strong>focal</strong> feature is <span class="math inline">\(1.6\)</span>.</p>
+<p>This is our test statistic, where:</p>
+<ul>
+<li>positive values indicate <strong>positive local</strong> spatial autocorrelation i.e., nearby values are similar.</li>
+<li>negative values indicate <strong>negative local</strong> spatial autocorrelation i.e., nearby values are dissimilar.</li>
+</ul>
+<p>The above process would be repeated for all spatial objects, comparing their standardised values, with those of their neighbours:</p>
+<center>
+<img src="images/practical-3/local_moran_iterate.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>Putting it all together, local Moran’s <span class="math inline">\(I_{i}\)</span> is the cross-product of the standardised value for each location in the dataset <span class="math inline">\(z_{i}\)</span> (i.e., <em>is the location above or below average?</em>) and the sum of the weighted standardised values of its neighbours <span class="math inline">\(\sum_{j}w_{ij}z_{j}\)</span> (i.e., <em>is the neighbourhood above or below average?</em>). The cross-product is then normalised based on the overall variance of the dataset (<span class="math inline">\(m_{2}\)</span>).</p>
+<p>This normalisation is important because it places the observed deviations from the mean <span class="math inline">\(z_{i}\)</span> within the context of the overall variability in the dataset, and makes <span class="math inline">\(I_{i}\)</span> dimensionless, allowing for comparison of <span class="math inline">\(I_{i}\)</span> for different datasets and measurement scales. Take the example below, which shows two different data distributions:</p>
+<center>
+<img src="images/practical-3/normalisation.png" id="normalisation_figure" style="width:80.0%">
+</center>
+<p>The datasets have the same mean, but very different levels of variance (<span class="math inline">\(m_{2}\)</span>). If we pick a value at random (denoted by the vertical arrows), the absolute deviation <span class="math inline">\(z_{i}\)</span> will be the same for both distributions, as these are measured relative to the mean. In <span class="math inline">\(A\)</span>, that value would be considered quite <em>normal</em>, being close to the mean and within the range of typical values. By contrast, that same value in <span class="math inline">\(B\)</span> might be considered <em>abnormal</em>, being significantly different from most other values. This example illustrates that we need to interpret the absolute deviation <span class="math inline">\(z_{i}\)</span> within the overall spread of the data, which is what normalising by <span class="math inline">\(m_{2}\)</span> achieves<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This also allows local Moran’s &lt;span class="math inline"&gt;\(I_{i}\)&lt;/span&gt; to be compared for datasets of different scales and units. For example, a dataset with values measured in millions of dollars might have relatively small &lt;span class="math inline"&gt;\(z_{i}\)&lt;/span&gt; values. An example would be the &lt;code&gt;GDP_MD&lt;/code&gt; field in the Natural Earth dataset from Week 1 (i.e., gross domestic product in millions of dollars). If we changed the units to absolute dollars i.e., (&lt;span class="math inline"&gt;\(10\)&lt;/span&gt; M$ becomes &lt;span class="math inline"&gt;\(10,000,000\)&lt;/span&gt; $), our &lt;span class="math inline"&gt;\(z_{i}\)&lt;/span&gt; values would be much larger, even though the spatial pattern hasn’t changed.&lt;/p&gt;'><sup>42</sup></a>.</p>
 <p>To summarise:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-3/local-moran-summary.png" style="width:100.0%"></p>
+<center>
+<img src="images/practical-3/local-moran-summary.png" style="width:100.0%">
+</center>
 </div>
 <div id="interpreting-local-morans-i_i" class="section level4" number="3.2.5.2">
 <h4>
@@ -504,7 +751,7 @@ Interpretation
 <p>Open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s I)</a>, using <code>us_county_500k_contig_cf</code> as the “Input Feature Class” and the Republican vote share as the “Input Field”. For consistency with global Moran’s <span class="math inline">\(I\)</span>, use Queen’s contiguity and row standardisation, but also check “False Discovery Rate (FDR) correction”. Keep all other settings as the default. Save the output feature class to the project directory e.g., <code>us_county_gop_lisa</code>.</p>
 </blockquote>
 <div class="note">
-<p>As with global Moran’s <span class="math inline">\(I\)</span>, local Moran’s <span class="math inline">\(I_{i}\)</span> evaluates the statistical significance of the observed pattern of local spatial autocorrelation (<span class="math inline">\(I_{i}\)</span>) through comparison with random permutations of the modelled values i.e., shuffling the Republican vote share across the locations and calculating <span class="math inline">\(I_{i}\)</span> for each permutation. Increasing the “Number of Permutations” allows us to assess statistical significance with greater precision, at the cost of increased run time.</p>
+<p>As with global Moran’s <span class="math inline">\(I\)</span>, local Moran’s <span class="math inline">\(I_{i}\)</span> evaluates the statistical significance (<span class="math inline">\(p\)</span>-value) of the observed pattern of local spatial autocorrelation (<span class="math inline">\(I_{i}\)</span>) through comparison with random permutations of the modelled values i.e., shuffling the Republican vote share across the locations and calculating <span class="math inline">\(I_{i}\)</span> for each permutation. Increasing the “Number of Permutations” allows us to assess statistical significance with greater precision, at the cost of increased run time.</p>
 <p><br></p>
 <p>Another setting is the “False Discovery Rate (FDR) correction”, which is used to control the number of false positives (Type I errors) when running many tests at the same time. For example, for a given significance level of <span class="math inline">\(p=0.05\)</span> and assuming spatial randomness, if you were to run 1,000 tests, 950 would be correctly identified as not significant (i.e., spatially random) but 50 would be incorrectly identified as significant (i.e., spatial autocorrelation). We would refer to these as <em>false discoveries</em>. Rather than using a simple threshold for statistical significance (i.e., <span class="math inline">\(p&lt;0.05\)</span>), FDR correction adjusts the threshold for each feature to minimise the number of false discoveries, with more information <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.html#440">here</a>.</p>
 </div>
@@ -512,22 +759,25 @@ Interpretation
 <div class="inline-figure"><img src="screenshots/practical-3/local-moran-map.png" style="width:100.0%"></div>
 <p><br></p>
 <p><a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog">Cluster and Outlier Analysis (Anselin Local Moran’s I)</a> also produces a Moran Plot, which can be found in the Contents Pane → Charts.</p>
-<p align="center">
-<a name=""></a><img src="screenshots/practical-3/moran-plot-arc.png" style="width:60.0%"></p>
-<p>This is identical to the one we created earlier (note the regression <span class="math inline">\(R^2\)</span> and slope), but here the statistically significant features have been identified in each quadrat.</p>
-<p>The Attribute Table also contains some useful information, including the standardised variable (<code>ZTransform</code>) and spatial lag (<code>SpatialLag</code>), the number of neighbours (<code>NNeighbors</code>), and the cluster-outlier type (<code>COTYPE</code> i.e., HH, LL, HL, LH, not significant). The z-score (<code>LMiZscore</code>) and p-value (<code>LMiPValue</code>) are calculated in the same manner as for global Moran’s <span class="math inline">\(I\)</span>, except using values for each feature and neighbourhood, rather then the dataset as whole.</p>
+<center>
+<img src="screenshots/practical-3/moran-plot-arc.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>The distribution of the values is identical to the manual plot we created earlier (note the regression <span class="math inline">\(\text{R}^2\)</span> and slope<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Although the variable of interest (x-axis) and the spatially lagged values (y-axis) have been standardised in a slightly different way, which explains why the axis scales differ from our manual plot. Earlier we simply used the deviation from the mean, but the values here also incorporate the standard deviation of the observations.&lt;/p&gt;"><sup>43</sup></a>), but here the statistically significant features have been identified in each quadrat based on <span class="math inline">\(I_i\)</span> and its corresponding significance <span class="math inline">\(p\)</span> (described above).</p>
+<p>The Attribute Table also contains some useful information, including the standardised variable (<code>ZTransform</code>) and spatial lag (<code>SpatialLag</code>) which are used in the Moran Plot, the number of neighbours (<code>NNeighbors</code>), and the cluster-outlier type (<code>COTYPE</code> i.e., HH, LL, HL, LH, not significant). The z-score (<code>LMiZscore</code>) and <span class="math inline">\(p\)</span>-value (<code>LMiPValue</code>) are calculated in the same manner as for global Moran’s <span class="math inline">\(I\)</span>, except using values for each feature and neighbourhood, rather then the dataset as whole. The actual <span class="math inline">\(I_i\)</span> values are in <code>LMiIndex</code>, which you now know how to calculate!</p>
 <p>As always, the calculation of <span class="math inline">\(I_{i}\)</span> is dependent on our specification of the spatial weights matrix.</p>
 <div class="question">
 <p>How do the results change if a distance based approach is used?</p>
 </div>
 <div class="float">
-<img src="screenshots/practical-3/local-moran-inv-distance.png" style="width:100.0%" alt="Output of local Moran’s I_{i}, using inverse distance weighting for w"><div class="figcaption"><em>Output of local Moran’s <span class="math inline">\(I_{i}\)</span>, using inverse distance weighting for <span class="math inline">\(w\)</span></em></div>
+<img src="screenshots/practical-3/local-moran-inv-distance.png" style="width:100.0%" alt="Output of local Moran’s I_{i}, using inverse distance weighting for w"><div class="figcaption">
+<em>Output of local Moran’s</em> <span class="math inline">\(I_{i}\)</span>, using inverse distance weighting for <span class="math inline">\(w\)</span>
+</div>
 </div>
 <p><br></p>
 <details><summary>
-Answer
-</summary>
-When using a distance based approach e.g., inverse-distance or inverse-distance squared, local Moran’s <span class="math inline">\(I_{i}\)</span> has produced a much larger pattern of positive spatial autocorrelation (HH, LL). This is because Queen’s contiguity is a relatively conservative approach to defining neighbours, requiring a shared point or edge . By comparison, inverse distance approaches typically include a much larger number of neighbours, although those nearby still receive higher weights. In turn, while neighbours defined using Queen’s contiguity typically represent a very <strong>local</strong> neighbourhood (within the context of the scale of the data), distance based approaches can access information from a much <strong>larger</strong> neighbourhood, making it less sensitive to local variation.
+Interpretation
+</summary><p>When using a distance based approach e.g., inverse-distance or inverse-distance squared, local Moran’s <span class="math inline">\(I_{i}\)</span> has produced a much larger pattern of positive spatial autocorrelation (HH, LL). This is because Queen’s contiguity is a relatively conservative approach to defining neighbours, requiring a shared point or edge . By comparison, inverse distance approaches typically include a much larger number of neighbours, although those nearby still receive higher weights. In turn, while neighbours defined using Queen’s contiguity typically represent a very <strong>local</strong> neighbourhood (within the context of the scale of the data), distance based approaches can access information from a much <strong>larger</strong> neighbourhood, making it less sensitive to local variation.</p>
 </details><p><br></p>
 <p>Based on all the above information:</p>
 <div class="question">
@@ -536,84 +786,18 @@ When using a distance based approach e.g., inverse-distance or inverse-distance 
 <div class="question">
 <p>What might explain the spatial distribution of outliers (HL, LH)? Remember these are indicative of <strong>negative</strong> local spatial autocorrelation i.e., <em>divergence</em>.</p>
 </div>
-</div>
-</div>
-<div id="alternative-indices" class="section level3" number="3.2.6">
-<h3>
-<span class="header-section-number">3.2.6</span> Alternative indices<a class="anchor" aria-label="anchor" href="#alternative-indices"><i class="fas fa-link"></i></a>
-</h3>
-<p>Global Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span> and local Moran’s <span class="math inline">\(I_{i}\)</span> <span class="citation">(<a href="references.html#ref-anselin1995">Anselin, 1995a</a>)</span> are the most commonly used indicators of spatial autocorrelation, but they are not the only indicators. To finish the practical we’ll briefly introduce global and local indicators proposed by <span class="citation">Getis and Ord (<a href="references.html#ref-getis1992">1992</a>)</span>.</p>
-<div id="getis-and-ords-g" class="section level4" number="3.2.6.1">
-<h4>
-<span class="header-section-number">3.2.6.1</span> Getis and Ord’s <span class="math inline">\(G\)</span><a class="anchor" aria-label="anchor" href="#getis-and-ords-g"><i class="fas fa-link"></i></a>
-</h4>
-<p>Getis and Ord’s <span class="math inline">\(G\)</span> is a global test, equivalent to Moran’s <span class="math inline">\(I\)</span> and is defined as follows:</p>
-<p><span class="math display">\[G = \frac{\sum_{i}\sum_{j}w_{ij}y_{i}y_{j}}{\sum_{i}\sum_{j}y_{i}y_{j}}\]</span></p>
-<p>We won’t explore this in great depth, but broadly Getis and Ord’s <span class="math inline">\(G\)</span> compares the spatially <em>weighted</em> sum of the cross-product of all neighbourhood values in the dataset <span class="math inline">\(\sum_{i}\sum_{j}w_{ij}y_{i}y_{j}\)</span> with the <em>unweighted</em> sum of the cross-product of all values in the dataset <span class="math inline">\(\sum_{i}\sum_{j}y_{i}y_{j}\)</span>. If large or small values tend to occur together (i.e., positive spatial autocorrelation), then the numerator will increase, and so too will the test statistic <span class="math inline">\(G\)</span>.</p>
-<p>Getis and Ord’s <span class="math inline">\(G\)</span> provides information on whether there is a concentration of high or low values in a dataset.</p>
-<div class="question">
-<p>How is this different to Moran’s <span class="math inline">\(I\)</span>?</p>
-</div>
 <details><summary>
-Answer
-</summary>
-Getis and Ord’s <span class="math inline">\(G\)</span> is a measure of <strong>positive</strong> spatial autcorrelation only, measuring the concentration of raw values. It does not consider <strong>negative</strong> spatial autocorrelation i.e., divergence, which is incorporated into Moran’s <span class="math inline">\(I\)</span>, which focuses on deviations from the global mean (i.e., standardised values <span class="math inline">\(z_{i}\)</span>).
+Interpretation
+</summary><p>Hopefully you have some interesting ideas here, and I’d recommend looking at <span class="citation">Li and Fotheringham (<a href="references.html#ref-li2022">2022</a>)</span>, <span class="citation">Braha and Aguiar (<a href="references.html#ref-braha2017">2017</a>)</span> and <span class="citation">Kinsella <em>et al.</em> (<a href="references.html#ref-kinsella2015">2015</a>)</span> if you wish to explore further.</p>
 </details><p><br></p>
-<p>You can read about the ArcGIS implementation of <span class="math inline">\(G\)</span> <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-high-low-clustering-getis-ord-general-g-spat.html">here</a>, while the <code>pysal</code> <a href="https://pysal.org/esda/stable/user-guide/getisord.html#">documentation</a> may also be useful.</p>
-<blockquote>
-<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog">High/Low Clustering (Getis-Ord General G)</a>, using Queen’s contiguity, but <em>don’t</em> use row standardisation<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As outlined in the ESRI &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-high-low-clustering-getis-ord-general-g-spat.html"&gt;documentation&lt;/a&gt; “&lt;em&gt;a binary weighting scheme is recommended for this statistic&lt;/em&gt;”, hence why we are &lt;strong&gt;not&lt;/strong&gt; row standardising the spatial weights. Getis and Ord’s &lt;span class="math inline"&gt;\(G\)&lt;/span&gt; is designed for binary weights, as the test is evaluating the number of high or low value pairs in a dataset. This is enabled by retaining the number of neighbours per feature i.e., features with lots of neighbours contribute more to the test statistic. By comparison, row-standardisation is typically used for Moran’s &lt;span class="math inline"&gt;\(I\)&lt;/span&gt; as this is assessing similarity relative to the mean and the strength of association between variables, not the connectivity for each location.&lt;/p&gt;'><sup>37</sup></a>. Use “Check Report” to produce a <code>.html</code> output and the summary table:</p>
-</blockquote>
-<p align="center">
-<a name=""></a><img src="screenshots/practical-3/general-g-table.png" style="width:50.0%"></p>
-<div class="question">
-<p>Based on the table and report, what is your intepretation of the Getis and Ord’s <span class="math inline">\(G\)</span> results? Does this accord with those of Moran’s <span class="math inline">\(I\)</span>?</p>
 </div>
 </div>
-<div id="getis-and-ords-g_i" class="section level4" number="3.2.6.2">
-<h4>
-<span class="header-section-number">3.2.6.2</span> Getis and Ord’s <span class="math inline">\(G_{i}\)</span><a class="anchor" aria-label="anchor" href="#getis-and-ords-g_i"><i class="fas fa-link"></i></a>
-</h4>
-<p>As with Moran’s <span class="math inline">\(I\)</span>, Getis and Ord’s <span class="math inline">\(G\)</span> provides information on the degree of clustering for a dataset <em>as a whole</em> but not the local occurrences of that clustering. We can investigate those local patterns using Getis and Ord’s <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span>, defined as:</p>
-<p><span class="math display">\[G_{i}=\frac{\sum_{j\neq i}w_{ij}y_{j}}{\sum_{j \neq i}y_{j}}\]</span>
-and:</p>
-<p><span class="math display">\[G_{i}^{*}=\frac{\sum_{j}w_{ij}y_{j}}{\sum_{j}y_{j}}\]</span></p>
-<p>These approaches are very similar to the general form <span class="math inline">\(G\)</span>, except they are applied locally: <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> compare the spatially <em>weighted</em> sum of the neighbourhood values (e.g., <span class="math inline">\(\sum_{j}w_{ij}y_{j}\)</span>) for location <span class="math inline">\(i\)</span>, with the <em>unweighed</em> sum of all the values in the dataset (e.g., <span class="math inline">\(\sum_{j}y_{j}\)</span>). The only difference between the two approaches <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> is whether the focal feature (<span class="math inline">\(i\)</span>) is included in the calculations.</p>
-<p>The calculation is simply the ratio of the neighbourhood sum to the dataset sum. For example, take the following schematic, which shows a simple dataset of objects (<span class="math inline">\(A-F\)</span>), their values (<span class="math inline">\(95-520\)</span>) and their neighbourhood connections (black lines). Here we are using a binary weighting scheme, so <span class="math inline">\(w=1\)</span>.</p>
-<p align="center">
-<a name=""></a><img src="images/practical-3/getis-ord-local.png" style="width:50.0%"></p>
-<p>Taking object <span class="math inline">\(E\)</span> as an example, the neighbourhood values are <span class="math inline">\(500\)</span>, <span class="math inline">\(510\)</span> and <span class="math inline">\(520\)</span>, which would equate to spatially <em>weighted</em> sum of <span class="math inline">\(1530\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As we have used binary weights &lt;span class="math inline"&gt;\(w=1\)&lt;/span&gt;, this calculation is equivalent to &lt;span class="math inline"&gt;\((1\times500) + (1\times510)+(1\times520)\)&lt;/span&gt;, so the result is identical to the sum of the neighbourhood values.&lt;/p&gt;'><sup>38</sup></a>. The <em>unweighed</em> sum of all the values in the dataset is equal to <span class="math inline">\(1835\)</span>. In turn our <span class="math inline">\(G_{i}^{*}\)</span> statistic is as follows:</p>
-<p><span class="math display">\[G_{i}^{*} = \frac{1530}{1835}=0.834\]</span>
-i.e., how much of the total “value” of the dataset (~83%) is contained in the current neighbourhood (<span class="math inline">\(i\)</span>)? As with local Moran’s <span class="math inline">\(I\)</span>, the significance of the test statistic is evaluated against the <em>expected</em> local statistic, assuming spatial randomness, and you can read more on that <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog">here</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-hot-spot-analysis-getis-ord-gi-spatial-stati.html">here</a>.</p>
-<blockquote>
-<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog">Hot Spot Analysis (Getis-Ord Gi*)</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As the tool name indicates, the ArcGIS implementation is &lt;span class="math inline"&gt;\(G_{i}^{*}\)&lt;/span&gt;, including the focal feature &lt;span class="math inline"&gt;\(i\)&lt;/span&gt;.&lt;/p&gt;'><sup>39</sup></a> using Queen’s contiguity and applying an FDR correction. Save the output feature class as <code>us_county_gop_gi</code>.</p>
-</blockquote>
-<div class="float">
-<img src="screenshots/practical-3/local-gi-output.png" style="width:100.0%" alt="Output of Getis and Ord’s G_{i}^{*}"><div class="figcaption"><em>Output of Getis and Ord’s <span class="math inline">\(G_{i}^{*}\)</span></em></div>
-</div>
-<p><br></p>
-<div class="question">
-<p>How do results of <span class="math inline">\(G_{i}^{*}\)</span> differ from those of <span class="math inline">\(I_{i}\)</span>?</p>
-</div>
-</div>
-</div>
-<div id="autocorrelation_summary" class="section level3" number="3.2.7">
+<div id="autocorrelation_summary" class="section level3" number="3.2.6">
 <h3>
-<span class="header-section-number">3.2.7</span> Summary<a class="anchor" aria-label="anchor" href="#autocorrelation_summary"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.2.6</span> Summary<a class="anchor" aria-label="anchor" href="#autocorrelation_summary"><i class="fas fa-link"></i></a>
 </h3>
-<p>While <span class="math inline">\(I\)</span> and <span class="math inline">\(G\)</span> (global) and <span class="math inline">\(I_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> (local) will often generate complementary results, the results are not always identical and can sometimes diverge. Fundamentally, the two sets of indicators are evaluating different phenomenon.</p>
-<div class="question">
-<p>What is local Moran’s <span class="math inline">\(I_{i}\)</span> measuring?</p>
-</div>
-<div class="question">
-<p>What is Getis and Ord’s <span class="math inline">\(G_{i}^{*}\)</span> measuring?</p>
-</div>
-<details><summary>
-Answer
-</summary>
-Fundamentally, the indicators of <span class="citation">Moran (<a href="references.html#ref-moran1948">1948</a>)</span> are focused on <em>similarity</em> of neighbours relative to the mean (<span class="math inline">\(z_{i}\)</span>) whereas those of <span class="citation">Getis and Ord (<a href="references.html#ref-getis1992">1992</a>)</span> are focused on absolute similarity of high or low values in the raw data.
-</details><p><br></p>
-<p>Overall, while each indicator has specific strengths and use-cases (e.g., straightforward interpretation of “hotspots” and “coldspots” for <span class="math inline">\(G_{i}^{*}\)</span>), those of <span class="citation">Moran (<a href="references.html#ref-moran1948">1948</a>)</span> can be used to reveal additional behaviour, including the presence of global <strong>negative</strong> spatial autocorrelation (<span class="math inline">\(I&lt;0\)</span>) and local <strong>negative</strong> autocorrelation (i.e., HL and LH outliers identified using <span class="math inline">\(I_{i}\)</span>).</p>
-<p>However, we also need to recognise that the techniques introduced today are <strong>exploratory</strong> methods, and different results can be generated by simply changing the parameters e.g., switching between <a href="spatial_weights.html#contig-swm">contiguity</a> or <a href="spatial_weights.html#dist-swm">distance-based</a> weights, increasing or decreasing the number of neighbours when using <a href="spatial_weights.html#k_neighbours"><span class="math inline">\(K\)</span> Nearest Neighbours</a>, or modifying the <em>distance decay</em> effect if <a href="spatial_weights.html#inv_weights">continuous weights</a> are used. Thus, while the methods are <strong>deterministic</strong>, in that they will produce the same results, given the same input and model parameters<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Unlike &lt;strong&gt;stochastic&lt;/strong&gt; methods, which incorporate a &lt;em&gt;stochastic&lt;/em&gt; or &lt;em&gt;random&lt;/em&gt; element, which can generate different results, even with the same input and model parameters.&lt;/p&gt;"><sup>40</sup></a>, this does not mean that the results are <strong>objective truth</strong>. As switching parameters will change the results, and perhaps may fundamentally change your interpretations, care is needed to:</p>
+<p>As discussed above, spatial autocorrelation is of profound importance for spatial analysis, dictating the methods we can use and influencing our interpretations of spatial phenomena. Global Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span> and local Moran’s <span class="math inline">\(I_i\)</span> <span class="citation">(<a href="references.html#ref-anselin1995">Anselin, 1995a</a>)</span> are both powerful techniques, but provide very different perspectives on spatial autocorrelation. While the former can be used to assess for global patterns <em>for a dataset as a whole</em>, <span class="math inline">\(I_i\)</span> can be used to identify specific areas of clustering, dispersion or randomness, which can often tell us a great deal about the underlying geographic factors e.g., demographics, economics, health, history, and so on.</p>
+<p>However, we also need to recognise that the techniques introduced today are <strong>exploratory</strong> methods, and different results can be generated by simply changing the parameters e.g., switching between <a href="spatial_weights.html#contig-swm">contiguity</a> or <a href="spatial_weights.html#dist-swm">distance-based</a> weights, increasing or decreasing the number of neighbours when using <a href="spatial_weights.html#k_neighbours"><span class="math inline">\(K\)</span> Nearest Neighbours</a>, or modifying the <em>distance decay</em> effect if <a href="spatial_weights.html#inv_weights">continuous weights</a> are used. Thus, while the methods are <strong>deterministic</strong>, in that they will produce the same results, given the same input and model parameters<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Unlike &lt;strong&gt;stochastic&lt;/strong&gt; methods, which incorporate a &lt;em&gt;stochastic&lt;/em&gt; or &lt;em&gt;random&lt;/em&gt; element, which can generate different results, even with the same input and model parameters.&lt;/p&gt;"><sup>44</sup></a>, this does not mean that the results are <strong>objective truth</strong>. As switching parameters will change the results, and perhaps may fundamentally change your interpretations, care is needed to:</p>
 <ol style="list-style-type: decimal">
 <li>Select parameters which are appropriate for the geographic process you are studying.</li>
 <li>Evaluate the sensitivity of your results to those parameters.</li>
@@ -628,6 +812,148 @@ Fundamentally, the indicators of <span class="citation">Moran (<a href="referenc
 <h2>
 <span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-1"><i class="fas fa-link"></i></a>
 </h2>
+<p>For those of you who wish to explore spatial autocorrelation further, I have provided a brief introduction to some <a href="spatial_autocorrelation.html#alt_indices">alternative indices</a> from <span class="citation">Getis and Ord (<a href="references.html#ref-getis1992">1992</a>)</span>, and some prompts for a <a href="spatial_autocorrelation.html#time_auto">temporal analysis</a> i.e., has spatial autocorrelation changed between elections?</p>
+<div id="alt_indices" class="section level3 unnumbered">
+<h3>Alternative indices<a class="anchor" aria-label="anchor" href="#alt_indices"><i class="fas fa-link"></i></a>
+</h3>
+<p>Global Moran’s <span class="math inline">\(I\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>)</span> and local Moran’s <span class="math inline">\(I_{i}\)</span> <span class="citation">(<a href="references.html#ref-anselin1995">Anselin, 1995a</a>)</span> are the most commonly used indicators of spatial autocorrelation, but they are not the only indicators. In this section, we’ll briefly introduce global and local indicators proposed by <span class="citation">Getis and Ord (<a href="references.html#ref-getis1992">1992</a>)</span>.</p>
+<div id="getis-and-ords-g" class="section level4" number="3.3.0.1">
+<h4>
+<span class="header-section-number">3.3.0.1</span> Getis and Ord’s <span class="math inline">\(G\)</span><a class="anchor" aria-label="anchor" href="#getis-and-ords-g"><i class="fas fa-link"></i></a>
+</h4>
+<p>Getis and Ord’s <span class="math inline">\(G\)</span> is a global test, equivalent to Moran’s <span class="math inline">\(I\)</span>, and is defined as follows:</p>
+<p><span class="math display">\[G = \frac{\sum_{i}\sum_{j}w_{ij}y_{i}y_{j}}{\sum_{i}\sum_{j}y_{i}y_{j}}\quad\text{where}\; i\neq j\]</span></p>
+<p>We won’t explore this in great depth, but broadly Getis and Ord’s <span class="math inline">\(G\)</span> compares the <em>spatially weighted</em> sum of the cross-product of all values in the dataset <span class="math inline">\(\sum_{i}\sum_{j}w_{ij}y_{i}y_{j}\)</span> with the <em>unweighted</em> sum of the cross-product of all values in the dataset <span class="math inline">\(\sum_{i}\sum_{j}y_{i}y_{j}\)</span>, excluding self-comparison (<span class="math inline">\(i\neq j\)</span>). If large values tend to occur together (an example of positive spatial autocorrelation), then the numerator will increase, and so too will the test statistic <span class="math inline">\(G\)</span>.</p>
+<p>Let’s return to our simple dataset to illustrate:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+\text{2} &amp; 2 &amp; 2 &amp; 2 &amp; 2\\
+\text{3} &amp; 3 &amp; 3 &amp; 3 &amp; 3\\
+\text{4} &amp; 4 &amp; 4 &amp; 4 &amp; 4\\
+\end{array}\]</span></p>
+<p>Getis and Ord’s <span class="math inline">\(G\)</span> does not use normalised values, so the denominator is the sum of the cross-product of all the values in the dataset i.e., <span class="math inline">\(\text{A1}\times\text{A1}, \text{A1}\times\text{A2}, \text{A1}\times\text{A3}, \cdots\)</span>:</p>
+<p><span class="math display">\[\color{Gray}{G = \frac{\sum_{i}\sum_{j}w_{ij}y_{i}y_{j}}{\color{Black}{\sum_{i}\sum_{j}y_{i}y_{j}}}}\]</span>
+Here are some of those values, which sum to <span class="math inline">\(1480\)</span> (<span class="math inline">\(\sum_{i}\sum_{j}\)</span>). Self-comparisons e.g., <span class="math inline">\(\text{A1}-\text{A1}\)</span>, have been set to zero:</p>
+<p><span class="math display">\[\begin{array}{c|cccccccccccccccc}
+&amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
+   \text{B1} &amp; \text{B2} &amp; \text{B3} &amp; \cdots\\
+\hline
+\text{A1} &amp; 0   &amp;   2   &amp;   3   &amp;   4   &amp;   1   &amp;   2   &amp;   3   &amp;   \cdots\\
+\text{A2} &amp; 2   &amp;   0   &amp;   6   &amp;   8   &amp;   2   &amp;   4   &amp;   6   &amp;   \cdots\\
+\text{A3}&amp;  3   &amp;   6   &amp;   0   &amp;   12  &amp;   3   &amp;   6   &amp;   9   &amp;   \cdots\\
+\text{A4} &amp; 4   &amp;   8   &amp;   12  &amp;   0   &amp;   4   &amp;   8   &amp;   12  &amp;   \cdots
+\\\text{B1} &amp;   1   &amp;   2   &amp;   3   &amp;   4   &amp;   0   &amp;   2   &amp;   3   &amp;   \cdots\\
+\text{B2} &amp; 2   &amp;   4   &amp;   6   &amp;   8   &amp;   2   &amp;   0   &amp;   6   &amp;   \cdots\\
+\text{B3} &amp; 3   &amp;   6   &amp;   9   &amp;   12  &amp;   3   &amp;   6   &amp;   0   &amp;   \cdots\\
+\vdots &amp;    \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \ddots
+\end{array}\]</span></p>
+<p>The numerator also uses the cross-products <span class="math inline">\(y_{i}y_{j}\)</span> but here they are multiplied by the corresponding spatial weights, which are included <a href="spatial_autocorrelation.html#calc_moran_i">above</a>.</p>
+<p><span class="math display">\[\color{Gray}{G = \frac{\sum_{i}\sum_{j}\color{Black}{w_{ij}y_{i}y_{j}}}{1480}}\]</span></p>
+<p>Here are those values. As we are using binary weights, cross-products for neighbours are unchanged (<span class="math inline">\(w=1\)</span>) while those for non-neighbours have been set to zero (<span class="math inline">\(w=0\)</span>):</p>
+$$
+<span class="math display">\[\begin{array}{c|cccccccccccccccc}
+&amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
+   \text{B1} &amp; \text{B2} &amp; \text{B3} &amp; \cdots\\
+\hline
+\text{A1} &amp; 0   &amp;   2   &amp;   0   &amp;   0   &amp;   1   &amp;   2   &amp;   0   &amp;   \cdots
+\\
+\text{A2} &amp; 2   &amp;   0   &amp;   6   &amp;   0   &amp;   2   &amp;   4   &amp;   6   &amp;   \cdots
+\\
+\text{A3} &amp; 0   &amp;   6   &amp;   0   &amp;   12  &amp;   0   &amp;   6   &amp;   9   &amp;   \cdots
+\\
+\text{A4} &amp; 0   &amp;   0   &amp;   12  &amp;   0   &amp;   0   &amp;   0   &amp;   12  &amp;   \cdots
+
+\\\text{B1} &amp;   1   &amp;   2   &amp;   0   &amp;   0   &amp;   0   &amp;   2   &amp;   0   &amp;   \cdots
+\\
+\text{B2} &amp; 2   &amp;   4   &amp;   6   &amp;   0   &amp;   2   &amp;   0   &amp;   6   &amp;   \cdots
+\\
+\text{B3} &amp; 0   &amp;   6   &amp;   9   &amp;   12  &amp;   0   &amp;   6   &amp;   0   &amp;   \cdots
+\\
+\vdots &amp;    \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \vdots  &amp;   \ddots
+\end{array}\]</span>
+<p>$$</p>
+<p>The sum of the spatially weighted cross-products is <span class="math inline">\(580\)</span>, which is all we need to calculate <span class="math inline">\(G\)</span>:</p>
+<p><span class="math display">\[G=\frac{580}{1480}\approx0.39\]</span></p>
+<p>Getis and Ord’s <span class="math inline">\(G\)</span> provides information on whether there is a concentration of high or low values in a dataset, relative to the overall value pairing. If high values cluster together, <span class="math inline">\(G\)</span> will increase, and if low values cluster together, <span class="math inline">\(G\)</span> will decrease.</p>
+<div class="question">
+<p>How is this different to Moran’s <span class="math inline">\(I\)</span>?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>Getis and Ord’s <span class="math inline">\(G\)</span> is a measure of <strong>positive</strong> spatial autcorrelation only, measuring the concentration of raw values. It does not consider <strong>negative</strong> spatial autocorrelation i.e., divergence, which is incorporated into Moran’s <span class="math inline">\(I\)</span>, which focuses on deviations from the global mean (i.e., standardised values <span class="math inline">\(z_{i}\)</span>).</p>
+</details><p><br></p>
+<p>You can read about the ArcGIS implementation of <span class="math inline">\(G\)</span> <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-high-low-clustering-getis-ord-general-g-spat.html">here</a>.</p>
+<blockquote>
+<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/high-low-clustering.html?tabs=dialog">High/Low Clustering (Getis-Ord General G)</a>, using Queen’s contiguity, but <em>don’t</em> use row standardisation<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As outlined in the ESRI &lt;a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-high-low-clustering-getis-ord-general-g-spat.html"&gt;documentation&lt;/a&gt; “&lt;em&gt;a binary weighting scheme is recommended for this statistic&lt;/em&gt;”, hence why we are &lt;strong&gt;not&lt;/strong&gt; row standardising the spatial weights. Getis and Ord’s &lt;span class="math inline"&gt;\(G\)&lt;/span&gt; is designed for binary weights, as the test is evaluating the number of high or low value pairs in a dataset. This is enabled by retaining the number of neighbours per feature i.e., features with lots of neighbours contribute more to the test statistic. By comparison, row-standardisation is typically used for Moran’s &lt;span class="math inline"&gt;\(I\)&lt;/span&gt; as this is assessing similarity relative to the mean and the strength of association between variables, not the connectivity for each location.&lt;/p&gt;'><sup>45</sup></a>. Use “Check Report” to produce a <code>.html</code> output and the summary table:</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-3/general-g-table.png" style="width:75.0%">
+</center>
+<div class="question">
+<p>Based on the table and report, what is your interpretation of the Getis and Ord’s <span class="math inline">\(G\)</span> results? Does this accord with those of Moran’s <span class="math inline">\(I\)</span>?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>Here the observed <span class="math inline">\(G\)</span> value is larger than the expected <span class="math inline">\(G\)</span>, and this is deemed statistically significant (<span class="math inline">\(p&lt;0.05\)</span>). Expected <span class="math inline">\(G\)</span> is calculated in much the same way as expected <span class="math inline">\(I\)</span> for Moran’s <span class="math inline">\(I\)</span> i.e., what <span class="math inline">\(G\)</span> value would we expect if there was no spatial autocorrelation?</p>
+<p>Our interpretation is that there is statistically significant clustering of <strong>high</strong> values (observed &gt; expected). By comparison, if observed &lt; expected, and this was statistically significant, this would indicate clustering of <strong>low</strong> values.</p>
+</details><p><br></p>
+</div>
+<div id="getis-and-ords-g_i" class="section level4 unnumbered">
+<h4>Getis and Ord’s <span class="math inline">\(G_{i}\)</span><a class="anchor" aria-label="anchor" href="#getis-and-ords-g_i"><i class="fas fa-link"></i></a>
+</h4>
+<p>As with Moran’s <span class="math inline">\(I\)</span>, Getis and Ord’s <span class="math inline">\(G\)</span> provides information on the degree of clustering for a dataset <em>as a whole</em> but not the local occurrences of that clustering. We can investigate those local patterns using local version of Getis and Ord’s <span class="math inline">\(G\)</span>. These are known as <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span>:</p>
+<p><span class="math display">\[G_{i}=\frac{\sum_{j\neq i}w_{ij}y_{j}}{\sum_{j \neq i}y_{j}}\]</span> and:</p>
+<p><span class="math display">\[G_{i}^{*}=\frac{\sum_{j}w_{ij}y_{j}}{\sum_{j}y_{j}}\]</span></p>
+<p>These approaches are very similar to the general form <span class="math inline">\(G\)</span>, except they are applied locally: <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> compare the spatially <em>weighted</em> sum of the neighbourhood values (e.g., <span class="math inline">\(\sum_{j}w_{ij}y_{j}\)</span>) for location <span class="math inline">\(i\)</span>, with the <em>unweighed</em> sum of all the values in the dataset (e.g., <span class="math inline">\(\sum_{j}y_{j}\)</span>). The only difference between the two approaches <span class="math inline">\(G_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> is whether the focal feature (<span class="math inline">\(i\)</span>) is included in the calculations.</p>
+<p>The calculation is therefore simply the ratio of the neighbourhood sum to the dataset sum. Let’s return to our sample dataset for the final time, and calculate <span class="math inline">\(G_{i}^{*}\)</span> for <span class="math inline">\(\text{B2}\)</span>:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+\text{2} &amp; 2 &amp; 2 &amp; 2 &amp; 2\\
+\text{3} &amp; 3 &amp; 3 &amp; 3 &amp; 3\\
+\text{4} &amp; 4 &amp; 4 &amp; 4 &amp; 4\\
+\end{array}\]</span></p>
+<p>The <strong>dataset</strong> sum <span class="math inline">\(\sum_{j}y_{j}\)</span> is calculated as follows:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+\text{2} &amp; 2 &amp; 2 &amp; 2 &amp; 2\\
+\text{3} &amp; 3 &amp; 3 &amp; 3 &amp; 3\\
+\text{4} &amp; 4 &amp; 4 &amp; 4 &amp; 4\\
+\end{array}\rightarrow\sum_{j}y_{j}=40\]</span></p>
+<p>The weighted <strong>neighbourhood</strong> sum <span class="math inline">\(\sum_{j}w_{ij}y_{j}\)</span> for <span class="math inline">\(\text{B2}\)</span>, using Queen’s contiguity, is therefore:</p>
+<p><span class="math display">\[\begin{array}{c|ccc} &amp; \text{A} &amp; \text{B} &amp; \text{C} &amp; \text{D} \\ \hline
+\text{1} &amp; 1 &amp; 1 &amp; 1 &amp; 0\\
+\text{2} &amp; 2 &amp; 2 &amp; 2 &amp; 0\\
+\text{3} &amp; 3 &amp; 3 &amp; 3 &amp; 0\\
+\text{4} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+\end{array}\rightarrow\sum_{j}w_{ij}y_{j}=18\]</span></p>
+<p>The local test statistic for <span class="math inline">\(\text{B2}\)</span> is therefore:</p>
+<p><span class="math display">\[G_{i}^{*}=\frac{18}{40}=0.45\]</span> i.e., <strong>how much of the total “value” of the dataset</strong> (<span class="math inline">\(\approx45\%\)</span>) <strong>is contained in the current neighbourhood</strong> <span class="math inline">\(i\)</span>?</p>
+<p>As with local Moran’s <span class="math inline">\(I\)</span>, the significance of the test statistic is evaluated against the <em>expected</em> local statistic, assuming spatial randomness, and you can read more on that <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog">here</a> and <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/h-how-hot-spot-analysis-getis-ord-gi-spatial-stati.html">here</a>.</p>
+<blockquote>
+<p>Run <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/hot-spot-analysis.html?tabs=dialog">Hot Spot Analysis (Getis-Ord Gi*)</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As the tool name indicates, the ArcGIS implementation is &lt;span class="math inline"&gt;\(G_{i}^{*}\)&lt;/span&gt;, including the focal feature &lt;span class="math inline"&gt;\(i\)&lt;/span&gt;.&lt;/p&gt;'><sup>46</sup></a> using Queen’s contiguity and applying an FDR correction. Save the output feature class as <code>us_county_gop_gi</code>.</p>
+</blockquote>
+<div class="float">
+<img src="screenshots/practical-3/local-gi-output.png" style="width:100.0%" alt="Output of Getis and Ord’s G_{i}^{*}"><div class="figcaption">
+<em>Output of Getis and Ord’s</em> <span class="math inline">\(G_{i}^{*}\)</span>
+</div>
+</div>
+<div class="question">
+<p>How do results of <span class="math inline">\(G_{i}^{*}\)</span> differ from those of <span class="math inline">\(I_{i}\)</span>?</p>
+</div>
+<div class="question">
+<p>What are the key differences between the indicators <span class="math inline">\(I\)</span> and <span class="math inline">\(I_i\)</span> <span class="citation">(<a href="references.html#ref-moran1948">Moran, 1948</a>; <a href="references.html#ref-anselin1995">Anselin, 1995a</a>)</span> and <span class="math inline">\(G\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> <span class="citation">(<a href="references.html#ref-getis1992">Getis and Ord, 1992</a>)</span>?</p>
+</div>
+<details><summary>
+Interpretation
+</summary><p>While <span class="math inline">\(I\)</span> and <span class="math inline">\(G\)</span> (global) and <span class="math inline">\(I_{i}\)</span> and <span class="math inline">\(G_{i}^{*}\)</span> (local) will often generate complementary results, the results are not always identical and can sometimes diverge. Fundamentally, the two sets of indicators are evaluating different phenomenon.</p>
+<p>The indicators of <span class="citation">Moran (<a href="references.html#ref-moran1948">1948</a>)</span> and <span class="citation">Anselin (<a href="references.html#ref-anselin1995">1995a</a>)</span> are focused on the <strong>similarity</strong> of neighbours <em>relative to the mean</em> (<span class="math inline">\(z_{i}\)</span>) whereas those of <span class="citation">Getis and Ord (<a href="references.html#ref-getis1992">1992</a>)</span> are focused on absolute similarity of high or low values in the raw data.</p>
+<p>Overall, while each indicator has specific strengths and use-cases (e.g., straightforward interpretation of “hotspots” and “coldspots” for <span class="math inline">\(G_{i}^{*}\)</span>), <span class="math inline">\(I\)</span> and <span class="math inline">\(I_i\)</span> can be used to reveal additional behaviour, including the presence of global <strong>negative</strong> spatial autocorrelation (<span class="math inline">\(I&lt;0\)</span>) and local <strong>negative</strong> autocorrelation (i.e., HL and LH outliers identified using <span class="math inline">\(I_{i}\)</span>).</p>
+</details><p><br></p>
+</div>
+</div>
+<div id="time_auto" class="section level3 unnumbered">
+<h3>Time<a class="anchor" aria-label="anchor" href="#time_auto"><i class="fas fa-link"></i></a>
+</h3>
 <p>The practical is based on county-level data from the <a href="https://www.bbc.co.uk/news/election/2024/us/results">2024 US General election</a>. In the <code>data/us-census</code> directory, I have also included the results for the <a href="https://www.presidency.ucsb.edu/statistics/elections/2008">2008 US General Election</a> i.e., <a href="https://en.wikipedia.org/wiki/Barack_Obama">Barack Obama</a> vs. <a href="https://en.wikipedia.org/wiki/John_McCain">John McCain</a>.</p>
 <blockquote>
 <p>Repeat the analysis using the 2008 results, linking the geometries and voting results using the <code>NAMELSAD</code> and <code>county_name</code> fields.</p>
@@ -640,9 +966,9 @@ Fundamentally, the indicators of <span class="citation">Moran (<a href="referenc
 </div>
 <details><summary>
 Answer
-</summary>
-The county geometries, names, and/or FIPS codes might have changed in this period, so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available <a href="https://www2.census.gov/geo/tiger/">here</a>.
+</summary><p>The county geometries, names, and/or FIPS codes might have changed in this period, so we have 80 counties of 3109 where there is no matching name. Instead, we should really use time-accurate geometries, available <a href="https://www2.census.gov/geo/tiger/">here</a>.</p>
 </details>
+</div>
 </div>
 <div id="resources" class="section level2" number="3.4">
 <h2>
@@ -680,11 +1006,15 @@ The county geometries, names, and/or FIPS codes might have changed in this perio
 <li><a class="nav-link" href="#spatial_lag"><span class="header-section-number">3.2.3</span> Spatial Lag</a></li>
 <li><a class="nav-link" href="#global-spatial-autocorrelation"><span class="header-section-number">3.2.4</span> Global spatial autocorrelation</a></li>
 <li><a class="nav-link" href="#local-spatial-autocorrelation"><span class="header-section-number">3.2.5</span> Local spatial autocorrelation</a></li>
-<li><a class="nav-link" href="#alternative-indices"><span class="header-section-number">3.2.6</span> Alternative indices</a></li>
-<li><a class="nav-link" href="#autocorrelation_summary"><span class="header-section-number">3.2.7</span> Summary</a></li>
+<li><a class="nav-link" href="#autocorrelation_summary"><span class="header-section-number">3.2.6</span> Summary</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#extra-1"><span class="header-section-number">3.3</span> Extra</a></li>
+<li>
+<a class="nav-link" href="#extra-1"><span class="header-section-number">3.3</span> Extra</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#alt_indices">Alternative indices</a></li>
+<li><a class="nav-link" href="#time_auto">Time</a></li>
+</ul>
+</li>
 <li><a class="nav-link" href="#resources"><span class="header-section-number">3.4</span> Resources</a></li>
 </ul>
 

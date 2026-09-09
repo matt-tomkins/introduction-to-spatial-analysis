@@ -13,6 +13,11 @@ img {
   height: auto;
 }
 
+/* Custom class to hide sections from rendering */
+.hidden-section {
+  display: none !important;
+}
+
 /* Set heading weight to bold */
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
@@ -101,3 +106,5 @@ main blockquote p {
 .quote p {
   margin: 0;
 }
+
+

@@ -164,7 +164,11 @@ The best way to *really* understand $w$ and $\mathbf{W}$ is through data explora
 
 > Create a connection to `GEOG73001/data` and then load the Ordnance Survey (OS) 100 km grid (`osbng_grid_100km.shp`).
 
-This layer is the National Grid for Great Britain, comprising grid squares each of size 100 km by 100 km: 
+::: note
+If you need a refresher on how to initialise the project or load data, see [here](#p1_projects) and [here](#p1_loading_data), respectively. Note that as the unit progresses, the instructions will become less prescriptive, on the assumption that you will become increasingly familiar with the ArcGIS interface. If you do get stuck, make sure to ask for help in class or look back to the earlier materials.  
+:::
+
+The data layer is the National Grid for Great Britain, comprising grid squares each of size 100 km by 100 km: 
 
 <p align="center">
 <a name=""></a>![](./screenshots/practical-2/os_grid.png){width=50%}
@@ -193,7 +197,7 @@ The first main approach for calculating $w$ is referred to as **contiguity weigh
 The Neighbourhood Explorer is a powerful tool that allows us to visualise and investigate different *conceptualisations of spatial relationships*. 
 
 
-#### Rook Contiguity {.unnumbered .unlisted}
+#### Rook Contiguity {#rook-swm .unnumbered .unlisted}
 
 > For "Conceptualisations of Spatial Relationships", choose "Contiguity Edges Only" and then press Apply. 
 
@@ -227,7 +231,7 @@ For the example rows above, the values for $w$ would be as follows:
 
 $$\mathbf{W}=\begin{bmatrix} 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\ \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \end{bmatrix}$$
 
-#### Queen's Contiguity {.unnumbered .unlisted}
+#### Queen's Contiguity {#queen-swm .unnumbered .unlisted}
 
 An alternative and more commonly used approach to calculating contiguity weights is referred to by ESRI as *Contiguity Edges Corners* or more widely as *Queen's contiguity*, which identifies neighbouring objects which **share an edge or a point**. 
 
@@ -313,7 +317,7 @@ As $p$ increases, closer objects receive proportionally larger weights, relative
 
 The "Inverse Distance" conceptualisation is just one weighting scheme, but there are others we can use to control the *distance decay* effect. These can be accessed by selecting the "Manual" conceptualisation at the bottom of the Neighbourhood Explorer, using "Distance Band" for Neighbourhood Type, and then selecting the Weighting Method.
 
-> Explorer the effects of these alternative methods on $w$.
+> Explore the effects of these alternative methods on $w$.
 
 #### Row Standardisation {#row_standard}
 
@@ -323,7 +327,7 @@ Row standardisation converts each value of $w$ in the spatial weights matrix $\m
 
 $$w_{ij(s)}=w_{ij}/\sum_{j}w_{ij}$$
 
-For example, take $\mathbf{W}$ for our European example, where I've added the row sums for each feature (i.e., the number of neighbours):
+For example, take $\mathbf{W}$ for our simple European dataset, where I've added the row sums for each feature (i.e., the number of neighbours):
 
 $$\mathbf{W}=\begin{bmatrix} 0 & 1 & 0 & 1 & 0 & 0 \\ 1 & 0 & 1 & 1 & 0 & 0 \\ 0 & 1 & 0 & 1 & 0 & 0 \\ 1 & 1 & 1 & 0 & 1 & 1 \\ 0 & 0 & 0 & 1 & 0 & 1 \\ 0 & 0 & 0 & 1 & 1 & 0\end{bmatrix} =\begin{matrix} 2 \\ 3 \\ 2 \\ 5 \\ 2 \\ 2 \end{matrix}$$
 
@@ -380,7 +384,7 @@ Is there a "correct" neighbourhood for each country?
 
 The Neighbourhood Explorer is a really useful tool which allows us to *dynamically* view connections for a single feature of interest by selecting the *focal feature*. To generate these connections for the entire dataset, and potentially use the result for further analysis, we need to create our spatial weights matrix $\mathbf{W}$.
 
-> Open the Geoprocessing tool [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog). The inputs and underlying concepts should be very familiar to you by now, so select the `Natural-Earth` data as input using "Unique ID" = `NE_ID`. For the output spatial weights matrix, choose a suitable file name (e.g., `natural-earth-swm.swm`) and save to the `practical-2` directory. You are welcome to choose the Neighbourhood Type, although **Queen's contiguity** might be a suitable choice here. Leave all other settings as the default (e.g., 'Row Standaridation' = checked). 
+> Open the Geoprocessing tool [Generate Spatial Weights Matrix](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/generate-spatial-weights-matrix.html?tabs=dialog). The inputs and underlying concepts should be very familiar to you by now, so select the `Natural-Earth` data as input using "Unique ID" = `NE_ID`. For the output spatial weights matrix, choose a suitable file name (e.g., `natural-earth-swm.swm`) and save to the `practical-2` directory. You are welcome to choose the Neighbourhood Type, although **Queen's contiguity** might be a suitable choice here. Leave all other settings as the default (e.g., 'Row Standardisation' = checked). 
 
 If successful, `natural-earth-swm.swm` should now be visible in the `practical-2` directory.
 

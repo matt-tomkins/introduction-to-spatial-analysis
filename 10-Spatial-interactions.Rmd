@@ -234,8 +234,7 @@ sometimes fall outside the Polygon boundary.
 
 > Investigate this for `E06000053`, the Isles of Scilly.
 
-You'll also notice that the ONS data already includes some additional
-geometry information, as `BNG_E`,`BNG_N` and `LONG`,`LAT`.
+You'll also notice that the ONS data already includes `BNG_E`,`BNG_N` and `LONG`,`LAT` fields in the Attribute Table. While we are visualising the local authorities based on the polygon geometries stored in the shapefile [`LAD_DEC_2021_GB_BFC.shp`], these fields represent **additional** geometry information (i.e., centroid coordinates). We can visualise this information by creating a new shapefile layer, where the geometry information is obtained from the `BNG_E`,`BNG_N` *or* `LONG`,`LAT` fields:
 
 > Use [XY Table to
 > Point](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/xy-table-to-point.html?tabs=dialog)
@@ -295,7 +294,7 @@ appropriate?
 
 > Inspect the Near Table, which contains the feature IDs for the origin
 > (`IN_FID`) and destination locations (`NEAR_FID`) and the
-> corresponding distances.
+> corresponding distances. You can validate the distances by identifying FIDs that are close to each other and measuring the distance using the **measure tool**. 
 
 ::: question
 What are the units for the distance measurements? Why are they being
@@ -384,7 +383,7 @@ to create an equivalent field in the latter:
 > Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog)
 > for the final time, joining the internal migration table to the Near
 > Table using `orig_dest`, and transferring the `flow` field. *Note this
-> may take some time...*
+> may take some time...* 
 
 As a final step before we can enjoy some data exploration and modelling,
 it is worth doing some data cleaning:
@@ -422,11 +421,11 @@ causing ArCGIS stress, so instead:
 > to generate lines connecting the centroids, using the relevant `orig`
 > and `dest` coordinates, selecting the appropriate CRS and making sure
 > to "Preserve attributes". Modify the symbology to improve your
-> understanding e.g., modifying line size by `flow`.
+> understanding e.g., modifying line colour or size by `flow` ("Vary Symbology by Attribute" &rarr; "Size") 
 
 ![](./screenshots/practical-10/flows.png){width="100%"}
 
-> When you've finishing exploring, remove this dataset from ArcGIS. You
+> When you've finishing exploring, remove the *line* dataset from ArcGIS (**not** the Near Table). You
 > may also want to visualise flows to and from a specific local
 > authority e.g., Manchester = `E08000003`.
 
@@ -523,10 +522,23 @@ calculated as follows:
 
 $$ k = \frac{\text{Sum of empirical flows}}{\text{Sum of modelled flows}}$$
 
-> Use "Explore Statistics" to find the sum of `flow` and `gm1`. Then use
+> Use "Explore Statistics" to find the sum of `flow` and the sum of `gm1`. Then use
 > "Calculate Field" to generate a new field (`gm1_scale`), where the
 > output is our original modelled values `gm1` multiplied by the scale
 > factor.
+
+<details>
+
+<summary>Expression</summary>
+
+The sum of `flow` i.e., the total number of internal migrations in the ONS dataset, is $\approx3.7\:\text{million}$. 
+
+The sum of `gm1` i.e., the modelled number in our **unconstrained** model is $\approx63,000$ (unitless). 
+
+Therefore, the Expression to produce the **total constrained** model is as follows: `!gm1! * (3698001.8812999986 / 63224.55841802744)`. 
+
+</details>
+
 
 ::: note
 When complete, we can check our model is **total constrained** by
@@ -620,14 +632,13 @@ provide the best fit with the empirical flow data.
 
 #### A Poisson approach
 
-There are, however, a number of issues with a log-normal
-approach, which are outlined in detail by @flowerdew1982. For example,
-this approach will only work with positive flows, since $\log(0)$ is
-undefined. The approach also produces predictions of $\log(T_{ij})$,
-rather than $T_{ij}$. While the latter can be estimated using
-antilogarithms, the effects are typically biased, with
-under-representation of large flows, and under-prediction of the total
-flow.
+There are, however, a number of issues with a log-normal approach, which
+are outlined in detail by @flowerdew1982. For example, this approach
+will only work with positive flows, since $\log(0)$ is undefined. The
+approach also produces predictions of $\log(T_{ij})$, rather than
+$T_{ij}$. While the latter can be estimated using antilogarithms, the
+effects are typically biased, with under-representation of large flows,
+and under-prediction of the total flow.
 
 Instead, a more rigorous approach is to use **Poisson regression** which
 can handle both positive, negative and zero flows, but is also more
@@ -1026,15 +1037,23 @@ or destination do not match the empirical totals.
 <br>
 
 There are lots of situations where *origin-constrained*,
-*destination-constrained* and *doubly-constrained* models can be useful.
-For example an **origin-constrained** model might be suitable when the
-flows from the origin (emissions) are **known** and we therefore want
-our model to reproduce these. For example:
+*destination-constrained* and *doubly-constrained* models can be useful. For example an **origin-constrained** model
+might be suitable when the flows from the origin (emissions) are
+**known** and we therefore want our model to reproduce these. For
+example:
 
 ::: question
 The government has data on the number of people *leaving* the country
 each year. **What are their likely destination countries?**
 :::
+
+These models are often used in **retail** contexts e.g., @newing2015.
+For example, if expenditure levels are known in certain neighbourhoods
+(e.g., average disposable income), we can model expenditure in different
+shops, and how this might change as a result of different attractiveness
+factors e.g., price, floor area, product range, opening hours, parking
+availability [@birkin2003]. In turn, we can ask: Which factors are most
+important?
 
 A **destination-constrained** model might be suitable when the flows to
 a destination (attractions) are **known**. For example:
@@ -1043,6 +1062,16 @@ a destination (attractions) are **known**. For example:
 The government has data on the number of people *arriving* in the
 country each year. **What are their likely origin countries?**
 :::
+
+These approaches have been used in an
+[**education**](https://www.bbc.co.uk/news/articles/c2060pkv9zyo)
+context e.g., @singleton2012. For example, if the number of pupils
+admitted to a school is fixed in the model (i.e., the recorded number of
+students attending in a particular academic year), we can use emissivity
+factors at the neighbourhood level to predict where students are drawn
+from e.g., is this related to deprivation, population, or other
+demographic variables?  Both *origin-constrained* and
+*destination-constrained* can be really useful as **explanatory tools**, where the the overall model performance represents our ability to explain the observed flows, while the strength of the model coefficients provides insights into the relative importance of the attractiveness and emissivity factors. 
 
 A **doubly-constrained** model might be suitable when both origin and
 destination flows are known, such as the [ONS
@@ -1144,24 +1173,30 @@ tool, for example creating dummy variables for `orig_LAD21CD`. In turn,
 we could include those variables in our input for [Generalized Linear
 Regression](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/geoanalytics-desktop/generalized-linear-regression.html?tabs=dialog).
 
-While this works effectively with a small number of
-categories, in our case there are 314 local authorities in the dataset
-(Explore Statistics, `Unique`), thus requiring 314 dummy variables. It
-would be impractical for us to load these manually to the GLR tool,
-which is also not as flexible as other implementations, which can result
-in **multicollinearity** issue with this number of variables.
+While this works effectively with a small number of categories, in our
+case there are 314 local authorities in the dataset (Explore Statistics,
+`Unique`), thus requiring 314 dummy variables. It would be impractical
+for us to load these manually to the GLR tool, which is also not as
+flexible as other implementations, sometimes resulting in
+[**multicollinearity**](#ols) issues with this number of variables.
 
 Instead, we are going to use a [**Python
-notebook**](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html), which let's us programmatically access all of the ArcGIS tools, as well as some additional ones from open-source libraries. Here, the one of particular interest is [`statsmodels`](https://www.statsmodels.org/stable/index.html), which contains a range of additional functionality for statistical modelling, and will enable us to run a generalised linear regression without manually encoding our dummy variables. 
+notebook**](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/pro-notebooks.html),
+which let's us programmatically access all of the ArcGIS tools, as well
+as some additional ones from open-source libraries. Here, the one of
+particular interest is
+[`statsmodels`](https://www.statsmodels.org/stable/index.html), which
+contains a range of additional functionality for statistical modelling,
+and will enable us to run a generalised linear regression without
+manually encoding our dummy variables.
 
 > In Analysis → Geoprocessing, open a Python Notebook.
 
 ![](./screenshots/practical-10/python_notebook.png){width="100%"}
 
 ::: note
-You will be not be writing any Python from scratch here (unlike
-**GEOG71551** *Understanding GIS*), but I will talk through each part of the code in
-turn so you understanding what is happening.
+You will be not be writing any Python from scratch here, but I will talk through each part of
+the code in turn so you understanding what is happening.
 :::
 
 > Once you are happy with your understanding, paste each code chunk into
@@ -1170,11 +1205,15 @@ turn so you understanding what is happening.
 
 The first part imports the required libraries, which includes:
 
-- [`Arcpy`](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-arcpy-.html), for access to ArcGIS functions.
-- [`numpy`](https://numpy.org/), for mathematical analysis.
-- [`pandas`](https://pandas.pydata.org/), for data analysis and manipulation.
-- [`statsmodels`](https://www.statsmodels.org/stable/index.html), for statistical modelling. 
-- [`os`](https://docs.python.org/3/library/os.html), for interacting with the operating system and accessing directories and files.
+-   [`Arcpy`](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-arcpy-.html),
+    for access to ArcGIS functions.
+-   [`numpy`](https://numpy.org/), for mathematical analysis.
+-   [`pandas`](https://pandas.pydata.org/), for data analysis and
+    manipulation.
+-   [`statsmodels`](https://www.statsmodels.org/stable/index.html), for
+    statistical modelling.
+-   [`os`](https://docs.python.org/3/library/os.html), for interacting
+    with the operating system and accessing directories and files.
 
 ```{python, eval=FALSE}
 import os
@@ -1185,9 +1224,32 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 ```
 
-The next part creates an object `aprx` which is connected to the current
-ArcGIS project, and then extracts the first `[0]` (and only) map as `m`.
-We should now have access to the map layers:
+> Paste the above imports into the first code cell and then **run** the
+> code using the "play" button.
+
+<center>![](./images/practical-10/notebook_play.png){width="100%"}</center>
+
+If successful, the code cells will switch from `[ ]` before the code has
+been run, to `[*]` while the code is running, and then to `[#]` to
+denote completion, without errors or warnings, as shown below. Note this
+may take a few seconds:
+
+![](./images/practical-10/successful_code_v2.png){width="100%"}
+
+By comparison, if there was an error in my code, for example if I tried
+to import a library that didn't exist e.g., `matts_madeup_library`, I
+would receive an error, in this case `ModuleNotFoundError`:
+
+![](./screenshots/practical-10/code_error.png){width="100%"}
+
+::: note
+If you *do* receive any warnings, don't ignore them!
+:::
+
+The next part of our workflow creates an object `aprx` which is
+connected to the current ArcGIS project, and then extracts the first
+`[0]` (and only) map as `m`. This gives us access to current the map
+layers:
 
 ```{python, eval=FALSE}
 # Current ArcGIS project and return the
@@ -1195,21 +1257,28 @@ aprx = arcpy.mp.ArcGISProject("CURRENT")
 m = aprx.listMaps()[0]
 ```
 
-You can run the code using the "play" button, and if successful, the
-code cells will switch from `[*]` to `[#]` to denote completion,
-without errors or warnings:
+As before:
+
+> Paste the above code into a new code cell and run using the "play"
+> button, and if successful, the code cells will switch from `[*]` to
+> `[#]` to denote completion:
 
 ![](./screenshots/practical-10/successful-code.png){width="100%"}
 
-In the above image, we have two code cells, marked by `[1]` and `[2]`. If you make any edits to a particular cell, for example adding or removing a library in `[1]`, then subsequent cells would need to be re-run using the "play" button, as their behaviour is dependent on the previous cells. 
+In the above image, we have two code cells, marked by `[1]` and `[2]`.
+If you make any edits to a particular cell, for example adding or
+removing a library in `[1]`, then subsequent cells would need to be
+re-run using the "play" button, as their behaviour is dependent on the
+previous cells.
 
-We can access the map layers available in `m`, and here we are
-interested in the Near Table `LAD_point_neartable`, which contains all
-of the fields we've been using for modelling. This is converted to a
-Pandas dataframe for easier analysis:
+We can access the map layers or tables available in `m` (i.e., the map
+in the current ArcGIS project), and here we are interested in the Near
+Table `LAD_point_neartable`, which contains all of the fields we've been
+using for modelling. This is converted to a `pandas` dataframe for
+easier analysis:
 
 ```{python, eval=FALSE}
-# Access near table
+# Access near table 
 table = m.listTables("LAD_point_neartable")[0]
 table_path = table.dataSource
 workspace = arcpy.Describe(table_path)
@@ -1220,16 +1289,16 @@ fields = [f.name for f in arcpy.ListFields(table_path)]
 # Convert to pandas dataframe
 rows = arcpy.da.SearchCursor(table_path, fields)
 df = pd.DataFrame(list(rows), columns=fields)
-
 ```
 
 We can inspect the data using `head()`:
 
-<p align="center">
+<center>![](./screenshots/practical-10/head.png){width="60%"}</center>
 
-<a name=""></a>![](./screenshots/practical-10/head.png){width="60%"}
-
-</p>
+> Paste the above code into a new cell, press "play" to run, ensuring
+> code completion (i.e., switching from `[ ]` to `[3]`), and then
+> inspect the `pandas` dataframe by running `df.head()` in the next
+> cell.
 
 Our next step is to define our model formula, including our dependent
 and independent variables. This was managed for us in the [Generalized
@@ -1296,6 +1365,10 @@ implemented via the `smf.glm` function, using the following code:
 model = smf.glm(formula=model_formula, data=df, family=sm.families.Poisson()).fit()
 ```
 
+> If you have not done so already, paste in the model formula
+> *beginning* `model_formula = "flow_int" ~ ...` and the glm model
+> *beginning* `model = smf.glm(formula= ...` to a new cell and **run**.
+
 If successful, `print(model.summary())` can be used to evaluate the
 model results:
 
@@ -1307,8 +1380,8 @@ the empirical origin flows:
 
 ![](./screenshots/practical-10/dummy_coefficients.png){width="100%"}
 
-We can use our model to generate predictions of flow for each row of
-data, as we did for `gm1` and `gm2`. This uses the explanatory
+We can also use our model to generate predictions of flow for each row
+of data, as we did for `gm1` and `gm2`. This uses the explanatory
 (independent) variables stored in `df`, and stores the values in the
 `df` dataframe in the `gm3` field i.e., our third gravity model.
 
@@ -1317,13 +1390,12 @@ data, as we did for `gm1` and `gm2`. This uses the explanatory
 df["gm3"] = model.predict(exog=df)
 ```
 
+> Paste the above code to a new cell and **run** to store the model
+> predictions in the `gm3` field.
+
 You can inspect some of the predicted values by running `df.gm3`:
 
-<p align="center">
-
-<a name=""></a>![](./screenshots/practical-10/gm3_predictions.png){width="60%"}
-
-</p>
+<center>![](./screenshots/practical-10/gm3_predictions.png){width="60%"}</center>
 
 Our final step is to export our dataframe to a `.csv`, which will allow
 us to investigate the outputs further in ArcGIS. The code below
@@ -1337,6 +1409,8 @@ output = os.path.join(aprx.homeFolder, "LAD_point_neartable_pred_origconst.csv")
 # Export
 df.to_csv(output, index=False)
 ```
+
+> Paste the above code to a new cell and **run**.
 
 If successful, the output file should be present in the project
 directory:
@@ -1366,11 +1440,7 @@ to export our table to the project **geodatabase**.
 > Next create a Scatter Chart showing the relationship between
 > `flow_int` and `gm3`.
 
-<p align="center">
-
-<a name=""></a>![](./screenshots/practical-10/gm3_performance.png){width="60%"}
-
-</p>
+<center>![](./screenshots/practical-10/gm3_performance.png){width="60%"}</center>
 
 ::: question
 What is your appraisal of the origin-constrained model performance?
@@ -1425,11 +1495,7 @@ this time encoded based on the destination local authority names.
 > Load the file to ArcGIS, and evalute the predictions using a scatter
 > plot.
 
-<p align="center">
-
-<a name=""></a>![](./screenshots/practical-10/gm4_performance.png){width="60%"}
-
-</p>
+<center>![](./screenshots/practical-10/gm4_performance.png){width="60%"}</center>
 
 ::: question
 How has model performance changed?
@@ -1490,11 +1556,7 @@ $$λ_{ij} = \exp(μ_{i}+ α_{i}- \beta\log(d_{ij}))$$
 > Load the file to ArcGIS, and evalute the predictions using a scatter
 > plot.
 
-<p align="center">
-
-<a name=""></a>![](./screenshots/practical-10/gm5_performance.png){width="60%"}
-
-</p>
+<center>![](./screenshots/practical-10/gm5_performance.png){width="60%"}</center>
 
 Constraining our modelled origin and destination flows has improved
 model performance further ($R^2=0.78$), indicating that the model has

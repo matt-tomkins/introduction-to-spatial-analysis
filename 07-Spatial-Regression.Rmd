@@ -148,7 +148,7 @@ $$\text{SR} = 5.595 + 14.150\cdot2.3 = 38.14$$
 
 Alongside the regression equation, it is also typical to calculate the **coefficient of determination** $\text{R}^2$, which measures the proportion of variance in the dependent variable that can be explained by the independent variables in the model. This typically ranges from $0$ i.e., **none** of the variance in the dependent variable is explained by the independent variables, to $1$ i.e., the variance in the dependent variable is **perfectly** explained by the independent variables.
 
-For this dataset $\text{R}R^2=0.74$, which indicates that 74% of the variance in species richness can be explained by median GSCI[^07-spatial-regression-13].
+For this dataset $\text{R}^2=0.74$, which indicates that 74% of the variance in species richness can be explained by median GSCI[^07-spatial-regression-13].
 
 [^07-spatial-regression-13]: You can check Figure 3 in @getzin2012 to confirm this. You could also run your own OLS regression using the data [here](#justify_spatial_corr), via [Excel](https://support.microsoft.com/en-us/excel/functions/linest-function), [Python](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html) or [R](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) if familiar.
 
@@ -482,7 +482,7 @@ This approach therefore accounts for **spillover effects**, in that the dependen
 
 The following example outlines a situation in which *diffusion of behaviour* could lead to spatial dependence:
 
-:::: quote
+:::: note
 “*... the behaviour is likely to be highly social in nature, and understanding the interactions between interdependent units is critical to understanding the behaviour in question. For example, citizens may discuss politics across adjoining neighbours such that an increase in support for a candidate in one neighbourhood directly leads to an increase in support for the candidate in adjoining neighbourhoods*”[^07-spatial-regression-19]
 
 ::: {style="text-align: right"}
@@ -496,7 +496,7 @@ In this situation, a spatial lag model would be appropriate, as it mathematicall
 
 Unlike SLM, which includes spatial dependence as a explanatory variable, the **spatial error model** treats residual autocorrelation as a nuisance, rather than being the result of important spatial processes, as summarised below:
 
-:::: quote
+:::: note
 “*spatial dependence observed in our data does not reflect a truly spatial process, but merely the geographical clustering of the sources of the behaviour of interest. For example, citizens in adjoining neighbourhoods may favour the same (political) candidate not because they talk to their neighbors, but because citizens with similar incomes tend to cluster geographically, and income also predicts vote choice. Such spatial dependence can be termed attributional dependence, as neighboring units have shared attributes that produce the clustering of behaviors*"
 
 ::: {style="text-align: right"}

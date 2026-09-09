@@ -7,6 +7,8 @@ documentclass: book
 bibliography: spatial-analysis-resources.bib
 csl: harvard-cite-them-right.csl
 link-citations: true
+header-includes:
+  - \usepackage[dvipsnames]{xcolor}
 output:
   bookdown::bs4_book: 
     css: style.css
@@ -77,6 +79,8 @@ clean_book(clean = getOption("bookdown.clean_book", TRUE))
 
 # pagedown::chrome_print("docs/index.html", output = "introduction_to_spatial_analysis.pdf")
 
+# use {.hidden-section} to hide content from html file
+
 ```
 
 In *Introduction to Spatial Analysis*, we will:
@@ -90,7 +94,7 @@ In *Introduction to Spatial Analysis*, we will:
 
 ## Intended Learning Outcomes {#ilo .unnumbered}
 
-The Intended Learning Outcomes for *Introduction to Spatial Analysis* are available on [Canvas]() as a [single source of truth](https://en.wikipedia.org/wiki/Single_source_of_truth). 
+The Intended Learning Outcomes for *Introduction to Spatial Analysis* are available on [Canvas](). 
 
 ## Guidance {.unnumbered}
 
@@ -106,30 +110,13 @@ You will see the following formatting for **questions** or as a prompt for **ref
 This is a question. 
 </div>
 
-For course development and testing, the following formatting is for **problems to be fixed**:
-
-<div class="problem"> 
-This is a problem.
-</div>
-
-The following formatting is used for **tasks for Matt to complete**:
-
-<div class="task"> 
-This is a task.
-</div>
-
-The following formatting is used for **advice** or **key notes**:
+The following formatting is used to emphasise **key points**, provide additional information, or for quotations:
 
 <div class="note"> 
 This is a note. 
 </div>
 
-The following formatting is used for **quotations**:
-
-::: quote
-This is a quote. 
-:::
-
+Each practical begins with an overview of the aims, application, data and tools, before introducing the **key concepts** for that week. This content is released in advance of the practical materials, should you wish to familiarise yourself with the key concepts and relevant literature in advance.    
 
 ## Acknowledgments {#intro-acknowledgements .unnumbered}
 

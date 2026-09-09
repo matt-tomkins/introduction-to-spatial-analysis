@@ -19,7 +19,7 @@ In *Introduction to Spatial Analysis* we have covered...
 
 ## Acknowledgements {.unnumbered}
 
-The development of *Introduction to Spatial Analysis* has benefited from fruitful discussions with [Jonny Huck](https://research.manchester.ac.uk/en/persons/jonathan.huck/) and [Matt Dennis](https://research.manchester.ac.uk/en/persons/matthew.dennis/), testing by [James Tomlinson](https://research.manchester.ac.uk/en/persons/james-tomlinson-2/), and wider support from the [Mapping, Computing and Geographical Information Science](https://www.humanities.manchester.ac.uk/geography/research/groups/mapping-computing-geographical-information-science/) research group. 
+The development of *Introduction to Spatial Analysis* has benefited from fruitful discussions with [Jonny Huck](https://research.manchester.ac.uk/en/persons/jonathan.huck/), [Matt Dennis](https://research.manchester.ac.uk/en/persons/matthew.dennis/) and [Adam Dennett](https://profiles.ucl.ac.uk/28795-adam-dennett), testing by [James Tomlinson](https://research.manchester.ac.uk/en/persons/james-tomlinson-2/), and wider support from the [Mapping, Computing and Geographical Information Science](https://www.humanities.manchester.ac.uk/geography/research/groups/mapping-computing-geographical-information-science/) research group. 
 
 I hope that *Introduction to Spatial Analysis* has inspired you to explore the topic further, and if so, I'd recommend delving into the resources listed [here](#intro-acknowledgements), alongside the wider literature included in the [reference list](#references).
 

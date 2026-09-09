@@ -157,42 +157,84 @@
 <li>…</li>
 </ul>
 <div class="note">
-<p>You should work on the <strong>P drive</strong> throughout this unit. Integration with cloud storage services (e.g., OneDrive) can cause <a href="https://support.esri.com/en-us/knowledge-base/problem-arcgis-pro-and-cloud-storage-services-000025605">problems</a>, while you will have limited flexibility if working locally (<code>C:</code>).</p>
+<p>You should work on the <strong>P drive</strong> throughout this unit. Integration with cloud storage services (e.g., OneDrive) can cause <a href="https://support.esri.com/en-us/knowledge-base/problem-arcgis-pro-and-cloud-storage-services-000025605">problems</a>, while you will have limited flexibility if working locally (<code>C:</code>). Don’t work on or save to <code>C:</code> apart from in exceptional circumstances - there is a risk your work will be lost.</p>
 </div>
 </div>
-<div id="projects" class="section level3" number="1.2.2">
+<div id="p1_projects" class="section level3" number="1.2.2">
 <h3>
-<span class="header-section-number">1.2.2</span> Projects<a class="anchor" aria-label="anchor" href="#projects"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.2.2</span> Projects<a class="anchor" aria-label="anchor" href="#p1_projects"><i class="fas fa-link"></i></a>
 </h3>
 <p>Now that we have our data downloaded, our next step is create an ArcGIS <a href="https://doc.esri.com/en/arcgis-pro/latest/help/projects/what-is-a-project.html"><strong>project</strong></a> for this practical. This is an organized workspace that we will use to store all the objects related to that practical e.g., maps, layouts, data outputs. We’ll store the project file in <code>GEOG73001\practical-1</code>, and you should repeat this process for all subsequent practicals.</p>
 <blockquote>
-<p>Open ArcGIS Pro, and create a New Project → Map with a suitable name (e.g., <code>practical-1</code>), setting the location to the corresponding directory on the P Drive (<code>P:\GEOG73001\practical-1</code>) and <em>unchecking</em> ‘Create a folder for this local project’.</p>
+<p>Open ArcGIS Pro, and select New Project → Map:</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/project-creation-1.png" style="width:80.0%">
+</center>
+<blockquote>
+<p>On the following screen, use a suitable name (e.g., <code>practical-1</code>), setting the location to the corresponding directory on the P Drive (<code>P:\GEOG73001\practical-1</code>) and <em>unchecking</em> ‘Create a folder for this local project’:</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-1/project-creation-2.png" style="width:60.0%">
+</center>
+<p><br></p>
 <p>You should now be presented with the ArcGIS interface:</p>
 <p><img src="screenshots/practical-1/open-arcgis.png" style="width:100.0%" alt="The ArcGIS interface"><br></p>
 <p>Key features to note include the:</p>
 <ul>
-<li><p><strong>Ribbon</strong> (top), which provides access to many of the important ArcGIS functions e.g., for loading data, accessing analysis tools, exporting maps.</p></li>
-<li><p><strong>Map View</strong> (central), which displays the spatial data that have been loaded by the user (currently <em>none</em>) and any basemaps that are present (currently World Topographic Map and Hillshade).</p></li>
-<li><p><strong>Contents Pane</strong> (left), which lists every layer in your current map, their visibility, and their drawing order.</p></li>
+<li>
+<strong>Ribbon</strong> (top), which provides access to many of the important ArcGIS functions e.g., for loading data, accessing analysis tools, exporting maps:</li>
 </ul>
+<center>
+<img src="screenshots/practical-1/ribbon.png" style="width:100.0%">
+</center>
+<ul>
+<li>
+<strong>Map View</strong> (central), which displays the spatial data that have been loaded by the user (currently <em>none</em>) and any basemaps that are present (currently World Topographic Map and Hillshade).</li>
+</ul>
+<center>
+<img src="screenshots/practical-1/map-view.png" style="width:100.0%">
+</center>
+<ul>
+<li>
+<strong>Contents Pane</strong> (left), which lists every layer in your current map, their visibility, and their drawing order. At the moment, we have not loaded any spatial data, but by default ArcGIS includes web basemaps for us.</li>
+</ul>
+<center>
+<img src="screenshots/practical-1/contents-pane.png" style="width:35.0%">
+</center>
 </div>
-<div id="loading-data" class="section level3" number="1.2.3">
+<div id="p1_loading_data" class="section level3" number="1.2.3">
 <h3>
-<span class="header-section-number">1.2.3</span> Loading data<a class="anchor" aria-label="anchor" href="#loading-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.2.3</span> Loading data<a class="anchor" aria-label="anchor" href="#p1_loading_data"><i class="fas fa-link"></i></a>
 </h3>
 <p>The best way to familiarise yourself with the ArcGIS interface is by working with data. There are lots of approach to add data in ArcGIS, one of which is simply dragging-and-dropping files into the Map View. Another approach is to establish <strong>connections</strong> to databases or directories:</p>
 <blockquote>
-<p>In the top ribbon, navigate to Insert → Add Folder, and select <code>GEOG73001/data</code>.</p>
+<p>In the top ribbon, navigate to Insert → Add Folder. On the following screen, select <code>P:/GEOG73001/data</code>.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/add-folder.png" style="width:80.0%">
+</center>
+<p><br></p>
 <p>We have now created a connection to our data directory, which can enable more efficient data loading if working with lots of different datasets.</p>
 <blockquote>
-<p>In the top ribbon, navigate to Map → Layer → Add Data. Under the ‘Project’ dropdown (left), you should see ‘Databases’ and ’Folders`.</p>
+<p>In the top ribbon, navigate to Map → Layer → Add Data.</p>
 </blockquote>
-<p>Under ‘Folders’, you should see connections to <code>Practical-1</code> (this is the directory where our project is saved) and <code>data</code>, which we just established a connection to.</p>
+<center>
+<img src="screenshots/practical-1/add-data.png" style="width:80.0%">
+</center>
+<p><br></p>
+<p>On the following screen, you should see ‘Databases’ and ‘Folders’ under the ‘Project’ dropdown (left). Under ‘Folders’, you should see connections to <code>Practical-1</code> (this is the directory where our project is saved) and <code>data</code>, which we just established a connection to.</p>
+<center>
+<img src="screenshots/practical-1/add-data-2.png" style="width:90.0%">
+</center>
+<p><br></p>
 <blockquote>
-<p>Back in the ‘Add Data’ window, navigate to [<code>natural-earth/ne_10m_admin_0_countries.shp</code>] and press ‘OK’ to load into ArcGIS.</p>
+<p>In the ‘Add Data’ window, navigate to [<code>natural-earth/ne_10m_admin_0_countries.shp</code>] and press ‘OK’ to load into ArcGIS.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/add-data-3.png" style="width:90.0%">
+</center>
+<p><br></p>
 <p>This spatial layer<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For those of you enrolled on &lt;strong&gt;GEOG71551&lt;/strong&gt;: &lt;em&gt;Understanding GIS&lt;/em&gt;, this is the same dataset used in Week 1. This is &lt;em&gt;by design&lt;/em&gt;, as the initial aim of both units is for you to become familiar with spatial data and to gain experience in map production. By the end of this week, you should be able to produce appropriate map outputs of a familiar dataset (e.g., including a scale bar, north arrow, and legend, with good use of colour and clarity) using GIS software &lt;em&gt;and&lt;/em&gt; using a programming language.&lt;/p&gt;"><sup>1</sup></a> should now be visible, both in the Contents Pane and the Map View:</p>
 <div class="float">
 <img src="screenshots/practical-1/first-data-natural-earth.png" style="width:100.0%" alt="Our first dataset"><div class="figcaption"><em>Our first dataset</em></div>
@@ -201,12 +243,19 @@
 <div class="question">
 <p>Based on the lecture materials, what type of spatial data is this?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>This is an example of a <strong>polygon</strong> feature layer. This was also listed in the ‘Add Data’ window under the <code>Geometry</code> field:</p>
+<center>
+<img src="screenshots/practical-1/add-data-4.png" style="width:80.0%">
+</center>
+</details><p><br></p>
 </div>
 <div id="exploring-data" class="section level3" number="1.2.4">
 <h3>
 <span class="header-section-number">1.2.4</span> Exploring data<a class="anchor" aria-label="anchor" href="#exploring-data"><i class="fas fa-link"></i></a>
 </h3>
-<p>You can explore the <code>natural-earth</code> data by zooming and panning the Map View. While this provides information on the data <span class="math inline">\(geometry\)</span>, we can also access additional information via the Contents Pane.</p>
+<p>You can explore the <code>natural-earth</code> data by zooming and panning the Map View. While this provides information on the <strong>data geometry</strong>, we can also access additional information via the Contents Pane.</p>
 <blockquote>
 <p>Right click the <code>ne_10m_admin_0_countries</code> layer in the Contents Pane → Properties → Source.</p>
 </blockquote>
@@ -221,20 +270,35 @@
 <li>
 <strong>Spatial Reference</strong>: the information (e.g., geographic coordinate reference system, datum) used to relate the geometries to specific locations on the Earth’s surface.</li>
 </ul>
-<div class="note">
-<p>We will discuss Coordinate References Systems in more depth later on in the unit, with detailed analysis in GEOG71551 - <a href="https://understandingg.is/">Understanding GIS</a>.</p>
-</div>
-<p>The Properties window provides information about the layer as a whole, but there might be additional information specific to each <strong>feature</strong> of the dataset. In our case, the <code>natural-earth</code> dataset contains 258 features, each representing a country, nation, or region, with feature-specific information stored in the <strong>Attribute Table</strong>.</p>
+<center>
+<img src="screenshots/practical-1/data-source.png" style="width:90.0%">
+</center>
+<p><br></p>
+<p>We will discuss Coordinate References Systems in more depth later on in the unit, while those you enrolled on <strong>GEOG71551</strong> <a href="https://understandingg.is/"><em>Understanding GIS</em></a> can look forward to detailed exploration in the coming weeks.</p>
+<p>The Properties window provides information about the layer <em>as a whole</em>, but there might be additional information specific to each <strong>feature</strong> of the dataset. In our case, the <code>natural-earth</code> dataset contains 258 features, each representing a country, nation, or region, with feature-specific information stored in the <strong>Attribute Table</strong>.</p>
 <blockquote>
 <p>Right click the <code>ne_10m_admin_0_countries</code> layer in the Contents Pane → Attribute Table.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/open-attribute-table.png" style="width:80.0%">
+</center>
+<p><br></p>
 <p>Each row of the Attribute Table represents a feature, with feature-specific values in the corresponding columns, which we refer to as <strong>Fields</strong>. There is a lot of information here, including feature names in various formats (e.g., <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3"><code>ISO_A3</code></a>), as well as information on gross domestic product (GDP) in millions of dollars (<code>GDP_MD</code>), population (<code>POP_EST</code>), income group (<code>INCOME_GRP</code>), and continent and region (<code>CONTINENT</code>, <code>REGION_WB</code>), among others.</p>
-<p>You can investigate the information in each field, for example by:</p>
+<center>
+<img src="screenshots/practical-1/first-attribute-table.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>You can investigate the information in each field by right clicking on the field to reveal a range of option, such as:</p>
 <ul>
-<li>Right clicking to sort in ascending or descending order.</li>
-<li>Calculating statistics using ‘Explore Statistics’.</li>
-<li>Creating plots using ‘Visualise Statistics’</li>
+<li>sorting in ascending or descending order.</li>
+<li>‘Explore Statistics’, which can be used to calculate relevant statistics e.g., mean, sum, range.</li>
+<li>‘Visualise Statistics’, which can be used to create plots.</li>
 </ul>
+<center>
+<img src="screenshots/practical-1/field-options.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>Using this functionality:</p>
 <div class="question">
 <p>Which country has the largest GDP? What is its name (<code>ADMIN</code>) and ID (<code>FID</code>)?</p>
 </div>
@@ -244,17 +308,34 @@
 <div class="question">
 <p>How would you describe the distribution of GDP?</p>
 </div>
-<p>Selecting rows in the Attribute Table also highlights the corresponding geometry in the Map View, and vice versa i.e., selecting geometries in the Map View (via the ‘Selection’ tab) highlights the rows in the Attribute Table:</p>
-<div class="float">
-<img src="screenshots/practical-1/selecting-features.png" style="width:100.0%" alt="Selecting features via the Attribute Table"><div class="figcaption"><em>Selecting features via the Attribute Table</em></div>
-</div>
+<p>Selecting rows in the Attribute Table also highlights the corresponding geometry in the Map View:</p>
+<p><img src="screenshots/practical-1/selecting-features.png" style="width:100.0%" alt="Selecting features via the Attribute Table"><br></p>
+<p>Alternatively, you can use the ‘Selection’ tab to select geometries in the Map View.</p>
+<center>
+<img src="screenshots/practical-1/selection-tab.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>For example, below I have used ‘Select’ → ‘Rectangle’ to digitise a rectangle across parts of North Africa and Asia:</p>
+<center>
+<img src="screenshots/practical-1/select-rectangle.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>When complete, any geometries which overlap with that rectangle are highlighted in the <strong>Map View</strong>:</p>
+<center>
+<img src="screenshots/practical-1/rectangle-map-view.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>They are also selected in the <strong>Attribute Table</strong>:</p>
+<center>
+<img src="screenshots/practical-1/rectangle-attribute-table.png" style="width:100.0%">
+</center>
 <p><br></p>
 </div>
 <div id="symbolising-data" class="section level3" number="1.2.5">
 <h3>
 <span class="header-section-number">1.2.5</span> Symbolising data<a class="anchor" aria-label="anchor" href="#symbolising-data"><i class="fas fa-link"></i></a>
 </h3>
-<p>In the Map View, our <code>natural-earth</code> geometries is presented with a basic symbology i.e., for all features, <code>fill</code> = blue, <code>edgecolour</code> = black<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;, your colours may differ from mine, but don’t worry!&lt;/p&gt;"><sup>2</sup></a>. As the user, we have a lot of flexibility to edit this.</p>
+<p>In the Map View, our <code>natural-earth</code> geometries are presented with a basic symbology i.e., for all features, <code>Fill Colour</code> = blue, <code>Outline Coluor</code> = black<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;, your colours may differ from mine, but don’t worry!&lt;/p&gt;"><sup>2</sup></a>. As the user, we have a lot of flexibility to edit this.</p>
 <blockquote>
 <p>Right click the <code>ne_10m_admin_0_countries</code> layer in the Contents Pane → Symbology.</p>
 </blockquote>
@@ -262,16 +343,29 @@
 <blockquote>
 <p>Click the Symbol → Properties and explore changing Appearance (e.g., Color, Outline Color, Outline Width) and how this is reflected in the Map View.</p>
 </blockquote>
-<p>As we’ve shown via the Attribute Table, our features are associated with a range of feature-specific values (fields) and we can use these to symbolise our data, for example by splitting our features into categories (e.g., continent).</p>
+<center>
+<img src="screenshots/practical-1/symbology-1.png" style="width:70.0%">
+</center>
+<p><br></p>
+<p>As we’ve shown via the Attribute Table, our features are associated with a range of feature-specific values (fields) and we can use these to symbolise our data, for example by splitting our features into <strong>categories</strong> (e.g., continent).</p>
 <blockquote>
 <p>Back in the Symbology Window, change ‘Single Symbol’ to ‘Unique Values’ (Symbolize your layer by category). The ‘Field 1’ input specifies which field we want to use to define our categories, and we’ll select <code>CONTINENT</code>.</p>
 </blockquote>
-<p>This change should now be visible in the Map View and in the Contents Pane, with the latter listing the classes in the <code>CONTINENT</code> field. You can edit this further by selecting a ‘Colour scheme’ of your choice. As above, you can also edit the symbology of each category by double clicking on the symbol in the ‘Classes’ tab.</p>
+<center>
+<img src="screenshots/practical-1/symbology-unique.png" style="width:70.0%">
+</center>
+<p><br></p>
+<p>This change should now be visible in the Map View and in the Contents Pane, with the latter listing the classes in the <code>CONTINENT</code> field. You can edit this further by selecting a ‘Colour scheme’ of your choice e.g., <code>Blues</code>:</p>
 <div class="float">
 <img src="screenshots/practical-1/categorical-symbols.png" style="width:100.0%" alt="Categorical symbology"><div class="figcaption"><em>Categorical symbology</em></div>
 </div>
 <p><br></p>
-<p>We can also symbolise our features based on a continuous field (e.g., population).</p>
+<p>As above, you can also edit the symbology of each individual category by double clicking on the symbol in the ‘Classes’ tab.</p>
+<center>
+<img src="screenshots/practical-1/classes.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>We can also symbolise our features based on a <strong>continuous</strong> field (e.g., population).</p>
 <blockquote>
 <p>Back in the Symbology Window, change to ‘Unclassed Colours’ (Symbolize your layer by quantity). Use <code>POP_EST</code> for the ‘Field’ input, and select a ‘Colour Scheme’ of your choice.</p>
 </blockquote>
@@ -279,13 +373,15 @@
 <img src="screenshots/practical-1/unclassed-symbols.png" style="width:100.0%" alt="Unclassed Colours symbology"><div class="figcaption"><em>Unclassed Colours symbology</em></div>
 </div>
 <p><br></p>
-<p>The ‘Unclassed Colours’ option takes the selected colour scheme (in my case, Yellow to Dark Red), and assigns the colours linearly between the minimum and maximum of the specified field (<code>POP_EST</code> = 0 to ~1.4 billion people). It is possible, however, to use <a href="https://doc.esri.com/en/arcgis-pro/latest/help/mapping/layer-properties/graduated-colors.html">‘Graduated Colours’</a>, where the data is classified into ranges using a <a href="https://doc.esri.com/en/arcgis-pro/latest/help/mapping/layer-properties/data-classification-methods.html">classification method</a> specified by the user.</p>
+<p>The ‘Unclassed Colours’ option takes the selected colour scheme (in my case, <code>Yellow to Dark Red</code>), and assigns the colours linearly between the minimum and maximum of the specified field (<code>POP_EST</code> = 0 to ~1.4 billion people). It is possible, however, to use <a href="https://doc.esri.com/en/arcgis-pro/latest/help/mapping/layer-properties/graduated-colors.html">‘Graduated Colours’</a>, where the data is classified into ranges using a <a href="https://doc.esri.com/en/arcgis-pro/latest/help/mapping/layer-properties/data-classification-methods.html">classification method</a> specified by the user.</p>
 <blockquote>
-<p>In the Symbology Window, change to ‘Graduated Colours’ (Symbolize your layer by quantity). Use <code>POP_EST</code> for the ‘Field’ input, select a ‘Colour Scheme’ of your choice, and for ‘Method’, use ‘Natural Breaks (Jenks)’</p>
+<p>In the Symbology Window, change to ‘Graduated Colours’ (Symbolize your layer by quantity). Use <code>POP_EST</code> for the ‘Field’ input, select a ‘Colour Scheme’ of your choice, and for ‘Method’, use ‘Natural Breaks (Jenks)’.</p>
 </blockquote>
-<div class="problem">
-<p><strong>James</strong> When using Natural Breaks or Geometric Interval, China is always missing from the Map View, irrespective of the number of classes used. For Equal Interval, it is visible for &lt;= 11 classes</p>
-</div>
+<p>If any spatial objects aren’t visible in the Map View, which can occur when values are much larger or smaller than all typical values, this can be rectified by selecting <code>Classes</code> → <code>More</code> and activating <code>Show values out of range</code>:</p>
+<center>
+<img src="images/practical-1/classes_out_of_range_edit.png" style="width:100.0%">
+</center>
+<p><br></p>
 </div>
 <div id="filtering-data" class="section level3" number="1.2.6">
 <h3>
@@ -293,7 +389,7 @@
 </h3>
 <p>Now that we can visualise and investigate our spatial data, our next step might be to <strong>filter</strong> data i.e., extract features which meet certain conditions. We’ll use a new dataset to demonstrate this.</p>
 <blockquote>
-<p>Load <code>esri/World_Cities.shp</code></p>
+<p>Load <code>esri/World_Cities.shp</code>, either by dragging-or-dropping the dataset into ArcGIS, or using Map → Layer → Add Data.</p>
 </blockquote>
 <div class="question">
 <p>What type of spatial data is this?</p>
@@ -305,19 +401,50 @@
 <div class="question">
 <p>Which city has the largest population (based on this dataset)?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>This can be answered by using <code>Sort Descending</code> on the <code>POP</code> field, which reveals <strong>Shanghai</strong> as the largest city (<code>CITY_NAME</code>), as shown below, with <span class="math inline">\(\approx26\;\text{million}\)</span> inhabitants. However, the population estimate, and the ranking of the cities, will be sensitive to your definition of what constitutes a “city” e.g., metropolitan area, administrative boundaries.</p>
+<center>
+<img src="screenshots/practical-1/attribute-descending-order.png" style="width:100.0%">
+</center>
+</details><p><br></p>
 <blockquote>
-<p>In the Attribute Table, use ‘Select by Attributes’. Keep ‘Input Rows’ and ‘Selection Type’ as they are, but modify the Expression to select rows where <code>POP</code> is greater than 5000000. If successful, 54 of 2,540 rows should be selected in the Attributes Table, and highlighted in the Map View.</p>
+<p>In the Attribute Table, open ‘Select by Attributes’:</p>
 </blockquote>
-<div class="note">
-<p>Select by Attributes can be operated using the interactive Expression box (as above), or you can use the ‘SQL Editor’ (<code>POP &gt; 5000000</code>), which can be simpler for complex selections.</p>
-</div>
+<center>
+<img src="screenshots/practical-1/select-by-attributes-icon.png" style="width:85.0%">
+</center>
+<blockquote>
+<p>On the following screen, keep ‘Input Rows’ and ‘Selection Type’ as they are, but modify the Expression to select rows where <code>POP</code> is greater than 5000000, and then press <strong>Apply</strong> to use your selection criteria.</p>
+</blockquote>
+<details><summary>
+Solution
+</summary><p>Select by Attributes can be operated using the interactive Expression box:</p>
+<center>
+<img src="screenshots/practical-1/interactive-expression.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>Alternatively, you can use the ‘SQL Editor’ (<code>POP &gt; 5000000</code>), which can be simpler for complex selections:</p>
+<center>
+<img src="screenshots/practical-1/sql-expression.png" style="width:60.0%">
+</center>
+</details><p><br></p>
+<p>If successful, 54 of 2,540 rows should be selected in the Attributes Table, and highlighted in the Map View.</p>
+<center>
+<img src="screenshots/practical-1/attribute-selection-output.png" style="width:100.0%">
+</center>
+<p><br></p>
 <p>To simplify further analysis, we are going to <strong>Export</strong> this selection to a new file:</p>
 <blockquote>
 <p>Right click the <code>World_Cities</code> layer in the Contents Pane → Data → Export Features. Under ‘Input Features’, ensure that <code>World_Cities</code> is specified and ‘Use the selected records’ is checked (n=54). There are further options here (e.g., additional filtering, only exporting certain fields, data sorting), but for now keep the other settings as default. Under ‘Output Feature Class’, navigate to the <code>practical-1</code> directory (the location of our project) and choose an appropriate file name e.g., <code>world_cities_5m</code>. <em>Note</em> if the file extension is left blank, the default file type is shapefile (<code>.shp</code>).</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/first-export.png" style="width:60.0%">
+</center>
+<p><br></p>
 <p>If successful, the new data layer should have been loaded to the Contents Pane and be visible in the Map View.</p>
 <blockquote>
-<p>To avoid any confusion, remove the full <code>World_Cities</code> layer (n=2,540).</p>
+<p>To avoid any confusion, remove the full <code>World_Cities</code> layer (n=2,540) by right clicking on the layer in the Contents Pane → Remove</p>
 </blockquote>
 </div>
 <div id="work_raster" class="section level3" number="1.2.7">
@@ -325,11 +452,15 @@
 <span class="header-section-number">1.2.7</span> Working with Rasters<a class="anchor" aria-label="anchor" href="#work_raster"><i class="fas fa-link"></i></a>
 </h3>
 <p>So far in this practical we’ve been working with <strong>vector</strong> data (Points, Line, Polygons):</p>
-<p align="center">
-<a name=""></a><img src="images/practical-1/vector.png" style="width:80.0%"></p>
+<center>
+<img src="images/practical-1/vector.png" style="width:80.0%">
+</center>
+<p><br></p>
 <p>Another common data type is <strong>raster</strong>, which typically consists of a grid of <strong>cells</strong> representing continuous surfaces:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-1/raster.png" style="width:25.0%"></p>
+<center>
+<img src="images/practical-1/raster.png" style="width:25.0%">
+</center>
+<p><br></p>
 <blockquote>
 <p>Add the following raster to the map: <code>world-clim/wc2.1_10m_tavg/wc2.1_10m_tavg_01.tif</code>. You may be prompted to calculate statistics for the input, which can speed up subsequent data loading. If so, press ‘Yes’.</p>
 </blockquote>
@@ -344,13 +475,20 @@
 <div class="question">
 <p>In the Map View above, why are the city Points visible, but not the country Polygons?</p>
 </div>
+<details><summary>
+Interpretation
+</summary><p>The visibility of map layers is influenced by their <strong>drawing order</strong>, which is controlled by their relative positiond in the Contents Pane. Here, <code>world_cities_5m</code> is listed at the top of the Contents Pane, so is rendered above the other layers. In contrast, <code>ne_10m_admin_0_countries</code> is listed at the bottom of the Contents Pane, so is largely invisible behind the temperature raster (<code>wc2.1_10m_tavg_01.tif</code>).</p>
+<p>You can change the drawing order by dragging layers to the desired position in the Contents Pane, while layer visibility can be toggled using the checkbox (<code>Click to toggle visibility</code>)</p>
+</details><p><br></p>
 <blockquote>
 <p>Zoom in on the Map View and investigate a country of your choosing. <em>Hint: the coastlines are particularly revealing</em>.</p>
 </blockquote>
 <div class="question">
 <p>What do you notice above the size of the cells? How well do these match the vector representation of the country?</p>
 </div>
-<p>We are touching on some important concepts here: <strong>scale</strong> and <strong>generalisation</strong>. All spatial data is created and defined at a specific scale and all spatial data is generalised (or simplified) compared to the real world.</p>
+<details><summary>
+Interpretation
+</summary><p>We are touching on some important concepts here: <strong>scale</strong> and <strong>generalisation</strong>. All spatial data is created and defined at a specific scale and all spatial data is generalised (or simplified) compared to the real world.</p>
 <p>In our case, our <code>WorldClim</code> data is characterised by a spatial resolution of <a href="https://www.worldclim.org/data/worldclim21.html">10 arc-minutes</a> i.e., each cell is approximately 340 km<sup>2</sup> at the equator. By comparison, our <code>Natural Earth</code> data is defined by a scale of 1:10m<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;1:10,000,000&lt;/p&gt;"><sup>3</sup></a> i.e., 1 cm on the map equates to 100 km in reality.</p>
 <p>The <strong>important</strong> thing to highlight here is that while the <code>Natural Earth</code> data is <em>less</em> generalised than the <code>WorldClim</code> data i.e., more real world information has been retained, such as some of the complexities of the coastline, neither dataset is “correct”. <strong>Both</strong> are a simplification of reality. When working with spatial data, we should remember to:</p>
 <ul>
@@ -359,6 +497,7 @@
 <li>remember that all spatial data are generalised.</li>
 </ul>
 <p>For our analysis, we are interested in <strong>global</strong> patterns in climate variables, rather than processes operating over smaller areas (e.g., sub-national, regional etc). The resolution of our raster data is sufficient to capture these patterns.</p>
+</details><p><br></p>
 </div>
 <div id="geoprocessing" class="section level3" number="1.2.8">
 <h3>
@@ -366,19 +505,32 @@
 </h3>
 <p>In the <code>world-clim</code> directory, there are raster layers (<code>.tif</code>) for each month of the year (<code>01 - 12</code>) for both average temperature (°C) and precipitation (mm). For our analysis, we are interested in the <em>annual</em> average temperature and the <em>total</em> annual precipitation. This is an excellent opportunity for our first use of a <strong>Geoprocessing Tool</strong>.</p>
 <blockquote>
-<p>In the top ribbon, navigate to Analysis → Geoprocessing and select the red toolbox (Geoprocessing).</p>
+<p>In the top ribbon, navigate to Analysis → Geoprocessing and select the red toolbox <code>Tools</code> (Geoprocessing).</p>
 </blockquote>
+<center>
+<img src="images/practical-1/geoprocessing-tools.png" style="width:40.0%">
+</center>
+<p><br></p>
 <p>The Geoprocessing pane should now be visible, with tabs for ‘Toolboxes’ and ‘Favourites’ (i.e., recent and commonly used tools). There are hundreds of available tools, so the easiest way to navigate these is via the Search bar at the top.</p>
-<blockquote>
-<p>Search for and open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog">Cell Statistics</a> (Spatial Analyst Tools)</p>
-</blockquote>
-<p>As per the documentation linked above, this tool calculates cell-by-cell statistics for multiple rasters, as visualised below e.g., the value in the output raster <span class="math inline">\(o_1\)</span> would equal the average (or sum, maximum, etc) of <span class="math inline">\(a_1 + b_1 + c_1\)</span>.</p>
-<div class="float">
-<img src="images/practical-1/cell-statistics.png" style="width:100.0%" alt="Cell Statistics. Values from multiple rasters are combined on a cell-by-cell basis"><div class="figcaption"><em>Cell Statistics. Values from multiple rasters are combined on a cell-by-cell basis</em></div>
-</div>
+<center>
+<img src="screenshots/practical-1/geoprocessing-toolbar.png" style="width:60.0%">
+</center>
 <p><br></p>
 <blockquote>
-<p>Under ‘Input rasters’, use the directory icon to navigate to <code>data/world-clim/wc2.1_10m_tavg</code> and select all 12 <code>.tif</code> files as input. For ‘Output Raster’, export to the <code>practical-1</code> directory, with a suitable name e.g., <code>wc2.1_10m_tavg_annual.tif</code>. For ‘Overlay statistic’, we want the average temperature for the 12 months, so use <code>Mean</code>.</p>
+<p>Search for and open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog">Cell Statistics</a> (<strong>Spatial Analyst Tools</strong>)</p>
+</blockquote>
+<p>There are occasionally tools with similar or identical names, but in different ‘Toolboxes’, so be careful to select the correct one:</p>
+<center>
+<img src="screenshots/practical-1/cell-statistics.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>As per the documentation linked above, this tool calculates cell-by-cell statistics for multiple rasters, as visualised below e.g., the value in the output raster <span class="math inline">\(o_1\)</span> would equal the average (or sum, maximum, etc) of <span class="math inline">\(a_1 + b_1 + c_1\)</span>:</p>
+<center>
+<img src="images/practical-1/cell-statistics.png" style="width:100.0%">
+</center>
+<p><br></p>
+<blockquote>
+<p>Under ‘Input rasters’, use the directory icon to navigate to <code>data/world-clim/wc2.1_10m_tavg</code> and select all 12 <code>.tif</code> files as input. For ‘Output Raster’, export to the <code>practical-1</code> directory, with a suitable name e.g., <code>wc2.1_10m_tavg_annual.tif</code>. For ‘Overlay statistic’, we want the average temperature for the 12 months, so use <code>Mean</code>. When you finalised the settings, press <strong>Run</strong>. When complete, your new raster layer should be visible in the Map View:</p>
 </blockquote>
 <div class="float">
 <img src="screenshots/practical-1/cell-statistics-output.png" style="width:100.0%" alt="Average annual temperature (°C), computed using Cell Statistics"><div class="figcaption"><em>Average annual temperature (°C), computed using Cell Statistics</em></div>
@@ -387,6 +539,14 @@
 <div class="question">
 <p>What is the average annual temperature for the Manchester region? <em>Hint: make sure the layer is selected in the Contents Pane and use ‘Explore’ selected in the ‘Navigate’ pane</em>.</p>
 </div>
+<center>
+<img src="screenshots/practical-1/explore-tab.png" style="width:40.0%">
+</center>
+<p><br></p>
+<details><summary>
+Answer
+</summary><p>Based on the WorldClim data, the raster cell which corresponds to Manchester has a value of <span class="math inline">\(\approx10^{\circ}\text{C}\)</span>.</p>
+</details><p><br></p>
 <blockquote>
 <p>Repeat the above process, using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog">Cell Statistics</a> to calculate the <strong>total</strong> precipitation across the 12 months, making sure to select a suitable file name (e.g., <code>wc2.1_10m_prec_total.tif</code>) and save in the correct directory.</p>
 </blockquote>
@@ -395,7 +555,7 @@
 </div>
 <p><br></p>
 <blockquote>
-<p>To avoid confusion, remove the month temperature layer loaded previously (<code>wc2.1_10m_tavg_01.tif</code>).</p>
+<p>To avoid confusion, remove the monthly temperature layer loaded previously (<code>wc2.1_10m_tavg_01.tif</code>).</p>
 </blockquote>
 </div>
 <div id="poly-raster" class="section level3" number="1.2.9">
@@ -416,24 +576,33 @@
 </ul>
 <p>For our Polygon data, this can be achieved using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a> (Spatial Analyst Tools):</p>
 <blockquote>
-<p>In the Geoprocessing pane, open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>. For ‘Input Raster or Feature Zone Data’, use the <code>natural-earth</code> layer, with ‘Zone Field’ as ID<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Here we are calculating zonal statistics for each feature of the &lt;code&gt;natural-earth&lt;/code&gt; layer. However, we could use a different zone field here e.g., &lt;code&gt;CONTINENT&lt;/code&gt;, &lt;code&gt;REGION_WB&lt;/code&gt;, to aggregate at a different scale.&lt;/p&gt;"><sup>4</sup></a>. For the ‘Input Value Raster’, use the average temperature raster created previously, and use an appropriate name for the ‘Ouput Table’ e.g., <code>ne-zonal-stats-temp</code>. For simplicity, select <code>Mean</code> for ‘Statistics Type’ and leave all other settings at default.</p>
+<p>In the Geoprocessing pane, open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>. For ‘Input Raster or Feature Zone Data’, use the <code>natural-earth</code> layer, with ‘Zone Field’ as ID<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Here we are calculating zonal statistics for each feature of the &lt;code&gt;natural-earth&lt;/code&gt; layer. However, we could use a different zone field here e.g., &lt;code&gt;CONTINENT&lt;/code&gt;, &lt;code&gt;REGION_WB&lt;/code&gt;, to aggregate at a different scale.&lt;/p&gt;"><sup>4</sup></a>. For the ‘Input Value Raster’, use the average temperature raster created previously, and use an appropriate name for the ‘Output Table’ e.g., <code>ne-zonal-stats-temp</code>. For simplicity, select <code>Mean</code> for ‘Statistics Type’ and leave all other settings at default.</p>
 </blockquote>
 <div class="note">
 <p>You may be presented with the following: <code>WARNING</code> <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/tool-errors-and-warnings/010001-020000/tool-errors-and-warnings-10551-10575-010566.html">010566</a>: <em>Some zones may not have been rasterized</em>. This has occurred because there are features present in the <code>natural-earth</code> layer but there are no corresponding values in the raster layer (<code>NoData</code>).</p>
 </div>
 <p>If successful, a new ‘Standalone Table’ should be present in the Contents Pane, which if opened contains the IDs used for aggregation (<code>FID</code>), the number of cells per feature, and the statistics we requested (<code>MEAN</code>)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;An &lt;code&gt;AREA&lt;/code&gt; field is also present, but treat this value cautiously, as it is measured in the units of the Coordinate Reference System (degrees). Don’t worry about this too much now - we’ll discuss more fully later in the unit.&lt;/p&gt;"><sup>5</sup></a>.</p>
+<center>
+<img src="screenshots/practical-1/zonal-stats.png" style="width:40.0%">
+</center>
 <blockquote>
-<p>Repeat this process for precipitation, using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>, but making sure to return the total precipitation (not the average).</p>
+<p>Repeat this process for precipitation, using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog">Zonal Statistics as Table</a>, but making sure to return the <strong>total</strong> precipitation (not the average) via “Statistics Type” = <code>SUM</code>.</p>
 </blockquote>
-<p>Our new tables have useful information, but we would struggle to perform any further <em>spatial</em> analysis in their current format… there is no spatial information! This can be addressed by joining our layers using <strong>attribute information</strong>, commonly referred to as a <strong>table join</strong>. This takes information from a <em>Join Table</em>, and adds it to the <em>Input Table</em> based on a common attribute, as illustrated below:</p>
-<p><a href="https://www.8000ers.com/cms/de/8000ers-mainmenu-205.html" width="100%"><img src="images/practical-1/table-join.png" alt="Table Join, using a common attribute (Name)"></a></p>
+<p>Our new tables have useful information, but we would struggle to perform any further <em>spatial</em> analysis in their current format… there is no spatial information! This can be addressed by joining our layers via shared <strong>attribute information</strong>, commonly referred to as a <strong>table join</strong>. This takes information from a <em>Join Table</em>, and adds it to the <em>Input Table</em> based on a common attribute, as illustrated below:</p>
+<p><a href="https://www.8000ers.com/cms/de/8000ers-mainmenu-205.html" width="100%"><img src="images/practical-1/table-join.png"></a></p>
 <p><br></p>
 <blockquote>
 <p>Right click on the <code>natural-earth</code> data in the Contents Pane → Joins and Relatives → Add Join. Under ‘Input Field’, select <code>FID</code>. For ‘Join Table’, use the output of Zonal Statistics (e.g., <code>ne-zonal-stats-temp</code>), with ‘Join Field’ also as <code>FID</code> (this is the field we selected for aggregation). Leave all inputs as default and Run.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/table-join.png" style="width:50.0%">
+</center>
 <blockquote>
 <p>Inspect the Attribute Table for the <code>natural-earth</code> data. At the end you should see new fields, corresponding to those produced by Zonal Statistics.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/table-join-output.png" style="width:70.0%">
+</center>
 <blockquote>
 <p>Repeat this process for the precipitation statistics table.</p>
 </blockquote>
@@ -452,23 +621,36 @@
 <div class="question">
 <p>What is the annual average temperature and total annual precipitation for the UK?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>Based on the WorldClim data, the mean temperature is <span class="math inline">\(\approx8.6^{\circ}\text{C}\)</span> while the total precipitation <em>across the entire area of the UK</em> is <span class="math inline">\(\approx1.3 \: \text{million mm}\)</span>.</p>
+</details><p><br></p>
 </div>
 <div id="data-integration-point-raster" class="section level3" number="1.2.10">
 <h3>
 <span class="header-section-number">1.2.10</span> Data integration: Point + Raster<a class="anchor" aria-label="anchor" href="#data-integration-point-raster"><i class="fas fa-link"></i></a>
 </h3>
 <p>We can repeat this process for our Point data (<code>world_cities_5m</code>), but we can achieve this more elegantly using a single standalone tool: <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog">Extract Multi Values to Points</a>. As our Points represent discrete locations, with no corresponding area, there is no need for any form of aggregation. We can simply extract the corresponding raster value at each Point location, as illustrated below:</p>
-<p align="center">
-<a name=""></a><img src="images/practical-1/point-sampling.png" style="width:50.0%"></p>
+<center>
+<img src="images/practical-1/point-sampling.png" style="width:50.0%">
+</center>
 <blockquote>
 <p>Open <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/extract-multi-values-to-points.html?tabs=dialog">Extract Multi Values to Points</a>, using <code>world_cities_5m</code> as the ‘Input point features’ and select <em>both</em> the temperature and precipitation rasters as inputs. Update the ‘Output field name’ to simpler versions e.g., <code>temp</code>, <code>prec</code>.</p>
 </blockquote>
+<center>
+<img src="images/practical-1/raster_values_to_points.png" style="width:50.0%">
+</center>
 <div class="note">
 <p>Note that this tool modifies the input data in place i.e., new fields are added to the Attribute Table for <code>world_cities_5m</code>, rather than creation of a new standalone table. While this streamlines our analysis in this case, be careful with tools that modify your input data!</p>
 </div>
 <div class="question">
 <p>Based on the information in the Attribute Table, which global cities have the highest and lowest average temperature / precipitation?</p>
 </div>
+<details><summary>
+Answer
+</summary><p>Based on the WorldClim data, Khartoum has the highest average temperature (<span class="math inline">\(\approx29.7^{\circ}\text{C}\)</span>), while Heilongjiang has the lowest average temperature (<span class="math inline">\(\approx4.7^{\circ}\text{C}\)</span>).</p>
+<p>Rangoon has the highest total annual precipitation (<span class="math inline">\(\approx2551 \: \text{mm}\)</span>), while Lima has the lowest (<span class="math inline">\(\approx22 \: \text{mm}\)</span>).</p>
+</details><p><br></p>
 <p>As previously, we can use information in the Attribute Table to change our layer symbology. This can be applied to the colour of the features, but also their size, transparency etc, see below:</p>
 <div class="float">
 <img src="screenshots/practical-1/point-symbologies.png" style="width:100.0%" alt="World Cities, size based on precipitation, colour based on temperature"><div class="figcaption"><em>World Cities, size based on precipitation, colour based on temperature</em></div>
@@ -488,6 +670,10 @@
 <blockquote>
 <p>In the top ribbon, navigate to Insert → New Layout, and choose an appropriate output size e.g., A4, landscape.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/layout-button.png" style="width:80.0%">
+</center>
+<p><br></p>
 <p>If successful, this should produce an empty Layout:</p>
 <div class="float">
 <img src="screenshots/practical-1/empty-layout.png" style="width:100.0%" alt="An empty Layout"><div class="figcaption"><em>An empty Layout</em></div>
@@ -495,21 +681,32 @@
 <p><br></p>
 <p>To add a map frame to this layout:</p>
 <blockquote>
-<p>In the Layout top ribbon, navigate to Map Frames → Map Frame, and using the ‘Default Extent’, use the cursor to draw the map frame, for example covering the entire A4 page, as shown below:</p>
+<p>In the Layout top ribbon, navigate to Map Frames → Map Frame, and select ‘Default Extent’:</p>
+</blockquote>
+<center>
+<img src="screenshots/practical-1/add-map-frame.png" style="width:35.0%">
+</center>
+<blockquote>
+<p>Use the cursor to draw the map frame, for example covering the entire A4 page, as shown below:</p>
 </blockquote>
 <div class="float">
 <img src="screenshots/practical-1/layout-with-map-frame.png" style="width:100.0%" alt="A Layout with a map frame"><div class="figcaption"><em>A Layout with a map frame</em></div>
 </div>
 <p><br></p>
-<p>We can edit the map frame directly, for example by changing it’s dimensions:</p>
+<p>We can edit the map frame directly, for example by dragging the borders to change it’s dimensions:</p>
 <div class="float">
 <img src="screenshots/practical-1/layout-frame-dims.png" style="width:100.0%" alt="Editing the map frame dimensions"><div class="figcaption"><em>Editing the map frame dimensions</em></div>
 </div>
 <p><br></p>
-<p>To modify the extent of the map layers <strong>within</strong> the map frame e.g., the scale:</p>
+<p>To modify the extent of the map layers <strong>within</strong> the map frame e.g., the <strong>map scale</strong>:</p>
 <blockquote>
-<p>In the Layout top ribbon, navigate to Map → Activate, which will allow you to move the map layers within the frame. For example, below is the map panned to Asia, with a map scale of 1:40,000,000.</p>
+<p>In the top ribbon, navigate to Layout → Map → Activate, which will allow you to move the map layers within the frame.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/activate-layout.png" style="width:60.0%">
+</center>
+<p><br></p>
+<p>For example, below is the map panned to Asia, with a map scale of 1:40,000,000.</p>
 <div class="float">
 <img src="screenshots/practical-1/map-frame-rescaled.png" style="width:100.0%" alt="A rescaled map frame"><div class="figcaption"><em>A rescaled map frame</em></div>
 </div>
@@ -518,18 +715,26 @@
 <p>As a reminder, the aim of this section is to familiarise yourself with map production, so feel free to rescale the map (e.g., global, regional).</p>
 </div>
 <blockquote>
-<p>When you’re happy with the map contents and scale, select ‘Close Activation’ in the top ribbon.</p>
+<p>When you’re happy with the map contents and scale, select Layout → Close Activation in the top ribbon.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/close-active-layout.png" style="width:35.0%">
+</center>
+<p><br></p>
 <p>A map is not complete without a scale bar, north arrow, title and legend, so let’s add them.</p>
 <blockquote>
-<p>In the Layout top ribbon, navigate to Map Surrounds and add a scale bar and north arrow. Add a Legend and explore the settings to remove unncessary layers, and changing the styling (e.g., font size, names) for visible layers:</p>
+<p>In the Layout top ribbon, navigate to Map Surrounds and add a scale bar and north arrow. Add a Legend and explore the settings to remove unnecessary layers, and changing the styling (e.g., font size, names) for visible layers:</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/map-surrounds.png" style="width:75.0%">
+</center>
+<p><br></p>
 <div class="float">
 <img src="screenshots/practical-1/map-with-elements.png" style="width:100.0%" alt="A map frame with north arrow, scale bar and legend"><div class="figcaption"><em>A map frame with north arrow, scale bar and legend</em></div>
 </div>
 <p><br></p>
 <blockquote>
-<p>Why not add a label for the city names? Right click <code>world_cities_5m</code>, select ‘Label’. By default, this uses <code>$feature.CITY_NAME</code>, but you could change this via ‘Label Properties’.</p>
+<p>Why not add a label for the city names? Right click <code>world_cities_5m</code> in the Contents Pane, select ‘Label’. By default, this uses <code>$feature.CITY_NAME</code>, but you could change this via ‘Label Properties’.</p>
 </blockquote>
 <div class="float">
 <img src="screenshots/practical-1/map-with-labels.png" style="width:100.0%" alt="A map with city labels"><div class="figcaption"><em>A map with city labels</em></div>
@@ -538,6 +743,10 @@
 <blockquote>
 <p>In the Layout top ribbon → Graphics and Text, add a Text Box for a data attribution and/or title.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/graphics-and-text.png" style="width:40.0%">
+</center>
+<p><br></p>
 <blockquote>
 <p>Why not add an extra symbology to the map?</p>
 </blockquote>
@@ -548,6 +757,7 @@
 <p>As you will have gathered from our exploration of the Layout panel, we are only really scratching the surface of map production and cartography. It will take time to learn!</p>
 <div class="note">
 <p>For a deeper overview of cartographic principles, wait for Week 3 of GEOG62411 (<em>Data Acquisition for GI Scientists</em>).</p>
+<p><br></p>
 <p>It is also worth reiterating that this is <strong>not</strong> a course on cartography. While you should endeavour to avoid cartographic <em>mistakes</em>, the aim is to produce clear and informative map outputs i.e., is there a scale bar and north arrow? Are layers described for the reader? Are appropriate colour scales used?</p>
 </div>
 </div>
@@ -557,11 +767,20 @@
 </h3>
 <p>As our final task, we want to export our map. This will be useful for your <a href="assessment.html#assessment">assessments</a>.</p>
 <blockquote>
-<p>In the top ribbon, navigate to Share → Output → Export Layout. In the ‘Export Layout’ pane, you can either export a raster image (e.g., <code>.png</code>, recommended resolution of 300 dpi) or a vector output for further editing (e.g., <code>.pdf</code>, <code>.svg</code>), for example in <a href="https://inkscape.org/">Inkscape</a> or an editing software of your choice.</p>
+<p>In the top ribbon, navigate to Share → Output → Export Layout.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/output-map.png" style="width:100.0%">
+</center>
+<p><br></p>
+<p>In the ‘Export Layout’ pane, you can choose your desired <code>File type</code>, for example as a raster image (e.g., <code>.png</code>, recommended resolution of 300 dpi) or a vector output for further editing (e.g., <code>.pdf</code>, <code>.svg</code>), for example in <a href="https://inkscape.org/">Inkscape</a> or an editing software of your choice.</p>
 <blockquote>
-<p>Export your layout as a raster (e.g., <code>practical-1-map.png</code>), saving to the correct directory, and ‘Clip to graphics extent’.</p>
+<p>Export your layout as a raster (e.g., <code>practical-1-map.png</code>), saving to the project directory, and <code>Clip to graphics extent</code>.</p>
 </blockquote>
+<center>
+<img src="screenshots/practical-1/map-export-file.png" style="width:75.0%">
+</center>
+<p><br></p>
 <p><strong>Congratulations!</strong> You have completed some introductory but powerful spatial analysis and made a beautiful map.</p>
 <p><a href="index.html#index"><strong>Finished!</strong></a></p>
 <hr>
@@ -577,10 +796,11 @@
 <p>WorldClim 2 also includes a range of <strong>future</strong> climate projections, derived from CMIP6 (<em>Coupled Model Intercomparison Project Phase 6</em>), a project which combines outputs from a range of global climate models (GCM) for different scenarios of societal development, known as <a href="https://doi.org/10.1016/j.gloenvcha.2016.05.009">Shared Socio-economic Pathways</a> (SSPs).</p>
 <p>A good overview of the SSPs is provided <a href="https://www.dkrz.de/en/communication/climate-simulations/cmip6-en/the-ssp-scenarios">here</a>.</p>
 <blockquote>
-<p>Download the monthly average temperature datasets [<code>tx</code>] for 2081-2100 using the U.K. Earth System Model (<code>UKESM1-0-LL</code>) at a 10 arc-minute spatial resolution <a href="https://www.worldclim.org/data/cmip6/cmip6_clim10m.html">here</a>. For further information on the UKSEM, see <span class="citation">Sellar <em>et al.</em> (<a href="references.html#ref-sellar2019">2019</a>)</span>.</p>
+<p>Download the monthly average maximum temperature dataset [<code>tx</code>] for 2081-2100 using the U.K. Earth System Model (<code>UKESM1-0-LL</code>) at a 10 arc-minute spatial resolution <a href="https://www.worldclim.org/data/cmip6/cmip6_clim10m.html">here</a>. For further information on the UKSEM, see <span class="citation">Sellar <em>et al.</em> (<a href="references.html#ref-sellar2019">2019</a>)</span>.</p>
 </blockquote>
+<p>Note that the monthly data are helpfully distributed as a single file i.e., <code>wc2.1_10m_tmax_UKESM1-0-LL_ssp585_2081-2100.tif</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Breaking down the complicate file name, this is the output for the &lt;code&gt;UKESM1-0-LL&lt;/code&gt; model, for the &lt;code&gt;ssp585&lt;/code&gt; scenario, for &lt;code&gt;2081-2100&lt;/code&gt;, and for monthly average maximum temperature &lt;code&gt;tmax&lt;/code&gt;&lt;/p&gt;"><sup>6</sup></a>, which contains each separate month as its own layer of data. This is referred to as a <strong>multi-band</strong> raster, unlike the <strong>single band</strong> rasters we’ve worked with so far, and should be familiar to those you enrolled on <strong>GEOG60941</strong> <em>Environmental Remote Sensing</em>.</p>
 <blockquote>
-<p>For SSP1-2.6 (<em>Sustainable</em>), SSP2-4.5 (<em>Middle of the road</em>), SSP3-7.0 (<em>Regional rivalry</em>) and SSP5-8.5 (<em>Fossil-Fueled Development</em>), calculate the average annual monthly temperature using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog">Cell Statistics</a>.</p>
+<p>For SSP1-2.6 (<em>Sustainable</em>), SSP2-4.5 (<em>Middle of the road</em>), SSP3-7.0 (<em>Regional rivalry</em>) and SSP5-8.5 (<em>Fossil-Fueled Development</em>), calculate the <strong>average</strong> temperature using <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/cell-statistics.html?tabs=dialog">Cell Statistics</a>. Cell Statistics is intelligent enough to handle all the separate layers stored in the multi-band raster e.g., <code>wc2.1_10m_tmax_UKESM1-0-LL_ssp585_2081-2100.tif</code>, so only one input is needed for each scenario.</p>
 </blockquote>
 <div class="question">
 <p>Which world cities (&gt;5 million population) are expected to see the greatest increase in temperature by 2081 - 2100? You may want to use <code>Zonal Statistics</code> again…</p>
@@ -610,8 +830,8 @@
 <li>
 <a class="nav-link" href="#practical"><span class="header-section-number">1.2</span> Practical</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#data-1"><span class="header-section-number">1.2.1</span> Data</a></li>
-<li><a class="nav-link" href="#projects"><span class="header-section-number">1.2.2</span> Projects</a></li>
-<li><a class="nav-link" href="#loading-data"><span class="header-section-number">1.2.3</span> Loading data</a></li>
+<li><a class="nav-link" href="#p1_projects"><span class="header-section-number">1.2.2</span> Projects</a></li>
+<li><a class="nav-link" href="#p1_loading_data"><span class="header-section-number">1.2.3</span> Loading data</a></li>
 <li><a class="nav-link" href="#exploring-data"><span class="header-section-number">1.2.4</span> Exploring data</a></li>
 <li><a class="nav-link" href="#symbolising-data"><span class="header-section-number">1.2.5</span> Symbolising data</a></li>
 <li><a class="nav-link" href="#filtering-data"><span class="header-section-number">1.2.6</span> Filtering data</a></li>

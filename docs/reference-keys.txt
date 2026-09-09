@@ -2,8 +2,8 @@ geo_data
 introduction
 practical
 data-1
-projects
-loading-data
+p1_projects
+p1_loading_data
 exploring-data
 symbolising-data
 filtering-data
@@ -49,11 +49,9 @@ interpreting-morans-i
 local-spatial-autocorrelation
 calculating-local-morans-i_i
 interpreting-local-morans-i_i
-alternative-indices
-getis-and-ords-g
-getis-and-ords-g_i
 autocorrelation_summary
 extra-1
+getis-and-ords-g
 resources
 spatial_correlation
 introduction-3
