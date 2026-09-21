@@ -14,8 +14,8 @@
 # Create the docs folder, if not existing
 if (!dir.exists("./docs")) {dir.create("./docs")}
 
-# Move the CNAME file
-file.copy("./CNAME", "./docs")
+# Move the CNAME file, use for custom domains
+# file.copy("./CNAME", "./docs")
 
 ```
 
