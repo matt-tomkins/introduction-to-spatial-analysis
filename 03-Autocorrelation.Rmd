@@ -88,6 +88,12 @@ When assessing for spatial autocorrelation, this can be analysed at a **global**
 
 Spatial autcorrelation can also be analysed at a **local** level, which provides more detailed information on the *locations* of areas of clustering, dispersion or randomness e.g., which parts of the map show clusters of **positive** spatial autocorrelation?
 
+Measures of global and local spatial autocorrelation typically focus on **continuous** numerical data e.g., temperature ($^{\circ}\text{C}$), air pollution (ppm), or vote share (%). However, it is possible to analyse **categorical** data by assigning a numeric value to each category, although the process would vary depending on whether there is a *logical order*[^ordinal] to the categories, or not[^dummy_encoding]. 
+
+[^ordinal]: If there **is** a logical order to the categories, we would refer to this as **ordinal data** e.g., survey responses with the following ordered scores: Poor &rarr; Basic &rarr; Reasonable &rarr; Good &rarr; Excellent &rarr; Outstanding. In this situation, we could be justified in assigning them a sequential numeric value e.g., Poor = 1, Basic = 2, and so on. 
+
+[^dummy_encoding]: If there is **no** logical order to the categories, we would refer to this as **nominal data** e.g., vehicle brands: Toyota, Ford, Honda, Land Rover. As there no logical order to these items, we should **not** assign them a numeric value e.g., Toyota = 1, Ford = 2, Honda = 3, Land Rover = 4. Using this approach, we would infer that Honda is equal to three $\times$ Toyota, which makes no sense! Instead, we would typically use a [**dummy variable**](https://en.wikipedia.org/wiki/Dummy_variable_(statistics)) approach, which would involve creating a separate variable for each category, where the values are either 1 or 0, denoting the presence or absence of the categorical value for that particular row of data. See Figure 1 [here](https://methods.sagepub.com/ency/edvol/sage-encyclopedia-of-educational-research-measurement-evaluation/chpt/dummy-variables#_) for a useful example. Spatial autocorrelation could then be evaluated for each dummy variable. In ArcGIS, dummy variables could be created using [Encode Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/encode-field.html?tabs=dialog) (Data Management Tools). 
+
 #### Importance
 
 As discussed in the lecture, spatial autocorrelation is of profound importance for spatial analysis. Understanding the spatial structure of our data is critical if we want to really understand the phenonema of interest. Spatial autocorrelation also dictates the methods that we can use. For example, many traditional statistical approaches[^03-autocorrelation-2] assume **independence of observations** i.e., all observations in your data are independent from each other. This assumption is *met* when spatial autocorrelation is absent (i.e., complete spatial randomness), but is *broken* when spatial autocorrelation is present, rendering the results and our interpretations invalid.
@@ -1018,21 +1024,14 @@ $$\begin{array}{c|cccccccccccccccc}
  & \text{A1} & \text{A2} & \text{A3} & \text{A4} &
    \text{B1} & \text{B2} & \text{B3} & \cdots\\
 \hline
-\text{A1} &	0	&	2	&	0	&	0	&	1	&	2	&	0	&	\cdots
-\\
-\text{A2} &	2	&	0	&	6	&	0	&	2	&	4	&	6	&	\cdots
-\\
-\text{A3} &	0	&	6	&	0	&	12	&	0	&	6	&	9	&	\cdots
-\\
-\text{A4} &	0	&	0	&	12	&	0	&	0	&	0	&	12	&	\cdots
-
-\\\text{B1} &	1	&	2	&	0	&	0	&	0	&	2	&	0	&	\cdots
-\\
-\text{B2} &	2	&	4	&	6	&	0	&	2	&	0	&	6	&	\cdots
-\\
-\text{B3} &	0	&	6	&	9	&	12	&	0	&	6	&	0	&	\cdots
-\\
-\vdots &    \vdots  &   \vdots  &   \vdots  &   \vdots  &   \vdots  &   \vdots  &   \vdots  &   \ddots
+\text{A1} &	0	&	2	&	0	&	0	&	1	&	2	&	0	&	\cdots\\
+\text{A2} &	2	&	0	&	6	&	0	&	2	&	4	&	6	&	\cdots\\
+\text{A3} &	0	&	6	&	0	&	12	&	0	&	6	&	9	&	\cdots\\
+\text{A4} &	0	&	0	&	12	&	0	&	0	&	0	&	12	&	\cdots\\
+\text{B1} &	1	&	2	&	0	&	0	&	0	&	2	&	0	&	\cdots\\
+\text{B2} &	2	&	4	&	6	&	0	&	2	&	0	&	6	&	\cdots\\
+\text{B3} &	0	&	6	&	9	&	12	&	0	&	6	&	0	&	\cdots\\
+\vdots & \vdots & \vdots &  \vdots & \vdots & \vdots & \vdots & \vdots & \ddots
 \end{array}$$
 
 

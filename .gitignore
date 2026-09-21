@@ -19,3 +19,7 @@ data_raw/
 GEOG73001/
 images/**/*.svg
 screenshots/**/*.svg
+_14-Assessment-1.Rmd
+_15-Assessment-2.Rmd
+assessment/
+offline/

@@ -166,7 +166,7 @@ Attributes</a>
 </h3>
 <p>In 1687, Isaac Newton published <em>Philosophiæ Naturalis Principia
 Mathematica</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The Mathematical Principles of Natural
-Philosophy&lt;/p&gt;"><sup>127</sup></a>, arguably the most important
+Philosophy&lt;/p&gt;"><sup>129</sup></a>, arguably the most important
 scientific work in history:</p>
 <p align="center">
 </p>
@@ -224,7 +224,7 @@ Palau, …). Similarly, we might expect migration to be greater for
 <em>distant</em> country pairs (e.g., France → Japan). In reality, patterns of
 migration might also be explained by additional drivers e.g., shared
 language, cultural similarity<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;As we explored in Practical 1: &lt;a href="geo_data.html#geo_data"&gt;Working
-with Geographic Data&lt;/a&gt;.&lt;/p&gt;'><sup>128</sup></a>, wealth
+with Geographic Data&lt;/a&gt;.&lt;/p&gt;'><sup>130</sup></a>, wealth
 inequality, to name a few.</p>
 <p>Returning to our model:</p>
 <ul>
@@ -337,7 +337,7 @@ small<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&l
 &lt;a href="https://ukdataservice.ac.uk/app/uploads/censusgeography2022-10-18.pdf"&gt;here&lt;/a&gt;),
 although I haven’t been able to find documentation to confirm this.
 Alternatively, the coordinates are geometric-only, but produced by
-an alternative method.&lt;/p&gt;'><sup>129</sup></a> and given we are using the modelled
+an alternative method.&lt;/p&gt;'><sup>131</sup></a> and given we are using the modelled
 Points to calculate an <em>approximate</em> distance between local authorities,
 rather than actual travel paths (for example), we can be justified in
 using the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/feature-to-point.html?tabs=dialog">Feature To
@@ -798,7 +798,7 @@ product of the individual probabilities i.e.,
 &lt;span class="math inline"&gt;\(L=P_{1} \times P_{2}\times \cdots \times P_{n}\)&lt;/span&gt;. You can also
 obtain the same result by taking the logarithm of both sides, which
 can solve numerical problems i.e.,
-&lt;span class="math inline"&gt;\(\log(L)=\log(P_{1}) + \log(P_{2})+ \cdots + \log(P_{n})\)&lt;/span&gt;.&lt;/p&gt;'><sup>130</sup></a>… <span class="math inline">\(L=0.00000000161903\)</span>.</p>
+&lt;span class="math inline"&gt;\(\log(L)=\log(P_{1}) + \log(P_{2})+ \cdots + \log(P_{n})\)&lt;/span&gt;.&lt;/p&gt;'><sup>132</sup></a>… <span class="math inline">\(L=0.00000000161903\)</span>.</p>
 <p>Now let’s say we have created a new model with a <strong>different</strong> set of
 values for <span class="math inline">\(k, μ, α\)</span> and <span class="math inline">\(\beta\)</span>, which will therefore produce a
 different set of modelled flow values <span class="math inline">\(λ\)</span>:</p>
@@ -825,7 +825,7 @@ generated using different values for the model parameters, in our case
 origin-destination pair, we can assess the probability of observing the
 <strong>empirical</strong> flow value given the expected (modelled) flow
 value<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Using the following equation:
-&lt;span class="math inline"&gt;\(\frac{λ^{n}e^{-λ}}{n!}\)&lt;/span&gt;&lt;/p&gt;'><sup>131</sup></a>. The model <em>likelihood</em> <span class="math inline">\(L\)</span> is the
+&lt;span class="math inline"&gt;\(\frac{λ^{n}e^{-λ}}{n!}\)&lt;/span&gt;&lt;/p&gt;'><sup>133</sup></a>. The model <em>likelihood</em> <span class="math inline">\(L\)</span> is the
 product of these probabilities for all observations i.e., how well does
 this particular set of parameters explain the observed flow? This
 process is repeated, trying different values for each of the parameters
@@ -855,7 +855,7 @@ in
 For those more familiar with Excel, the function log() defaults to
 base10. For any future analysis, be aware of this difference! In
 Excel, the same result can be obtained using log(val, EXP(1)) or the
-LN() function.&lt;/p&gt;'><sup>132</sup></a>
+LN() function.&lt;/p&gt;'><sup>134</sup></a>
 origin population, destination GDP and distance variables e.g.,
 <code>log_orig_pop</code> (<code>Double</code>) = <code>math.log(!orig_pop!)</code>. To simplify the
 calculations for distance, you may also want to covert to kilometers
@@ -969,11 +969,11 @@ ensure that the sum of all modelled flows equals the sum of all
 empirical flows. The other variants are defined as follows:</p>
 <ul>
 <li>An <strong>origin-constrained</strong> model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Also referred to as a &lt;strong&gt;production
-constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>133</sup></a> is
+constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>135</sup></a> is
 designed to constrain the total modelled flows <em>from each origin</em> to
 match the total empirical flows <em>from each origin</em>.</li>
 <li>A <strong>destination-constrained</strong> model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Also referred to as an &lt;strong&gt;attraction
-constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>134</sup></a> is
+constrained&lt;/strong&gt; model.&lt;/p&gt;"><sup>136</sup></a> is
 designed to constrain the total modelled flows <em>to each destination</em>
 to match the total empirical flows <em>to each destination</em>.</li>
 <li>A <strong>doubly-constrained</strong> model does both and is designed to
@@ -1270,7 +1270,7 @@ observation belongs to exactly one category, the row-wise sum of the
 dummy variables would always equal 1. This would be a perfect
 duplicate of the intercept column (which also consists entirely of
 1’s, as shown above), making one column an exact linear combination
-of the others.&lt;/p&gt;'><sup>135</sup></a>. To avoid
+of the others.&lt;/p&gt;'><sup>137</sup></a>. To avoid
 this, we remove the intercept using <code>-1</code>, allowing the model to estimate
 a separate coefficient for every origin (in <code>orig_LAD21CD</code>), which
 represent their own baseline effect, rather than measuring relative to
@@ -1368,7 +1368,7 @@ but for completeness, the model is as follows:
 &lt;span class="math inline"&gt;\(D_{j}=\sum_{i}T_{ij}\)&lt;/span&gt;. &lt;span class="math inline"&gt;\(B_{j}\)&lt;/span&gt; is a balancing factor which is used
 to scale the modelled values to ensure the modelled total flow for
 each &lt;strong&gt;destination&lt;/strong&gt; equals the known total flow &lt;span class="math inline"&gt;\(D_{j}\)&lt;/span&gt;, defined as
-&lt;span class="math inline"&gt;\(B_{j} = \frac{1}{\sum_{i}V_{i}^{μ}d_{ij}^{-\beta}}\)&lt;/span&gt;.&lt;/p&gt;'><sup>136</sup></a>:</p>
+&lt;span class="math inline"&gt;\(B_{j} = \frac{1}{\sum_{i}V_{i}^{μ}d_{ij}^{-\beta}}\)&lt;/span&gt;.&lt;/p&gt;'><sup>138</sup></a>:</p>
 <p><span class="math display">\[λ_{ij} = \exp(μ\log(V_i)+ α_{i}- \beta\log(d_{ij}))\]</span></p>
 <p>The variable <span class="math inline">\(α_{i}\)</span> is a vector of destination-specific intercepts,
 which as before are represented in our model using <strong>dummy variables</strong>,
@@ -1423,7 +1423,7 @@ how this conundrum is solved, except that it is solved <em>iteratively</em>,
 beginning with a starting value and calculating <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{j}\)</span> in
 turn until the values stabilise<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For more information, Adam Dennett’s
 &lt;a href="https://rpubs.com/adam_dennett/376877"&gt;walkthrough&lt;/a&gt; is a good place
-to start, as is the paper by &lt;span class="citation"&gt;Senior (&lt;a href="references.html#ref-senior1979c"&gt;1979&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>137</sup></a>.</p>
+to start, as is the paper by &lt;span class="citation"&gt;Senior (&lt;a href="references.html#ref-senior1979c"&gt;1979&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;'><sup>139</sup></a>.</p>
 <p>Our Poisson regression model is similar to the previous models but here
 we have no variables for modelling emissiveness (<span class="math inline">\(V_i^μ\)</span>) or
 attractiveness (<span class="math inline">\(W_j^α\)</span>), as both total origin flows and total

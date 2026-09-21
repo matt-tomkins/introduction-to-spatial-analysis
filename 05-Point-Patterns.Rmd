@@ -181,7 +181,7 @@ The raw point observations, as shown below, can tell us a lot about the distribu
 
 There are a few alternative visualisations which could be used to address this. One approach is to create a **grid** across the study area, and then symbolise the cells based on the number of observations within each cell. This is useful, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters. When *tesselated*, there may be one or two areas that stand out (e.g., \>500 observations).
 
-We could also use this grid as the basis for statistical testing, for example using [$χ^2$](https://en.wikipedia.org/wiki/Chi-squared_test), which compares the number of observations in each cell (or *quadrat*) vs. an even distribution of observations across the cells. Unfortunately, this is rather tricky to do in ArcGIS, although quite simple in Python e.g., via [`pointspats`](https://pysal.org/pointpats/generated/pointpats.QStatistic.html).
+We could also use this grid as the basis for statistical testing, for example using [$χ^2$](https://en.wikipedia.org/wiki/Chi-squared_test), which compares the number of observations in each cell (or *quadrat*) vs. an even distribution of observations across the cells. 
 
 To generate a grid across our study area:
 
@@ -313,7 +313,7 @@ So far we've explored how to [visualise](#point_vis) our point patterns to maxim
 Are the **objects** randomly distributed or is there evidence of spatial structure?
 :::
 
-One way to achieve this is via **quadrat statistics**, as introduced above, in which the *observed* number of points per quadrat is compared with an even distribution, and with statistical significance assessed using $χ^2$ (chi-squared)[^05-point-patterns-8], for example. If we wished to assess statistical significance, we could use [additional Python libraries](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-conda.html), such as [`scipy`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html) or [`pointpats`](https://pysal.org/pointpats/generated/pointpats.QStatistic.html). While we won't explore Python integration until later in the unit, it is worth recognising as a key strength of the software i.e., we can expand the functionality of ArcGIS via open-source Python libraries. For now, we can assess the distribution qualitatively, by summarising and visualising the `Count of Points` field in the grid Attribute Table.
+One way to achieve this is via **quadrat statistics**, as introduced above, in which the *observed* number of points per quadrat is compared with an even distribution, and with statistical significance assessed using $χ^2$ (chi-squared)[^05-point-patterns-8], for example. If we wished to assess statistical significance, we could use [additional Python libraries](https://doc.esri.com/en/arcgis-pro/latest/arcpy/get-started/what-is-conda.html), such as [`scipy`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html) or [`pointpats`](https://pysal.org/pointpats/generated/pointpats.QStatistic.html). While we won't explore Python integration until later in the unit, it is worth recognising as a key strength of the software i.e., we can expand the functionality of ArcGIS via open-source Python libraries. It would also be possible to assess for [spatial autocorrelation](#spatial_autocorrelation), using the number of points per quadrat as the value to be assessed. For now, we can assess the distribution qualitatively, by summarising and visualising the `Count of Points` field in the grid Attribute Table.
 
 [^05-point-patterns-8]: While we won't use a [chi-squared](https://en.wikipedia.org/wiki/Chi-squared_test) ($χ^2$) test today [@pearson1900], this is used to evaluate whether a dataset of observations matches a dataset of expectations. In our case, our expectation, assuming *complete spatial randomness*, would be equal number of *Panthera tigris* observations per quadrat. A statistically significant $χ^2$ result (e.g., $p<0.05$) would indicate a significant difference between the observed and expected data i.e., the observations do not match the expected pattern that would arise from spatial randomness. 
 
@@ -499,7 +499,9 @@ In my view, DBSCAN has produced the more reasonable and more [parsimonious](http
 
 ### Summary
 
-In this practical, we have **visualised** and characterised the **centrography**, **randomness** and **clustering** of *Panthera tigris* observations. A few summary thoughts to finish:
+In this practical, we have **visualised** and characterised the **centrography**, **randomness** and **clustering** of *Panthera tigris* observations. We have used some important and powerful methods, but of course there are other techniques that can be explored e.g., [Ripley's K](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog) [@ripley_statistical_1988]. 
+
+A few summary thoughts to finish:
 
 Analysing point-patterns is great, but as we discussed in the [introduction](#point_introduction), is really only a precursor to studying **point processes** i.e., which spatial factors and mechanisms give rise to the observed distribution of points? You can explore point-process modelling from an ecological perspective in GEOG71922 *Spatial Ecology*. A species distribution model is an excellent example of a point-process model, see @elith2009.
 
