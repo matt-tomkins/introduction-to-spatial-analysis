@@ -30,7 +30,7 @@ To achieve this, we'll import raster (temperature and precipitation layers) and 
 
 ------------------------------------------------------------------------
 
-## Practical
+## Practical {.hidden-section}
 
 ### Data
 
@@ -720,7 +720,7 @@ In the 'Export Layout' pane, you can choose your desired `File type`, for exampl
 
 ------------------------------------------------------------------------
 
-## Extra
+## Extra {.hidden-section}
 
 The practical is finished! What do you mean there are more tasks to do?! 
 
