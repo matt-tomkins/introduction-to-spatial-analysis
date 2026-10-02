@@ -23,4 +23,5 @@ _14-Assessment-1.Rmd
 _15-Assessment-2.Rmd
 assessment/
 offline/
+# No hidden Rmd files i.e., for later practicals
 _*.Rmd

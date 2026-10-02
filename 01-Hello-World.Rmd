@@ -10,7 +10,7 @@
 
 The aims of this practical are to:
 
-1.  Develop familiarity with ArcGIS interface.
+1.  Develop familiarity with the ArcGIS interface.
 2.  Develop skills in loading and investigating vector and raster data.
 3.  Understand layer symbology and the basics of map production.
 
@@ -30,13 +30,13 @@ To achieve this, we'll import raster (temperature and precipitation layers) and 
 
 ------------------------------------------------------------------------
 
-## Practical {.hidden-section}
+## Practical
 
 ### Data
 
 To begin the unit:
 
-> Download the `GEOG73001` directory from Canvas [here]() and extract to a suitable location on your **P Drive**. 
+> Download the `GEOG73001` directory from Canvas [here](https://canvas.manchester.ac.uk/courses/90928/pages/materials) and extract to a suitable location on your **P Drive**. 
 
 The directory structure is as follows:
 
@@ -720,7 +720,7 @@ In the 'Export Layout' pane, you can choose your desired `File type`, for exampl
 
 ------------------------------------------------------------------------
 
-## Extra {.hidden-section}
+## Extra
 
 The practical is finished! What do you mean there are more tasks to do?! 
 
@@ -744,4 +744,7 @@ Note that the monthly data are helpfully distributed as a single file i.e., `wc2
 Which world cities (\>5 million population) are expected to see the greatest increase in temperature by 2081 - 2100? You may want to use `Zonal Statistics` again...
 </div>
 
+## Resources
+
+- Devillers, R., and Jeansoulin, R. ([2006](https://doi.org/10.1002/9780470612156.ch2)) Spatial Data Quality: Concepts, in Devillers, R., and Jeansoulin, R. (eds) *Fundamentals of Spatial Data Quality*. 
 

@@ -14,3 +14,4 @@ data-integration-point-raster
 map-production
 map-export
 extra
+resources
