@@ -495,7 +495,7 @@ In our case, we want to combine layers **spatially** with the following goal in 
 
 For our Polygon data, this can be achieved using [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog) (Spatial Analyst Tools):
 
-> In the Geoprocessing pane, open [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog). For 'Input Raster or Feature Zone Data', use the `natural-earth` layer, with 'Zone Field' as ID[^zone_field]. For the 'Input Value Raster', use the average temperature raster created previously, and use an appropriate name for the 'Output Table' e.g., `ne-zonal-stats-temp`. For simplicity, select `Mean` for 'Statistics Type' and leave all other settings at default. 
+> In the Geoprocessing pane, open [Zonal Statistics as Table](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/zonal-statistics-as-table.html?tabs=dialog). For 'Input Raster or Feature Zone Data', use the Natural Earth `ne_10m_admin_0_countries` layer, with `FID` as the 'Zone Field'[^zone_field]. For the 'Input Value Raster', use the average temperature raster created previously, and use an appropriate name for the 'Output Table' e.g., `ne-zonal-stats-temp`. For simplicity, select `Mean` for 'Statistics Type' and leave all other settings at default. 
 
 [^zone_field]: Here we are calculating zonal statistics for each feature of the `natural-earth` layer. However, we could use a different zone field here e.g., `CONTINENT`, `REGION_WB`, to aggregate at a different scale. 
 
