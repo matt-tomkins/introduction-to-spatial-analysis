@@ -184,7 +184,7 @@
 <p>If we apply our current neighbourhood rule (<em>if</em> countries share a border, <span class="math inline">\(w=1\)</span>, <em>else</em> <span class="math inline">\(w=0\)</span>), then:</p>
 <ul>
 <li>
-<span class="math inline">\(w_{nb}=1\)</span> for the Netherlands (<span class="math inline">\(n\)</span>) and Belgium (<span class="math inline">\(n\)</span>), as these are directly bordering.</li>
+<span class="math inline">\(w_{nb}=1\)</span> for the Netherlands (<span class="math inline">\(n\)</span>) and Belgium (<span class="math inline">\(b\)</span>), as these are directly bordering.</li>
 <li>
 <span class="math inline">\(w_{na}=0\)</span> for the Netherlands (<span class="math inline">\(n\)</span>) and Austria (<span class="math inline">\(a\)</span>), as these are <em>not</em> directly bordering.</li>
 </ul>
@@ -427,7 +427,7 @@ Answer
 </div>
 <p>The output should now be listed in the Contents Pane and when opened should resemble the following:</p>
 <center>
-<img src="screenshots/practical-2/swm-table.png">){width=“50%”}
+<img src="screenshots/practical-2/swm-table.png" style="width:50.0%">
 </center>
 <p>The key fields are as follows:</p>
 <ul>
@@ -634,7 +634,7 @@ Answer
 </div>
 </div>
 </div>
-<div id="weights-extra" class="section level2 hidden-section" number="2.3">
+<div id="weights-extra" class="section level2" number="2.3">
 <h2>
 <span class="header-section-number">2.3</span> Extra<a class="anchor" aria-label="anchor" href="#weights-extra"><i class="fas fa-link"></i></a>
 </h2>
@@ -642,19 +642,17 @@ Answer
 <blockquote>
 <p>Open the <code>world_cities_5m</code> layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Inverse distance, fixed distances and <span class="math inline">\(K\)</span> nearest neighbours are common approaches.</p>
 </blockquote>
-<p align="center">
-</p>
-<p><a name=""></a><img src="screenshots/practical-2/points-fixed-distance.png" style="width:50.0%"></p>
-
+<center>
+<img src="screenshots/practical-2/points-fixed-distance.png" style="width:50.0%">
+</center>
 <p>Another approach is to use “Trimmed Delaunay Triangulation”, which can be run much like the other conceptualisations. To understand how this works:</p>
 <blockquote>
 <p>Open the Geoprocessing tool <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> and run with the <code>world_cities</code> layer as input, and preserve all “Output Fields”.</p>
 </blockquote>
 <p>This tool creates <strong>Thiessen</strong> or <strong>Voronoi</strong> Polygons around a set of Points, where the area within each Polygon is closer to the focal point than any other point in the dataset<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We’ll explore this approach more thoroughly in &lt;strong&gt;Practical 6&lt;/strong&gt;: &lt;em&gt;Interpolation&lt;/em&gt;&lt;/p&gt;"><sup>19</sup></a>, as shown here:</p>
-<p align="center">
-</p>
-<p><a name=""></a><img src="screenshots/practical-2/thiessen.png" style="width:80.0%"></p>
-
+<center>
+<img src="screenshots/practical-2/thiessen.png" style="width:80.0%">
+</center>
 <blockquote>
 <p>Return to the Neighbourhood Explorer but use the output of <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog">Create Thiessen Polygons</a> as the input, and using <code>Contiguity Edges Corners</code> as the conceptualisation.</p>
 </blockquote>

@@ -111,7 +111,7 @@ Let's illustrate further with another simple example, focusing on six European c
 
 If we apply our current neighbourhood rule (*if* countries share a border, $w=1$, *else* $w=0$), then:
 
--   $w_{nb}=1$ for the Netherlands ($n$) and Belgium ($n$), as these are directly bordering.
+-   $w_{nb}=1$ for the Netherlands ($n$) and Belgium ($b$), as these are directly bordering.
 -   $w_{na}=0$ for the Netherlands ($n$) and Austria ($a$), as these are *not* directly bordering.
 
 We would calculate $w$ for all pairs, and store these values with the following structure:
@@ -383,7 +383,7 @@ Rather than saving to a directory, we have saved our output to a **File Geodatab
 
 The output should now be listed in the Contents Pane and when opened should resemble the following:
 
-<center>![](./screenshots/practical-2/swm-table.png)){width="50%"}</center>
+<center>![](./screenshots/practical-2/swm-table.png){width="50%"}</center>
 
 The key fields are as follows:
 
@@ -624,17 +624,13 @@ Our results indicate that non-neighbouring countries are characterised by (on av
 
 [**Finished!**](#index)
 
-## Extra {#weights-extra .hidden-section}
+## Extra {#weights-extra}
 
 In the practical we've worked exclusively with Polygons. How would we define neighbours for a **Point** dataset?
 
 > Open the `world_cities_5m` layer created in Practical 1 and use the Neighbourhood Explorer to investigate different conceptualisations of spatial relationships. Inverse distance, fixed distances and $K$ nearest neighbours are common approaches.
 
-<p align="center">
-
-<a name=""></a>![](./screenshots/practical-2/points-fixed-distance.png){width="50%"}
-
-</p>
+<center>![](./screenshots/practical-2/points-fixed-distance.png){width="50%"}</center>
 
 Another approach is to use "Trimmed Delaunay Triangulation", which can be run much like the other conceptualisations. To understand how this works:
 
@@ -644,11 +640,7 @@ This tool creates **Thiessen** or **Voronoi** Polygons around a set of Points, w
 
 [^02-spatial-weights-13]: We'll explore this approach more thoroughly in **Practical 6**: *Interpolation*
 
-<p align="center">
-
-<a name=""></a>![](./screenshots/practical-2/thiessen.png){width="80%"}
-
-</p>
+<center>![](./screenshots/practical-2/thiessen.png){width="80%"}</center>
 
 > Return to the Neighbourhood Explorer but use the output of [Create Thiessen Polygons](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/analysis/create-thiessen-polygons.html?tabs=dialog) as the input, and using `Contiguity Edges Corners` as the conceptualisation.
 
