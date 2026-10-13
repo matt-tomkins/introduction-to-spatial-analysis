@@ -679,7 +679,6 @@ grid$elevation <-
    300 * sin(grid$x / 2) * cos(grid$y / 3) +              # undulation
    100                                                        # base
 
-
 # Elevation example 
 s <- ggplot(grid, aes(x = x, y = y, fill = elevation)) +
   geom_raster() +
