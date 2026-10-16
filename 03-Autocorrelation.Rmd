@@ -124,7 +124,7 @@ As expert spatial analysts, we need to use methods which incorporate the spatial
 
 In the next sections, we'll use county-level data from the [2024 US General election](https://www.bbc.co.uk/news/election/2024/us/results) to investigate global and local spatial autocorrelation and introduce the methods we can use to test for it.
 
-### Pre-processing {.hidden-section}
+### Pre-processing
 
 To begin:
 
@@ -253,13 +253,15 @@ Can you see any evidence of spatial autocorrelation?
 
 While initial exploratory analysis is important, our pattern recognition abilities are not perfect. We might miss subtle but important patterns (a Type II error) or identify spurious or random patterns as significant (a Type I error). As a result, it is important that we use a statistical approach to identify and assess the significance of spatial autocorrelation.
 
-### Spatial Lag {#spatial_lag .hidden-section}
+### Spatial Lag {#spatial_lag}
 
 Before we begin to explore spatial autocorrelation and start running ArcGIS tools, it is important that we understand the underlying mathematics. In particular, we need to introduce the **spatial lag** operator, which is one of the key use cases for the spatial weights matrix $\mathbf{W}$.
 
 The spatial lag captures the *weighted value of a variable for each locations neighbourhood*. In our case, this could be the weighted Republican vote share (`per_gop`) for the neighbourhood surrounding each US county, as illustrated below:
 
 <center>![](./images/practical-3/spatial_lag.png){width="40%"}</center>
+
+<br>
 
 Mathematically it is defined as follows:
 
@@ -325,7 +327,7 @@ The **spatial lag** operator underpins many spatial methods, including tests for
 It is also **directly** influenced by our definition of the spatial weights matrix. Different approaches (e.g., contiguous vs. distance based, binary vs. continuous) will result in very different neighbourhood definitions and very different spatially-lagged variables.
 :::
 
-### Global spatial autocorrelation {.hidden-section}
+### Global spatial autocorrelation
 
 The *spatial lag* variable is a key component of Moran's $I$ [@moran1948], one of the most commonly used statistics for global autocorrelation.
 
@@ -462,7 +464,7 @@ $$I = \frac{n}{\sum_{i}\sum_{j}w_{ij}}\frac{\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}}{\s
 Before we explain the key parts of the formula in more detail, Moran's $I$ is assessing a simple but important question:
 
 ::: question
-"*How similar are observations to their neighbours, relative to the overall variation in the dataset?*"
+How similar are observations to their neighbours, relative to the overall variation in the dataset?
 :::
 
 To help your understanding, we are going to work through Moran's $I$ for a *very* simple spatial dataset, which is shown below. This is a $4\times4$ grid of cells ($\text{A1}$ to $\text{D4}$), where the number in each cell is its value.
@@ -659,6 +661,29 @@ We can now switch to the left hand side of the Moran's $I$ equation, which accou
 
 $$\color{Gray}{I = \frac{\color{Black}{16}}{\sum_{i}\sum_{j}w_{ij}}\frac{55}{20}}$$ $n$ is then divided by the sum of the weights in the spatial weights matrix ($\sum_{i}\sum_{j}w_{ij}$). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., $n = \sum_{i}\sum_{j}w_{ij}$ (assuming all observations are connected[^03-autocorrelation-21]). In our simple example, we have **not** used row-standardisation, so this ratio would need to be calculated.
 
+::: question
+Can you think why row-standardisation is typically used for calculating Moran's $I$?
+:::
+
+<details>
+
+<summary>Answer</summary>
+
+If row-standardisation was **not** used and we **didn't** use the scaling factor $\frac{n}{\sum_{i}\sum_{j}w_{ij}}$, the test statistic $I$ would be influenced by the **connectivity** of individual objects and by association, the connectivity of the dataset as a whole e.g., objects with more neighbours would contribute more than those with fewer neighbours.
+
+Overall, we are **not** interested in which objects are more or less connected. Instead, Moran's $I$ seeks to characterise the similarity of each object *and its neighbours* (i.e., the spatial lag). 
+
+Using [row-standardisation](#row_standard) ensures that each object contributes equally to the spatial lag variable $w_{ij}z_{i}z_{j}$ and the test statistic $I$, irrespective of the number of neighbours. 
+
+Applying this to our simple example, row-standardisation ensures that objects $\text{A1}$ to $\text{D4}$ would all contribute equally, irrespective of whether they are more connected (e.g., $\text{B2}$) or less connected (e.g., $\text{A1}$).  
+
+<center>![](./images/practical-3/row-standardisation.png){width="90%"}</center>
+
+</details>
+
+<br>
+
+
 [^03-autocorrelation-21]: For our analysis of US counties, we ensured this by removing the four US counties with no *contiguous* neighbours (FID = `425`, `533`, `2017`, `2615`).
 
 Here the sum of $w_{ij}$ equals $84$:
@@ -744,7 +769,7 @@ Based on all of the previous discussion and analysis, what is your interpretatio
 
 <summary>Interpretation</summary>
 
-Based on the analysis so far, we can conclude that statistically significant positive spatial autocorrelation $I=0.29,p<0.5$ is present for the county-level Republican vote share i.e., similar values often **cluster** together.
+Based on the analysis so far, we can conclude that statistically significant positive spatial autocorrelation $I=0.29,p<0.05$ is present for the county-level Republican vote share i.e., similar values often **cluster** together.
 
 </details>
 
@@ -764,7 +789,7 @@ Assuming the spatial objects and their values are fixed in an analysis (e.g., nu
 
 <br>
 
-### Local spatial autocorrelation {.hidden-section}
+### Local spatial autocorrelation
 
 While the results above are interesting, and tie into a much larger body of literature on **political segregation** [@cutts2010; @walker2013; @cohn2011], more work is needed to answer the following:
 
@@ -965,7 +990,7 @@ Hopefully you have some interesting ideas here, and I'd recommend looking at @li
 
 <br>
 
-### Summary {#autocorrelation_summary .hidden-section}
+### Summary {#autocorrelation_summary}
 
 As discussed above, spatial autocorrelation is of profound importance for spatial analysis, dictating the methods we can use and influencing our interpretations of spatial phenomena. Global Moran's $I$ [@moran1948] and local Moran's $I_i$ [@anselin1995] are both powerful techniques, but provide very different perspectives on spatial autocorrelation. While the former can be used to assess for global patterns *for a dataset as a whole*, $I_i$ can be used to identify specific areas of clustering, dispersion or randomness, which can often tell us a great deal about the underlying geographic factors e.g., demographics, economics, health, history, and so on.
 
@@ -983,7 +1008,7 @@ However, we also need to recognise that the techniques introduced today are **ex
 
 [**Finished!**](#index)
 
-## Extra {.hidden-section}
+## Extra
 
 For those of you who wish to explore spatial autocorrelation further, I have provided a brief introduction to some [alternative indices](#alt_indices) from @getis1992, and some prompts for a [temporal analysis](#time_auto) i.e., has spatial autocorrelation changed between elections?
 

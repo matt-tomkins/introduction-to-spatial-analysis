@@ -139,7 +139,7 @@
 <p>According to Tobler’s Law <span class="citation">(<a href="references.html#ref-tobler1970">Tobler, 1970</a>)</span>:</p>
 <p>“<em>everything is related to everything else, but near things are more related than distant things.</em>”</p>
 <p>In our exploration of <a href="spatial_weights.html#spatial_weights"><strong>spatial weights</strong></a>, we focused on the key concepts of <em>proximity</em> and <em>adjacency</em> (i.e., “near”, “distant”) and discovered how we can define and model those concepts using spatial weights <span class="math inline">\(w\)</span> and the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>.</p>
-<p>One aspect of Tobler’s Law we <em>didn’t</em> engage with is the word <strong>related</strong> e.g., attribute similarity. As a whole, Tobler’s Law relates to the interplay of <strong>geography</strong> and <strong>relatedness</strong>. In the field of spatial analysis, we refer to this as:</p>
+<p>One aspect of Tobler’s Law we <em>didn’t</em> engage with is the word <strong>related</strong>. As a whole, Tobler’s Law relates to the interplay of <strong>geography</strong> and <strong>relatedness</strong>. In the field of spatial analysis, we refer to this as:</p>
 <div class="note">
 <p><strong>Spatial Dependence</strong></p>
 <p>“<em>a functional relationship between what happens at one point in space and what happens elsewhere</em>”</p>
@@ -150,7 +150,7 @@
 <p>Or more simply:</p>
 <p>“<em>the degree to which an object or value is related to nearby objects or values.</em>”</p>
 <p>Spatial <strong>dependence</strong> is one of the key characteristics of spatial data, alongside spatial <strong>heterogeneity</strong> i.e., when values, relationships, or processes vary geographically.</p>
-<p>A statistical measure of spatial dependence is <strong>spatial autocorrelation</strong>, which focuses on <em>attribute similarity</em>, and the degree to which the values for a particular variable are correlated with itself across geographic space. While these terms are sometimes used interchangeably<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Example in &lt;span class="citation"&gt;Löchl and Axhausen (&lt;a href="references.html#ref-l%C3%B6chl2010"&gt;2010&lt;/a&gt;)&lt;/span&gt; (p.40).&lt;/p&gt;'><sup>20</sup></a>, it is best to think of dependence as the underlying process which gives rise to spatial autocorrelation<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;These are closely related concepts, where the statistical presence (or absence) of spatial &lt;em&gt;autocorrelation&lt;/em&gt; is used as evidence for spatial &lt;em&gt;dependence&lt;/em&gt;.&lt;/p&gt;"><sup>21</sup></a>.</p>
+<p>A statistical measure of spatial dependence is <strong>spatial autocorrelation</strong>, which focuses on <em>attribute similarity</em>, and the degree to which the values for a particular variable are correlated across geographic space. While these terms are sometimes used interchangeably<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Example in &lt;span class="citation"&gt;Löchl and Axhausen (&lt;a href="references.html#ref-l%C3%B6chl2010"&gt;2010&lt;/a&gt;)&lt;/span&gt; (p.40).&lt;/p&gt;'><sup>20</sup></a>, it is best to think of dependence as the underlying process which gives rise to spatial autocorrelation<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;These are closely related concepts, where the statistical presence (or absence) of spatial &lt;em&gt;autocorrelation&lt;/em&gt; is used as evidence for spatial &lt;em&gt;dependence&lt;/em&gt;.&lt;/p&gt;"><sup>21</sup></a>.</p>
 <p>Related concepts include <em>temporal</em> autocorrelation i.e., the degree to which a value at a point in time is similar to those in the past, or <em>correlation</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will explore &lt;strong&gt;spatial correlation&lt;/strong&gt; in Practical 4.&lt;/p&gt;"><sup>22</sup></a> more broadly i.e., a measure of association between two or more variables (but typically excluding a spatial or temporal component). It is also worth noting that we use the term <strong>auto</strong>correlation because we are assessing <strong>self</strong> correlation i.e., the degree of similarity for a single dataset or variable (e.g., house prices), rather than multiple variables (e.g., house prices <em>vs.</em> employment opportunities), even if that single dataset could comprise many different observations.</p>
 <div id="randomness-and-clustering" class="section level4" number="3.2.1.1">
 <h4>
@@ -195,7 +195,7 @@
 <p>In the next sections, we’ll use county-level data from the <a href="https://www.bbc.co.uk/news/election/2024/us/results">2024 US General election</a> to investigate global and local spatial autocorrelation and introduce the methods we can use to test for it.</p>
 </div>
 </div>
-<div id="pre-processing" class="section level3 hidden-section" number="3.2.2">
+<div id="pre-processing" class="section level3" number="3.2.2">
 <h3>
 <span class="header-section-number">3.2.2</span> Pre-processing<a class="anchor" aria-label="anchor" href="#pre-processing"><i class="fas fa-link"></i></a>
 </h3>
@@ -286,7 +286,7 @@ Interpretation
 <p>While initial exploratory analysis is important, our pattern recognition abilities are not perfect. We might miss subtle but important patterns (a Type II error) or identify spurious or random patterns as significant (a Type I error). As a result, it is important that we use a statistical approach to identify and assess the significance of spatial autocorrelation.</p>
 </div>
 </div>
-<div id="spatial_lag" class="section level3 hidden-section" number="3.2.3">
+<div id="spatial_lag" class="section level3" number="3.2.3">
 <h3>
 <span class="header-section-number">3.2.3</span> Spatial Lag<a class="anchor" aria-label="anchor" href="#spatial_lag"><i class="fas fa-link"></i></a>
 </h3>
@@ -295,6 +295,7 @@ Interpretation
 <center>
 <img src="images/practical-3/spatial_lag.png" style="width:40.0%">
 </center>
+<p><br></p>
 <p>Mathematically it is defined as follows:</p>
 <p><span class="math display">\[y_{sl-i}=\sum_{j}w_{ij}y_{j}\]</span></p>
 <p>where <span class="math inline">\(y_{sl-i}\)</span> is the spatial lag, representing the weighted neighbourhood value for the focal object, excluding itself (<span class="math inline">\(-i\)</span>). This is calculated as the sum of the spatial weights <span class="math inline">\(w\)</span> for row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> in the spatial weights matrix multiplied by the corresponding value for the neighbourhood location <span class="math inline">\(y_j\)</span>.</p>
@@ -335,7 +336,7 @@ Interpretation
 <p>It is also <strong>directly</strong> influenced by our definition of the spatial weights matrix. Different approaches (e.g., contiguous vs. distance based, binary vs. continuous) will result in very different neighbourhood definitions and very different spatially-lagged variables.</p>
 </div>
 </div>
-<div id="global-spatial-autocorrelation" class="section level3 hidden-section" number="3.2.4">
+<div id="global-spatial-autocorrelation" class="section level3" number="3.2.4">
 <h3>
 <span class="header-section-number">3.2.4</span> Global spatial autocorrelation<a class="anchor" aria-label="anchor" href="#global-spatial-autocorrelation"><i class="fas fa-link"></i></a>
 </h3>
@@ -428,7 +429,7 @@ Interpretation
 <p><strong>Don’t worry</strong> about trying to interpret the equation at the moment, as we’ll run through it step-by-step in a moment, but as a quick summary: <span class="math inline">\(n\)</span> is the number of observations in the dataset, <span class="math inline">\(w_{ij}\)</span> is the cell corresponding to the row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> of the spatial weights matrix <span class="math inline">\(\mathbf{W}\)</span>, and <span class="math inline">\(z_{i}\)</span> and <span class="math inline">\(z_{j}\)</span> are the standardised values of a variable of interest at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> respectively. These are calculated as the difference between each value and the mean of all the values (<span class="math inline">\(z_{i}-\overline{z}\)</span>).</p>
 <p>Before we explain the key parts of the formula in more detail, Moran’s <span class="math inline">\(I\)</span> is assessing a simple but important question:</p>
 <div class="question">
-<p>“<em>How similar are observations to their neighbours, relative to the overall variation in the dataset?</em>”</p>
+<p>How similar are observations to their neighbours, relative to the overall variation in the dataset?</p>
 </div>
 <p>To help your understanding, we are going to work through Moran’s <span class="math inline">\(I\)</span> for a <em>very</em> simple spatial dataset, which is shown below. This is a <span class="math inline">\(4\times4\)</span> grid of cells (<span class="math inline">\(\text{A1}\)</span> to <span class="math inline">\(\text{D4}\)</span>), where the number in each cell is its value.</p>
 <center>
@@ -563,6 +564,19 @@ Interpretation
 <p>If we continued the analysis with this dataset, the overall similarity of observations to their neighbours (<span class="math inline">\(\sum_{i}\sum_{j}w_{ij}z_{i}z_{j}\)</span>) would be much larger simply because of the change of units, even though the <strong>underlying spatial pattern and the relative differences between values would be identical</strong> to our original dataset. In turn, the calculated similarity is only meaningful within the context of the overall variability of the data.</p>
 <p>We can now switch to the left hand side of the Moran’s <span class="math inline">\(I\)</span> equation, which accounts for the number of observations and their spatial weights. Normalising by these variables allows us to compare the Moran’s <span class="math inline">\(I\)</span> statistic across different datasets, which might vary in size, neighbourhood definition, and the number of neighbours. Here <span class="math inline">\(n\)</span> is simply the number of observations (<span class="math inline">\(n\)</span>) in the dataset, which in our case is <span class="math inline">\(16\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We are working with a &lt;span class="math inline"&gt;\(4\times4\)&lt;/span&gt; grid, hence &lt;span class="math inline"&gt;\(16\)&lt;/span&gt; individual objects.&lt;/p&gt;'><sup>39</sup></a>, so we can substitute that in:</p>
 <p><span class="math display">\[\color{Gray}{I = \frac{\color{Black}{16}}{\sum_{i}\sum_{j}w_{ij}}\frac{55}{20}}\]</span> <span class="math inline">\(n\)</span> is then divided by the sum of the weights in the spatial weights matrix (<span class="math inline">\(\sum_{i}\sum_{j}w_{ij}\)</span>). When using a row-standardised spatial weights matrix, this will sum to the number of observations in the dataset i.e., <span class="math inline">\(n = \sum_{i}\sum_{j}w_{ij}\)</span> (assuming all observations are connected<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For our analysis of US counties, we ensured this by removing the four US counties with no &lt;em&gt;contiguous&lt;/em&gt; neighbours (FID = &lt;code&gt;425&lt;/code&gt;, &lt;code&gt;533&lt;/code&gt;, &lt;code&gt;2017&lt;/code&gt;, &lt;code&gt;2615&lt;/code&gt;).&lt;/p&gt;"><sup>40</sup></a>). In our simple example, we have <strong>not</strong> used row-standardisation, so this ratio would need to be calculated.</p>
+<div class="question">
+<p>Can you think why row-standardisation is typically used for calculating Moran’s <span class="math inline">\(I\)</span>?</p>
+</div>
+<details><summary>
+Answer
+</summary><p>If row-standardisation was <strong>not</strong> used and we <strong>didn’t</strong> use the scaling factor <span class="math inline">\(\frac{n}{\sum_{i}\sum_{j}w_{ij}}\)</span>, the test statistic <span class="math inline">\(I\)</span> would be influenced by the <strong>connectivity</strong> of individual objects and by association, the connectivity of the dataset as a whole e.g., objects with more neighbours would contribute more than those with fewer neighbours.</p>
+<p>Overall, we are <strong>not</strong> interested in which objects are more or less connected. Instead, Moran’s <span class="math inline">\(I\)</span> seeks to characterise the similarity of each object <em>and its neighbours</em> (i.e., the spatial lag).</p>
+<p>Using <a href="spatial_weights.html#row_standard">row-standardisation</a> ensures that each object contributes equally to the spatial lag variable <span class="math inline">\(w_{ij}z_{i}z_{j}\)</span> and the test statistic <span class="math inline">\(I\)</span>, irrespective of the number of neighbours.</p>
+<p>Applying this to our simple example, row-standardisation ensures that objects <span class="math inline">\(\text{A1}\)</span> to <span class="math inline">\(\text{D4}\)</span> would all contribute equally, irrespective of whether they are more connected (e.g., <span class="math inline">\(\text{B2}\)</span>) or less connected (e.g., <span class="math inline">\(\text{A1}\)</span>).</p>
+<center>
+<img src="images/practical-3/row-standardisation.png" style="width:90.0%">
+</center>
+</details><p><br></p>
 <p>Here the sum of <span class="math inline">\(w_{ij}\)</span> equals <span class="math inline">\(84\)</span>:</p>
 <p><span class="math display">\[\mathbf{W}=\begin{array}{c|cccccccccccccccc}
 &amp; \text{A1} &amp; \text{A2} &amp; \text{A3} &amp; \text{A4} &amp;
@@ -628,7 +642,7 @@ Interpretation
 </div>
 <details><summary>
 Interpretation
-</summary><p>Based on the analysis so far, we can conclude that statistically significant positive spatial autocorrelation <span class="math inline">\(I=0.29,p&lt;0.5\)</span> is present for the county-level Republican vote share i.e., similar values often <strong>cluster</strong> together.</p>
+</summary><p>Based on the analysis so far, we can conclude that statistically significant positive spatial autocorrelation <span class="math inline">\(I=0.29,p&lt;0.05\)</span> is present for the county-level Republican vote share i.e., similar values often <strong>cluster</strong> together.</p>
 </details><p><br></p>
 <div class="question">
 <p>With your knowledge of the analytical approach, what are the key choices for you as the user?</p>
@@ -639,7 +653,7 @@ Interpretation
 </details><p><br></p>
 </div>
 </div>
-<div id="local-spatial-autocorrelation" class="section level3 hidden-section" number="3.2.5">
+<div id="local-spatial-autocorrelation" class="section level3" number="3.2.5">
 <h3>
 <span class="header-section-number">3.2.5</span> Local spatial autocorrelation<a class="anchor" aria-label="anchor" href="#local-spatial-autocorrelation"><i class="fas fa-link"></i></a>
 </h3>
@@ -789,7 +803,7 @@ Interpretation
 </details><p><br></p>
 </div>
 </div>
-<div id="autocorrelation_summary" class="section level3 hidden-section" number="3.2.6">
+<div id="autocorrelation_summary" class="section level3" number="3.2.6">
 <h3>
 <span class="header-section-number">3.2.6</span> Summary<a class="anchor" aria-label="anchor" href="#autocorrelation_summary"><i class="fas fa-link"></i></a>
 </h3>
@@ -805,7 +819,7 @@ Interpretation
 <p><a href="index.html#index"><strong>Finished!</strong></a></p>
 </div>
 </div>
-<div id="extra-1" class="section level2 hidden-section" number="3.3">
+<div id="extra-1" class="section level2" number="3.3">
 <h2>
 <span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-1"><i class="fas fa-link"></i></a>
 </h2>
