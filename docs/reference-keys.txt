@@ -51,6 +51,6 @@ local-spatial-autocorrelation
 calculating-local-morans-i_i
 interpreting-local-morans-i_i
 autocorrelation_summary
-extra-1
+auto_extra
 getis-and-ords-g
 resources-1

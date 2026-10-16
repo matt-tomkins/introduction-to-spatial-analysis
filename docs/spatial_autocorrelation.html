@@ -354,6 +354,15 @@ Interpretation
 Answer
 </summary><p>The mean of the Republican vote share is <span class="math inline">\(\approx0.66\%\)</span> (<span class="math inline">\(0.6632597676265708\)</span>) so the Expression to calculate the standardised variable <code>gop_std</code> is as follows: <code>!per_gop! - 0.6632597676265708</code></p>
 </details><p><br></p>
+<div class="problem">
+<p>You may encounter an <strong>error</strong> here with <code>per_gop</code> missing from the Attribute Table. Instead, the same data (the Republican vote share) may be listed under a different field entitled <code>2024_US_Co</code>, which is an abbreviation of the full name of the <code>.csv</code>: <code>2024_US_County_Level_Presidential_Results.csv</code>.</p>
+<p><br></p>
+<p>This can arise when running <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-join.html?tabs=dialog">Add Join</a>, reason currently unclear!</p>
+<p><br></p>
+<p>With this alternative field name, the equation would be <code>!2024_US_Co! - 0.6632597676265708</code>, but unfortunately this will cause an <strong>error</strong> due to the field name beginning with a number.</p>
+<p><br></p>
+<p>The <strong>workaround</strong> is to use <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-field.html?tabs=dialog">Calculate Field</a> to create a new field called <code>per_gop</code> (“Field Type” = <code>Double</code>), where the expression is <code>!2024_US_Co!</code>. This will copy the values of <code>!2024_US_Co!</code> to a new field called <code>gop_perc</code>, which we can work with more easily. You should now be able to calculate the standardised value using the original equation <code>!per_gop! - 0.6632597676265708</code>.</p>
+</div>
 <blockquote>
 <p>Repeat this process for the spatial lag variable (<code>Mean for per_gop</code>, “Name” = <code>lag_std</code>).</p>
 </blockquote>
@@ -819,9 +828,9 @@ Interpretation
 <p><a href="index.html#index"><strong>Finished!</strong></a></p>
 </div>
 </div>
-<div id="extra-1" class="section level2" number="3.3">
+<div id="auto_extra" class="section level2" number="3.3">
 <h2>
-<span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#extra-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.3</span> Extra<a class="anchor" aria-label="anchor" href="#auto_extra"><i class="fas fa-link"></i></a>
 </h2>
 <p>For those of you who wish to explore spatial autocorrelation further, I have provided a brief introduction to some <a href="spatial_autocorrelation.html#alt_indices">alternative indices</a> from <span class="citation">Getis and Ord (<a href="references.html#ref-getis1992">1992</a>)</span>, and some prompts for a <a href="spatial_autocorrelation.html#time_auto">temporal analysis</a> i.e., has spatial autocorrelation changed between elections?</p>
 <div id="alt_indices" class="section level3 unnumbered">
@@ -1012,7 +1021,7 @@ Answer
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#extra-1"><span class="header-section-number">3.3</span> Extra</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#auto_extra"><span class="header-section-number">3.3</span> Extra</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#alt_indices">Alternative indices</a></li>
 <li><a class="nav-link" href="#time_auto">Time</a></li>
 </ul>

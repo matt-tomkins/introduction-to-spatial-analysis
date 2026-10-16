@@ -349,6 +349,23 @@ The mean of the Republican vote share is $\approx0.66\%$ ($0.6632597676265708$) 
 
 <br>
 
+::: problem
+You may encounter an **error** here with `per_gop` missing from the Attribute Table. Instead, the same data (the Republican vote share) may be listed under a different field entitled `2024_US_Co`, which is an abbreviation of the full name of the `.csv`: `2024_US_County_Level_Presidential_Results.csv`.
+
+<br>
+
+This can arise when running [Add Join](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-join.html?tabs=dialog), reason currently unclear! 
+
+<br>
+
+With this alternative field name, the equation would be `!2024_US_Co! - 0.6632597676265708`, but unfortunately this will cause an **error** due to the field name beginning with a number. 
+
+<br>
+
+The **workaround** is to use [Calculate Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-field.html?tabs=dialog) to create a new field called `per_gop` ("Field Type" = `Double`), where the expression is `!2024_US_Co!`. This will copy the values of `!2024_US_Co!` to a new field called `gop_perc`, which we can work with more easily. You should now be able to calculate the standardised value using the original equation `!per_gop! - 0.6632597676265708`. 
+:::
+
+
 > Repeat this process for the spatial lag variable (`Mean for per_gop`, "Name" = `lag_std`).
 
 <details>
@@ -1008,7 +1025,7 @@ However, we also need to recognise that the techniques introduced today are **ex
 
 [**Finished!**](#index)
 
-## Extra
+## Extra {#auto_extra}
 
 For those of you who wish to explore spatial autocorrelation further, I have provided a brief introduction to some [alternative indices](#alt_indices) from @getis1992, and some prompts for a [temporal analysis](#time_auto) i.e., has spatial autocorrelation changed between elections?
 
