@@ -61,7 +61,7 @@ Or more simply:
 
 Spatial **dependence** is one of the key characteristics of spatial data, alongside spatial **heterogeneity** i.e., when values, relationships, or processes vary geographically.
 
-A statistical measure of spatial dependence is **spatial autocorrelation**, which focuses on *attribute similarity*, and the degree to which the values for a particular variable are correlated across geographic space. While these terms are sometimes used interchangeably[^03-autocorrelation-1], it is best to think of dependence as the underlying process which gives rise to spatial autocorrelation[^03-autocorrelation-2].
+A statistical measure of spatial dependence is **spatial autocorrelation**, which focuses on *attribute similarity*, and the degree to which the values for a particular variable are correlated across geographic space. While these terms are sometimes used interchangeably[^03-autocorrelation-1], it is best to think of dependence as the underlying process or relationship which gives rise to spatial autocorrelation[^03-autocorrelation-2].
 
 [^03-autocorrelation-1]: Example in @löchl2010 (p.40).
 
@@ -194,7 +194,7 @@ This is because the **maps** coordinate reference system is still using that of 
 
 Next we are going to combine our geometries with the county-level election results for 2024.
 
-> Load `2024_US_County_Level_Presidential_Results.csv` and use a dynamic table join to link the election results to our county geometries, joining using the `NAMELSAD`[^03-autocorrelation-10] and `county_name` fields.
+> Load `2024_US_County_Level_Presidential_Results.csv` and use a dynamic table join via [Add Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-field.html?tabs=dialog) to link the election results to our county geometries, joining using the `NAMELSAD`[^03-autocorrelation-10] and `county_name` fields.
 
 [^03-autocorrelation-10]: Current legal/statistical area description code
 
@@ -303,7 +303,7 @@ If you are interested you can check the calculations yourself, as these are base
 
 To help your understanding further:
 
-> Open the Geoprocessing tool [Neighbourhood Summary Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/neighborhood-summary-statistics.html?tabs=dialog)[^03-autocorrelation-13], using the US county data as input, and selecting `per_gop` as the "Analysis Field". For "Neighbourhood Type" using `Contiguity Edges Corners`, for "Local Summary Statistic" use `Mean`, and `Ignore Focal Feature` (because $y_{sl-i}$). I used the output name `us_county_gop_sl`, where `sl` denotes "spatial lag".
+> Open the Geoprocessing tool [Neighbourhood Summary Statistics](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/neighborhood-summary-statistics.html?tabs=dialog)[^03-autocorrelation-13], using `us_county_500k_contig_cf` as input, and selecting `per_gop` as the "Analysis Field". For "Neighbourhood Type" using `Contiguity Edges Corners` and for "Local Summary Statistic" use `Mean`. We want to **ignore** the focal feature (because $y_{sl-i}$) so `Ensure Focal Feature in Calculations` should be **unchecked**. Use the output name `us_county_gop_sl`, where `sl` denotes "spatial lag".
 
 [^03-autocorrelation-13]: The default language settings for our ArcGIS install are American English, so the tool names may be slightly different i.e., **Neighborhood** Summary Statistics.
 
@@ -313,7 +313,30 @@ Your output should resemble the following, where the US counties are symbolised 
 
 <br>
 
-> Inspect the Attribute Table of the new layer, which contains the original `per_gop` values and the spatially-lagged variable `Mean`, as well as the `Number of neighbours` for each feature.
+> Inspect the Attribute Table of the new layer, which should contain:
+>
+> - the Republican vote share for each county, stored as either `per_gop` or `2024_US_Co`,
+> - its spatially-lagged variable, stored as either `PER_G_Mean` or `2024__Mean`,
+> - the number of neighbours for each feature, stored as either `Number of neighbours` or `2024_NNBRS`. 
+>
+> The selection of the field names is influenced by how `per_gop` is stored in `us_county_500k_contig_cf` and you can inspect this via the Attribute Table &rarr; Right Click &rarr; Fields, with further information in the expandable section below.
+
+<details>
+
+<summary>Details</summary>
+
+As shown below, in my version of `us_county_500k_contig_cf` both the "Field Name" (*a database identifier for a field*) and the "Alias" (*a user-friendly display label*) are `per_gop`: 
+
+<center>![](./screenshots/practical-3/field-alias.png){width="100%"}</center>
+
+<br> 
+
+For some of you, while the "Alias" is visible as `per_gop`, the actual "Field Name" is much longer, using the name of the election results `.csv` as a prefix i.e., `2024_US_County_Level_Presidential_Results.csv`. This is not a problem *per se*, but does influence the later processing.  
+
+</details>
+
+<br>
+
 
 ::: question
 Are there any counties where the GOP vote share is noticeably different from the spatially-lagged variable?
@@ -337,44 +360,42 @@ Before we introduce the mathematics of Moran's $I$, we will begin by exploring s
 
 To begin, we are going to **standardise** our values, as explained below:
 
-> Find the mean ($\overline{z}$) of `per_gop` and then create a new field in the Attribute Table of `us_county_gop_sl` using Calculate Field ("Name" = `gop_std`, "Field Type" = `Double`). This field should contain the difference between `per_gop` for each county and the mean `per_gop`.
+> Find the mean ($\overline{z}$) of `per_gop` in the `us_county_500k_contig_cf` layer.
 
 <details>
 
-<summary>Answer</summary>
+<summary>Hint</summary>
 
-The mean of the Republican vote share is $\approx0.66\%$ ($0.6632597676265708$) so the Expression to calculate the standardised variable `gop_std` is as follows: `!per_gop! - 0.6632597676265708`
+Use "Explore Statistics" in the Attribute Table. 
 
 </details>
 
-<br>
-
-::: problem
-You may encounter an **error** here with `per_gop` missing from the Attribute Table. Instead, the same data (the Republican vote share) may be listed under a different field entitled `2024_US_Co`, which is an abbreviation of the full name of the `.csv`: `2024_US_County_Level_Presidential_Results.csv`.
-
-<br>
-
-This can arise when running [Add Join](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/add-join.html?tabs=dialog), reason currently unclear! 
-
-<br>
-
-With this alternative field name, the equation would be `!2024_US_Co! - 0.6632597676265708`, but unfortunately this will cause an **error** due to the field name beginning with a number. 
-
-<br>
-
-The **workaround** is to use [Calculate Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-field.html?tabs=dialog) to create a new field called `per_gop` ("Field Type" = `Double`), where the expression is `!2024_US_Co!`. This will copy the values of `!2024_US_Co!` to a new field called `gop_perc`, which we can work with more easily. You should now be able to calculate the standardised value using the original equation `!per_gop! - 0.6632597676265708`. 
-:::
-
-
-> Repeat this process for the spatial lag variable (`Mean for per_gop`, "Name" = `lag_std`).
+> In the `us_county_gop_sl` layer, create a new field in the Attribute Table using Calculate Field ("Name" = `gop_std`, "Field Type" = `Double`). This field should contain the difference between `per_gop` for each county and the mean of `per_gop`, and is our **standardised** (mean-centered) variable.
 
 <details>
 
-<summary>Answer</summary>
+<summary>Expression and Error Handling</summary>
 
-The mean of the spatially lagged Republican vote share is also $\approx0.66\%$, although not identical ($0.6636104005899481$). The Expression to calculate the standardised spatial lag variable `lag_std` is as follows: `!PER_G_Mean! - 0.6636104005899481`.
+Using "Explore Statistics", the mean of the Republican vote share is $\approx0.66\%$ ($0.6632597676265708$).  The Expression to calculate the standardised variable `gop_std` *should* be as follows: `!per_gop! - 0.6632597676265708`. 
 
-Note that the visible field name in the "Fields" table is `Mean for per_gop` but this is just an **alias** i.e., an alternative name which provides a more user-friendly description of the content. The *actual* field name is `PER_G_Mean!`, which is populated in the Expression when `Mean for per_gop` is double clicked. Similarly, `Mean for Distance to Neighbors` is an alias for `DIST_Mean`.
+For some of you, `per_gop` is missing from the `us_county_gop_sl` Attribute Table. As discussed above, the values (i.e., the Republican vote share) *are* present but are included with a different field name: `2024_US_Co`. This is an abbreviation of the full name of the `.csv`: `2024_US_County_Level_Presidential_Results.csv`. 
+
+With this alternative field name, the equation would be `!2024_US_Co! - 0.6632597676265708`. This should work, but for *some* of you this can cause an **error** due to the field name beginning with a number.
+
+If you do encounter an error, the **workaround** is to use [Calculate Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/calculate-field.html?tabs=dialog) to manually create a new field called `per_gop` ("Field Type" = `Double`), where the expression is `!2024_US_Co!`. This will copy the values of `!2024_US_Co!` to a new field called `per_gop`. You should now be able to calculate the standardised value `gop_std` using the original equation: `!per_gop! - 0.6632597676265708`.
+
+</details>
+
+> Repeat this process for the spatial lag variable ("Name" = `lag_std`, "Field Type" = `Double`).
+
+<details>
+
+<summary>Expression and Error Handling</summary>
+
+As above, the exact Expression will depend on the field name in the Attribute Table. The spatially lagged Republican vote share will be either be stored as `PER_G_Mean` or `2024__Mean`. The mean of this field is $\approx0.66\%$, which is close to but not identical to the mean of `per_gop` ($0.6636104005899481$). The Expression to calculate the standardised spatial lag variable `lag_std` should be **one** of the following options: 
+
+- `!PER_G_Mean! - 0.6636104005899481`
+- `!2024__Mean! - 0.6636104005899481`
 
 </details>
 
@@ -386,11 +407,23 @@ Before we can progress further, there are four US counties with no *contiguous* 
 
 Using our standardised spatial lag variable `lag_std` and standardised variable of interest `gop_std`, we can create a **Moran Plot** as follows:
 
-> Right click on `us_county_gop_sl` in the Contents Pane → Create Chart → Scatter Plot, and use the standardised `gop_std` variable for the x-axis, and the standardised spatial lag variable `lag_std` for the y-axis.
+> Right click on `us_county_gop_sl` in the Contents Pane → Create Chart → Scatter Plot, and use the standardised `gop_std` variable for the x-axis, and the standardised spatial lag variable `lag_std` for the y-axis. *Note* if these fields aren't visible in the Scatter Plot options, you may need to remove and re-add the Scatter Plot from the Contents Pane to refresh it.  
 
-::: note
-We use **standardisation** for both the variable of interest `per_gop` and the spatial lag variable `lag_std` to facilitate interpretation. By calculating the deviation from the mean ($\overline{z}$), this centers both datasets at 0, where above average values are $z_{i}>0$ and below average values are $z_{i}<0$. In turn, we can easily evaluate whether the focal feature and/or the neigbourhood have an above or below average Republican vote share.
+::: question
+Why do we use **standardised** values for the Moran Plot? 
 :::
+
+<details>
+
+<summary>Answer</summary>
+
+We use **standardisation** for both the variable of interest `per_gop` and the spatial lag variable `lag_std` to facilitate interpretation. By calculating the deviation from the mean ($\overline{z}$), this centers both datasets at 0, where above average values are $z_{i}>0$ and below average values are $z_{i}<0$. In turn, we can easily evaluate whether the focal feature and/or the neigbourhood have an above or below average Republican vote share.
+
+</details>
+
+<br>
+
+Your Moran Plot should resemble the following:
 
 <center>![](./screenshots/practical-3/manual-moran-plot.png){width="60%"}</center>
 
@@ -470,7 +503,7 @@ How do we know that the observed pattern of spatial autocorrelation is meaningfu
 
 We can answer the former by investigating **local** spatial autocorrelation, which is the topic of the second half of the practical.
 
-We can answer the latter by calculating the **Moran's** $I$ **statistic** and its significance, rather than relying on the visualisation alone. Here $I$ is used to summarise the information in the Moran Plot. Much like Pearson's $r$, Moran's $I$ can range from $-1$ to $+1$, where $-1$ indicates **negative** spatial autocorrelation (dispersion), $+1$ indicates **positive** spatial autocorrelation (clustering), and $0$ denotes **complete spatial randomness**.
+We can answer the latter by calculating the **Moran's** $I$ **statistic** and its significance, rather than relying on the visualisation alone. Here $I$ is used to summarise the information in the Moran Plot. Moran's $I$ can range from $-1$ to $+1$, where $-1$ indicates **negative** spatial autocorrelation (dispersion), $+1$ indicates **positive** spatial autocorrelation (clustering), and $0$ denotes **complete spatial randomness**.
 
 To understand how $I$ is calculated, we need to take a deeper dive into the Moran's $I$ formula, which is defined as follow:
 
@@ -550,7 +583,7 @@ Using Queen's contiguity, which cells are neighbours of $\text{A1}$?
 
 [Queen's contiguity](#queen-swm) identifies neighbouring objects which **share an edge or a point**. In turn, $\text{A1}$ is a neighbour of $\text{A2}$, $\text{B1}$ and $\text{B2}$. By comparison, if we used [Rook contiguity](#rook-swm), $\text{B2}$ would not be a neighbour, as it shares a point with $\text{A1}$, but **not** an edge.
 
-Here are some examples of neighbourhood topologies using Queen's contiguity:
+Here are some examples of neighbourhood connections using Queen's contiguity:
 
 <center>![](./images/practical-3/moran_simple_topology.png){width="90%"}</center>
 
@@ -622,7 +655,7 @@ A difficult but important question: **why** do we multiply the cross-products $z
 
 We do this to specify which pairs of observations **matter**.
 
-For example, $\text{A1}$ is a neighbour of $\text{A2}$, $\text{B1}$ and $\text{B2}$, when using Queen's contiguity. When assessing the overall similarity of observations to their neighbours, we therefore only want to incorporate the neighbouring objects. By comparison, the similarity of $\text{A1}$ to $\text{A3}$, $\text{A4}$, $\text{B3}$ and so on is **irrelevant**, because they are not neighbouring. Therefore, these pairs should **not** contribute to our assessment of neighbourhood similarity for the dataset as a whole. As the spatial weights for these pairs is zero (i.e., $w_{\text{A1},\text{A3}}=0$), the weighted cross-product is also zero, so makes no contribution to the numerator.
+For example, $\text{A1}$ is a neighbour of $\text{A2}$, $\text{B1}$ and $\text{B2}$, when using Queen's contiguity. When assessing the overall similarity of observations to their neighbours, we only want to measure the similarity/dissimilarity of **neighbouring** objects. By comparison, the similarity of $\text{A1}$ to $\text{A3}$, $\text{A4}$, $\text{B3}$ and so on is **irrelevant**, because they are not neighbouring. Therefore, these pairs should **not** contribute to our assessment of neighbourhood similarity for the dataset as a whole. As the spatial weights for these pairs is zero (i.e., $w_{\text{A1},\text{A3}}=0$), the weighted cross-product is also zero, so makes no contribution to the numerator.
 
 For this simple example we have also used **binary** weights i.e., spatial objects are either neighbours and therefore contribute to the numerator for Moran's $I$ ($w=1$) or they don't ($w=0$). We could, however, have used **continuous** weights, for example using an [inverse distance](#inv_weights) approach, in which case the weights would represent the **relative importance** of neighbours. If so, nearby objects would typically contribute more significantly to our assessment of similarity than distant objects.
 
@@ -686,7 +719,7 @@ Can you think why row-standardisation is typically used for calculating Moran's 
 
 <summary>Answer</summary>
 
-If row-standardisation was **not** used and we **didn't** use the scaling factor $\frac{n}{\sum_{i}\sum_{j}w_{ij}}$, the test statistic $I$ would be influenced by the **connectivity** of individual objects and by association, the connectivity of the dataset as a whole e.g., objects with more neighbours would contribute more than those with fewer neighbours.
+If row-standardisation was **not** used and we **didn't** use the scaling factor $\frac{n}{\sum_{i}\sum_{j}w_{ij}}$, the test statistic $I$ would be influenced by the **connectivity** of individual objects i.e., objects with more neighbours would contribute more than those with fewer neighbours.
 
 Overall, we are **not** interested in which objects are more or less connected. Instead, Moran's $I$ seeks to characterise the similarity of each object *and its neighbours* (i.e., the spatial lag). 
 
@@ -942,7 +975,7 @@ As with global Moran's $I$, calculating and interpreting local Moran's $I_{i}$ i
 > Open [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog), using `us_county_500k_contig_cf` as the "Input Feature Class" and the Republican vote share as the "Input Field". For consistency with global Moran's $I$, use Queen's contiguity and row standardisation, but also check "False Discovery Rate (FDR) correction". Keep all other settings as the default. Save the output feature class to the project directory e.g., `us_county_gop_lisa`.
 
 ::: note
-As with global Moran's $I$, local Moran's $I_{i}$ evaluates the statistical significance ($p$-value) of the observed pattern of local spatial autocorrelation ($I_{i}$) through comparison with random permutations of the modelled values i.e., shuffling the Republican vote share across the locations and calculating $I_{i}$ for each permutation. Increasing the "Number of Permutations" allows us to assess statistical significance with greater precision, at the cost of increased run time.
+As with global Moran's $I$, local Moran's $I_{i}$ evaluates the statistical significance ($p$-value) of the observed pattern of local spatial autocorrelation ($I_{i}$) through comparison with random permutations of the modelled values i.e., shuffling the Republican vote share across the locations and calculating $I_{i}$ for each permutation. Increasing the "Number of Permutations" allows us to assess statistical significance with greater confidence, at the cost of increased run time.
 
 <br>
 
@@ -953,7 +986,20 @@ When complete, you should be presented with a range of outputs, including a feat
 
 ![](./screenshots/practical-3/local-moran-map.png){width="100%"}
 
+::: note
+It is **important** to note that your output map of local Moran's $I_{i}$ might differ from mine, although it should be broadly similar. 
+
 <br>
+
+This is because while the calculation of $I_{i}$ is **deterministic**, in that [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) will produce the same $I_{i}$ values, given the same input and model parameters, the evaluation of *statistical significance* is **stochastic**[^stochastic_detail]. 
+
+<br> 
+
+As discussed above, significance is assessed through random permutations, which involves shuffling the Republican vote share across the US counties and calculating $I_{i}$ for each permutation. While the value of $I_{i}$ is fixed for each permutation, its statistical significance is not, and will be dependent on how the vote share is "shuffled". This can result in some counties being highlighted as significant in one model run (e.g., HH, LL), and non-significant in others.
+
+[^stochastic_detail]: **Stochastic** methods incorporate a *random* element, which can generate different results, even with the same input and model parameters.
+
+:::
 
 [Cluster and Outlier Analysis (Anselin Local Moran's I)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/cluster-and-outlier-analysis-anselin-local-moran-s.html?tabs=dialog) also produces a Moran Plot, which can be found in the Contents Pane → Charts.
 
@@ -983,6 +1029,8 @@ How do the results change if a distance based approach is used?
 
 When using a distance based approach e.g., inverse-distance or inverse-distance squared, local Moran's $I_{i}$ has produced a much larger pattern of positive spatial autocorrelation (HH, LL). This is because Queen's contiguity is a relatively conservative approach to defining neighbours, requiring a shared point or edge . By comparison, inverse distance approaches typically include a much larger number of neighbours, although those nearby still receive higher weights. In turn, while neighbours defined using Queen's contiguity typically represent a very **local** neighbourhood (within the context of the scale of the data), distance based approaches can access information from a much **larger** neighbourhood, making it less sensitive to local variation.
 
+As above, your configuration of statistically significant counties (HH, LL, HL, LH) might differ from mine as a function of the **stochastic** significance testing. 
+
 </details>
 
 <br>
@@ -1011,9 +1059,8 @@ Hopefully you have some interesting ideas here, and I'd recommend looking at @li
 
 As discussed above, spatial autocorrelation is of profound importance for spatial analysis, dictating the methods we can use and influencing our interpretations of spatial phenomena. Global Moran's $I$ [@moran1948] and local Moran's $I_i$ [@anselin1995] are both powerful techniques, but provide very different perspectives on spatial autocorrelation. While the former can be used to assess for global patterns *for a dataset as a whole*, $I_i$ can be used to identify specific areas of clustering, dispersion or randomness, which can often tell us a great deal about the underlying geographic factors e.g., demographics, economics, health, history, and so on.
 
-However, we also need to recognise that the techniques introduced today are **exploratory** methods, and different results can be generated by simply changing the parameters e.g., switching between [contiguity](#contig-swm) or [distance-based](#dist-swm) weights, increasing or decreasing the number of neighbours when using [$K$ Nearest Neighbours](#k_neighbours), or modifying the *distance decay* effect if [continuous weights](#inv_weights) are used. Thus, while the methods are **deterministic**, in that they will produce the same results, given the same input and model parameters[^03-autocorrelation-28], this does not mean that the results are **objective truth**. As switching parameters will change the results, and perhaps may fundamentally change your interpretations, care is needed to:
+However, we also need to recognise that the techniques introduced today are **exploratory** methods, and different results can be generated by simply changing the parameters e.g., switching between [contiguity](#contig-swm) or [distance-based](#dist-swm) weights, increasing or decreasing the number of neighbours when using [$K$ Nearest Neighbours](#k_neighbours), or modifying the *distance decay* effect if [continuous weights](#inv_weights) are used. Moreover, the statistical significance of $I$ and $I_i$ is calculated using a stochastic process, which can result in variability between model runs (e.g., the exact location of HH-LL clusters and HL-LH outliers). As a result, we should avoiding presenting the results as **objective truth**. As switching parameters will change the results, and perhaps may fundamentally change your interpretations, care is needed to:
 
-[^03-autocorrelation-28]: Unlike **stochastic** methods, which incorporate a *stochastic* or *random* element, which can generate different results, even with the same input and model parameters.
 
 1.  Select parameters which are appropriate for the geographic process you are studying.
 2.  Evaluate the sensitivity of your results to those parameters.
