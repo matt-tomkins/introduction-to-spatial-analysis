@@ -54,3 +54,17 @@ autocorrelation_summary
 auto_extra
 getis-and-ords-g
 resources-1
+spatial_correlation
+introduction-3
+practical-2
+justify_spatial_corr
+pre-processing-1
+exploratory-analysis
+understanding-bivariate-spatial-association
+lees-l
+interpreting-lees-l
+local-lees-l
+running-bivariate-spatial-association
+now-thats-what-i-call-spatial-correlation
+correlation-extra
+resources-2
