@@ -226,7 +226,7 @@ This is also the first time we are going to **spatialise** a standard statistica
 
 Based on the above reasoning, we are going to introduce a measure of **bivariate spatial association** developed by @lee2001, which "*captures the relationship between two variables, taking the topological relationship among observations into account*". 
 
-### Pre-processing {.hidden-section}
+### Pre-processing
 
 To begin:
 
@@ -234,7 +234,7 @@ To begin:
 
 As we previously used a *dynamic* table join to link the geometries to the 2024 election results, the fields of interest (e.g.,`gop_perc`, `dem_perc`) are no longer present in the Attribute Table.
 
-> Load `2024_US_County_Level_Presidential_Results.csv` but this time use a **static** table join via [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to link the election results to our county geometries, joining using the `NAMELSAD` and `county_name` fields, and selecting the `gop_perc` and `dem_perc` "Transfer Fields".
+> Load `2024_US_County_Level_Presidential_Results.csv` but this time use a **static** table join via [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to link the election results to our county geometries, joining using the `NAMELSAD` and `county_name` fields, and selecting the `gop_perc` and `dem_perc` as "Transfer Fields".
 
 As discussed above, we want to explore whether the observed patterns in the variable of interest are **associated** or **correlated** with other variables. To investigate this:
 
@@ -248,7 +248,7 @@ As discussed in Practical 3, these are currently in different data formats, whic
 
 With our FIPS code in the correct data format:
 
-> Use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to produce static table joins between `us_county_500k_contig_cf` and the education, poverty and demographic tables, joining based on `GEOID_int` and `FIPS_code`.
+> Use [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog) to produce static table joins between `us_county_500k_contig_cf` and the education, poverty and demographic tables, joining based on `GEOID_int` and `FIPS_code`, with more information below...
 
 > To simplify our analysis, we are only going to transfer some key fields, including:
 >
@@ -272,7 +272,7 @@ To finish the pre-processing:
 
 > Remove all the standalone tables from ArcGIS. These are no longer necessary, given our use of *static* table joins via [Join Field](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/join-field.html?tabs=dialog).
 
-### Exploratory analysis {.hidden-section}
+### Exploratory analysis
 
 Before we define and evaluate our measure of bivariate spatial association [@lee2001], we should always undertake some initial exploratory analysis.
 
@@ -296,7 +296,7 @@ How would you describe the distribution of the demographic variables i.e., `WA_p
 Are there any interesting relationships?[^04-correlation-8] Does the sign of the relationship ($-|+$) match your expectations?
 :::
 
-[^04-correlation-8]: Note that the Scatter Plots report $R^2$ i.e., the proportion of the variation in the dependent variable (`gop_per`) that is predictable from the independent variable. This is different from $r$, which is focused on the degree of correlation only. In addition, both $R^2$ and $r$ are global statistics - we have not yet incorporated the spatial structure of the data.
+[^04-correlation-8]: Note that the Scatter Plots report $\text{R}^2$ i.e., the proportion of the variation in the dependent variable (`gop_per`) that is predictable from the independent variable. This is different from $r$, which is focused on the degree of correlation only. In addition, neither $\text{R}^2$ and $r$ incorporate the spatial structure of the data.
 
 <center>
 
@@ -324,9 +324,9 @@ Can you identify any interesting spatial patterns or clustering? What might expl
 
 This qualitative approach is useful, but as we discussed in the [previous practical](#election_results), our ability to identify **meaningful** spatial patterns is not perfect, with potential for Type I and Type II errors. Instead, we should use a statistical approach to assess for spatial autocorrelation.
 
-We already know that there is global positive spatial autocorrelation of the Republican vote share, as revealed using Moran's $I$ [@moran1948]. We also have information on the distribution of clusters (HH, LL) and outliers (LH, HL), as identified using local Moran's $I_i$ [@anselin1995]. We also compared these results to those produced by Getis and Ord's $G$, $G_{i}$ and $G_{i}^{*}$ [@getis1992].
+We already know that there is global positive spatial autocorrelation of the Republican vote share, as revealed using Moran's $I$ [@moran1948]. We also have information on the distribution of clusters (HH, LL) and outliers (LH, HL), as identified using local Moran's $I_i$ [@anselin1995]. You may also have compared these results to those produced by Getis and Ord's $G$, $G_{i}$ and $G_{i}^{*}$ [@getis1992] in the [Extra](#alt_indices) section.
 
-> Using tools of your choice, investigate **global** and **local** spatial autcorrelation for the education, poverty and demographic variables. I would recommend focusing on the median household income, the percentage of the total population classed as "white", and the percentage of adults with a bachelor's degree or higher.
+> Using tools of your choice, investigate **global** and **local** spatial autcorrelation for the education, poverty and demographic variables. To get started, I would recommend focusing on the median household income, the percentage of the total population classed as "white", and the percentage of adults with a bachelor's degree or higher.
 
 ![*An output of local Moran's* $I_{i}$](./screenshots/practical-4/lisa-income.png){width="100%"}
 
@@ -346,12 +346,12 @@ As you will have discovered, we can reject the hypothesis of **spatial randomnes
 Is Pearson's $r$ capturing the "true" correlation between our spatial variables?
 :::
 
-### Understanding bivariate spatial association {.hidden-section}
+### Understanding bivariate spatial association
 
 Based on this reasoning, we need to use a more appropriate measure, which incorporates the following distinct forms of association, as discussed by @hubert1985 and @lee2001:
 
 -   **point-to-point association** i.e., the numerical relationship between two variables measured at the same location (for example, as measured using Pearson's $r$).
--   **spatial association** i.e., the spatial clustering of the data (for example, as measured using Moran's $I$)
+-   **spatial association** i.e., the spatial clustering of the two variables (for example, as measured using Moran's $I$)
 
 This measure would enable us to investigate:
 
@@ -363,7 +363,7 @@ Are the two variables numerically related **and/or** do they exhibit similar geo
 
 One solution to this is Lee's $L$ [@lee2001], which is defined as:
 
-$$L_{XY}=\frac{n}{\sum_i(\sum_{j}w_{ij})^2}\frac{\sum_{i}[(\sum_{j}w_{ij}(x_{j}-\bar{x}))(\sum_{j}w_{ij}(y_{j}-\bar{y}))]}{\sqrt{\sum_{i}(x_{i}-\bar{x})^2}\sqrt{\sum_{i}(y_{i}-\bar{y})^2}}$$ This **looks** quite complicated (and it took me a while to untangle the mathematics!), but there are lots of components here that you should be familiar with[^04-correlation-10].
+$$L_{XY}=\frac{n}{\sum_i(\sum_{j}w_{ij})^2}\frac{\sum_{i}[(\sum_{j}w_{ij}(x_{j}-\bar{x}))(\sum_{j}w_{ij}(y_{j}-\bar{y}))]}{\sqrt{\sum_{i}(x_{i}-\bar{x})^2}\sqrt{\sum_{i}(y_{i}-\bar{y})^2}}$$ This **looks** quite complicated, but there are lots of components here that you should be familiar with[^04-correlation-10].
 
 [^04-correlation-10]: If you read @lee2001, you'll notice the notation in Equation 12 is slightly different to that provided above. I've made some small changes (not affecting the calculations) for consistency with other equations we've used previously. For example, $w_{ij}$ relates to the values in the spatial weights matrix, introduced [here](#spatial_lag), which is defined by @lee2001 as $v_{ij}$.
 
@@ -381,15 +381,15 @@ which can be summarised as follows. For each location $i$:
 
 The numerator is therefore the sum of this product for all $i$ locations.
 
-It may be helpful to understand this visually, so:
+It may be helpful to understand this **visually**, so:
 
-> Inspect the schematic below, which illustrates the process for a single focal feature (Sante Fe County, New Mexico, GEOID: 35049).
+> Inspect the schematic below, which illustrates the process for a single focal feature (Sante Fe County, New Mexico, GEOID: 35049). This involves (1) finding the values for each neighbourhood $x_j$, (2) standardising based on the mean $x_{j}-\bar{x}$, (3) multiplying by the spatial weights $w_{ij}(x_{j}-\bar{x})$ and (4) then calculating the sum of these values $\sum_{j}w_{ij}(x_{j}-\bar{x})$. 
 
 ![*Calculating the product of the spatial lags for a focal feature* $i$](./images/practical-4/bivariate-spatial-lag-transposed.png){#local_l_schematic width="100%"}
 
 <br>
 
-The process is very similar to that introduced in the [previous practical](#lag_schematic). A minor difference is that here we are using standardised (mean-centered) values. The more striking difference is that the process involves **two** variables, rather than one, in this case the Republican vote share (`gop_perc`) and the percentage of the total population in poverty (`PCTPOVALL_2023`). Standardised values for each variable are multiplied by the corresponding spatial weights (in this case, row-standardisation has been used, so $w=1/7$[^04-correlation-11]), and then summed to produce the **spatial lags**. The value for the focal feature is the product of these spatial lags, which here is $-0.52$. This process would be repeated for all features in the dataset, and the final numerator value is the sum of those values $\sum_{i}$.
+The process is very similar to that introduced in the [previous practical](#lag_schematic). The most striking difference is that the process involves **two** variables, rather than one, in this case the Republican vote share (`gop_perc`) and the percentage of the total population in poverty (`PCTPOVALL_2023`). Standardised values for each variable are multiplied by the corresponding spatial weights (in this case, row-standardisation has been used, so $w=1/7$[^04-correlation-11]), and then summed to produce the **spatial lags**. The value for the focal feature is the product of these spatial lags, which here is $-0.52$. This process would be repeated for all features in the dataset, and the final numerator value is the sum of those values $\sum_{i}$.
 
 [^04-correlation-11]: In the schematic above, I've used a traditional neighbourhood definition, which would typically exclude the focal feature. Having tested the ArcGIS implementation of $L$, and carefully read the [documentation](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/how-bivariate-spatial-association-works.html#DD4), the implementation **does** include the focal feature: "*All features will have a weight equal to one for the weight of the feature to itself, even if the spatial weights file does not have these weights assigned.*".
 
@@ -445,7 +445,7 @@ If you compared the two equations carefully, you will have noticed that the deno
 
 The aim of the denominator in both $I$ and $L$ is to remove the effect of different neighbourhood sizes and weight magntiudes. In Moran's $I$ this is achieved by scaling based on the total sum of weights in the spatial weights matrix. This is appropriate because the numerator involves a single spatial lag, which represents a single application of the spatial weights matrix. For Lee's $L$, **two** spatial lags are calculated, one for $x$ and $y$, representing two applications of the spatial weights matrix. As these two spatial lags are then multiplied, normalisation accounts for the squared influence of the row sums of the spatial weights.
 
-For example, take the following binary spatial weights matrix, with the row sums (number iof neighbours) included:
+For example, take the following binary spatial weights matrix, with the row sums (number of neighbours) included:
 
 $$W=\begin{bmatrix}0 & 1 & 1 & 1 \\ 1 & 0 & 1 & 0 \\ 1 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0\end{bmatrix} \rightarrow \begin{matrix}3 \\ 2 \\ 2 \\ 1 \end{matrix} $$
 
@@ -461,9 +461,8 @@ As a final point, this normalisation is **not** required when row-standardisatio
 
 <br>
 
-::: note
-If there's anything you didn't understand, now is the time to ask!
-:::
+> If there's anything you didn't understand, now is the time to ask!
+
 
 #### Interpreting Lee's $L$
 
@@ -487,7 +486,7 @@ Can you think why this might be?
 
 Intuitively, we might expect Lee's $L$ to also equal 1. Fundamentally, we are comparing the same dataset against itself... surely this should produce perfect co-patterning?
 
-The answer is **no**. This is because Lee's $L$ is not comparing the values of $A$ vs. the (identical) values of $A$, as with Pearson's $r$. It is comparing the spatially lagged values of $A$ (numerator) with the overall variation in the original values of $A$ (denominator). As we discussed in the previous practical, the former is a *smoothed* version of the original values, whereby the spatial lag is a weighted average of its neighbours.
+The answer is **no**. This is because Lee's $L$ is not comparing the values of $A$ vs. the (identical) values of $A$, as with Pearson's $r$. It is comparing the spatially lagged values of $A$ (numerator) with the overall variation in the original values of $A$ (denominator). As we discussed in the previous practical, the former is a *smoothed* version of the original values, where the spatial lag is a weighted average of its neighbours.  
 
 In turn, Lee's $L$ allows us to evaluate:
 
@@ -506,7 +505,7 @@ For the $A-A$ comparison, there is evidence of relatively strong co-pattering ($
 These self-comparisons are useful to understand $L$, but the comparisons of $A-A'$ (flipped) and $A-C$ are more typical of actual data.
 
 ::: question
-What is your interpretation of $A-A'$ and $A-C$.
+What is your interpretation of $A-A'$ and $A-C$?
 :::
 
 <details>
@@ -531,37 +530,53 @@ However, we often want to go further:
 Which *parts* of the map show spatial co-patterning?
 :::
 
-Luckily we don't need to do any further calculations, because the global value for $L$ is calculated based on feature-specific "local" $L$ values. We've already covered how those are calculated in some detail, including in the [schematic](#local_l_schematic) above. These local $L$ values indicate whether the focal feature is characterised by positive, negative or negligible local spatial association.
+Luckily we don't need to do any further calculations, because the **global** value for $L$ is calculated based on feature-specific **local** $L$ values. We've already covered how those are calculated in some detail, including in the [schematic](#local_l_schematic) above. These local $L$ values indicate whether the focal feature is characterised by positive, negative or negligible local spatial association. 
 
 The **statistical significance** of the global and local $L$ values can be determined by permutation tests, as with Moran's $I$ and $I_{i}$. For the latter, this allows us to distinguish statistically significant categories (High-High, Low-Low, High-Low, Low-High), much like with local Moran's $I_{i}$.
 
-### Running bivariate spatial association {.hidden-section}
+### Running bivariate spatial association
 
 That's enough theory. Let's play with some data.
 
-> Open the Geoprocessing tool [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), using `us_county_500k_contig_cf` as the "Input Features", with `per_gop` and `PCTPOVALL_2023` as the analysis fields[^04-correlation-13] and use Queen's contiguity. Save the output features to the project directory with a suitable name e.g., `L_gop_pov_qc`
+> Open the Geoprocessing tool [Bivariate Spatial Association (Lee's L)](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/bivariate-spatial-association.html?tabs=dialog), using `us_county_500k_contig_cf` as the "Input Features", with `per_gop` and `PCTPOVALL_2023` as the analysis fields[^04-correlation-13] and use Queen's contiguity[^lee_rs]. Save the output features to the project directory with a suitable name e.g., `L_gop_pov_qc`
 
 [^04-correlation-13]: Unlike regression, the order of the variables is not important here i.e., correlation $\text{correlation}\:A-B=\text{correlation}\:B-A$.
 
-The tool has produced a striking map of local $L$, but before we explore it, we need to investigate the global results, which are shown below. These can be found in the tool output &rarr; "Messages":
+[^lee_rs]: The ArcGIS implementation of Lee's $L$ enforces [row-standardisation](#row_standard), which simplifies the equation to $L_{XY}=\frac{\sum_{i}[(\sum_{j}w_{ij}(x_{j}-\bar{x}))(\sum_{j}w_{ij}(y_{j}-\bar{y}))]}{\sqrt{\sum_{i}(x_{i}-\bar{x})^2}\sqrt{\sum_{i}(y_{i}-\bar{y})^2}}$
+
+The tool has produced a striking map of local $L$ values, but before we explore it, we need to investigate the global results, which are shown below. These can be found in the tool output &rarr; "Messages":
 
 <center>![](./screenshots/practical-4/gop_poverty_L.png){width="80%"}</center>
 
 ::: question
-What is your interpretation of the global level results, including $L$ and it's associated $p$ value, and Pearson's $r$ (`Pearson Correlation - raw`).
+What is your interpretation of the global level results, including $L$ and it's associated $p$ value, and Pearson's $r$ (`Pearson Correlation - raw`)?
 :::
 
-The ArcGIS implementation also returns the **spatial smoothing scalar** for both variables. We haven't defined this yet, as it doesn't feature directly in the main $L$ equation, but you'll notice it's very similar to $L$:
+<details>
+
+<summary>Interpretation</summary>
+
+In our case, while the global $p$ value is "significant" $p<0.05$, the magnitude of both $L$ and $r$ is very small. As a result, the statistical significance of the result is unlikely to be meaningful. Instead, it likely reflects the fact that both variables show spatial autocorrelation, even though there is little *spatial association* between them.
+
+</details>
+
+<details>
+
+<summary>Extra</summary>
+
+For those interested, the ArcGIS implementation also returns the **spatial smoothing scalar** for both variables. We haven't defined this, as it doesn't feature directly in the main $L$ equation, but you'll notice it's very similar to $L$:
 
 $$SSS_X=\frac{n}{\sum_{i}(\sum_{j} w_{ij})^2}\frac{\sum_{i}(\sum_{j}w_{ij}(x_{j}-\bar{x}))^2}{\sum_{i}(x_{i}-\bar{x})^2}$$
-
 Broadly this is measuring the degree of variation in a **single** spatially smoothed variable, with values closer to $1$ indicating strong positive spatial autocorrelation, and values closer to $0$ indicating strong negative spatial autocorrelation.
 
-In our case, while the global $p$ value is "significant" $p<0.05$, the magnitude of both $L$ and $r$ is very small. As a result, the statistical significance of the result is unlikely to be meaningful. Instead, it likely reflects the fact that both variables show autocorrelation (as revealed by $SSS_X$), even though there is little *cross correlation* between them.
+</details>
 
-While we should be cautious about the local statistics in light of this, the Attribute Table still contains some useful information, such as local $L$ and the neighbourhood averages for each variable[^04-correlation-14].
+<br>
 
-[^04-correlation-14]: Note these are not exactly the same as the **normalised** spatial lags we calculated above i.e., $\sum_{j}w_{ij}(y_{j}-\bar{y})$. They appear to be $\sum_{j}w_{ij}y_{j}$.
+
+While we should be cautious about the local statistics given the magnitude of $L$ and $r$, the Attribute Table still contains some useful information, such as local $L$ and the neighbourhood averages for each variable[^04-correlation-14].
+
+[^04-correlation-14]: Note these are not exactly the same as the **normalised** spatial lags we calculated above i.e., $\sum_{j}w_{ij}(y_{j}-\bar{y})$. They appear to be weighted neighbourhood averages of the original values i.e., $\sum_{j}w_{ij}y_{j}$.
 
 ::: question
 What is the local $L$ for our test county (Sante Fe County, GEOID: 35049)? Why does this differ from the [calculations](#local_l_schematic) above?
@@ -617,7 +632,7 @@ Which indicators show positive or negative spatial association with the Republic
 
 
 
-### Now that's what I call spatial correlation... {.hidden-section}
+### Now that's what I call spatial correlation...
 
 In this practical we've introduced Lee's $L$ which measures the association between two spatial variables, taking into account their spatial structure and the arrangement of values across neighbouring locations. While Pearson's $r$ (and similar aspatial metrics) measure **point-to-point association** i.e., the numerical relationship between two variables measured at the same location, Lee's $L$ evaluates whether this relationship is reflected in the spatial patterns of the two variables.
 
@@ -643,7 +658,7 @@ If you are satisfied with your understanding... **congratulations!** You have co
 
 [**Finished!**](#index)
 
-## Extra {#correlation-extra .hidden-section}
+## Extra {#correlation-extra}
 
 I've provided you with some other county-level datasets in `data/us-census`, including age-standardised [mortality](https://hdpulse.nimhd.nih.gov/data-portal/mortality/map?age=001&age_options=age_11&cod=247&cod_options=cod_15&comparison=states_to_us&comparison_options=comparison_statename_to_us&race=00&race_options=race_6&ratetype=aa&ratetype_options=ratetype_2&ruralurban=0&ruralurban_options=ruralurban_3&sex=0&sex_options=sex_3&statefips=99&statefips_options=area_states&yeargroup=5&yeargroup_options=yearmort_2), [unemployment](https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data), and [internet adoption](https://www.census.gov/data/experimental-data-products/local-estimates-of-internet-adoption.html).
 
