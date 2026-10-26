@@ -68,3 +68,16 @@ running-bivariate-spatial-association
 now-thats-what-i-call-spatial-correlation
 correlation-extra
 resources-2
+point_patterns
+introduction-4
+practical-3
+point_introduction
+pre-processing-2
+point_vis
+point_centro
+p5_randomness
+observation-window
+p5_clustering
+summary
+extra-1
+resources-3
