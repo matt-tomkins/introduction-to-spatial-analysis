@@ -81,7 +81,7 @@ In this practical, we will focus on point pattern analysis, introducing techniqu
 
 [^process_link]: You will be able to explore point-process modelling in more detail in the Semester 2 unit GEOG71922 *Spatial Ecology* with [Matt Dennis](https://research.manchester.ac.uk/en/persons/matthew.dennis/). 
 
-### Pre-processing {.hidden-section}
+### Pre-processing
 
 In today's practical, we are using research-grade species observations of *Panthera tigris* from [iNaturalist](https://www.inaturalist.org/observations?place_id=any&view=species), obtained via [GBIF](https://www.gbif.org/species/search).
 
@@ -173,7 +173,7 @@ As discussed previously, we have updated the **map** CRS, but this doesn't chang
 
 > Finalise preprocessing by using [Project](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/data-management/project.html?tabs=dialog) to reproject the relevant point and polygon data to your new CRS.
 
-### Visualisation {#point_vis .hidden-section}
+### Visualisation {#point_vis}
 
 In the following sections, we are going to look at ways we can **visualise** the *Panthera tigris* observations, before we characterise their **centrography**, **randomness** and **clustering**, replicating the workflow of Sergio J. Rey, Dani Arribas-Bel and Levi J. Wolf in their book [Geographic Data Science with Python](https://geographicdata.science/book/).
 
@@ -181,7 +181,9 @@ The raw point observations, as shown below, can tell us a lot about the distribu
 
 ![](./screenshots/practical-5/raw_points.png){width="100%"}
 
-There are a few alternative visualisations which could be used to address this. One approach is to create a **grid** across the study area, and then symbolise the cells based on the number of observations within each cell. This is useful, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters. When *tesselated*, there may be one or two areas that stand out (e.g., \>500 observations).
+There are a few alternative visualisations which could be used to address this. One approach is a **chloropleth** map in which values are aggregated for defined geographic regions (e.g., county, country, cells of a grid) and then symbolised using using colours or shading[^chloropleth_link]. For example, this could be achieved by creating a **grid** across the study area, and then symbolising the cells of the grid based on the number of observations within each cell. This is useful, because when looking at the points in isolation (at the sub-continent scale), there are lots of high observation clusters. When *tesselated*, there may be one or two areas that stand out (e.g., \>500 observations).
+
+[^chloropleth_link]: Our map of the [US election results](#election_results) is an example of this. 
 
 We could also use this grid as the basis for statistical testing, for example using [$χ^2$](https://en.wikipedia.org/wiki/Chi-squared_test), which compares the number of observations in each cell (or *quadrat*) vs. an even distribution of observations across the cells. 
 
@@ -249,7 +251,7 @@ The kernel density raster produced by [Kernel Density](https://doc.esri.com/en/a
 Is the default colour scale an appropriate choice? See @crameri2020
 :::
 
-### Centrography {#point_centro .hidden-section}
+### Centrography {#point_centro}
 
 If you were presented with a set of values (e.g., measurements of [species richness](#species-richness) in a forest) and were asked to describe the dataset, you would probably calculate some summary statistics, such as measures of central tendency (e.g., mean, median, mode), or measures of dispersion (e.g., standard deviation, range, interquartile range). In doing so, we are attempting to capture the core properties of the dataset.
 
@@ -307,7 +309,7 @@ By comparison, if the distribution of species observations was uniform or spatia
 
 <br>
 
-### Randomness {#p5_randomness .hidden-section}
+### Randomness {#p5_randomness}
 
 So far we've explored how to [visualise](#point_vis) our point patterns to maximise the information on display, and introduced some measures of [centrography](#point_centro) which we can use to characterise the point pattern. A logical progression from this is to assess spatial **randomness** i.e.,
 
@@ -343,7 +345,7 @@ The expected mean nearest neighbour distance $\bar{r}E$ is calculated using a Po
 
 [^05-point-patterns-9]: We'll introduce Poisson distributions in **Practical 10**: *Spatial Interaction Modelling*.
 
-$$\bar{r}E = \frac{1}{2\sqrt{p}}$$
+$$\bar{r}_E = \frac{1}{2\sqrt{p}}$$
 
 where $p$ is the density of observed points i.e., number of points per unit of area, which is simply $n/a$, where $a$ is the area of the study extent.
 
@@ -415,7 +417,7 @@ This interpretation is backed up the `.html` report, which sums it up nicely: "*
 How has changing $a$ influenced $\bar{r}_E$ and the corresponding z-score? Has this changed your interpretations?
 :::
 
-### Cluster analysis {#p5_clustering .hidden-section}
+### Cluster analysis {#p5_clustering}
 
 While our appraisal of randomness is sensitive to the observation window, we can be reasonably confident here that the point pattern is not random, and instead is highly **clustered**. In this final section, we are going to investigate the existence and location of individual clusters.
 
@@ -499,7 +501,7 @@ In my view, DBSCAN has produced the more reasonable and more [parsimonious](http
 
 <br>
 
-### Summary {.hidden-section}
+### Summary
 
 In this practical, we have **visualised** and characterised the **centrography**, **randomness** and **clustering** of *Panthera tigris* observations. We have used some important and powerful methods, but of course there are other techniques that can be explored e.g., [Ripley's K](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-statistics/multi-distance-spatial-cluster-analysis.html?tabs=dialog) [@ripley_statistical_1988]. 
 
@@ -515,7 +517,7 @@ Finally, one key concept we haven't considered is **uncertainty**. In our analys
 
 [**Finished!**](#index)
 
-## Extra {.hidden-section}
+## Extra
 
 In the extra content this week, we will test the sensitivity of our analysis to the observation window. For those of you want to use species observations in your own work, I have also included instructions on how to download these from GBIF.
 
