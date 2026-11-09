@@ -76,6 +76,8 @@
 <li><a class="" href="spatial_autocorrelation.html"><span class="header-section-number">3</span> Spatial Autocorrelation</a></li>
 <li><a class="" href="spatial_correlation.html"><span class="header-section-number">4</span> Spatial Correlation</a></li>
 <li><a class="active" href="point_patterns.html"><span class="header-section-number">5</span> Point Patterns</a></li>
+<li class="book-part">Spatial Modelling</li>
+<li><a class="" href="interpolation.html"><span class="header-section-number">6</span> Interpolation</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -285,7 +287,7 @@
 <p>An alternative approach, which is (arguably) a better reflection of the continuous nature of the phenomena, is <strong>kernel density estimation</strong> (KDE) which creates a smooth surface representing the estimated density (relative probability <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;A &lt;a href="https://en.wikipedia.org/wiki/Probability_density_function"&gt;probability density function&lt;/a&gt; describes the likelihood that a variable will fall within a specific range of values.&lt;/p&gt;'><sup>72</sup></a>) or intensity (expected number) of occurrences across space. In the interests of brevity, we won’t go into the underlying methodology here, but if you’re interested you can consult the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/how-kernel-density-works.html">documentation</a> and related literature e.g., <span class="citation">Silverman (<a href="references.html#ref-silverman2018">2018</a>)</span>. KDE can be applied to two-dimensional spatial data (i.e., <span class="math inline">\(xy\)</span> coordinates) to produce a continuous density (or intensity) surface, but is also commonly applied to one-dimensional data (i.e., a vector of values) to produce a <a href="https://en.wikipedia.org/wiki/Density_estimation">smooth density curve</a>, as used in my previous research <span class="citation">(<a href="references.html#ref-dortch2022b">Dortch <em>et al.</em>, 2022</a>)</span>, and visualised below:</p>
 <p><img src="images/practical-5/kernel_density.png" style="width:100.0%" alt="1D and 2D kernel density estimation"><br></p>
 <blockquote>
-<p>Run the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a> tool using the occurrence points as the “Input point feature”, “Population Field” = <code>NONE</code>, and set the “Output cell size” to 20000 (m) for consistency with the grid created earlier. For “Method”, we can choose either Planar or Geodesic measurement<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For each cell in the output grid, the calculated probability is based on the number of points around the cell, weighted by distance, so accurate distance measurement is important.&lt;/p&gt;"><sup>73</sup></a>. Although we are using a projected CRS for our data, if in doubt, use a geodesic approach.</p>
+<p>Run the <a href="https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog">Kernel Density</a> tool using the occurrence points as the “Input point feature”, “Population Field” = <code>NONE</code>, and set the “Output cell size” to 20000 and “Area Units” to <code>Square kilometers</code> for consistency with the grid created earlier. For “Method”, we can choose either Planar or Geodesic measurement<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;For each cell in the output grid, the calculated probability is based on the number of points around the cell, weighted by distance, so accurate distance measurement is important.&lt;/p&gt;"><sup>73</sup></a>. Although we are using a projected CRS for our data, if in doubt, use a geodesic approach.</p>
 </blockquote>
 <p>If successful, the tool should return a raster layer, where its dimensions are determined by the minimum and maximum coordinates of the input layer.</p>
 <div class="question">
@@ -579,9 +581,12 @@ Suggestion
 </div>
 </div>
 
+
+
+
   <div class="chapter-nav">
 <div class="prev"><a href="spatial_correlation.html"><span class="header-section-number">4</span> Spatial Correlation</a></div>
-<div class="next"><a href="references.html">References</a></div>
+<div class="next"><a href="interpolation.html"><span class="header-section-number">6</span> Interpolation</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">

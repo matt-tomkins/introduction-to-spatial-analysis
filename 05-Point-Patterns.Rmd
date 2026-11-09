@@ -231,7 +231,7 @@ An alternative approach, which is (arguably) a better reflection of the continuo
 
 ![1D and 2D kernel density estimation](./images/practical-5/kernel_density.png){width="100%"} <br>
 
-> Run the [Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog) tool using the occurrence points as the "Input point feature", "Population Field" = `NONE`, and set the "Output cell size" to 20000 (m) for consistency with the grid created earlier. For "Method", we can choose either Planar or Geodesic measurement[^05-point-patterns-6]. Although we are using a projected CRS for our data, if in doubt, use a geodesic approach.
+> Run the [Kernel Density](https://doc.esri.com/en/arcgis-pro/latest/tool-reference/spatial-analyst/kernel-density.html?tabs=dialog) tool using the occurrence points as the "Input point feature", "Population Field" = `NONE`, and set the "Output cell size" to 20000 and "Area Units" to `Square kilometers` for consistency with the grid created earlier. For "Method", we can choose either Planar or Geodesic measurement[^05-point-patterns-6]. Although we are using a projected CRS for our data, if in doubt, use a geodesic approach.
 
 [^05-point-patterns-6]: For each cell in the output grid, the calculated probability is based on the number of points around the cell, weighted by distance, so accurate distance measurement is important.
 
