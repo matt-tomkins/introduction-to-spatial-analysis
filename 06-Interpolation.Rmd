@@ -203,7 +203,7 @@ Office](https://weather.metoffice.gov.uk/maps-and-charts/temperature-map#?model=
 [automatic monitoring
 stations](https://www.metoffice.gov.uk/research/climate/maps-and-data/uk-synoptic-and-climate-stations)).
 
-### Pre-processing {.hidden-section}
+### Pre-processing
 
 To begin:
 
@@ -313,7 +313,7 @@ Our dataset is now ready for interpolation, so:
 > any other map layers (e.g., the points *before* projection to the
 > British National Grid).
 
-### Interpolation types {.hidden-section}
+### Interpolation types
  
 Before we explore spatial interpolation methods in more detail, it is
 important to first discuss some of key differences between the methods.
@@ -383,7 +383,7 @@ measurement locations.
 
 <br> 
 
-### Deterministic interpolation: proximity {.hidden-section}
+### Deterministic interpolation: proximity
 
 The simplest form of deterministic spatial interpolation is **proximity** or **Thiessen** interpolation, which assigns the value of the closest sampled location to unsampled locations.
 
@@ -413,7 +413,7 @@ To assess the quality of this output more rigorously, we could compare the "pred
 
 <br>
 
-### Deterministic interpolation: IDW {.hidden-section}
+### Deterministic interpolation: IDW
 
 A more commonly used deterministic interpolation method is **Inverse Distance Weighting** (IDW), in which the estimated value $\hat{Z}_{j}$ at location $j$ is a distance-weighted average of the observed values, defined as:
 
@@ -612,7 +612,7 @@ When complete:
 How different is your modified IDW output compared to the default settings?
 :::
 
-### Geostatistical interpolation: Ordinary Kriging {.hidden-section}
+### Geostatistical interpolation: Ordinary Kriging
 
 One disadvantage of IDW and other deterministic approaches is that there is no explicit consideration of the spatial structure of the data, where predictions are made based on pre-determined mathematical rules (e.g., $w_{i}=\frac{1}{d_{i}^{p}}$), independent of the actual spatial dependence between observations. In contrast, **geostatistical** approaches incorporate the spatial dependence of the observations (also known as **variography**) to develop a model of the underlying (unobserved) spatial process. This typically results in more accurate predictions, and importantly, allows for quantification of **uncertainty**. 
 
@@ -956,7 +956,7 @@ How does the Ordinary Kriging interpolation compare to the output of IDW?
 
 <br>
 
-### Geostatistical interpolation: Universal Kriging {.hidden-section}
+### Geostatistical interpolation: Universal Kriging
 
 In the introduction above, we noted that *Ordinary Kriging* assumes *stationarity* i.e., the data has a constant, but unknown mean. You might have questioned this assumption, in the context of our dataset.
 
@@ -1037,7 +1037,7 @@ However, we have a strong **theoretical** justification to use Universal rather 
 
 <br>
 
-### Summary {#interpolation_summary .hidden-section} 
+### Summary {#interpolation_summary} 
 
 In this practical we have introduced a range of interpolation methods, including proximity, inverse distance weighting, and Ordinary and Universal Kriging. 
 
@@ -1073,7 +1073,7 @@ When selecting an interpolation method, we need to think carefully about theory 
 
 [**Finished!**](#index)
 
-## Extra {.hidden-section}
+## Extra
 
 As an **exact** interpolator, Universal Kriging has reproduced the temperature values at our input monitoring stations. Via cross-validation, we know that prediction accuracy at unsampled locations is lower ($\approx2\:\text{°C}$). What might be causing this?
 
