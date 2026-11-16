@@ -101,3 +101,17 @@ geostatistical-interpolation-universal-kriging
 interpolation_summary
 extra-2
 resources-4
+spatial_regression
+introduction-7
+practical-5
+justify_spatial_reg
+prac_7_process
+data-exploration
+ols
+spat_reg_details
+sem
+slm
+spatial_model_selection
+regression_summary
+prac_7_extra
+resources-5

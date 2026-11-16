@@ -78,6 +78,7 @@
 <li><a class="" href="point_patterns.html"><span class="header-section-number">5</span> Point Patterns</a></li>
 <li class="book-part">Spatial Modelling</li>
 <li><a class="" href="interpolation.html"><span class="header-section-number">6</span> Interpolation</a></li>
+<li><a class="" href="spatial_regression.html"><span class="header-section-number">7</span> Spatial Regression</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -613,7 +614,7 @@ Answers
 <ul>
 <li>As ever, the results are sensitive to our designation of the spatial weights matrix.</li>
 <li>We’re also using the same spatial weights matrix for both variables. There might be circumstances where we’d want to use different neighbourhood definitions, see <span class="citation">Illanas <em>et al.</em> (<a href="references.html#ref-illanas2025">2025</a>)</span>.</li>
-<li>We’re also only dealing with <strong>bivariate</strong> associations, rather than a combination of factors, which might ultimately be needed to <strong>explain</strong> spatial variability in Republican vote share. We’ll explore this in <a href="#spatial_regression">Practical 7</a> and <a href="#gwr">Practical 8</a>.</li>
+<li>We’re also only dealing with <strong>bivariate</strong> associations, rather than a combination of factors, which might ultimately be needed to <strong>explain</strong> spatial variability in Republican vote share. We’ll explore this in <a href="spatial_regression.html#spatial_regression">Practical 7</a> and <a href="#gwr">Practical 8</a>.</li>
 <li>We can also engage critically with the ArcGIS implementation of <span class="math inline">\(L\)</span>, given it is doesn’t allow us to investigate the <em>normalised</em> (mean-centered) spatial lags for each variable, and seems to enforce the inclusion of the focal feature in the calculations.</li>
 </ul></details><p><br></p>
 <p>For those of you interested in exploring further, there are lots of other county-level datasets available, for example on <a href="https://usdss.cdc.gov/diabetes/surveillance.html">diabetes prevalence</a>, <a href="https://data.cdc.gov/National-Center-for-Health-Statistics/VSRR-Provisional-County-Level-Drug-Overdose-Death-/gb4e-yj24/about_data">drug overdoses</a>, or even <a href="https://quickstats.nass.usda.gov/#24E0CEE2-1271-3635-A1ED-7A50CF2BBCDA">crop yields</a> but some data wrangling would be required to bring these into ArcGIS.</p>
