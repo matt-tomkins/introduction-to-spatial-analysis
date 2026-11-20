@@ -748,31 +748,77 @@ data <- data.frame(
   gdp = c(37146, 40100, 39052, 45360, 55332, 48433, 55475, 70285, 45476, 64928, 46205, 53597)
 )
 
+# Convert from euros to thousands of euros
+data$gdp <- data$gdp / 1000
+
+# Convert to percentage
+data$pvv <- data$pvv * 100
+
+# OLS
+model <- lm(pvv ~ gdp, data = data)
+summary(model)
+
 # Scatter plot
-g <- ggplot(data, aes(x = pvv, y = gdp)) +
+g <- ggplot(data, aes(x = gdp, y = pvv)) +
   geom_point(
     fill = "black",
     color = "black",
     size = 1,
     alpha = 0.8, shape = 21
   ) +
-  scale_x_continuous(limits = c(0, 0.35)) +
-  scale_y_continuous(limits = c(30000, 80000)) +
+  # Including linear regression
+  #geom_smooth(method="lm", se = FALSE) +
+  scale_y_continuous(limits = c(0, 35)) +
+  scale_x_continuous(limits = c(30, 80)) + #c(30000, 80000)) +
   labs(
-    x = "PVV vote proportion",
-    y = "GDP per capita (€)",
+    y = "PVV vote (%)",
+    x = "GDP per capita (€k)",
   ) +
-  theme_classic()
+  theme_classic()# +
+  # Prediction lines
+  #geom_hline(yintercept = 50, color = "#A1A1A1") +
+  #geom_vline(xintercept = 0.17225, color = "#A1A1A1") +
+  #geom_segment(y = -Inf, yend = 17.225, x = 50, xend = 50, color = "#A1A1A1") +
+  #geom_segment(y = 17.225, yend = 17.225, x = -Inf, xend = 50, color = "#A1A1A1")
 
 # Save
 ggsave(
   plot = g,
-  "./images/practical-4/pvv.png",
+  "./images/practical-4/pvv-k.png",
   height = 3,
   width = 3,
   units = "in",
   dpi = 300
 )
 
+# Scatter plot, extended to x=0
+g <- ggplot(data, aes(x = gdp, y = pvv)) +
+  geom_point(
+    fill = "black",
+    color = "black",
+    size = 1,
+    alpha = 0.8, shape = 21
+  ) +
+  # Including linear regression
+  geom_smooth(method="lm", se = FALSE) + # fullrange=TRUE) +
+  scale_y_continuous(limits = c(0, 50)) +
+  scale_x_continuous(limits = c(0, 80)) + #c(30000, 80000)) +
+  labs(
+    y = "PVV vote (%)",
+    x = "GDP per capita (€k)",
+  ) +
+  theme_classic() +
+  geom_segment(y = -Inf, yend = 17.225, x = 50, xend = 50, color = "#A1A1A1") +
+geom_segment(y = 17.225, yend = 17.225, x = -Inf, xend = 50, color = "#A1A1A1")
+
+# Save
+ggsave(
+  plot = g,
+  "./images/practical-4/pvv-extended-predict.png",
+  height = 4,
+  width = 5,
+  units = "in",
+  dpi = 300
+)
 
 ```

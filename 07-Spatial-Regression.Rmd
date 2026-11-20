@@ -200,7 +200,7 @@ Finally, and from a statistical perspective, one of the key assumptions of many 
 
 Based on the above reasoning, **spatial regression** methods are *often* more appropriate than OLS and similar aspatial regression methods when applied to spatial data, in that they incorporate the spatial structure and spatial dependence of the data, are a better representation of the spatial processes which produce the variables of interest, and can often minimise model error.
 
-### Pre-processing {#prac_7_process .hidden-section}
+### Pre-processing {#prac_7_process}
 
 To begin:
 
@@ -226,7 +226,7 @@ The aim of our analysis is to understand and predict **life expectancy** at the 
 
 > Add the datasets containing the dependent and independent variables ($n=7$) to ArcGIS. These can be found in [`data/dhsc`] and [`data/ons/msoa`].
 
-Our next step is to join the important attributes to our MSOA geometry layer. However, we are using the well-established `shapefile` format, which limits field names to 10 characters. As we'll working with a large number of fields, where the field name contains important information e.g., `economically_inactive_and_ftstudent`, we want to preserve these names, rather than see them truncated. This could be solved by assigning longer *aliases* to each field name, but a quicker workaround is simply to switch to a more modern format.
+Our next step is to join the important attributes to our MSOA geometry layer. However, we are using the well-established `shapefile` format, which limits field names to 10 characters. As we're working with a large number of fields, where the field name contains important information e.g., `economically_inactive_and_ftstudent`, we want to preserve these names, rather than see them truncated. This could be solved by assigning longer *aliases* to each field name, but a quicker workaround is simply to switch to a more modern format.
 
 > Use Export Features to save the MSOA geometries as a Feature Class in `practical-7.gdb`. When complete, remove the earlier version from ArcGIS, which you can check via Properties → Source → Data Source.
 
@@ -250,7 +250,7 @@ As we have permanently joined these attributes to our geometry layer:
 
 > Remove the standalone tables.
 
-### Data exploration {.hidden-section}
+### Data exploration
 
 Before we model the relationship between our dependent and independent variables, we should always conduct an exploratory data analysis.
 
@@ -320,7 +320,7 @@ To summarise, the choice of spatial weights method is critical and should be dep
 Is there evidence of spatial autocorrelation?
 :::
 
-### Ordinary least squares {#ols .hidden-section}
+### Ordinary least squares {#ols}
 
 As a first foray into regression, we will begin by running and critically engaging with Ordinary Least Squares.
 
@@ -410,6 +410,8 @@ When modelling `life_expectancy_male`, and including the full range of independe
 
 There are lots of tools available to diagnose multicollinearity, one of which is the Variance Inflation Factor (VIF), which can be found in the "Summary of OLS Results" table. As a rule-of-thumb, multicollinearity is present when the VIF is higher than 5 to 10 [@kim2019].
 
+<br>
+
 ::: question
 Is there evidence of multicollinearity?
 :::
@@ -422,6 +424,8 @@ There is evidence of multicollinearity, as `imd_decile` and `no_qualifications_p
 
 </details>
 
+<br>
+
 If multicollinearity is present, a typical strategy is to remove highly correlated variables.
 
 ::: question
@@ -432,7 +436,7 @@ Are all the independent variables significant in the model? i.e., $p<0.05$.
 
 <summary>Answer</summary>
 
-Fuel poverty is classed as not statistically significant, with $p\approx0.68$. As above, this does indicate that fuel poverty is unimportant, see @robinson2018 and @robinson2019, but that its effects is being captured by other variables e.g., deprivation. 
+Fuel poverty is classed as not statistically significant, with $p\approx0.68$. As above, this does indicate that fuel poverty is unimportant, see @robinson2018 and @robinson2019, but that its effect is being captured by other variables e.g., deprivation. 
 
 </details>
 
@@ -444,7 +448,7 @@ In **summary**, OLS is inappropriate for our analysis of life expectancy, as sta
 However, it is worth **emphasising** that OLS isn't *necessarily* inappropriate for analysis of spatial data. For example, if the observations are independent, there is no clear spatial pattern to the model residuals, as evidenced using Moran's $I$ and $I_i$, and no evidence of spatial non-stationarity... use OLS! However, the results of OLS should always be evaluated critically. In many cases, alternative techniques are more appropriate.
 :::
 
-### Spatial regression {#spat_reg_details .hidden-section}
+### Spatial regression {#spat_reg_details}
 
 An alternative to OLS and similar aspatial regression methods is **spatial regression**, which incorporates **space** explicitly in the regression framework.
 
@@ -532,7 +536,7 @@ In contrast, spatial error models assume that spatial dependence arises because 
 Thus, the difference between SLM and SEM is both theoretical and mathematical.
 :::
 
-### Spatial error model {#sem .hidden-section}
+### Spatial error model {#sem}
 
 To run a spatial error model in ArcGIS:
 
@@ -682,7 +686,7 @@ The **key** thing to emphasise here is that by incorporating spatial dependence 
 
 </details>
 
-### Spatial lag model {#slm .hidden-section}
+### Spatial lag model {#slm}
 
 We can also evaluate the results of a **spatial lag** model:
 
@@ -755,7 +759,7 @@ Statistically significant global spatial autocorrelation is still present in the
 
 <br>
 
-### Model selection {#spatial_model_selection .hidden-section}
+### Model selection {#spatial_model_selection}
 
 You should now have a good understanding of both the **spatial error** and the **spatial lag** models and how to evaluate them. This raises the question:
 
@@ -817,7 +821,7 @@ Our theoretical interpretation above, and the results of the Lagrange Multiplier
 
 <br>
 
-### Summary {#regression_summary .hidden-section}
+### Summary {#regression_summary}
 
 In today's practical, we have discussed the problems with aspatial regression methods when applied to spatial data. Mathematically these methods don't account for the spatial processes which often influence the dependent variable of interest, and don't account for spatial dependence. This is important because the resulting OLS models are often misspecified or invalid when key assumptions are not met (e.g., independence of observations, independence of error). More fundamentally, as GI Scientists we are working with **spatial data**. Aspatial methods ignore a key component of that data i.e., their **geography**. Incorporating this information into the regression framework can result in unbiased coefficients, can minimise errors, and can allow us to make more accurate predictions.
 
@@ -829,7 +833,7 @@ While these are the most commonly used spatial regression models, and are easily
 
 [**Finished!**](#index)
 
-## Extra {#prac_7_extra .hidden-section}
+## Extra {#prac_7_extra}
 
 In this practical we have developed global models to predict life expectancy. However, we should recognise that the model performance and the identified relationships (i.e., coefficients $\beta$) are specific to these data and the study area i.e., the North West of England. This raises the question:
 
@@ -947,5 +951,63 @@ ggsave(
 # Produce OLS
 model <- lm(sr ~ gsci, data = data)
 summary(model)
+
+
+#------------ Code to generate scatter plots with identical Pearson's R (different slope)
+
+# X-values
+x <- seq(1,15,0.5)
+
+# Multipliers
+m <- c(0.01, 0.25, 0.5, 1, 1.5)
+
+# Init counter
+count <- 1
+
+# Iterate
+for (i in m){
+  
+  # Y-values
+  y <- x * i
+  
+  # Create df and Pearson's R
+  df <- data.frame(x,y)
+  correlation <- cor.test(df$x, df$y)
+  
+  # Scatter plot
+  g <- ggplot(df, aes(x = x, y = y)) +
+    geom_point(
+      fill = "black",
+      color = "black",
+      size = 1,
+      alpha = 0.8, shape = 21
+    ) +
+    labs(
+      x = "x",
+      y = "y",
+      title = bquote("Pearson's" ~ italic(r) == .(correlation$estimate))
+    ) +
+    scale_x_continuous(limits = c(0,15)) +
+    scale_y_continuous(limits = c(0,15)) + 
+    theme_classic()
+  
+  # Save
+  ggsave(
+    plot = g,
+    paste0("./images/practical-7/pearson_", i, ".png"),
+    height = 3,
+    width = 3,
+    units = "in",
+    dpi = 300
+  )
+  
+  # Update counter
+  count <- count + 1
+}
+
+
+
+
+
 
 ```
